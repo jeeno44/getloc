@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
-    protected $fillable = ['site_id', 'url', 'visited', 'collected', 'code', 'level', 'name'];
+    protected $fillable = ['site_id', 'url', 'visited', 'collected', 'code', 'level'];
 
     public function site()
     {
@@ -20,6 +20,6 @@ class Page extends Model
 
     public function hasBlock($id)
     {
-        return in_array($id, $this->blocks->toArray());
+        return in_array($id, $this->blocks()->lists('id')->toArray());
     }
 }

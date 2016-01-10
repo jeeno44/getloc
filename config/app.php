@@ -147,6 +147,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Yangqi\Htmldom\HtmldomServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        FintechFab\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServiceProvider::class,
 
     ],
 

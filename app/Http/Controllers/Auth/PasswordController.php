@@ -29,4 +29,19 @@ class PasswordController extends Controller
     {
         $this->middleware('guest');
     }
+
+    public function getEmail()
+    {
+        return view('auth.passwords.email');
+    }
+
+    /**
+     * Get the e-mail subject line to be used for the reset link email.
+     *
+     * @return string
+     */
+    protected function getEmailSubject()
+    {
+        return property_exists($this, 'subject') ? $this->subject : 'Your Password Reset Link';
+    }
 }

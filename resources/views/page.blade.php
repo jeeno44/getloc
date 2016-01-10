@@ -1,9 +1,9 @@
-@extends('layout')
+@extends('layouts.app')
 
 @section('content')
     <ol class="breadcrumb">
-        <li><a href="/">Главная</a></li>
-        <li><a href="/site/{{$page->site_id}}">Страницы сайта {{$page->site->url}}</a></li>
+        <li><a href="/home/">Главная</a></li>
+        <li><a href="/home/site/{{$page->site_id}}">Страницы сайта {{$page->site->url}}</a></li>
         <li class="active">Список текстов страницы {{$page->url}}</li>
     </ol>
     <h3>Блоки</h3>

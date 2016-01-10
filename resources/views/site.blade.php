@@ -1,8 +1,8 @@
-@extends('layout')
+@extends('layouts.app')
 
 @section('content')
     <ol class="breadcrumb">
-        <li><a href="/">Главная</a></li>
+        <li><a href="/home">Главная</a></li>
         <li class="active">Страницы сайта {{$site->url}}</li>
     </ol>
     @if ($site->pages()->where('visited', 0)->count() > 0)
@@ -26,13 +26,18 @@
         @foreach($pages as $page)
             <tr>
                 <td>
-                    <a href="/page/{{$page->id}}">{{$page->url}}</a>
+                    <a href="/home/page/{{$page->id}}">{{$page->url}}</a>
                 </td>
                 <td>
                     @if ($page->collected == 1)
                         Обработана
                     @else
                         В обработке
+                    @endif
+                    @if ($page->code < 400)
+                        <span class="label label-success pull-right">{{$page->code}}</span>
+                    @else
+                        <span class="label label-danger pull-right">Ошибка сервера: {{$page->code}}</span>
                     @endif
                 </td>
                 <td>

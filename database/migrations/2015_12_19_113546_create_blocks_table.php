@@ -11,7 +11,7 @@ class CreateBlocksTable extends Migration
             $table->increments('id');
             $table->integer('site_id', false, true)->nullable();
             $table->text('text');
-            $table->string('type', 5);
+            $table->string('type', 10);
             $table->integer('count_words');
             $table->integer('count_symbols');
             $table->timestamps();
@@ -21,6 +21,6 @@ class CreateBlocksTable extends Migration
 
     public function down()
     {
-        Schema::drop('sites');
+
     }
 }

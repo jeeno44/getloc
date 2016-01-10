@@ -10,8 +10,7 @@ class CreatePagesTable extends Migration
         Schema::create('pages', function(Blueprint $table){
             $table->increments('id');
             $table->integer('site_id', false, true)->nullable();
-            $table->string('name');
-            $table->string('url');
+            $table->string('url', 500);
             $table->string('code');
             $table->integer('level');
             $table->boolean('visited');
@@ -23,6 +22,6 @@ class CreatePagesTable extends Migration
 
     public function down()
     {
-        Schema::drop('pages');
+
     }
 }

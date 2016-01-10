@@ -27,7 +27,7 @@ class TextsCollector extends Job implements SelfHandling, ShouldQueue
     {
         set_time_limit(0);
         $pages = Page::where('site_id', $this->site->id)->where('collected', 0)->where('code', '<',  400)->where('visited', 1)->get();
-        $tags = ['p', 'a', 'div', 'th', 'td', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+        $tags = ['p', 'a', 'div', 'th', 'td', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'b', 'strong', 'li', 'pre', 'code', 'option', 'label', 'span'];
         foreach ($pages as $page) {
             $content = getPageContent($page->url);
             if (!empty($content)) {
@@ -36,10 +36,6 @@ class TextsCollector extends Job implements SelfHandling, ShouldQueue
                     foreach($html->find($tag) as $element) {
                         $this->makeBlock($element, $page, $tag);
                     }
-                }
-                $titles = $html->find('title');
-                if (!empty($titles[0]->plaintext)) {
-                    $page->name = $titles[0]->plaintext;
                 }
                 $page->collected = 1;
             } else {

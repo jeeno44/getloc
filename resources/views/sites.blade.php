@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.app')
 
 @section('content')
 
@@ -23,7 +23,8 @@
         @foreach($sites as $site)
             <tr>
                 <td>
-                    <a href="/site/{{$site->id}}">{{$site->name}}</a>
+                    <a href="/home/site/{{$site->id}}">{{$site->name}}</a>
+                    <a href="/home/sites/delete/{{$site->id}}" class="btn btn-sm pull-right btn-danger">Удалить</a>
                 </td>
                 <td>
                     @if ($site->pages()->where('visited', 0)->count() > 0)
