@@ -1,1 +1,1 @@
-Click here to reset your password: {{ url('password/reset', $token).'?email='.urlencode($user->getEmailForPasswordReset()) }}
+Перейдите по ссылке для сброса пароля: {{ url('password/reset', $token).'?email='.urlencode($user->getEmailForPasswordReset()) }}
