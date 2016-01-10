@@ -12,4 +12,9 @@ class Site extends Model
     {
         return $this->hasMany('App\Page');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

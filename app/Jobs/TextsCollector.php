@@ -43,6 +43,7 @@ class TextsCollector extends Job implements SelfHandling, ShouldQueue
             }
             $page->save();
         }
+        \Event::fire('site.done', $this->site);
     }
 
     protected function makeBlock($element, $page, $type)

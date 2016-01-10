@@ -15,6 +15,14 @@ class AppServiceProvider extends ServiceProvider
     {
         \Event::listen('maps.done', function($site) {
             \Queue::push(new \App\Jobs\TextsCollector($site));
+            \Mail::send('emails.map', compact('site'), function($m) use ($site) {
+                $m->to($site->user->email)->subject('Структура сайта обработана');
+            });
+        });
+        \Event::listen('site.done', function($site) {
+            \Mail::send('emails.done', compact('site'), function($m) use ($site) {
+                $m->to($site->user->email)->subject('Обработка сайта завершена');
+            });
         });
     }
 

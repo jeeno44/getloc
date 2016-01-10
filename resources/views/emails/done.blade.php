@@ -1,0 +1,2 @@
+Обрабока вашего сайта <a href="{!! url('/home/site/'.$site->id) !!}" target="_blank">{{$site->name}}</a>  полностью завершена.<br>
+На сайте найдено собрано {{$site->pages()->count()}} страниц, {{$site->count_blocks}} фраз, {{$site->count_words}} слов, {{$site->count_symbols}} симоволов.

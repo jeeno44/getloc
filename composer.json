@@ -11,7 +11,8 @@
         "barryvdh/laravel-ide-helper": "^2.1",
         "laravelcollective/html": "^5.1",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "5.1",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "barryvdh/laravel-debugbar": "^2.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
