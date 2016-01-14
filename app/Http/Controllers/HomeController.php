@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Language;
+use App\Translate;
 use Illuminate\Http\Request;
 use App\Site;
 use App\Page;
@@ -18,15 +20,16 @@ class HomeController extends Controller
     public function postIndex(Request $request)
     {
         $url = $request->get('url');
-        $url = rtrim($url, '/');
-        $url = str_replace('http://', '', $url);
-        $url = 'http://'.$url.'/';
+        $url = prepareUri($url);
         $site = Site::where('url', $url)->first();
         if (empty($site)) {
+            $defaultLang = Language::where('short', 'ru')->first();
             $site = Site::create([
                 'url'   => $url,
                 'name'  => $url,
                 'user_id'   => \Auth::user()->id,
+                'secret'    => str_random(32),
+                'language_id'   => $defaultLang->id,
             ]);
             Page::create([
                 'url'       => $url,
@@ -48,7 +51,13 @@ class HomeController extends Controller
     public function getPage($id)
     {
         $page = Page::find($id);
-        return view('page', compact('page'));
+        $langs = $page->site->languages()->lists('name', 'short')->toArray();
+        $langs[''] = "Выберите язык перевода";
+        ksort($langs, SORT_STRING);
+        if (!empty(\Input::get('lang'))) {
+            $lang = Language::where('short', \Input::get('lang'))->first();
+        }
+        return view('page', compact('page', 'langs', 'lang'));
     }
 
     public function getDeleteSite($id)
@@ -59,5 +68,42 @@ class HomeController extends Controller
             return redirect()->back();
         }
         abort(404);
+    }
+
+    public function getEditSite($id)
+    {
+        $site = Site::find($id);
+        $langs = Language::where('id', '!=', $site->language_id)->get();
+        return view('sites.edit', compact('site', 'langs'));
+    }
+
+    public function postEditSite($id, Request $request)
+    {
+        $site = Site::find($id);
+        $blocks = $site->blocks()->lists('id', 'id')->toArray();
+        $oldLangs = $site->languages()->lists('id')->toArray();
+        $newLangs = $request->get('languages', []);
+        $langsToDel = array_diff($oldLangs, $newLangs);
+        $langstoAdd = array_diff($newLangs, $oldLangs);
+        foreach ($langsToDel as $l) {
+            \DB::table('site_language')->where('site_id', $site->id)->where('language_id', $l)->delete();
+            \DB::table('translates')->whereIn('block_id', $blocks)->where('language_id', $l)->delete();
+            foreach ($site->pages as $page) {
+                \Cache::forget($site->secret.'_'.$page->id.'_'.$l);
+            }
+        }
+        foreach ($langstoAdd as $l) {
+            if (!$site->hasLanguage($l)) {
+                $site->languages()->attach($l);
+                foreach ($blocks as $block) {
+                    Translate::create([
+                        'block_id'  => $block,
+                        'language_id'   => $l,
+                        'text'  => '',
+                    ]);
+                }
+            }
+        }
+        return redirect()->back();
     }
 }

@@ -24,7 +24,9 @@
             <tr>
                 <td>
                     <a href="/home/site/{{$site->id}}">{{$site->name}}</a>
-                    <a href="/home/sites/delete/{{$site->id}}" class="btn btn-sm pull-right btn-danger">Удалить</a>
+                    @if (Auth::user() != null && Auth::user()->id == $site->user_id)
+                        <a href="/home/sites/delete/{{$site->id}}" class="btn btn-sm pull-right btn-danger">Удалить</a>
+                    @endif
                 </td>
                 <td>
                     @if ($site->pages()->where('visited', 0)->count() > 0)

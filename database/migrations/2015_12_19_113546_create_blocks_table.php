@@ -9,7 +9,7 @@ class CreateBlocksTable extends Migration
     {
         Schema::create('blocks', function(Blueprint $table){
             $table->increments('id');
-            $table->integer('site_id', false, true)->nullable();
+            $table->integer('site_id', false, true)->index();
             $table->text('text');
             $table->string('type', 10);
             $table->integer('count_words');

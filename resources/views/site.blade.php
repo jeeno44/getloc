@@ -11,6 +11,9 @@
         <div class="alert alert-info">Сбор текста</div>
     @else
         <div class="alert alert-success">Обработан</div>
+        @if (Auth::user() != null && Auth::user()->id == $site->user_id)
+            <a href="/home/sites/edit/{{$site->id}}" class="btn btn-sm pull-right btn-info">Редактировать список языков</a>
+        @endif
     @endif
     <h3>Страницы</h3>
     <table class="table table-bordered table-responsive table-hovered">

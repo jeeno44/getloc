@@ -9,9 +9,9 @@ class CreatePagesTable extends Migration
     {
         Schema::create('pages', function(Blueprint $table){
             $table->increments('id');
-            $table->integer('site_id', false, true)->nullable();
-            $table->string('url', 500);
-            $table->string('code');
+            $table->integer('site_id', false, true)->index();
+            $table->string('url', 500)->index();
+            $table->string('code', 5)->index();
             $table->integer('level');
             $table->boolean('visited');
             $table->boolean('collected');

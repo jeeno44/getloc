@@ -10,8 +10,10 @@ class CreateSitesTable extends Migration
         Schema::create('sites', function(Blueprint $table){
             $table->increments('id');
             $table->integer('user_id', false, true)->nullable();
-            $table->string('name');
-            $table->string('url');
+            $table->integer('language_id', false, true)->nullable();
+            $table->string('name')->index();;
+            $table->string('url')->index();;
+            $table->string('secret', 64)->index();;
             $table->integer('count_blocks');
             $table->integer('count_words');
             $table->integer('count_symbols');
