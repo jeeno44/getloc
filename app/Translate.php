@@ -10,7 +10,7 @@ class Translate extends Model
 
     public function language()
     {
-        return $this->belongsTo('App\language');
+        return $this->belongsTo('App\Language');
     }
 
     public function block()
