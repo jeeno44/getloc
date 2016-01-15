@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Block;
 use App\Language;
 use App\Page;
 use App\Site;
@@ -55,7 +56,6 @@ class ApiController extends Controller
                                 } else {
                                     $response['results'][$block->text] = $block->text;
                                 }
-
                             }
                         }
                         $response['available_languages'] = $site->languages()->lists('name', 'short')->toArray();
@@ -75,5 +75,26 @@ class ApiController extends Controller
         $trans->update($request->all());
         $page = Page::find($request->get('page'));
         \Cache::forget($page->site->secret.'_'.$page->id.'_'.$trans->language_id);
+    }
+
+    public function anyBingTranslate($id, Request $request)
+    {
+        $trans = Translate::find($id);
+        $clientID     = "blackgremlin2";
+        $clientSecret = "SMnjwvLx0bB2u9Cn05K2vkTE1bSkX0+fsLp/23gsytU=";
+        $authUrl      = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/";
+        $scopeUrl     = "http://api.microsofttranslator.com";
+        $grantType    = "client_credentials";
+        $authObj      = new \Blackgremlin\Microsofttranslator\AccessTokenAuthentication();
+        $accessToken  = $authObj->getTokens($grantType, $scopeUrl, $clientID, $clientSecret, $authUrl);
+        $authHeader = "Authorization: Bearer ". $accessToken;
+        $translatorObj = new \Blackgremlin\Microsofttranslator\HTTPTranslator();
+        $inputStr = $trans->block->text;
+        $translateUri = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text=" .urlencode($inputStr). "&from=ru&to=".$trans->language->short;
+        $strResponse = $translatorObj->curlRequest($translateUri, $authHeader);
+        $xmlObj = simplexml_load_string($strResponse);
+        return \Response::json([
+            $trans->block->text => strval($xmlObj[0])
+        ]);
     }
 }

@@ -83,6 +83,6 @@ class Spider extends Job implements SelfHandling, ShouldQueue
         } elseif (mb_strpos($url, 'http') !== false && mb_strpos($url, $this->site->url) === false) {
             return null;
         }
-        return $url;
+        return $url.'/';
     }
 }

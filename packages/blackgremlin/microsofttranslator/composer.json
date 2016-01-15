@@ -1,0 +1,13 @@
+{
+    "name": "blackgremlin/microsofttranslator",
+    "description": "simple package for microsoft translator api",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andrey Malygin",
+            "email": "hello@andrey-malygin.ru"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
