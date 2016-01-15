@@ -45,12 +45,10 @@
                         {!! $block->text !!}
                     </td>
                     <td>
-                        @if (!empty($block->ttext))
-                            @if (Auth::user() != null && Auth::user()->id == $page->site->user_id)
-                                <textarea class="quick-edit form-control" data-id="{{$block->tid}}" rows="5" data-page="{{$page->id}}">{{$block->ttext}}</textarea>
-                            @else
-                                 {{$block->ttext}}
-                            @endif
+                        @if (Auth::user() != null && Auth::user()->id == $page->site->user_id)
+                            <textarea class="quick-edit form-control" data-id="{{$block->tid}}" rows="5" data-page="{{$page->id}}">{{$block->ttext}}</textarea>
+                        @else
+                            {{$block->ttext}}
                         @endif
                     </td>
                 </tr>
