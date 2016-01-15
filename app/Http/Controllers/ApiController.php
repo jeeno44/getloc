@@ -44,11 +44,14 @@ class ApiController extends Controller
                         if ($lang->id == $site->language_id) {
                             $response['results'] = $page->blocks()->lists('text', 'text')->toArray();
                         } else {
-                            foreach ($page->blocks as $block)
+                            $blocks = $page->blocks()->join('translates', 'blocks.id', '=', 'translates.block_id')
+                                ->where('translates.language_id', $lang->id)
+                                ->select('blocks.text', 'translates.id as tid', 'translates.text as ttext')
+                                ->get();
+                            foreach ($blocks as $block)
                             {
-                                $trans = $block->translate($lang->id)->first();
-                                if (!empty($trans)) {
-                                    $response['results'][$block->text] = $block->translate($lang->id)->first()->text;
+                                if (!empty($block->ttext)) {
+                                    $response['results'][$block->text] = $block->ttext;
                                 } else {
                                     $response['results'][$block->text] = $block->text;
                                 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Block;
 use App\Http\Requests;
 use App\Language;
 use App\Translate;
@@ -56,8 +57,15 @@ class HomeController extends Controller
         ksort($langs, SORT_STRING);
         if (!empty(\Input::get('lang'))) {
             $lang = Language::where('short', \Input::get('lang'))->first();
+            $blocks = $page->blocks()->join('translates', 'blocks.id', '=', 'translates.block_id')
+                ->where('translates.language_id', $lang->id)
+                ->select('blocks.text', 'translates.id as tid', 'translates.text as ttext')
+                ->get();
+        } else {
+            $blocks = $page->blocks;
         }
-        return view('page', compact('page', 'langs', 'lang'));
+
+        return view('page', compact('page', 'langs', 'lang', 'blocks'));
     }
 
     public function getDeleteSite($id)

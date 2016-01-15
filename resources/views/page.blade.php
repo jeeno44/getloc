@@ -39,18 +39,17 @@
                 <th>Перевод</th>
             </tr>
             </thead>
-            @foreach($page->blocks as $block)
+            @foreach($blocks as $block)
                 <tr>
                     <td class="col-sm-6">
                         {!! $block->text !!}
                     </td>
                     <td>
-                        <?php $trans = $block->translate($lang->id)->first()?>
-                            @if (!empty($trans))
+                        @if (!empty($block->ttext))
                             @if (Auth::user() != null && Auth::user()->id == $page->site->user_id)
-                                <textarea class="quick-edit form-control" data-id="{{$trans->id}}" rows="5" data-page="{{$page->id}}">{{$trans->text}}</textarea>
+                                <textarea class="quick-edit form-control" data-id="{{$block->tid}}" rows="5" data-page="{{$page->id}}">{{$block->ttext}}</textarea>
                             @else
-                                 {{$trans->text}}
+                                 {{$block->ttext}}
                             @endif
                         @endif
                     </td>
