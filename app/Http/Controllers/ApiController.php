@@ -16,7 +16,7 @@ class ApiController extends Controller
 {
     public function anyTranslate(Request $request)
     {
-        extract($request->only(['secret', 'uri', 'lang']));
+        extract($request->only(['secret', 'uri', 'lang', 'callback']));
         if (empty($secret)) {
             return \Response::json(['errors' => ['Secret key required']]);
         }
@@ -62,9 +62,12 @@ class ApiController extends Controller
                         $response['available_languages'][$site->language->short] = $site->language->name;
                         return $response;
                     });
-                    return \Response::json($response);
+                    if (!empty($callback)) {
+                        return \Response::make($callback."(".json_encode($response).")");
+                    } else {
+                        return \Response::make(json_encode($response));
+                    }
                 }
-
             }
         }
     }
