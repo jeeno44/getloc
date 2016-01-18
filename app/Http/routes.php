@@ -31,4 +31,13 @@ Route::get('/', 'IndexController@getIndex');
 
 Route::controller('api', 'ApiController');
 
+Route::get('rewrite', function(){
+    // rewrite urls from current pages
+    foreach (\App\Page::all() as $p) {
+        $url = rtrim($p->url, '/').'/';
+        $p->url = $url;
+        $p->save();
+    }
+});
+
 

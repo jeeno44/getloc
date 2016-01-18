@@ -34,16 +34,16 @@ class Spider extends Job implements SelfHandling, ShouldQueue
                 if (!empty($answer)) {
                     $html = new Htmldom($answer);
                     foreach ($html->find('a') as $element){
-                        $element->href = $this->prepare($element->href);
-                        $p = Page::where('url', $element->href)->where('site_id', $this->site->id)->first();
-                        if ($p == null && !empty($element->href)) {
+                        $href = $this->prepare($element->href);
+                        $p = Page::where('url', $href)->where('site_id', $this->site->id)->first();
+                        if ($p == null && !empty($href)) {
                             /**
                              * Внутри условия для того, чтобы не дергать лишний раз curl, если страница существует.
                              * Если её нет, тогда курлом проверяем код ответа и тип контента
                              */
-                            $code = getPageCode($element->href);
+                            $code = getPageCode($href);
                             if (!empty($code)) {
-                                Page::create(['site_id' => $this->site->id, 'url' => $element->href, 'level' => $page->level + 1, 'code' => $code]);
+                                Page::create(['site_id' => $this->site->id, 'url' => $href, 'level' => $page->level + 1, 'code' => $code]);
                             }
                         }
                     }
@@ -79,7 +79,7 @@ class Spider extends Job implements SelfHandling, ShouldQueue
             return null;
         }
         if (mb_strpos($url, 'http') === false) {
-            return $this->site->url.$url;
+            return $this->site->url.$url.'/';
         } elseif (mb_strpos($url, 'http') !== false && mb_strpos($url, $this->site->url) === false) {
             return null;
         }

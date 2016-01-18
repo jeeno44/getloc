@@ -9,6 +9,7 @@ function getPageCode($url)
     if (empty($url)) {
         return null;
     }
+    $url = rtrim($url, '/');
     try{
         $ch = curl_init();
         curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -36,6 +37,7 @@ function getPageCode($url)
  */
 function getPageContent($url)
 {
+    $url = rtrim($url, '/');
     try{
         $ch = curl_init();
         curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
