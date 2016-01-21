@@ -1,17 +1,18 @@
 function getloc(settings)
 {
-    this.auto_detected = settings['auto_detected'];
-    this.lang          = settings['lang'];
-    this.uri           = window.location.href;
-    this.secret        = settings['secret'];
-    this.uri_api       = 'http://scan.get-loc.ru/api/translate?';
-    this.callback      = 'getloc.setTranslate';
-    this.response      = '';
-    this.showChoice    = true;
-    this.htmlWidget    = '';
-    this.originalCont  = '';
-    this.complete      = false;
+    this.auto_detected = settings['auto_detected']
+    this.lang          = settings['lang']
+    this.uri           = window.location.href
+    this.secret        = settings['secret']
+    this.uri_api       = 'http://scan.get-loc.ru/api/translate?'
+    this.callback      = 'getloc.setTranslate'
+    this.response      = ''
+    this.showChoice    = true
+    this.htmlWidget    = ''
+    this.originalCont  = ''
+    this.complete      = false
     this.source        = settings['source']
+    this.saveLang      = settings['saveLang']
     
     /**
      * Определяем язык
@@ -25,6 +26,61 @@ function getloc(settings)
         if ( this.auto_detected || !this.lang )
             this.lang = window.navigator.userLanguage || window.navigator.language;
     }
+    
+    /**
+     * @param  string name
+     * @returns  mixed
+     */
+    
+    this.getCookie = function(name) 
+    {
+        var matches = document.cookie.match(new RegExp(
+          "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+    
+    /**
+     * @param    string name
+     * @param    mixed value
+     * @param    Object options
+     * @returns  string
+     */
+    
+    this.setCookie = function(name, value, options)
+    {
+        options = options || {};
+
+        var expires = options.expires;
+
+        if ( typeof expires == "number" && expires ) 
+          {
+            var d = new Date();
+            d.setTime(d.getTime() + expires * 1000);
+            expires = options.expires = d;
+          }
+          
+        if ( expires && expires.toUTCString )
+          {
+            options.expires = expires.toUTCString();
+          }
+
+        value = encodeURIComponent(value);
+
+        var updatedCookie = name + "=" + value;
+
+        for ( var propName in options )
+        {
+            updatedCookie += "; " + propName;
+            var propValue  = options[propName];
+            
+            if ( propValue !== true )
+                updatedCookie += "=" + propValue;
+        }
+
+        document.cookie = updatedCookie;
+      }
     
     /**
      * Переводим текст на странице
@@ -54,8 +110,6 @@ function getloc(settings)
             this.originalCont = temp_content
            }  
           
-        
-        
         if ( this.htmlWidget )
             this.showChoice = true
         
@@ -127,6 +181,7 @@ function getloc(settings)
     this.changeLanguage = function(lang)
     {
         this.lang = lang
+        this.setCookie('saveLang', lang)
         
         this.detect_language()
         this.getTranslate()
@@ -171,6 +226,9 @@ function getloc(settings)
     this.getTranslate    = function()
     {
         window.console.log('REQUEST JSONP')
+        
+        if ( lang = this.getCookie('saveLang') )
+            this.lang = lang
         
         var script      = document.createElement('script');
         script.src      = this.uri_api + 'secret='+this.secret+'&uri='+this.uri+'&lang='+this.lang+'&callback='+this.callback;
