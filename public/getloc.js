@@ -1,3 +1,17 @@
+var css    = 'body {display: none;}',
+    head   = document.head || document.getElementsByTagName('head')[0],
+    style  = document.createElement('style');
+style.type = 'text/css'
+
+if ( style.styleSheet )
+    style.styleSheet.cssText = css;
+else 
+    style.appendChild(document.createTextNode(css));
+
+head.appendChild(style)
+
+window.console.log('insert css')
+
 function getloc(settings)
 {
     this.auto_detected = settings['auto_detected']
@@ -92,16 +106,19 @@ function getloc(settings)
     this.processTranslate = function()
     {
         var content         = document.getElementsByTagName('html')[0];
-        
+     
         if ( !this.complete )
-            this.originalCont = content.innerHTML;
+          {
+            document.getElementsByTagName('body')[0].style.display = 'block'
+            this.originalCont  = content.innerHTML;
+          }
         
         if ( !this.complete )
             for ( var original in this.response.results ) 
                 content.innerHTML = content.innerHTML.replace(new RegExp(this.decodeSpecialChars(original), 'g'), this.response.results[original]);
         else
            {
-            var temp_content = this.originalCont
+            var temp_content  = this.originalCont
 
             for ( var original in this.response.results ) 
                 this.originalCont = this.originalCont.replace(new RegExp(this.decodeSpecialChars(original), 'g'), this.response.results[original]);
@@ -116,7 +133,10 @@ function getloc(settings)
         if ( this.showChoice )
             this.showAvailableLanguanges()
         
-        this.complete = true;
+	if ( !this.complete )
+	    window.onload = function() {document.getElementsByTagName('body')[0].style.display = 'block'}
+        
+	this.complete = true
     }
     
     /**
