@@ -26,14 +26,17 @@ class TextsCollector extends Job implements SelfHandling, ShouldQueue
     public function handle()
     {
         set_time_limit(0);
-        $pages = Page::where('site_id', $this->site->id)->where('collected', 0)->where('code', '<',  400)->where('visited', 1)->get();
-        $tags = ['p', 'a', 'div', 'th', 'td', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'b', 'strong', 'li', 'pre', 'code', 'option', 'label', 'span'];
+        $pages = Page::where('site_id', $this->site->id)->where('collected', 0)->where('code', '<', 400)->where('visited', 1)->get();
+        $tags = ['p', 'a', 'div', 'th',
+            'td', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'b', 'strong', 'li', 'pre', 'code', 'option',
+            'label', 'span', 'button', 'title', 'meta'
+        ];
         foreach ($pages as $page) {
             $content = getPageContent($page->url);
             if (!empty($content)) {
-                $html = new Htmldom($page->url);
+                $html = new Htmldom($content);
                 foreach ($tags as $tag) {
-                    foreach($html->find($tag) as $element) {
+                    foreach ($html->find($tag) as $element) {
                         $this->makeBlock($element, $page, $tag);
                     }
                 }
@@ -55,10 +58,10 @@ class TextsCollector extends Job implements SelfHandling, ShouldQueue
                 $countSymbols = mb_strlen($element->plaintext, 'UTF-8');
                 $countWords = $this->countWords($element->plaintext);
                 $block = new Block([
-                    'site_id'       => $this->site->id,
-                    'text'          => $element->plaintext,
-                    'type'          => $type,
-                    'count_words'   => $countWords,
+                    'site_id' => $this->site->id,
+                    'text' => $element->plaintext,
+                    'type' => $type,
+                    'count_words' => $countWords,
                     'count_symbols' => $countSymbols,
                 ]);
                 $block->save();
