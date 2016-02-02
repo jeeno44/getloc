@@ -1,65 +1,45 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Laravel</title>
 
-@section('content')
+        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
 
-    <div class="row">
-        <h3 class="col-sm-4">
-            Всего сайтов {{\App\Site::count()}}
-        </h3>
-        <h3 class="col-sm-4">
-            Всего страниц {{\App\Page::count()}}
-        </h3>
-        <h3 class="col-sm-4">
-            Всего блоков {{\App\Block::count()}}
-        </h3>
-    </div>
-    <hr>
-    <div class="row">
-        <h3 class="col-sm-12">Последние 30 проектов</h3>
-        <div class="col-sm-12">
-            <table class="table table-bordered table-responsive table-hovered">
-                <thead>
-                <tr>
-                    <th>УРЛ</th>
-                    <th>Статус</th>
-                    <th>Страниц</th>
-                    <th>Блоков</th>
-                    <th>Слов</th>
-                    <th>Символов</th>
-                </tr>
-                </thead>
-                @foreach($sites as $site)
-                    <tr>
-                        <td>
-                            <a href="/home/site/{{$site->id}}">{{$site->name}}</a>
-                        </td>
-                        <td>
-                            @if ($site->pages()->where('visited', 0)->count() > 0)
-                                Построение структуры
-                            @elseif ($site->pages()->where('collected', 0)->count() > 0)
-                                Сбор текста
-                            @else
-                                Обработан
-                            @endif
-                        </td>
-                        <td>
-                            {{$site->pages()->count()}}
-                        </td>
-                        <td>
-                            {{$site->count_blocks}}
-                        </td>
-                        <td>
-                            {{$site->count_words}}
-                        </td>
-                        <td>
-                            {{$site->count_symbols}}
-                        </td>
-                    </tr>
-                @endforeach
-            </table>
+        <style>
+            html, body {
+                height: 100%;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                display: table;
+                font-weight: 100;
+                font-family: 'Lato';
+            }
+
+            .container {
+                text-align: center;
+                display: table-cell;
+                vertical-align: middle;
+            }
+
+            .content {
+                text-align: center;
+                display: inline-block;
+            }
+
+            .title {
+                font-size: 96px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="content">
+                <div class="title">Laravel 5</div>
+            </div>
         </div>
-    </div>
-
-
-
-@stop
+    </body>
+</html>

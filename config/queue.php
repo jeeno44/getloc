@@ -12,11 +12,11 @@ return [
     | syntax for each one. Here you may set the default queue driver.
     |
     | Supported: "null", "sync", "database", "beanstalkd",
-    |            "sqs", "iron", "redis"
+    |            "sqs", "redis"
     |
     */
 
-    'default' => env('QUEUE_DRIVER', 'database'),
+    'default' => env('QUEUE_DRIVER', 'sync'),
 
     /*
     |--------------------------------------------------------------------------
@@ -37,8 +37,8 @@ return [
 
         'database' => [
             'driver' => 'database',
-            'table' => 'jobs',
-            'queue' => 'default',
+            'table'  => 'jobs',
+            'queue'  => 'default',
             'expire' => 60,
         ],
 
@@ -53,52 +53,16 @@ return [
             'driver' => 'sqs',
             'key'    => 'your-public-key',
             'secret' => 'your-secret-key',
-            'queue'  => 'your-queue-url',
+            'prefix' => 'https://sqs.us-east-1.amazonaws.com/your-account-id',
+            'queue'  => 'your-queue-name',
             'region' => 'us-east-1',
         ],
 
-        'iron' => [
-            'driver'  => 'iron',
-            'host'    => 'mq-aws-us-east-1.iron.io',
-            'token'   => 'your-token',
-            'project' => 'your-project-id',
-            'queue'   => 'your-queue-name',
-            'encrypt' => true,
-        ],
-
         'redis' => [
-            'driver' => 'redis',
+            'driver'     => 'redis',
             'connection' => 'default',
-            'queue'  => 'default',
-            'expire' => null,
-        ],
-
-        'rabbitmq' => [
-            'driver'          => 'rabbitmq',
-
-            'host'            => env('RABBITMQ_HOST', '127.0.0.1'),
-            'port'            => env('RABBITMQ_PORT', 5672),
-
-            'vhost'           => env('RABBITMQ_VHOST', '/'),
-            'login'           => env('RABBITMQ_LOGIN', 'guest'),
-            'password'        => env('RABBITMQ_PASSWORD', 'guest'),
-
-            'queue'           => env('RABBITMQ_QUEUE'), // name of the default queue,
-
-            'queue_params'    => [
-                'passive'     => env('RABBITMQ_QUEUE_PASSIVE', false),
-                'durable'     => env('RABBITMQ_QUEUE_DURABLE', true),
-                'exclusive'   => env('RABBITMQ_QUEUE_EXCLUSIVE', false),
-                'auto_delete' => env('RABBITMQ_QUEUE_AUTODELETE', false),
-            ],
-
-            'exchange_params' => [
-                'type'        => env('RABBITMQ_EXCHANGE_TYPE', 'direct'), // more info at http://www.rabbitmq.com/tutorials/amqp-concepts.html
-                'passive'     => env('RABBITMQ_EXCHANGE_PASSIVE', false),
-                'durable'     => env('RABBITMQ_EXCHANGE_DURABLE', true), // the exchange will survive server restarts
-                'auto_delete' => env('RABBITMQ_EXCHANGE_AUTODELETE', false),
-            ],
-
+            'queue'      => 'default',
+            'expire'     => 60,
         ],
 
     ],
@@ -115,7 +79,8 @@ return [
     */
 
     'failed' => [
-        'database' => 'mysql', 'table' => 'failed_jobs',
+        'database' => env('DB_CONNECTION', 'mysql'),
+        'table'    => 'failed_jobs',
     ],
 
 ];
