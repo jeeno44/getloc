@@ -96,3 +96,15 @@ function testTranslate($str)
     $str =  strtr($str, $converter);
     return $str;
 }
+
+function sendApiQuery($getaway, $data)
+{
+    $fields = http_build_query($data);
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $getaway);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
+    curl_exec($curl);
+    curl_close($curl);
+}

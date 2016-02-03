@@ -1,31 +1,37 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Routes File
-|--------------------------------------------------------------------------
-|
-| Here is where you will register all of the routes in an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
+$domain = env('APP_DOMAIN', 'get-loc.ru');
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['middleware' => ['web']], function ()  use ($domain){
+
+    /**
+     * Scan routes
+     */
+    Route::group(['domain' => 'scan.'.$domain], function () {
+        Route::get('/', ['as' => 'scan.main', 'uses' => 'ScanController@index']);
+        Route::get('/site/{id}', ['as' => 'scan.site', 'uses' => 'ScanController@site']);
+        Route::get('/page/{id}', ['as' => 'scan.page', 'uses' => 'ScanController@page']);
+        Route::post('/site', ['as' => 'scan.site.post', 'uses' => 'ScanController@postSite']);
+    });
+
+    /**
+     * Base site routes
+     */
+    Route::get('/', ['as' => 'main', 'uses' => 'HomeController@index']);
+    Route::get('/futures', ['as' => 'main.futures', 'uses' => 'HomeController@futures']);
+    Route::any('/call-me', ['as' => 'main.call-me', 'uses' => 'HomeController@callMe']);
+    Route::any('/get-demo', ['as' => 'main.get-demo', 'uses' => 'HomeController@getDemo']);
+    Route::auth();
+
+    Route::get('test', function(){
+        dd(route('scan.site', ['id' => 1]));
+    });
+
 });
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| This route group applies the "web" middleware group to every route
-| it contains. The "web" middleware group is defined in your HTTP
-| kernel and includes session state, CSRF protection, and more.
-|
-*/
-
-Route::group(['middleware' => ['web']], function () {
-    //
+/**
+ * Api routes
+ */
+Route::group(['domain' => 'api.'.$domain], function () {
+    Route::any('/add-site', ['as' => 'api.add-site', 'uses' => 'ApiController@createSite']);
 });

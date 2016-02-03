@@ -5,13 +5,12 @@ namespace App\Jobs;
 use App\Jobs\Job;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Site;
 use App\Page;
 use Htmldom;
 
-class Spider extends Job implements SelfHandling, ShouldQueue
+class Spider extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
 
