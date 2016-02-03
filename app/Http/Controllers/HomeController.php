@@ -13,12 +13,12 @@ class HomeController extends Controller
     public function index()
     {
         $sites = Site::count();
-        return view('index.pages.main', compact('sites'));
+        return view('pages.main', compact('sites'));
     }
 
     public function futures()
     {
-        return view('index.pages.futures');
+        return view('pages.futures');
     }
 
     /**
@@ -37,6 +37,7 @@ class HomeController extends Controller
 
     public function getDemo(Request $request)
     {
+        header('Access-Control-Allow-Origin: *');
         $data = $request->all();
         if (empty($data['site'])) {
             return 'fail';
@@ -56,5 +57,6 @@ class HomeController extends Controller
         });
         WebForm::create($data);
         sendApiQuery(route('api.add-site'), ['url' => $data['site'], 'user_id' => $user->id]);
+        return route('scan.main');
     }
 }

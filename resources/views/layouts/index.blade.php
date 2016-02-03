@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="/assets/css/swiper.min.css" />
     <link rel="stylesheet" href="/assets/css/select.css" />
     <link rel="stylesheet" href="/assets/css/main.css" />
-
 </head>
 <body>
 <!-- site -->
@@ -66,12 +65,12 @@
 
         </header>
     @else
-        <header class="site__header header_platform">
+        <header class="site__header">
             <!-- site__header-layout -->
             <div class="site__header-layout">
                 <!-- logo -->
-                <a data-href="{{route('main')}}" class="logo anchor">
-                    <img src="/assets/img/logo.png" alt="GETLOC">
+                <a href="{{route('main')}}" class="">
+                    <img src="/assets/img/logo.png" alt="GETLOC" style="margin-top: 5px;">
                 </a>
                 <!-- /logo -->
                 <!-- header__menu -->
@@ -245,11 +244,11 @@
                         <p>Мы добавили ваш сайт на просчёт текста. Мы можете посмотреть сколько там страниц, символов, слов и т.д.</p>
                         <p>Мы также выслали вам письмо ссылкой на статистику по вашему сайту.</p>
 
-                        <!-- btn -->
+                        <!--
                         <a href="{{route('scan.main')}}" class="btn btn_2">
                             <span>Посмотреть статистику</span>
                         </a>
-                        <!-- /btn -->
+                         -->
 
                     </div>
                     <!-- /discount__thanks -->

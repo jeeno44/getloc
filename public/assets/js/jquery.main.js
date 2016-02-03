@@ -177,11 +177,12 @@ var FormValidation = function (obj) {
                                     popup.core.show('thanks');
                                     setTimeout(function () {
                                         popup.core.hide('thanks')
-                                    }, 3000);
+                                        window.location.href = data
+                                    }, 2000);
                                 },
                                 error: function (XMLHttpRequest) {
                                     if (XMLHttpRequest.statusText != "abort") {
-                                        alert(XMLHttpRequest.statusText);
+                                        console.log(XMLHttpRequest.statusText);
                                     }
                                 }
                             });
@@ -215,7 +216,7 @@ var FormValidation = function (obj) {
                                 },
                                 error: function (XMLHttpRequest) {
                                     if (XMLHttpRequest.statusText != "abort") {
-                                        alert(XMLHttpRequest.statusText);
+                                        console.log(XMLHttpRequest.statusText);
                                     }
                                 }
                             });

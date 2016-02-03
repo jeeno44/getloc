@@ -17,15 +17,18 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
     /**
      * Base site routes
      */
-    Route::get('/', ['as' => 'main', 'uses' => 'HomeController@index']);
-    Route::get('/futures', ['as' => 'main.futures', 'uses' => 'HomeController@futures']);
-    Route::any('/call-me', ['as' => 'main.call-me', 'uses' => 'HomeController@callMe']);
-    Route::any('/get-demo', ['as' => 'main.get-demo', 'uses' => 'HomeController@getDemo']);
-    Route::auth();
+    Route::group(['domain' => $domain], function () {
+        Route::get('/', ['as' => 'main', 'uses' => 'HomeController@index']);
+        Route::get('/futures', ['as' => 'main.futures', 'uses' => 'HomeController@futures']);
+        Route::any('/call-me', ['as' => 'main.call-me', 'uses' => 'HomeController@callMe']);
+        Route::any('/get-demo', ['as' => 'main.get-demo', 'uses' => 'HomeController@getDemo']);
+        Route::auth();
 
-    Route::get('test', function(){
-        dd(route('scan.site', ['id' => 1]));
+        Route::get('test', function(){
+            return view('emails.call-me');
+        });
     });
+
 
 });
 
