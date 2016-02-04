@@ -165,7 +165,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Yangqi\Htmldom\HtmldomServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-
+        //Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*

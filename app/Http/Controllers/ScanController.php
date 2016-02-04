@@ -31,7 +31,15 @@ class ScanController extends Controller
     public function site($id)
     {
         $site = Site::find($id);
-        $pages = $site->pages()->with('blocks')->paginate(20);
+        $pages = $site->pages()->paginate(20);
+        foreach ($pages as $key => $page) {
+            $pages[$key] = \Cache::remember('page_'.$page->id, 60 * 24 * 30, function() use ($page) {
+                $page->count_blocks = $page->blocks()->count();
+                $page->count_words = $page->blocks()->sum('count_words');
+                $page->count_symbs = $page->blocks()->sum('count_symbols');
+                return $page;
+            });
+        }
         return view('pages.site', compact('site', 'pages'));
     }
 

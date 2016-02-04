@@ -93,13 +93,13 @@
                             @endif
                         </td>
                         <td>
-                            {{$page->blocks()->count()}}
+                            {{$page->count_blocks}}
                         </td>
                         <td>
-                            {{$page->blocks()->sum('count_words')}}
+                            {{$page->count_words}}
                         </td>
                         <td>
-                            {{$page->blocks()->sum('count_symbols')}}
+                            {{$page->count_symbs}}
                         </td>
                     </tr>
                 @endforeach
