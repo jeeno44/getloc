@@ -147,4 +147,5 @@ class ApiController extends Controller
         }
         $this->dispatch(new \App\Jobs\Spider($site));
     }
+
 }

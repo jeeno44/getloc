@@ -16,7 +16,7 @@
                 <!-- /site__back -->
 
                 <!-- site__title -->
-                <h1 class="site__title">{{$page->site->name}}</h1>
+                <h1 class="site__title">{{beautyUrl($page->site->url)}}</h1>
                 <!-- /site__title -->
 
                 <span class="projects__done">Обработан</span>
@@ -60,8 +60,8 @@
             <!-- /statistic -->
 
             <div class="breadcrumbs">
-                <a href="{{route('scan.site', ['id' => $page->site_id])}}">Все страницы сайта</a>
-                <span>Список текстов страницы {{$page->url}}</span>
+                <a href="{{route('scan.site', ['id' => $page->site_id])}}">Все страницы проекта</a>
+                <span>Список текстов страницы {{beautyUrl($page->url)}}</span>
             </div>
 
             <table class="projects">

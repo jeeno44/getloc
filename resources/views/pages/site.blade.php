@@ -16,7 +16,7 @@
                 <!-- /site__back -->
 
                 <!-- site__title -->
-                <h1 class="site__title">{{$site->name}}</h1>
+                <h1 class="site__title">{{beautyUrl($site->url)}}</h1>
                 <!-- /site__title -->
 
                 <span class="projects__done">Обработан</span>
@@ -60,7 +60,7 @@
             <!-- /statistic -->
 
             <div class="breadcrumbs">
-                <span>Все страницы сайта</span>
+                <span>Все страницы проекта</span>
             </div>
 
             <!-- projects -->
@@ -80,7 +80,7 @@
                 @foreach($pages as $page)
                     <tr>
                         <td>
-                            <a href="{{route('scan.page', ['id' => $page->id])}}">{{$page->url}}</a>
+                            <a href="{{route('scan.page', ['id' => $page->id])}}">{{beautyUrl($page->url)}}</a>
                         </td>
                         <td class="projects__status">
                             @if ($page->collected == 1)
@@ -106,36 +106,6 @@
                 </tbody>
             </table>
             <!-- /projects -->
-            <style>
-                .pagination{
-                    margin-bottom: 50px;
-                    text-align: center;
-                }
-                .pagination li{
-                    display: inline-block;
-                }
-                .pagination li a,
-                .pagination li span{
-                    display: inline-block;
-                    width: 32px;
-                    height: 32px;
-                    margin: 0 6px;
-                    border: 1px solid transparent;
-                    border-radius: 50px;
-                    color: #333;
-                    line-height: 32px;
-                    transition: color .3s ease, border-color .3s ease, opacity .3s ease;
-                    -webkit-transition: color .3s ease, border-color .3s ease, opacity .3s ease;
-                }
-                .pagination li a {
-                    color: #333;
-                }
-                .pagination li span,
-                .pagination li a:hover{
-                    color: #66d1f1;
-                    border-color: #66d1f1;
-                }
-            </style>
             {{$pages->render()}}
 
         </div>

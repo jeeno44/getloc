@@ -16,9 +16,9 @@ class HomeController extends Controller
         return view('pages.main', compact('sites'));
     }
 
-    public function futures()
+    public function feature()
     {
-        return view('pages.futures');
+        return view('pages.feature');
     }
 
     /**

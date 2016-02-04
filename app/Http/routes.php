@@ -12,6 +12,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::get('/site/{id}', ['as' => 'scan.site', 'uses' => 'ScanController@site']);
         Route::get('/page/{id}', ['as' => 'scan.page', 'uses' => 'ScanController@page']);
         Route::post('/site', ['as' => 'scan.site.post', 'uses' => 'ScanController@postSite']);
+        Route::any('/sites', ['as' => 'scan.sites', 'uses' => 'ScanController@anySites']);
     });
 
     /**
@@ -19,7 +20,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
      */
     Route::group(['domain' => $domain], function () {
         Route::get('/', ['as' => 'main', 'uses' => 'HomeController@index']);
-        Route::get('/futures', ['as' => 'main.futures', 'uses' => 'HomeController@futures']);
+        Route::get('/feature', ['as' => 'main.feature', 'uses' => 'HomeController@feature']);
         Route::any('/call-me', ['as' => 'main.call-me', 'uses' => 'HomeController@callMe']);
         Route::any('/get-demo', ['as' => 'main.get-demo', 'uses' => 'HomeController@getDemo']);
         Route::auth();

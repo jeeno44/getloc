@@ -10,79 +10,51 @@
     <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,300,500,700&subset=cyrillic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/assets/css/swiper.min.css" />
     <link rel="stylesheet" href="/assets/css/select.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css">
     <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/custom.css" />
 </head>
 <body>
 <!-- site -->
 <div class="site" id="up">
     @if (!empty($route) && $route == 'main')
         <header class="site__header">
-
-            <!-- site__header-layout -->
             <div class="site__header-layout">
-
-                <!-- logo -->
                 <h1 class="logo anchor" data-href="#up">
                     <img src="/assets/img/logo.png" alt="GETLOC">
                 </h1>
-                <!-- /logo -->
-
-                <!-- header__menu -->
-                <nav class="header__menu">
-                    <a href="{{route('main.futures')}}">Возможности</a>
-                    {{--
-                    <a href="#">Цены</a>
-                    <a href="#">О проекте</a>
-                    --}}
+                 <nav class="header__menu">
+                    <a href="{{route('main.feature')}}">Возможности</a>
+                    <a href="{{route('scan.main')}}">Аналитика</a>
                 </nav>
-                <!-- /header__menu -->
-
-                <!-- btn -->
                 <a class="btn btn_header anchor" data-href="#discount">Запросить демо</a>
-                <!-- /btn -->
-                {{--
-                <!-- language -->
-                <div class="language">
-
-                    <!-- language__btn -->
-                    <button class="language__btn">RU</button>
-                    <!-- /language__btn -->
-
-                    <!-- language__list -->
-                    <ul class="language__list">
-                        <li><a href="#">Русский</a></li>
-                        <li><a class="active" href="#">English</a></li>
-                        <li><a href="#">Deutsch</a></li>
-                        <li><a href="#">Español</a></li>
-                    </ul>
-                    <!-- /language__list -->
-
-                </div>
-                <!-- /language -->
-                --}}
             </div>
-            <!-- /site__header-layout -->
-
         </header>
-    @else
-        <header class="site__header">
-            <!-- site__header-layout -->
+    @elseif (!empty($route) && $route == 'main.feature')
+        <header class="site__header header_platform">
             <div class="site__header-layout">
-                <!-- logo -->
                 <a href="{{route('main')}}" class="">
                     <img src="/assets/img/logo.png" alt="GETLOC" style="margin-top: 5px;">
                 </a>
-                <!-- /logo -->
-                <!-- header__menu -->
                 <nav class="header__menu">
-                    <a href="{{route('main.futures')}}" class="active">Возможности</a>
+                    <a href="{{route('main.feature')}}" class="active">Возможности</a>
+                    <a href="{{route('scan.main')}}">Аналитика</a>
                 </nav>
-                <!-- /header__menu -->
-                <!-- btn -->
                 <a class="btn btn_header popup__open" data-popup="order">Запросить демо</a>
-                <!-- /btn -->
             </div>
-            <!-- /site__header-layout -->
+        </header>
+    @else
+        <header class="site__header">
+            <div class="site__header-layout">
+                <a href="{{route('main')}}" class="">
+                    <img src="/assets/img/logo.png" alt="GETLOC" style="margin-top: 5px;">
+                </a>
+                <nav class="header__menu">
+                    <a href="{{route('main.feature')}}">Возможности</a>
+                    <a href="{{route('scan.main')}}" class="active">Аналитика</a>
+                </nav>
+                <a class="btn btn_header popup__open" data-popup="order">Запросить демо</a>
+            </div>
         </header>
     @endif
     <!-- /site__header -->
@@ -97,34 +69,11 @@
             <div class="footer__logo">
                 <img src="/assets/img/logo.png" alt="GETLOC">
             </div>
-            <!-- /footer__logo -->
-            <!--
-            <div class="footer-menu">
-                <dl>
-                    <dt>Как это работает?</dt>
-                    <dd>
-                        <a href="#"><span>Наша платформа</span></a>
-                        <a href="#"><span>Управление переводом</span></a>
-                        <a href="#"><span>Заказ перевода</span></a>
-                        <a href="#"><span>Интеграция</span></a>
-                        <a href="#"><span>Планы развити</span></a>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt>О нас</dt>
-                    <dd>
-                        <a href="#"><span>Команда проекта</span></a>
-                        <a href="#"><span>Наши клиенты</span></a>
-                        <a href="#"><span>Новости</span></a>
-                    </dd>
-                </dl>
-            </div>
             <div class="social">
                 <a href="#" class="social-vk"></a>
                 <a href="#" class="social-fb"></a>
                 <a href="#" class="social-ok"></a>
             </div>
-            -->
         </div>
         <!-- /site__footer-layout -->
     </footer>
@@ -263,11 +212,12 @@
     <!-- /popup__wrap -->
 </div>
 <!-- /popup -->
-
 <script src="/assets/js/jquery-2.1.3.min.js"></script>
 <script src="/assets/js/swiper.min.js"></script>
 <script src="/assets/js/jquery.nicescroll.min.js"></script>
 <script src="/assets/js/jquery.select.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script src="/assets/js/jquery.main.js"></script>
+<script src="/assets/js/app.js"></script>
 </body>
 </html>

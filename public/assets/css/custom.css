@@ -1,0 +1,59 @@
+.btn_header {
+    right: 20px;
+}
+.header__menu {
+    right: 244px;
+}
+.pagination{
+    margin-bottom: 50px;
+    text-align: center;
+}
+.pagination li{
+    display: inline-block;
+}
+.pagination li a,
+.pagination li span{
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin: 0 6px;
+    border: 1px solid transparent;
+    border-radius: 50px;
+    color: #333;
+    line-height: 32px;
+    transition: color .3s ease, border-color .3s ease, opacity .3s ease;
+    -webkit-transition: color .3s ease, border-color .3s ease, opacity .3s ease;
+}
+.pagination li a {
+    color: #333;
+}
+.pagination li span,
+.pagination li a:hover{
+    color: #66d1f1;
+    border-color: #66d1f1;
+}
+.projects thead th {
+    height: 46px;
+    border-bottom: 2px solid #e3e6e8;
+    font-weight: 700;
+}
+.site__footer {
+    z-index: 1;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: auto;
+    height: 166px;
+    padding-top: 61px;
+    background-color: #3e4f59;
+}
+.site__footer-layout {
+    position: relative;
+    width: 992px;
+    height: auto;
+    padding: 0 20px;
+    margin: 0 auto;
+}
+.site:after {
+    height: 166px;
+}

@@ -85,7 +85,6 @@
             <table class="projects projects_list">
                 <thead>
                 <tr>
-                    <td></td>
                     <td>Последние проекты</td>
                     <td class="projects__status">
                         <span>Статус</span>
@@ -99,21 +98,20 @@
                 <tbody>
                 @foreach($sites as $site)
                     <tr>
-                        <td>{{$site->id}}</td>
                         @if ($site->pages()->where('visited', 0)->count() > 0)
-                            <td>{{$site->url}}</td>
+                            <td>{{beautyUrl($site->url)}}</td>
                             <td class="projects__status">
                                 <span class="projects__picking">Построение структуры</span>
                             </td>
                         @elseif ($site->pages()->where('collected', 0)->count() > 0)
-                            <td>{{$site->url}}</td>
+                            <td>{{beautyUrl($site->url)}}</td>
                             <td class="projects__status">
                                 <span class="projects__picking">Сбор текста</span>
                             </td>
                         @else
-                            <td><a href="{{route('scan.site', ['id' => $site->id])}}">{{$site->url}}</a></td>
+                            <td><a href="{{route('scan.site', ['id' => $site->id])}}">{{beautyUrl($site->url)}}</a></td>
                             <td class="projects__status">
-                                <span class="projects__picking">Обработан</span>
+                                <span class="projects__done">Обработан</span>
                             </td>
                         @endif
                         <td>{{$site->pages()->count()}}</td>
@@ -125,36 +123,6 @@
                 </tbody>
             </table>
             <!-- /projects -->
-            <style>
-                .pagination{
-                    margin-bottom: 50px;
-                    text-align: center;
-                }
-                .pagination li{
-                    display: inline-block;
-                }
-                .pagination li a,
-                .pagination li span{
-                    display: inline-block;
-                    width: 32px;
-                    height: 32px;
-                    margin: 0 6px;
-                    border: 1px solid transparent;
-                    border-radius: 50px;
-                    color: #333;
-                    line-height: 32px;
-                    transition: color .3s ease, border-color .3s ease, opacity .3s ease;
-                    -webkit-transition: color .3s ease, border-color .3s ease, opacity .3s ease;
-                }
-                .pagination li a {
-                    color: #333;
-                }
-                .pagination li span,
-                .pagination li a:hover{
-                    color: #66d1f1;
-                    border-color: #66d1f1;
-                }
-            </style>
             @if($newSite != null)
                 <script>
                     var row = document.getElementsByTagName("table")[0].rows[1];

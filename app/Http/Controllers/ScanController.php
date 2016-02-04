@@ -42,8 +42,13 @@ class ScanController extends Controller
         return view('pages.page', compact('page', 'blocks'));
     }
 
-    public function postSite(Request $request)
+    public function anySites(Request $request)
     {
-
+        $term = $request->get('term');
+        $sites = Site::where('url', 'like', '%'.$term.'%')->get()->pluck('name', 'id')->toArray();
+        foreach($sites as $id => $site) {
+            $sites[$id] = ['key' => $id, 'value' => beautyUrl($site)];
+        }
+        return \Response::json($sites);
     }
 }

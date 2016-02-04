@@ -108,3 +108,8 @@ function sendApiQuery($getaway, $data)
     curl_exec($curl);
     curl_close($curl);
 }
+
+function beautyUrl($url)
+{
+    return trim(str_replace('http://', '', $url), '/');
+}

@@ -193,7 +193,7 @@
                 <!-- /advantages__items -->
 
                 <!-- btn -->
-                <a href="{{route('main.futures')}}"  class="btn btn_1"><span>Все возможности</span></a>
+                <a href="{{route('main.feature')}}"  class="btn btn_1"><span>Все возможности</span></a>
                 <!-- /btn -->
 
                 <!-- next-step -->
