@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title') Аналитика @stop
+@section('title') {{trans('phrases.analytics')}} @stop
 
 @section('content')
 
@@ -10,12 +10,12 @@
         <div class="site__wrap">
 
             <!-- site__title -->
-            <h1 class="site__title">Аналитика</h1>
+            <h1 class="site__title">{{trans('phrases.analytics')}}</h1>
             <!-- /site__title -->
 
             <!-- site__introduction -->
             <div class="site__introduction">
-                <p>Здесь вы можете посмотреть статистику по всем проектам, которые учавствуют в тестировании сервиса.</p>
+                <p>{{trans('phrases.here_see_testing')}}</p>
             </div>
             <!-- /site__introduction -->
 
@@ -24,38 +24,38 @@
                 <li>
 
                     <!-- statistic__title -->
-                    <span class="statistic__title">Добавлено</span>
+                    <span class="statistic__title">{{trans('phrases.added')}}</span>
                     <!-- /statistic__title -->
 
                     <!-- statistic__num -->
                     <span class="statistic__num">{{$countSites}}</span>
                     <!-- /statistic__num -->
 
-                    <span>сайтов</span>
+                    <span>{{trans('phrases.sites')}}</span>
                 </li>
                 <li>
 
                     <!-- statistic__title -->
-                    <span class="statistic__title">Проверено</span>
+                    <span class="statistic__title">{{trans('phrases.validated')}}</span>
                     <!-- /statistic__title -->
 
                     <!-- statistic__num -->
                     <span class="statistic__num">{{$countPages}}</span>
                     <!-- /statistic__num -->
 
-                    <span>страниц</span>
+                    <span>{{trans('phrases.pages')}}</span>
                 </li>
                 <li>
 
                     <!-- statistic__title -->
-                    <span class="statistic__title">Найдено</span>
+                    <span class="statistic__title">{{trans('phrases.found')}}</span>
                     <!-- /statistic__title -->
 
                     <!-- statistic__num -->
                     <span class="statistic__num">{{$countBlocks}}</span>
                     <!-- /statistic__num -->
 
-                    <span>блоков</span>
+                    <span>{{trans('phrases.blocks')}}</span>
                 </li>
             </ul>
             <!-- /statistic -->
@@ -65,14 +65,14 @@
 
                 <!-- btn -->
                 <a class="btn btn_add popup__open" data-popup="order">
-                    <span>Добавить свой сайт</span>
+                    <span>{{trans('phrases.add_your_site')}}</span>
                 </a>
                 <!-- /btn -->
 
                 <!-- search -->
                 <div class="search">
                     <form method="get" action="#">
-                        <input type="search" name="search" id="quick-search" placeholder="Найти сайт"/>
+                        <input type="search" name="search" id="quick-search" placeholder="{{trans('phrases.find_site')}}"/>
                         <button name="find"></button>
                     </form>
                 </div>
@@ -85,14 +85,14 @@
             <table class="projects projects_list">
                 <thead>
                 <tr>
-                    <td>Последние проекты</td>
+                    <td>{{trans('phrases.last_projects')}}</td>
                     <td class="projects__status">
-                        <span>Статус</span>
+                        <span>{{trans('phrases.status')}}</span>
                     </td>
-                    <td>Страниц</td>
-                    <td>Блоков</td>
-                    <td>Слов</td>
-                    <td>Символов</td>
+                    <td>{{ucfirst(trans('phrases.pages'))}}</td>
+                    <td>{{ucfirst(trans('phrases.blocks'))}}</td>
+                    <td>{{ucfirst(trans('phrases.words'))}}</td>
+                    <td>{{ucfirst(trans('phrases.symbols'))}}</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -101,17 +101,17 @@
                         @if ($site->pages()->where('visited', 0)->count() > 0)
                             <td>{{beautyUrl($site->url)}}</td>
                             <td class="projects__status">
-                                <span class="projects__picking">Построение структуры</span>
+                                <span class="projects__picking">{{trans('phrases.building_structure')}}</span>
                             </td>
                         @elseif ($site->pages()->where('collected', 0)->count() > 0)
                             <td>{{beautyUrl($site->url)}}</td>
                             <td class="projects__status">
-                                <span class="projects__picking">Сбор текста</span>
+                                <span class="projects__picking">{{trans('phrases.collect_text')}}</span>
                             </td>
                         @else
                             <td><a href="{{route('scan.site', ['id' => $site->id])}}">{{beautyUrl($site->url)}}</a></td>
                             <td class="projects__status">
-                                <span class="projects__done">Обработан</span>
+                                <span class="projects__done">{{trans('phrases.site_done')}}</span>
                             </td>
                         @endif
                         <td>{{$site->pages()->count()}}</td>

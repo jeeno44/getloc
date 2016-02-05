@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title') Аналитика @stop
+@section('title') {{trans('phrases.analytics')}} @stop
 
 @section('content')
 
@@ -12,14 +12,14 @@
             <div class="site__panel">
 
                 <!-- site__back -->
-                <a href="{{route('scan.main')}}" class="site__back">Все сайты</a>
+                <a href="{{route('scan.main')}}" class="site__back">{{trans('phrases.all_sites')}}</a>
                 <!-- /site__back -->
 
                 <!-- site__title -->
                 <h1 class="site__title">{{beautyUrl($page->site->url)}}</h1>
                 <!-- /site__title -->
 
-                <span class="projects__done">Обработан</span>
+                <span class="projects__done">{{trans('phrases.site_done')}}</span>
 
             </div>
             <!-- /site__panel -->
@@ -30,7 +30,7 @@
                     <!-- statistic__num -->
                     <span class="statistic__num">{{$page->site->pages()->count()}}</span>
                     <!-- /statistic__num -->
-                    <span>страниц</span>
+                    <span>{{trans('phrases.pages')}}</span>
                 </li>
                 <li>
 
@@ -38,7 +38,7 @@
                     <span class="statistic__num">{{$page->site->count_blocks}}</span>
                     <!-- /statistic__num -->
 
-                    <span>блоков</span>
+                    <span>{{trans('phrases.blocks')}}</span>
                 </li>
                 <li>
 
@@ -46,7 +46,7 @@
                     <span class="statistic__num">{{$page->site->count_words}}</span>
                     <!-- /statistic__num -->
 
-                    <span>слов</span>
+                    <span>{{trans('phrases.words')}}</span>
                 </li>
                 <li>
 
@@ -54,22 +54,22 @@
                     <span class="statistic__num">{{$page->site->count_symbols}}</span>
                     <!-- /statistic__num -->
 
-                    <span>символов</span>
+                    <span>{{trans('phrases.symbols')}}</span>
                 </li>
             </ul>
             <!-- /statistic -->
 
             <div class="breadcrumbs">
-                <a href="{{route('scan.site', ['id' => $page->site_id])}}">Все страницы проекта</a>
-                <span>Список текстов страницы {{beautyUrl($page->url)}}</span>
+                <a href="{{route('scan.site', ['id' => $page->site_id])}}">{{trans('phrases.all_project_pages')}}</a>
+                <span>{{trans('phrases.list_of_texts')}} {{beautyUrl($page->url)}}</span>
             </div>
 
             <table class="projects">
                 <thead>
                     <tr>
-                        <th>Текст</th>
-                        <th>Слов</th>
-                        <th>Символов</th>
+                        <th>{{trans('phrases.text')}}</th>
+                        <td>{{ucfirst(trans('phrases.words'))}}</td>
+                        <td>{{ucfirst(trans('phrases.symbols'))}}</td>
                     </tr>
                 </thead>
                 @foreach($page->blocks as $block)

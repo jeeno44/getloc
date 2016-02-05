@@ -14,5 +14,6 @@ class Controller extends BaseController
     public function __construct()
     {
         \View::share('route', \Route::getCurrentRoute()->getName());
+        \View::share('locale', \App::getLocale());
     }
 }

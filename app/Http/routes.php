@@ -3,7 +3,6 @@
 $domain = env('APP_DOMAIN', 'get-loc.ru');
 
 Route::group(['middleware' => ['web']], function ()  use ($domain){
-
     /**
      * Scan routes
      */
@@ -26,7 +25,25 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::auth();
 
         Route::get('test', function(){
-            return view('emails.call-me');
+            set_time_limit(0);
+            $phrases = Lang::get('phrases');
+            $clientID     = "blackgremlin2";
+            $clientSecret = "SMnjwvLx0bB2u9Cn05K2vkTE1bSkX0+fsLp/23gsytU=";
+            $authUrl      = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/";
+            $scopeUrl     = "http://api.microsofttranslator.com";
+            $grantType    = "client_credentials";
+            $authObj      = new \Blackgremlin\Microsofttranslator\AccessTokenAuthentication();
+            $accessToken  = $authObj->getTokens($grantType, $scopeUrl, $clientID, $clientSecret, $authUrl);
+            $authHeader = "Authorization: Bearer ". $accessToken;
+            $translatorObj = new \Blackgremlin\Microsofttranslator\HTTPTranslator();
+            foreach ($phrases as $key => $value) {
+                $inputStr = $value;
+                $translateUri = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text=" .urlencode($inputStr). "&from=ru&to=zh-CHS";
+                $strResponse = $translatorObj->curlRequest($translateUri, $authHeader);
+                $xmlObj = simplexml_load_string($strResponse);
+                $phrases[$key] = strval($xmlObj[0]);
+            }
+            dd($phrases);
         });
     });
 

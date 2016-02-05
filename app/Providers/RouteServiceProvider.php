@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -35,9 +36,16 @@ class RouteServiceProvider extends ServiceProvider
      * @param  \Illuminate\Routing\Router  $router
      * @return void
      */
-    public function map(Router $router)
+    public function map(Router $router, Request $request)
     {
-        $router->group(['namespace' => $this->namespace], function ($router) {
+        $segment = $request->segment(1);
+        $locale = null;
+        if (array_key_exists($segment, $this->app->config->get('app.locales'))) {
+            $locale = $segment;
+            $this->app->setLocale($locale);
+        }
+
+        $router->group(['namespace' => $this->namespace, 'prefix' => $locale], function ($router) {
             require app_path('Http/routes.php');
         });
     }

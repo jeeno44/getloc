@@ -17,49 +17,9 @@
 <body>
 <!-- site -->
 <div class="site" id="up">
-    @if (!empty($route) && $route == 'main')
-        <header class="site__header">
-            <div class="site__header-layout">
-                <h1 class="logo anchor" data-href="#up">
-                    <img src="/assets/img/logo.png" alt="GETLOC">
-                </h1>
-                 <nav class="header__menu">
-                    <a href="{{route('main.feature')}}">Возможности</a>
-                    <a href="{{route('scan.main')}}">Аналитика</a>
-                </nav>
-                <a class="btn btn_header anchor" data-href="#discount">Запросить демо</a>
-            </div>
-        </header>
-    @elseif (!empty($route) && $route == 'main.feature')
-        <header class="site__header header_platform">
-            <div class="site__header-layout">
-                <a href="{{route('main')}}" class="">
-                    <img src="/assets/img/logo.png" alt="GETLOC" style="margin-top: 5px;">
-                </a>
-                <nav class="header__menu">
-                    <a href="{{route('main.feature')}}" class="active">Возможности</a>
-                    <a href="{{route('scan.main')}}">Аналитика</a>
-                </nav>
-                <a class="btn btn_header popup__open" data-popup="order">Запросить демо</a>
-            </div>
-        </header>
-    @else
-        <header class="site__header">
-            <div class="site__header-layout">
-                <a href="{{route('main')}}" class="">
-                    <img src="/assets/img/logo.png" alt="GETLOC" style="margin-top: 5px;">
-                </a>
-                <nav class="header__menu">
-                    <a href="{{route('main.feature')}}">Возможности</a>
-                    <a href="{{route('scan.main')}}" class="active">Аналитика</a>
-                </nav>
-                <a class="btn btn_header popup__open" data-popup="order">Запросить демо</a>
-            </div>
-        </header>
-    @endif
-    <!-- /site__header -->
 
-    <!-- /site__header -->
+    @include('partials.header')
+
     @yield('content')
     <!-- /site__footer -->
     <footer class="site__footer">
@@ -96,12 +56,12 @@
                     <div class="discount__layout">
 
                         <!-- site__title -->
-                        <h2 class="site__title">Добавьте сайт</h2>
+                        <h2 class="site__title">{{trans('phrases.add_site')}}</h2>
                         <!-- /site__title -->
 
                         <!-- popup__introduction -->
                         <div class="popup__introduction">
-                            <p>Заполните форму и когда проект запуститься, у вас будет возможность пользоваться услугами сервиса со скидкой.</p>
+                            <p>{{trans('phrases.get_discount_form_header')}}</p>
                         </div>
                         <!-- /popup__introduction -->
 
@@ -110,22 +70,22 @@
                             {!! Form::open(['route' => 'main.get-demo']) !!}
 
                                 <fieldset>
-                                    <label for="popup__email">Ваша эл. почта *</label>
+                                    <label for="popup__email">{{trans('phrases.your_email')}}</label>
                                     <input type="email" id="popup__email"  placeholder="yourmail@gmai" required/>
                                 </fieldset>
 
                                 <fieldset>
-                                    <label for="popup__name">Имя, фамилия</label>
+                                    <label for="popup__name">{{trans('phrases.name_last_name')}}</label>
                                     <input type="text" id="popup__name"/>
                                 </fieldset>
 
                                 <fieldset>
-                                    <label for="popup__address">Адрес вашего сайта *</label>
+                                    <label for="popup__address">{{trans('phrases.site_address')}}</label>
                                     <input type="text" id="popup__address" placeholder="http://yoursite.ru" required/>
                                 </fieldset>
 
                                 <fieldset>
-                                    <label for="popup__phone">Номер телефона</label>
+                                    <label for="popup__phone">{{trans('phrases.phone_number')}}</label>
                                     <input type="tel" id="popup__phone"/>
                                 </fieldset>
 
@@ -156,7 +116,7 @@
                                 </fieldset>
                                 <!-- btn -->
                                 <button class="btn btn_discount">
-                                    <span>Добавить свой сайт</span>
+                                    <span>{{trans('phrases.add_your_site')}}</span>
                                 </button>
                                 <!-- /btn -->
                             {!! Form::close() !!}
@@ -187,15 +147,15 @@
                         <img src="/assets/img/img-thanks.png" alt="img"/>
 
                         <!-- discount__thanks-title -->
-                        <h2 class="discount__thanks-title">Спасибо большое за вашу заявку</h2>
+                        <h2 class="discount__thanks-title">{{trans('phrases.big_thanks_for_request')}}</h2>
                         <!-- /discount__thanks-title -->
 
-                        <p>Мы добавили ваш сайт на просчёт текста. Мы можете посмотреть сколько там страниц, символов, слов и т.д.</p>
-                        <p>Мы также выслали вам письмо ссылкой на статистику по вашему сайту.</p>
+                        <p>{{trans('phrases.we_create_project')}}</p>
+                        <p>{{trans('phrases.we_send_letter')}}</p>
 
                         <!--
                         <a href="{{route('scan.main')}}" class="btn btn_2">
-                            <span>Посмотреть статистику</span>
+                            <span>{{trans('phrases.show_stat')}}</span>
                         </a>
                          -->
 

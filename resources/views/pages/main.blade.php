@@ -15,17 +15,17 @@
                 <div class="promo__content">
 
                     <!-- promo__title -->
-                    <h2 class="promo__title">Мультиязычный сайт <span>– это просто!</span></h2>
+                    <h2 class="promo__title">{{trans('phrases.multi_site')}} <span>{{trans('phrases.it_easy')}}</span></h2>
                     <!-- /promo__title -->
 
                     <!-- promo__text -->
                     <div class="promo__text">
-                        Идеальное решения <br/> для быстрого перевода веб-сайтов <br/> на много языков
+                        {{trans('phrases.good_solution')}} <br/> {{trans('phrases.for_quickly_translate')}} <br/> {{trans('phrases.to_many_languages')}}
                     </div>
                     <!-- /promo__text -->
 
                     <!-- promo__more -->
-                    <a class="promo__more anchor" data-href="#advantages">Узнать подробнее</a>
+                    <a class="promo__more anchor" data-href="#advantages">{{trans('phrases.know_more')}}</a>
                     <!-- /promo__more -->
 
                 </div>
@@ -67,11 +67,11 @@
                     <!-- /gallery__item -->
 
                     <!-- gallery__prev -->
-                    <div class="gallery__prev">prev</div>
+                    <div class="gallery__prev">{{trans('phrases.prev')}}</div>
                     <!-- /gallery__prev -->
 
                     <!-- gallery__next -->
-                    <div class="gallery__next">next</div>
+                    <div class="gallery__next">{{trans('phrases.next')}}</div>
                     <!-- /gallery__next -->
 
                 </div>
@@ -91,9 +91,9 @@
 
                 <!-- enroll__content -->
                 <div class="enroll__content">
-                    <p>Сейчас проводится тестирование на <b>{{$sites}}</b> сайтах</p>
-                    <a data-href="#discount" class="anchor">Записаться на тестирование</a>
-                    <span class="enroll__start">Дата запуска – март 2016 года</span>
+                    <p>{{trans('phrases.now_doing_tests')}} <b>{{$sites}}</b> {{trans_choice('phrases.count_sites', $sites)}}</p>
+                    <a data-href="#discount" class="anchor">{{trans('phrases.request_to_testing')}}</a>
+                    <span class="enroll__start">{{trans('phrases.start_date')}} – {{trans('phrases.march_2016')}}</span>
                 </div>
                 <!-- /enroll__content -->
 
@@ -102,13 +102,13 @@
                     {!! Form::open(['route' => 'main.call-me']) !!}
                             <!-- enroll__email-box -->
                     <fieldset class="enroll__email-box">
-                        <input type="email" id="enroll__email" placeholder="Ваш e-mail" class="enroll__email" required/>
+                        <input type="email" id="enroll__email" placeholder="{{trans('phrases.your_email')}}" class="enroll__email" required/>
                     </fieldset>
                     <!-- /enroll__email-box -->
 
                     <!-- btn -->
                     <button class="btn btn_enroll">
-                        <span>Сообщить мне о запуске</span>
+                        <span>{{trans('phrases.call_me_about_start')}}</span>
                     </button>
                     <!-- /btn -->
                     {!! Form::close() !!}
@@ -117,9 +117,8 @@
 
                 <!-- enroll__thanks -->
                 <div class="enroll__thanks">
-                    <span class="enroll__thanks-title">Спасибо за заявку!</span>
-                    <p>Уверяем вас, вы узнаете о запуске
-                        сервиса одним из первых.</p>
+                    <span class="enroll__thanks-title"></span>
+                    <p>{{trans('phrases.we_assure_you')}}</p>
                 </div>
                 <!-- /enroll__thanks -->
 
@@ -136,12 +135,12 @@
             <div class="advantages" id="advantages">
 
                 <!-- site__title -->
-                <h2 class="site__title"><strong>getLoc</strong> поможет вам переводить сайты легко и быстро!</h2>
+                <h2 class="site__title"><strong>getLoc</strong> {{trans('phrases.help_to_translate')}}</h2>
                 <!-- site__title -->
 
                 <!-- advantages__introduction -->
                 <div class="advantages__introduction">
-                    Сейчас существует большая потребность в легком и доступном любому пользователю инструменте для создания мультиязычной версии сайт. Этот сервис даст вам возможность с минимальными навыками сделать профессиональный многоязычный сайт.
+                    {{trans('phrases.great_need_for')}}
                 </div>
                 <!-- /advantages__introduction -->
 
@@ -156,10 +155,10 @@
                         <!-- /advantages__img -->
 
                         <!-- advantages__title -->
-                        <h3 class="advantages__title">Полная автоматизация <br/> процесса</h3>
+                        <h3 class="advantages__title">{{trans('phrases.full_auto')}} <br/> {{trans('phrases.process_a')}}</h3>
                         <!-- /advantages__title -->
 
-                        <p>Процесс построен так, что от вас требуется минимальное вмешательство. Всю работу мы берем на себя.</p>
+                        <p>{{trans('phrases.process_build_tak')}}</p>
                     </li>
                     <li>
 
@@ -170,10 +169,10 @@
                         <!-- /advantages__img -->
 
                         <!-- advantages__title -->
-                        <h3 class="advantages__title">Простая настройка <br/> перевода</h3>
+                        <h3 class="advantages__title">{{trans('phrases.easy_setting')}} <br/> {{trans('phrases.translate_a')}}</h3>
                         <!-- /advantages__title -->
 
-                        <p>Для того, чтобы настроить перевод не требуется специалист. Всё это займёт у вас не более 10 минут.</p>
+                        <p>{{trans('phrases.for_setting_translate')}}</p>
                     </li>
                     <li>
 
@@ -184,16 +183,16 @@
                         <!-- /advantages__img -->
 
                         <!-- advantages__title -->
-                        <h3 class="advantages__title">Разные виды <br/> перевода</h3>
+                        <h3 class="advantages__title">{{trans('phrases.important_views')}} <br/> {{trans('phrases.translate_a')}}</h3>
                         <!-- /advantages__title -->
 
-                        <p>Вам предоставляется выбор между автоматическим переводом и профессиональным переводчиком.</p>
+                        <p>{{trans('phrases.you_have_change')}}</p>
                     </li>
                 </ul>
                 <!-- /advantages__items -->
 
                 <!-- btn -->
-                <a href="{{route('main.feature')}}"  class="btn btn_1"><span>Все возможности</span></a>
+                <a href="{{route('main.feature')}}"  class="btn btn_1"><span>{{trans('phrases.all_capabilities')}}</span></a>
                 <!-- /btn -->
 
                 <!-- next-step -->
@@ -207,12 +206,12 @@
             <div class="application">
 
                 <!-- site__title -->
-                <h2 class="site__title">Где можно применять?</h2>
+                <h2 class="site__title">{{trans('phrases.where_use')}}</h2>
                 <!-- site__title -->
 
                 <!-- application__introduction -->
                 <div class="application__introduction">
-                    <p>Существует множество отраслей, где есть необходимость применения данного сервиса.
+                    <p>{{trans('phrases.has_many_departments')}}
                 </div>
                 <!-- /application__introduction -->
 
@@ -228,7 +227,7 @@
                         </div>
                         <!-- /application-icon -->
 
-                        <span>Культура</span>
+                        <span>{{trans('phrases.culture')}}</span>
                     </li>
                     <li>
 
@@ -240,7 +239,7 @@
                         </div>
                         <!-- /application-icon -->
 
-                        <span>Бизнес</span>
+                        <span>{{trans('phrases.business')}}</span>
                     </li>
                     <li>
 
@@ -252,7 +251,7 @@
                         </div>
                         <!-- /application-icon -->
 
-                        <span>Технологии</span>
+                        <span>{{trans('phrases.technologies')}}</span>
                     </li>
                     <li>
 
@@ -264,7 +263,7 @@
                         </div>
                         <!-- /application-icon -->
 
-                        <span>Маркетинг</span>
+                        <span>{{trans('phrases.marketing')}}</span>
                     </li>
                     <li>
 
@@ -276,7 +275,7 @@
                         </div>
                         <!-- /application-icon -->
 
-                        <span>Наука</span>
+                        <span>{{trans('phrases.science')}}</span>
                     </li>
                 </ul>
                 <!-- /application-list -->
@@ -292,12 +291,12 @@
             <div class="work">
 
                 <!-- site__title -->
-                <h2 class="site__title">Как это работает?</h2>
+                <h2 class="site__title">{{trans('phrases.how_it_works')}}</h2>
                 <!-- site__title -->
 
                 <!-- application__introduction -->
                 <div class="work__introduction">
-                    <p>Мы максимально упростили процесс перевода сайта для того,чтобы максимально сэкономить ваше время.</p>
+                    <p>{{trans('phrases.we_max_easy')}}</p>
                 </div>
                 <!-- /application__introduction -->
 
@@ -314,7 +313,7 @@
                         <!-- work__img -->
 
                         <!-- work__title -->
-                        <h3 class="work__title">Добавьте код на свой сайт</h3>
+                        <h3 class="work__title">{{trans('phrases.insert_your_code')}}</h3>
                         <!-- work__title -->
 
                         <!-- work__number -->
@@ -323,7 +322,7 @@
 
                         <!-- work__content -->
                         <div class="work__content">
-                            <p>Система автоматически подготовить ваш сайт к переводу.</p>
+                            <p>{{trans('phrases.system_auto_prepare')}}</p>
                         </div>
                         <!-- /work__content -->
 
@@ -339,7 +338,7 @@
                         <!-- work__img -->
 
                         <!-- work__title -->
-                        <h3 class="work__title">Начните локализацию</h3>
+                        <h3 class="work__title">{{trans('phrases.start_localise')}}</h3>
                         <!-- work__title -->
 
                         <!-- work__number -->
@@ -348,7 +347,7 @@
 
                         <!-- work__content -->
                         <div class="work__content">
-                            <p>Теперь вы можете переводить контент вручную или автоматически</p>
+                            <p>{{trans('phrases.now_you_can_translate')}}</p>
                         </div>
                         <!-- /work__content -->
 
@@ -364,7 +363,7 @@
                         <!-- work__img -->
 
                         <!-- work__title -->
-                        <h3 class="work__title">Закажите перевод</h3>
+                        <h3 class="work__title">{{trans('phrases.order_translate')}}</h3>
                         <!-- work__title -->
 
                         <!-- work__number -->
@@ -373,7 +372,7 @@
 
                         <!-- work__content -->
                         <div class="work__content">
-                            <p>Вы можете заказать перевод сайта у профессиональных переводчиков нашей компании.</p>
+                            <p>{{trans('phrases.you_can_order_translate')}}</p>
                         </div>
                         <!-- /work__content -->
 
@@ -393,7 +392,7 @@
             <div class="people">
 
                 <!-- site__title -->
-                <h2 class="site__title">Люди ждут этот сервис...</h2>
+                <h2 class="site__title">{{trans('phrases.peoples_waiting')}}</h2>
                 <!-- site__title -->
 
                 <!-- people__slider -->
@@ -410,16 +409,16 @@
                             <!-- /people__img -->
 
                             <!-- people__info -->
-                            <span class="people__info"><strong>Наталья Иванова</strong>  /  28 лет</span>
+                            <span class="people__info"><strong>{{trans('phrases.natalya_ivanovna')}}</strong>  /  28 {{trans('phrases.years_old')}}</span>
                             <!-- /people__info -->
 
                             <!-- people__post -->
-                            <span class="people__post">Руководитель проекта «Сбербанк Онлайн»</span>
+                            <span class="people__post">{{trans('phrases.sberbank_director')}}</span>
                             <!-- /people__post -->
 
                             <!-- people__content -->
                             <div class="people__content">
-                                <p>Сервис, классный! У меня повился шанс сделать свой сайт самой, и то что получилось мне нравиться, конечно есть над чем работать и что тестировать, но самое главное он есть и готов мне приводить клиентов, а значит и деньги!</p>
+                                <p>{{trans('phrases.review_1')}}</p>
                             </div>
                             <!-- people__content -->
 
@@ -434,16 +433,16 @@
                             <!-- /people__img -->
 
                             <!-- people__info -->
-                            <span class="people__info"><strong>Иван Сергеев</strong>  /  59 лет</span>
+                            <span class="people__info"><strong>{{trans('phrases.ivan_sergeev')}}</strong>  /  59 {{trans('phrases.years_old')}}</span>
                             <!-- /people__info -->
 
                             <!-- people__post -->
-                            <span class="people__post">Директор холдинг «Петрушка»</span>
+                            <span class="people__post">{{trans('phrases.petruska_director')}}</span>
                             <!-- /people__post -->
 
                             <!-- people__content -->
                             <div class="people__content">
-                                <p>Сервис, классный! У меня повился шанс сделать свой сайт самой, и то что получилось мне нравиться, конечно есть над чем работать и что тестировать, но самое главное он есть и готов мне приводить клиентов, а значит и деньги!</p>
+                                <p>{{trans('phrases.review_2')}}</p>
                             </div>
                             <!-- people__content -->
 
@@ -458,16 +457,16 @@
                             <!-- /people__img -->
 
                             <!-- people__info -->
-                            <span class="people__info"><strong>Эмануил Торчовский </strong>  /  38 лет</span>
+                            <span class="people__info"><strong>{{trans('phrases.emanuil_torchock')}} </strong>  /  38 {{trans('phrases.years_old')}}</span>
                             <!-- /people__info -->
 
                             <!-- people__post -->
-                            <span class="people__post">Индивидуальные предприниматель </span>
+                            <span class="people__post">{{trans('phrases.individual_businessman')}} </span>
                             <!-- /people__post -->
 
                             <!-- people__content -->
                             <div class="people__content">
-                                <p>Сервис, классный! У меня повился шанс сделать свой сайт самой, и то что получилось мне нравиться, конечно есть над чем работать и что тестировать, но самое главное он есть и готов мне приводить клиентов, а значит и деньги!</p>
+                                <p>{{trans('phrases.review_2')}}</p>
                             </div>
                             <!-- people__content -->
 
@@ -504,12 +503,12 @@
                 <div class="discount__layout">
 
                     <!-- site__title -->
-                    <h2 class="site__title">Получите <span>скидку</span> на локализацию вашего сайта</h2>
+                    <h2 class="site__title">{{trans('phrases.get')}} <span>{{trans('phrases.discount')}}</span> {{trans('phrases.to_localise_your_site')}}</h2>
                     <!-- /site__title -->
 
                     <!-- discount__introduction -->
                     <div class="discount__introduction">
-                        <p>Заполните форму и когда проект запуститься, у вас будет возможность пользоваться услугами сервиса со скидкой.</p>
+                        <p>{{trans('phrases.write_form')}}</p>
                     </div>
                     <!-- /discount__introduction -->
 
@@ -518,22 +517,22 @@
                         {!! Form::open(['route' => 'main.get-demo']) !!}
 
                         <fieldset>
-                            <label for="discount__email">Ваша эл. почта *</label>
+                            <label for="discount__email">{{trans('phrases.your_email')}}</label>
                             <input type="email" id="discount__email"  placeholder="yourmail@gmai" required/>
                         </fieldset>
 
                         <fieldset>
-                            <label for="discount__name">Имя, фамилия</label>
+                            <label for="discount__name">{{trans('phrases.name_last_name')}}</label>
                             <input type="text" id="discount__name" name="name"/>
                         </fieldset>
 
                         <fieldset>
-                            <label for="discount__address">Адрес вашего сайта *</label>
+                            <label for="discount__address">{{trans('phrases.site_address')}}</label>
                             <input type="text" id="discount__address" placeholder="http://yoursite.ru" required name="site"/>
                         </fieldset>
 
                         <fieldset>
-                            <label for="discount__phone">Номер телефона</label>
+                            <label for="discount__phone">{{trans('phrases.phone_number')}}</label>
                             <input type="tel" id="discount__phone" name="phone"/>
                         </fieldset>
 
@@ -565,7 +564,7 @@
 
                         <!-- btn -->
                         <button class="btn btn_discount">
-                            <span>Получить скидку</span>
+                            <span>{{trans('phrases.get_discount')}}</span>
                         </button>
                         <!-- /btn -->
 
@@ -582,15 +581,15 @@
                     <img src="/assets/img/img-thanks.png" alt="img"/>
 
                     <!-- discount__thanks-title -->
-                    <h2 class="discount__thanks-title">Спасибо большое за вашу заявку</h2>
+                    <h2 class="discount__thanks-title">{{trans('phrases.big_thanks_for_request')}}</h2>
                     <!-- /discount__thanks-title -->
 
-                    <p>Мы добавили ваш сайт на просчёт текста. Мы можете посмотреть сколько там страниц, символов, слов и т.д.</p>
-                    <p>Мы также выслали вам письмо ссылкой на статистику по вашему сайту.</p>
+                    <p>{{trans('phrases.we_create_project')}}</p>
+                    <p>{{trans('phrases.we_send_letter')}}</p>
 
                     <!-- btn -->
                     <a href="{{route('scan.main')}}" class="btn btn_2">
-                        <span>Посмотреть статистику</span>
+                        <span>{{trans('phrases.show_stat')}}</span>
                     </a>
                     <!-- /btn -->
 
