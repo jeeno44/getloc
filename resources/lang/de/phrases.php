@@ -24,7 +24,7 @@ return [
   "prev" => "Prev",
   "next" => "nächste",
   "now_doing_tests" => "Jetzt wird getestet auf",
-  "count_sites" => "Standorte |",
+  "count_sites" => "site|sites|sites",
   "request_to_testing" => "Melden Sie sich zum Testen",
   "start_date" => "Auflegung",
   "march_2016" => "März 2016 Jahr",

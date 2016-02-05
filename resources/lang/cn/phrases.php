@@ -24,7 +24,7 @@ return [
   "prev" => "上一页",
   "next" => "下一个",
   "now_doing_tests" => "现在正在测试上",
-  "count_sites" => "网站 |",
+  "count_sites" => "网站|网站|网站",
   "request_to_testing" => "报名参加测试",
   "start_date" => "发射日期",
   "march_2016" => "2016 年 3 月年",

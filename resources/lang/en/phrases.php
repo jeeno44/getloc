@@ -24,7 +24,7 @@ return [
   "prev" => "Prev",
   "next" => "next",
   "now_doing_tests" => "Now being tested on",
-  "count_sites" => "sites |",
+  "count_sites" => "site|sites|sites",
   "request_to_testing" => "Sign up for testing",
   "start_date" => "Launch date",
   "march_2016" => "March 2016 year",

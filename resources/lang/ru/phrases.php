@@ -27,7 +27,7 @@ return [
     'prev'                      => 'prev',
     'next'                      => 'next',
     'now_doing_tests'           => 'Сейчас проводится тестирование на',
-    'count_sites'               => 'сайте|сайтах',
+    'count_sites'               => 'сайте|сайтах|сайтах',
     'request_to_testing'        => 'Записаться на тестирование',
     'start_date'                => 'Дата запуска',
     'march_2016'                => 'март 2016 года',
