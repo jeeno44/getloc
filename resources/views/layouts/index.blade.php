@@ -7,10 +7,21 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="address=no">
     <title>@yield('title')</title>
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <meta itemprop="name" content="getLoc - get Localization">
+    <meta itemprop="description" content="Идеальное решение для быстрого перевода и локализации веб-сайта на любые языки">
+    <meta itemprop="image" content="http://get-loc.ru/assets/img/share.png">
+
+    <meta property="og:site_name" content="getLoc - get Localization" />
+    <link rel="image_src" href="http://get-loc.ru/assets/img/share.png" />
+    <meta property="og:image" content="http://get-loc.ru/assets/img/share.png" />
+    <meta property="og:title" content="getLoc - get Localization" />
+    <meta property="og:description" content="Идеальное решение для быстрого перевода и локализации веб-сайта на любые языки" />
+    <meta property="og:url" content="http://get-loc.ru/" />
+    
     <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,300,500,700&subset=cyrillic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/assets/css/swiper.min.css" />
     <link rel="stylesheet" href="/assets/css/select.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css">
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/custom.css" />
 </head>
@@ -27,12 +38,21 @@
         <div class="site__footer-layout">
             <!-- footer__logo -->
             <div class="footer__logo">
-                <img src="/assets/img/logo.png" alt="GETLOC">
+                <img src="/assets/img/logo.png" width="90" height="26" alt="getLoc">
             </div>
+            <!-- footer-menu -->
+			 <div class="footer-menu">
+				<dl>
+					<dt><a href="{{route('main.feature')}}" class="active"><span>{{trans('phrases.capabilities')}}</span></a></dt>
+				</dl>
+				<dl>
+					<dt><a href="{{route('scan.main')}}"><span>{{trans('phrases.analytics')}}</span></a></dt>
+				</dl>
+			 </div>
+			 <!-- /footer-menu -->
             <div class="social">
-                <a href="#" class="social-vk"></a>
-                <a href="#" class="social-fb"></a>
-                <a href="#" class="social-ok"></a>
+                <a href="https://vk.com/getloc" class="social-vk" target="_blank"></a>
+                <a href="https://www.facebook.com/getlocru/" class="social-fb" target="_blank"></a>
             </div>
         </div>
         <!-- /site__footer-layout -->
@@ -61,7 +81,7 @@
 
                         <!-- popup__introduction -->
                         <div class="popup__introduction">
-                            <p>{{trans('phrases.get_discount_form_header')}}</p>
+                            <p>{!!trans('phrases.get_discount_form_header')!!}</p>
                         </div>
                         <!-- /popup__introduction -->
 
@@ -71,7 +91,7 @@
 
                                 <fieldset>
                                     <label for="popup__email">{{trans('phrases.your_email')}}</label>
-                                    <input type="email" id="popup__email"  placeholder="yourmail@gmai" required/>
+                                    <input type="email" id="popup__email"  placeholder="yourmail@site.com" required/>
                                 </fieldset>
 
                                 <fieldset>
@@ -81,7 +101,7 @@
 
                                 <fieldset>
                                     <label for="popup__address">{{trans('phrases.site_address')}}</label>
-                                    <input type="text" id="popup__address" placeholder="http://yoursite.ru" required/>
+                                    <input type="text" id="popup__address" placeholder="http://yoursite.com" required/>
                                 </fieldset>
 
                                 <fieldset>
@@ -176,8 +196,17 @@
 <script src="/assets/js/swiper.min.js"></script>
 <script src="/assets/js/jquery.nicescroll.min.js"></script>
 <script src="/assets/js/jquery.select.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script src="/assets/js/jquery.main.js"></script>
 <script src="/assets/js/app.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73373530-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </body>
 </html>

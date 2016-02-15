@@ -32,7 +32,7 @@ $(function(){
         }
     });
 
-    $('.logo').on({
+    $('h1.logo').on({
         'click':function(){
             if ($(window).scrollTop() < 1){
                 return false

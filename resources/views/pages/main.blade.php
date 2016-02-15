@@ -20,7 +20,7 @@
 
                     <!-- promo__text -->
                     <div class="promo__text">
-                        {{trans('phrases.good_solution')}} <br/> {{trans('phrases.for_quickly_translate')}} <br/> {{trans('phrases.to_many_languages')}}
+                        {!!trans('phrases.good_solution')!!}
                     </div>
                     <!-- /promo__text -->
 
@@ -140,7 +140,7 @@
 
                 <!-- advantages__introduction -->
                 <div class="advantages__introduction">
-                    {{trans('phrases.great_need_for')}}
+                    {!!trans('phrases.great_need_for')!!}
                 </div>
                 <!-- /advantages__introduction -->
 
@@ -155,10 +155,10 @@
                         <!-- /advantages__img -->
 
                         <!-- advantages__title -->
-                        <h3 class="advantages__title">{{trans('phrases.full_auto')}} <br/> {{trans('phrases.process_a')}}</h3>
+                        <h3 class="advantages__title">{!!trans('phrases.full_auto')!!}</h3>
                         <!-- /advantages__title -->
 
-                        <p>{{trans('phrases.process_build_tak')}}</p>
+                        <p>{!!trans('phrases.process_build_tak')!!}</p>
                     </li>
                     <li>
 
@@ -169,10 +169,10 @@
                         <!-- /advantages__img -->
 
                         <!-- advantages__title -->
-                        <h3 class="advantages__title">{{trans('phrases.easy_setting')}} <br/> {{trans('phrases.translate_a')}}</h3>
+                        <h3 class="advantages__title">{!!trans('phrases.easy_setting')!!}</h3>
                         <!-- /advantages__title -->
 
-                        <p>{{trans('phrases.for_setting_translate')}}</p>
+                        <p>{!!trans('phrases.for_setting_translate')!!}</p>
                     </li>
                     <li>
 
@@ -183,10 +183,10 @@
                         <!-- /advantages__img -->
 
                         <!-- advantages__title -->
-                        <h3 class="advantages__title">{{trans('phrases.important_views')}} <br/> {{trans('phrases.translate_a')}}</h3>
+                        <h3 class="advantages__title">{!!trans('phrases.important_views')!!}</h3>
                         <!-- /advantages__title -->
 
-                        <p>{{trans('phrases.you_have_change')}}</p>
+                        <p>{!!trans('phrases.you_have_change')!!}</p>
                     </li>
                 </ul>
                 <!-- /advantages__items -->
@@ -211,7 +211,7 @@
 
                 <!-- application__introduction -->
                 <div class="application__introduction">
-                    <p>{{trans('phrases.has_many_departments')}}
+                    <p>{!!trans('phrases.has_many_departments')!!}
                 </div>
                 <!-- /application__introduction -->
 
@@ -405,20 +405,20 @@
                         <div class="swiper-slide">
 
                             <!-- people__img -->
-                            <div class="people__img" style="background: url('/assets/pic/ava-001.jpg')"></div>
+                            <div class="people__img" style="background: url('/assets/pic/review_1.jpg')"></div>
                             <!-- /people__img -->
 
                             <!-- people__info -->
-                            <span class="people__info"><strong>{{trans('phrases.natalya_ivanovna')}}</strong>  /  28 {{trans('phrases.years_old')}}</span>
+                            <span class="people__info"><strong>{{trans('phrases.review_1_person')}}</strong> / 36 {{trans('phrases.years_old')}}</span>
                             <!-- /people__info -->
 
                             <!-- people__post -->
-                            <span class="people__post">{{trans('phrases.sberbank_director')}}</span>
+                            <span class="people__post">{{trans('phrases.review_1_post')}}</span>
                             <!-- /people__post -->
 
                             <!-- people__content -->
                             <div class="people__content">
-                                <p>{{trans('phrases.review_1')}}</p>
+                                <p>{!!trans('phrases.review_1_text')!!}</p>
                             </div>
                             <!-- people__content -->
 
@@ -429,44 +429,44 @@
                         <div class="swiper-slide">
 
                             <!-- people__img -->
-                            <div class="people__img" style="background: url('/assets/pic/ava-002.jpg')"></div>
+                            <div class="people__img" style="background: url('/assets/pic/review_2.jpg')"></div>
                             <!-- /people__img -->
 
                             <!-- people__info -->
-                            <span class="people__info"><strong>{{trans('phrases.ivan_sergeev')}}</strong>  /  59 {{trans('phrases.years_old')}}</span>
+                            <span class="people__info"><strong>{{trans('phrases.review_2_person')}}</strong></span>
                             <!-- /people__info -->
 
                             <!-- people__post -->
-                            <span class="people__post">{{trans('phrases.petruska_director')}}</span>
+                            <span class="people__post">{{trans('phrases.review_2_post')}}</span>
                             <!-- /people__post -->
 
                             <!-- people__content -->
                             <div class="people__content">
-                                <p>{{trans('phrases.review_2')}}</p>
+                                <p>{!!trans('phrases.review_2_text')!!}</p>
                             </div>
                             <!-- people__content -->
 
                         </div>
                         <!-- /swiper-slide -->
 
-                        <!-- swiper-slide -->
+						<!-- swiper-slide -->
                         <div class="swiper-slide">
 
                             <!-- people__img -->
-                            <div class="people__img" style="background: url('/assets/pic/ava-003.jpg')"></div>
+                            <div class="people__img" style="background: url('/assets/pic/review_3.jpg')"></div>
                             <!-- /people__img -->
 
                             <!-- people__info -->
-                            <span class="people__info"><strong>{{trans('phrases.emanuil_torchock')}} </strong>  /  38 {{trans('phrases.years_old')}}</span>
+                            <span class="people__info"><strong>{{trans('phrases.review_3_person')}}</strong> / 35 {{trans('phrases.years_old')}}</span>
                             <!-- /people__info -->
 
                             <!-- people__post -->
-                            <span class="people__post">{{trans('phrases.individual_businessman')}} </span>
+                            <span class="people__post">{{trans('phrases.review_3_post')}}</span>
                             <!-- /people__post -->
 
                             <!-- people__content -->
                             <div class="people__content">
-                                <p>{{trans('phrases.review_2')}}</p>
+                                <p>{!!trans('phrases.review_3_text')!!}</p>
                             </div>
                             <!-- people__content -->
 
@@ -503,12 +503,12 @@
                 <div class="discount__layout">
 
                     <!-- site__title -->
-                    <h2 class="site__title">{{trans('phrases.get')}} <span>{{trans('phrases.discount')}}</span> {{trans('phrases.to_localise_your_site')}}</h2>
+                    <h2 class="site__title">{!!trans('phrases.demo_request')!!}</h2>
                     <!-- /site__title -->
 
                     <!-- discount__introduction -->
                     <div class="discount__introduction">
-                        <p>{{trans('phrases.write_form')}}</p>
+                        <p>{!!trans('phrases.write_form')!!}</p>
                     </div>
                     <!-- /discount__introduction -->
 
@@ -518,7 +518,7 @@
 
                         <fieldset>
                             <label for="discount__email">{{trans('phrases.your_email')}}</label>
-                            <input type="email" id="discount__email"  placeholder="yourmail@gmai" required/>
+                            <input type="email" id="discount__email"  placeholder="yourmail@site.com" required/>
                         </fieldset>
 
                         <fieldset>
@@ -528,7 +528,7 @@
 
                         <fieldset>
                             <label for="discount__address">{{trans('phrases.site_address')}}</label>
-                            <input type="text" id="discount__address" placeholder="http://yoursite.ru" required name="site"/>
+                            <input type="text" id="discount__address" placeholder="http://yoursite.com" required name="site"/>
                         </fieldset>
 
                         <fieldset>

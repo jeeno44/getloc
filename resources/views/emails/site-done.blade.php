@@ -7,13 +7,13 @@
 
 <table cellpadding="0" cellspacing="0"   align="center"
        style="font-family: Arial, sans-serif;background:#3e4f59;border-collapse:collapse; width: 100%; height: 100%; vertical-align: middle; text-align: center; border: none;">
-    {{--
+   
     <tr>
         <td height="42px" style="height: 42px; text-align: center; vertical-align: middle; font-size: 11px; line-height: 18px;">
-            <a href="#" style="color: #6d8695; text-decoration: none;">Открыть письмо в браузере</a>
+             {{--<a href="#" style="color: #6d8695; text-decoration: none;">Открыть письмо в браузере</a>   --}}
         </td>
     </tr>
-    --}}
+ 
     <tr>
         <td>
             <table cellpadding="0" cellspacing="0"  align="center" width="660"
