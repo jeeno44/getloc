@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Translate extends Model
 {
-    protected $fillable = ['block_id', 'language_id', 'text'];
+    protected $fillable = ['block_id', 'language_id', 'text', 'type_translate_id'];
 
     public function language()
     {
@@ -16,5 +16,10 @@ class Translate extends Model
     public function block()
     {
         return $this->belongsTo('App\Block');
+    }
+
+    public function type()
+    {
+        return $this->belongsTo('App\TypeTranslate', 'type_translate_id');
     }
 }
