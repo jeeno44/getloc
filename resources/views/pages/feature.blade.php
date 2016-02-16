@@ -14,7 +14,7 @@
                 <!-- /site__title -->
                 <!-- platform__introduction -->
                 <div class="platform__introduction">
-                    <p>{{trans('phrases.great_need_for')}}</p>
+                    <p>{!!trans('phrases.great_need_for')!!}</p>
                 </div>
                 <!-- /platform__introduction -->
                 <!-- platform__list -->

@@ -33,32 +33,19 @@
     <footer class="site__footer">
         <div class="site__footer-layout">
             <div class="footer__logo">
-                <img src="/assets/img/logo.png" alt="GETLOC">
+                <img src="/assets/img/logo.png" width="90" height="26" alt="getLoc">
             </div>
             <div class="footer-menu">
                 <dl>
-                    <dt>Как это работает?</dt>
-                    <dd>
-                        <a href="#"><span>Наша платформа</span></a>
-                        <a href="#"><span>Управление переводом</span></a>
-                        <a href="#"><span>Заказ перевода</span></a>
-                        <a href="#"><span>Интеграция</span></a>
-                        <a href="#"><span>Планы развити</span></a>
-                    </dd>
+                    <dt><a href="{{route('main.feature')}}" class="active"><span>{{trans('phrases.capabilities')}}</span></a></dt>
                 </dl>
                 <dl>
-                    <dt>О нас</dt>
-                    <dd>
-                        <a href="#"><span>Команда проекта</span></a>
-                        <a href="#"><span>Наши клиенты</span></a>
-                        <a href="#"><span>Новости</span></a>
-                    </dd>
+                    <dt><a href="{{route('scan.main')}}"><span>{{trans('phrases.analytics')}}</span></a></dt>
                 </dl>
             </div>
             <div class="social">
-                <a href="#" class="social-vk"></a>
-                <a href="#" class="social-fb"></a>
-                <a href="#" class="social-ok"></a>
+                <a href="https://vk.com/getloc" class="social-vk" target="_blank"></a>
+                <a href="https://www.facebook.com/getlocru/" class="social-fb" target="_blank"></a>
             </div>
         </div>
     </footer>
