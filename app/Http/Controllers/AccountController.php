@@ -24,8 +24,21 @@ use App\Http\Requests,
 class AccountController extends Controller
 {
     
-    private $userID = 1;
-    private $siteID = 4;
+    /**
+     * @var  object
+     */
+    
+    private $user = null;
+    
+    /**
+     * Узнаем, что за юзер
+     * 
+     * @param  void
+     * @return object class AccountController
+     * @access public
+     */
+    
+    public function __construct() {$this->user = User::first();}
     
     /**
      * Обзор проекта.
@@ -42,8 +55,8 @@ class AccountController extends Controller
     public function projectOverview()
     {
         $stats = array(
-            'ccBlocks'   => Block::where('site_id', $this->siteID)->count(),
-            'ccPages'    => Page::where('site_id', $this->siteID)->count()
+            'ccBlocks'   => Block::where('site_id', 4)->count(),
+            'ccPages'    => Page::where('site_id', 4)->count()
         );
         
         return view('account.overview', compact('sites', 'stats'));
