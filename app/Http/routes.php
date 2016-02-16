@@ -22,6 +22,9 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::get('/feature', ['as' => 'main.feature', 'uses' => 'HomeController@feature']);
         Route::any('/call-me', ['as' => 'main.call-me', 'uses' => 'HomeController@callMe']);
         Route::any('/get-demo', ['as' => 'main.get-demo', 'uses' => 'HomeController@getDemo']);
+        Route::get('/account', ['as' => 'main.account', 'uses' => 'AccountController@projectOverview']);
+        Route::get('/account/overview', ['as' => 'main.account.overview', 'uses' => 'AccountController@projectOverview']);
+        Route::get('/account/languages', ['as' => 'main.account.languages', 'uses' => 'AccountController@projectLanguages']);
         Route::auth();
     });
 

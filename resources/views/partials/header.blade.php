@@ -4,24 +4,48 @@
             <h1 class="logo anchor" data-href="#up">
                 <img src="/assets/img/logo.png" width="90" height="26" alt="getLoc">
             </h1>
-            <nav class="header__menu">
-                <a href="{{route('main.feature')}}">{{trans('phrases.capabilities')}}</a>
-                <a href="{{route('scan.main')}}">{{trans('phrases.analytics')}}</a>
-            </nav>
-            <a class="btn btn_header anchor" data-href="#discount">{{trans('phrases.get_demo')}}</a>
+            <div class="site__header-inner">
+                <nav class="header__menu">
+                    <a href="#">{{trans('phrases.capabilities')}}</a>
+                    <a href="#">Цены</a>
+                    <a href="#">О проекте</a>
+                </nav>
+                <a class="btn btn_header btn_header-login popup__open" data-popup="login">{{trans('phrases.login')}}</a>
+                <div class="language">
+                    <button class="language__btn">RU</button>
+                    <ul class="language__list">
+                        <li><a href="#">Русский</a></li>
+                        <li><a class="active" href="#">English</a></li>
+                        <li><a href="#">Deutsch</a></li>
+                        <li><a href="#">Español</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </header>
 @elseif (!empty($route) && $route == 'main.feature')
-    <header class="site__header header_platform">
+    <header class="site__header">
         <div class="site__header-layout">
-            <a href="{{route('main')}}" class="logo">
+            <h1 class="logo anchor" data-href="#up">
                 <img src="/assets/img/logo.png" width="90" height="26" alt="getLoc">
-            </a>
-            <nav class="header__menu">
-                <a href="{{route('main.feature')}}" class="active">{{trans('phrases.capabilities')}}</a>
-                <a href="{{route('scan.main')}}">{{trans('phrases.analytics')}}</a>
-            </nav>
-            <a class="btn btn_header popup__open" data-popup="order">{{trans('phrases.get_demo')}}</a>
+            </h1>
+            <div class="site__header-inner">
+                <nav class="header__menu">
+                    <a class="active" href="#">{{trans('phrases.capabilities')}}</a>
+                    <a href="#">Цены</a>
+                    <a href="#">О проекте</a>
+                </nav>
+                <a class="btn btn_header btn_header-login popup__open" data-popup="login">{{trans('phrases.login')}}</a>
+                <div class="language">
+                    <button class="language__btn">RU</button>
+                    <ul class="language__list">
+                        <li><a href="#">Русский</a></li>
+                        <li><a class="active" href="#">English</a></li>
+                        <li><a href="#">Deutsch</a></li>
+                        <li><a href="#">Español</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </header>
 @else
@@ -34,7 +58,7 @@
                 <a href="{{route('main.feature')}}">{{trans('phrases.capabilities')}}</a>
                 <a href="{{route('scan.main')}}" class="active">{{trans('phrases.analytics')}}</a>
             </nav>
-            <a class="btn btn_header popup__open" data-popup="order">{{trans('phrases.get_demo')}}</a>
+            <a class="btn btn_header btn_header-login popup__open" data-popup="login">{{trans('phrases.login')}}</a>
         </div>
     </header>
 @endif

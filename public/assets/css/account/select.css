@@ -54,9 +54,6 @@
     width: 22px;
     height: 22px;
 }
-.ares-select_selected .ares-select__item {
-    color: #333;
-}
 .ares-select__item:after {
     z-index: 2;
     position: absolute;
@@ -75,8 +72,8 @@
     transform: rotate(-45deg);
 }
 .ares-select.active .ares-select__item:after {
-    border-left: 2px solid #18baea;
-    border-bottom: 2px solid #18baea;
+    right: 8px;
+    margin-top: -2px;
     -ms-transform: rotate(-225deg);
     -webkit-transform: rotate(-225deg);
     transform: rotate(-225deg);
@@ -99,24 +96,37 @@
     z-index: 10;
     overflow: hidden;
     color: #333;
-    font-size: 18px;
+    font: 18px 'Fira Sans', sans-serif;
     line-height: 18px;
     margin: -1px 0 0 -3px;
     text-align: center;
     border-radius: 3px;
     background: #fff;
+    box-shadow: 0 2px 30px 0 rgba( 1, 1, 1, .2);
 }
 .ares-select__popup ul {
+    margin-top: 6px;
     z-index: 1;
-
 }
 .ares-select__popup li{
     position: relative;
     white-space: nowrap;
     overflow: hidden;
     cursor: pointer;
-    padding: 11px 0;
-    font-size: 15px;
+    font-size: 14px;
+    text-align: left;
+    transition: background-color .3s ease, color .3s ease;
+    -webkit-transition: background-color .3s ease, color .3s ease;
+}
+.site-list .ares-select__popup li a,
+.site-list .ares-select__popup li span{
+    display: block;
+    height: 32px;
+    padding-top: 8px;
+    padding-left: 20px;
+    color: #333;
+    transition: background-color .3s ease, color .3s ease;
+    -webkit-transition: background-color .3s ease, color .3s ease;
 }
 .ares-select__popup li img {
     position: absolute;
@@ -125,8 +135,26 @@
     width: 22px;
     height: 22px;
 }
+.ares-select__popup li:hover,
 .ares-select__popup li.active {
-    background: #e4e6e8;
+    background-color: #ebf8fd;
+    color: #18baea;
+}
+.ares-select__popup li:hover a,
+.ares-select__popup li:hover span,
+.ares-select__popup li.active a,
+.ares-select__popup li.active span{
+    color: #18baea;
+}
+.ares-select__popup li:last-child{
+    margin-top: 10px;
+    border-top: 1px solid #e6e6e6;
+    font-weight: 500;
+}
+.ares-select__popup li:last-child a,
+.ares-select__popup li:last-child span{
+    height: 47px;
+    padding: 15px 20px 15px;
 }
 .ares-select__popup .iScrollVerticalScrollbar {
     position: absolute;
@@ -140,7 +168,5 @@
 }
 .ares-select__popup .iScrollIndicator {
     background: #aaa;
-}
-.ares-select__popup_search .ares-select__item {
 }
 /* ---------------- /ares-select ------------------ */

@@ -28,90 +28,143 @@
 <body>
 <!-- site -->
 <div class="site" id="up">
-
     @include('partials.header')
-
     @yield('content')
-    <!-- /site__footer -->
     <footer class="site__footer">
-        <!-- /site__footer-layout -->
         <div class="site__footer-layout">
-            <!-- footer__logo -->
             <div class="footer__logo">
-                <img src="/assets/img/logo.png" width="90" height="26" alt="getLoc">
+                <img src="/assets/img/logo.png" alt="GETLOC">
             </div>
-            <!-- footer-menu -->
-			 <div class="footer-menu">
-				<dl>
-					<dt><a href="{{route('main.feature')}}" class="active"><span>{{trans('phrases.capabilities')}}</span></a></dt>
-				</dl>
-				<dl>
-					<dt><a href="{{route('scan.main')}}"><span>{{trans('phrases.analytics')}}</span></a></dt>
-				</dl>
-			 </div>
-			 <!-- /footer-menu -->
+            <div class="footer-menu">
+                <dl>
+                    <dt>Как это работает?</dt>
+                    <dd>
+                        <a href="#"><span>Наша платформа</span></a>
+                        <a href="#"><span>Управление переводом</span></a>
+                        <a href="#"><span>Заказ перевода</span></a>
+                        <a href="#"><span>Интеграция</span></a>
+                        <a href="#"><span>Планы развити</span></a>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>О нас</dt>
+                    <dd>
+                        <a href="#"><span>Команда проекта</span></a>
+                        <a href="#"><span>Наши клиенты</span></a>
+                        <a href="#"><span>Новости</span></a>
+                    </dd>
+                </dl>
+            </div>
             <div class="social">
-                <a href="https://vk.com/getloc" class="social-vk" target="_blank"></a>
-                <a href="https://www.facebook.com/getlocru/" class="social-fb" target="_blank"></a>
+                <a href="#" class="social-vk"></a>
+                <a href="#" class="social-fb"></a>
+                <a href="#" class="social-ok"></a>
             </div>
         </div>
-        <!-- /site__footer-layout -->
     </footer>
-    <!-- /site__footer -->
 </div>
-<!-- /site -->
-
-<!-- popup -->
 <div class="popup">
-    <!-- popup__wrap -->
     <div class="popup__wrap">
-        <!-- popup__content -->
+        <div class="popup__content popup__content_check popup__login">
+            <button class="popup__close popup__close_small"><span></span></button>
+            <div class="popup__head">
+                <a href="#" class="logo">
+                    <img src="/assets/img/logo.png" width="90" height="26" alt="GETLOC">
+                </a>
+            </div>
+            <div class="popup__inner">
+                <form action="#" class="site__form" novalidate>
+                    <span class="site__form-title">Вход</span>
+                    <fieldset>
+                        <label for="email">Ваша эл. почта *</label>
+                        <input type="email" id="email" required>
+                    </fieldset>
+                    <fieldset>
+                        <label for="password">Пароль</label>
+                        <input type="password" id="password" required>
+                    </fieldset>
+                    <button type="submit" class="btn btn_enroll">Войти</button>
+                    <a href="#" class="site__form-forgot">Забыли пароль?</a>
+                </form>
+                <div class="popup__social">
+                    Вы можете зайти через соцсети
+                    <div class="social-2">
+                        <a href="#" class="social-2__fb">facebook</a>
+                        <a href="#" class="social-2__tw">twitter</a>
+                        <a href="#" class="social-2__google">google</a>
+                    </div>
+                </div>
+            </div>
+            <div class="popup__footer">
+                Нет учётной записи?
+                <a href="#" class="popup__open" data-popup="registry">Зарегистрироваться</a>
+            </div>
+        </div>
+        <div class="popup__content popup__content_check popup__registry">
+            <button class="popup__close popup__close_small"><span></span></button>
+            <div class="popup__head">
+                <a href="#" class="logo">
+                    <img src="/assets/img/logo.png" width="90" height="26" alt="GETLOC">
+                </a>
+            </div>
+            <div class="popup__inner">
+                <form action="#" class="site__form" novalidate>
+                    <span class="site__form-title">Регистрация</span>
+                    <fieldset>
+                        <label for="name">Ваше имя</label>
+                        <input type="text" id="name" required>
+                    </fieldset>
+                    <fieldset>
+                        <label for="email2">Ваша эл. почта *</label>
+                        <input type="email" id="email2" required>
+                    </fieldset>
+                    <fieldset>
+                        <label for="password2">Пароль</label>
+                        <input type="password" id="password2" required>
+                    </fieldset>
+                    <button type="submit" class="btn btn_enroll">Попробовать бесплатно</button>
+                </form>
+                <div class="popup__social">
+                    Вы можете зарегистрироваться через соцсети
+                    <div class="social-2">
+                        <a href="#" class="social-2__fb">facebook</a>
+                        <a href="#" class="social-2__tw">twitter</a>
+                        <a href="#" class="social-2__google">google</a>
+                    </div>
+                </div>
+            </div>
+            <div class="popup__footer">
+                Уже регистрированы?
+                <a href="#" class="popup__open" data-popup="login">Войти</a>
+            </div>
+        </div>
         <div class="popup__content popup__order">
-            <!-- order-popup -->
             <div class="order-popup">
-                <!-- order-popup__content -->
                 <div class="order-popup__content">
-
-                    <!-- discount__layout -->
                     <div class="discount__layout">
-
-                        <!-- site__title -->
                         <h2 class="site__title">{{trans('phrases.add_site')}}</h2>
-                        <!-- /site__title -->
-
-                        <!-- popup__introduction -->
                         <div class="popup__introduction">
                             <p>{!!trans('phrases.get_discount_form_header')!!}</p>
                         </div>
-                        <!-- /popup__introduction -->
-
-                        <!-- discount__form -->
                         <div class="discount__form popup_form">
                             {!! Form::open(['route' => 'main.get-demo']) !!}
-
                                 <fieldset>
                                     <label for="popup__email">{{trans('phrases.your_email')}}</label>
                                     <input type="email" id="popup__email"  placeholder="yourmail@site.com" required/>
                                 </fieldset>
-
                                 <fieldset>
                                     <label for="popup__name">{{trans('phrases.name_last_name')}}</label>
                                     <input type="text" id="popup__name"/>
                                 </fieldset>
-
                                 <fieldset>
                                     <label for="popup__address">{{trans('phrases.site_address')}}</label>
                                     <input type="text" id="popup__address" placeholder="http://yoursite.com" required/>
                                 </fieldset>
-
                                 <fieldset>
                                     <label for="popup__phone">{{trans('phrases.phone_number')}}</label>
                                     <input type="tel" id="popup__phone"/>
                                 </fieldset>
-
                                 <fieldset class="discount__language">
-
-                                    <!-- options__selects-wrap -->
                                     <div class="discount__selects-language" data-language='{
                                         "languages": [
                                             {
@@ -132,72 +185,42 @@
                                         ]
                                         }'>
                                     </div>
-                                    <!-- /discount__selects-language -->
                                 </fieldset>
-                                <!-- btn -->
                                 <button class="btn btn_discount">
                                     <span>{{trans('phrases.add_your_site')}}</span>
                                 </button>
-                                <!-- /btn -->
                             {!! Form::close() !!}
                         </div>
-                        <!-- discount__form -->
                     </div>
-                    <!-- /discount__layout -->
-
-                    <!-- popup__close -->
                     <button class="popup__close"><span></span></button>
-                    <!-- /popup__close -->
                 </div>
-                <!-- /order-popup_content -->
             </div>
-            <!-- /order-popup -->
         </div>
-        <!-- popup__content -->
-        <!-- popup__content -->
         <div class="popup__content popup__thanks">
-            <!-- thanks-popup -->
             <div class="thanks-popup">
-                <!-- thanks-popup__content -->
                 <div class="thanks-popup__content">
-
-                    <!-- discount__thanks -->
                     <div class="discount__thanks">
-
                         <img src="/assets/img/img-thanks.png" alt="img"/>
-
-                        <!-- discount__thanks-title -->
                         <h2 class="discount__thanks-title">{{trans('phrases.big_thanks_for_request')}}</h2>
-                        <!-- /discount__thanks-title -->
-
                         <p>{{trans('phrases.we_create_project')}}</p>
                         <p>{{trans('phrases.we_send_letter')}}</p>
-
                         <!--
                         <a href="{{route('scan.main')}}" class="btn btn_2">
                             <span>{{trans('phrases.show_stat')}}</span>
                         </a>
                          -->
-
                     </div>
-                    <!-- /discount__thanks -->
-
                 </div>
-                <!-- /thanks-popup__content -->
             </div>
-            <!-- /thanks__content -->
         </div>
-        <!-- /popup__content -->
     </div>
-    <!-- /popup__wrap -->
 </div>
-<!-- /popup -->
 <script src="/assets/js/jquery-2.1.3.min.js"></script>
 <script src="/assets/js/swiper.min.js"></script>
 <script src="/assets/js/jquery.nicescroll.min.js"></script>
 <script src="/assets/js/jquery.select.js"></script>
 <script src="/assets/js/jquery.main.js"></script>
-<script src="/assets/js/app.js"></script>
+
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

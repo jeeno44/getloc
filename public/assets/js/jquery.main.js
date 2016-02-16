@@ -1,10 +1,18 @@
 $(function(){
 
     $.each( $('.discount__form'), function(){
-        new FormValidation ( $(this) )
+        new FormValidation ( $(this) );
+    } );
+
+    $.each( $('.site__form'), function(){
+        new FormValidation ( $(this) );
     } );
 
     $.each( $('.enroll__form'), function(){
+        new FormValidation ( $(this) )
+    } );
+
+    $.each( $('.popup__form'), function(){
         new FormValidation ( $(this) )
     } );
 
@@ -13,10 +21,10 @@ $(function(){
     });
 
     $('.popup').each(function(){
-        popup = new Popup($(this));
+        new Popup($(this));
     });
 
-    $('.site').delegate( "input", "focus blur", function() {
+    $('body').delegate( "input", "focus blur", function() {
         var elem = $( this );
         setTimeout(function() {
             elem.parent().toggleClass( "focused", elem.is( ":focus" ) );
@@ -32,7 +40,7 @@ $(function(){
         }
     });
 
-    $('h1.logo').on({
+    $('.logo').on({
         'click':function(){
             if ($(window).scrollTop() < 1){
                 return false
@@ -40,12 +48,12 @@ $(function(){
         }
     });
 
-    start = $(".site__header").offset().top + $(".site__header").outerHeight();
+    var start = $(".site__header").offset().top + $(".site__header").outerHeight();
     navigation();
 
     $(window).scroll(function() {
         navigation();
-    })
+    });
 
     function navigation(){
         scrolling = $(window).scrollTop();
@@ -76,8 +84,8 @@ $(function(){
     });
 
 } );
-var FormValidation = function (obj) {
 
+var FormValidation = function (obj) {
     var _obj = obj,
         _action = _obj.find( 'form' ).attr( 'action' ),
         _inputs = _obj.find($("[required]")),
@@ -152,43 +160,6 @@ var FormValidation = function (obj) {
                             return false;
                         }
 
-                        if (_obj.hasClass('popup_form')) {
-
-                            var selectsVal = [];
-
-                            $.each( $('.discount__selects-language select'), function(i){
-                                selectsVal[i] = this.value;
-                            } );
-
-                            $.ajax({
-                                url: _action,
-                                dataType: 'html',
-                                timeout: 20000,
-                                type: "GET",
-                                data: {
-                                    discount: 'true',
-                                    name: $('#popup__name').val(),
-                                    email: $('#popup__email').val(),
-                                    phone: $('#popup__phone').val(),
-                                    site: $('#popup__address').val(),
-                                    language: selectsVal
-                                },
-                                success: function (data) {
-                                    popup.core.show('thanks');
-                                    setTimeout(function () {
-                                        popup.core.hide('thanks')
-                                        window.location.href = data
-                                    }, 2000);
-                                },
-                                error: function (XMLHttpRequest) {
-                                    if (XMLHttpRequest.statusText != "abort") {
-                                        console.log(XMLHttpRequest.statusText);
-                                    }
-                                }
-                            });
-                            return false;
-                        }
-
                         if (_obj.hasClass('discount__form')) {
 
                             var selectsVal = [];
@@ -198,7 +169,7 @@ var FormValidation = function (obj) {
                             } );
 
                             $.ajax({
-                                url: _action,
+                                url: 'php/form.php',
                                 dataType: 'html',
                                 timeout: 20000,
                                 type: "GET",
@@ -207,7 +178,7 @@ var FormValidation = function (obj) {
                                     name: $('#discount__name').val(),
                                     email: $('#discount__email').val(),
                                     phone: $('#discount__phone').val(),
-                                    site: $('#discount__address').val(),
+                                    address: $('#discount__address').val(),
                                     language: selectsVal
                                 },
                                 success: function () {
@@ -216,14 +187,53 @@ var FormValidation = function (obj) {
                                 },
                                 error: function (XMLHttpRequest) {
                                     if (XMLHttpRequest.statusText != "abort") {
-                                        console.log(XMLHttpRequest.statusText);
+                                        alert(XMLHttpRequest.statusText);
                                     }
                                 }
                             });
                             return false;
                         }
+
+                        if (_obj.hasClass('popup__form')) {
+
+                            var selectsVal = [];
+
+                            $.each( $('.discount__selects-language select'), function(i){
+                                selectsVal[i] = this.value;
+                            } );
+
+                            $.ajax({
+                                url: 'php/form.php',
+                                dataType: 'html',
+                                timeout: 20000,
+                                type: "GET",
+                                data: {
+                                    discount: 'true',
+                                    name: $('#popup__name').val(),
+                                    email: $('#popup__email').val(),
+                                    phone: $('#popup__phone').val(),
+                                    address: $('#popup__address').val(),
+                                    language: selectsVal
+                                },
+                                success: function (data) {
+                                    popup.core.show('thanks');
+                                    setTimeout(function () {
+                                        popup.core.hide('thanks')
+                                    }, 3000);
+                                },
+                                error: function (XMLHttpRequest) {
+                                    if (XMLHttpRequest.statusText != "abort") {
+                                        alert(XMLHttpRequest.statusText);
+                                    }
+                                }
+                            });
+                            return false;
+                        }
+
+                    } else {
+                        return false;
+
                     }
-                    return false;
                 }
             });
             _inputs.on({
@@ -521,7 +531,6 @@ Popup.prototype = {
         var self = this;
         self.core = self.core();
         self.core.build();
-        console.log('22')
     },
     core: function (){
         var self = this;
@@ -530,6 +539,20 @@ Popup.prototype = {
                 self.core.controls();
             },
             controls: function(){
+
+                $('.popup__content').on( 'click','.popup__open', function(){
+                    var curItem = $(this);
+                    self.contents.css( 'display', '' );
+                    self.core.setPopupContent( curItem.attr( 'data-popup' ) );
+                    return false;
+
+                    //self.core.show( curItem.attr( 'data-popup' ) );
+                    //self.btnClose = self.popup.find(".popup__close");
+                    //$('.popup_opened').find('#order-popup__type').val( curItem.attr( 'data-type' ) );
+                    //return false;
+
+                });
+
                 $('body').on( 'click','.popup__open', function(){
                     var curItem = $(this),
                         parentDropdown = curItem.parents(".dropdown"),
@@ -537,7 +560,7 @@ Popup.prototype = {
                     parentDropdown.removeClass("open");
                     linkDropdown.attr("aria-expanded", "false");
                     self.core.show( curItem.attr( 'data-popup' ) );
-                    popup.btnClose = self.popup.find(".popup__close");
+                    self.btnClose = self.popup.find(".popup__close");
                     $('.popup_opened').find('#order-popup__type').val( curItem.attr( 'data-type' ) );
                     return false;
                 } );
@@ -590,6 +613,11 @@ Popup.prototype = {
                 return scrollbarWidth;
             },
             show: function( className ){
+
+                if ( self.popup.hasClass( 'popup_opened' ) ){
+                    self.core.hide();
+                }
+
                 if (self.contents.height()+120 > self.window.height()){
                     self.popup.css ({
                         'overflow-y': "scroll"

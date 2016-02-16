@@ -31,23 +31,3 @@
     border-bottom: 2px solid #e3e6e8;
     font-weight: 700;
 }
-.site__footer {
-    z-index: 1;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: auto;
-    height: 166px;
-    padding-top: 61px;
-    background-color: #3e4f59;
-}
-.site__footer-layout {
-    position: relative;
-    width: 992px;
-    height: auto;
-    padding: 0 20px;
-    margin: 0 auto;
-}
-.site:after {
-    height: 166px;
-}
