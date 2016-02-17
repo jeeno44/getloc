@@ -25,7 +25,6 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::get('/account', ['as' => 'main.account', 'uses' => 'AccountController@projectOverview']);
         Route::get('/account/overview', ['as' => 'main.account.overview', 'uses' => 'AccountController@projectOverview']);
         Route::get('/account/languages', ['as' => 'main.account.languages', 'uses' => 'AccountController@projectLanguages']);
-        Route::auth();
     });
 
 });
@@ -36,3 +35,5 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
 Route::group(['domain' => 'api.'.$domain], function () {
     Route::any('/add-site', ['as' => 'api.add-site', 'uses' => 'ApiController@createSite']);
 });
+
+require_once 'andy_routes.php';
