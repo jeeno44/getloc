@@ -83,6 +83,7 @@ class SocialController extends Controller
         ]);
         $account->save();
         \Auth::login($user);
+        \Session::remove('user');
         return redirect()->to('/');
     }
 
