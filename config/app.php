@@ -167,6 +167,7 @@ return [
         Yangqi\Htmldom\HtmldomServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         //Barryvdh\Debugbar\ServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
     ],
 
     /*
@@ -215,6 +216,7 @@ return [
         'Htmldom'   => Yangqi\Htmldom\Htmldom::class,
         'Form'      => Collective\Html\FormFacade::class,
         'Html'      => Collective\Html\HtmlFacade::class,
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
     ],
 

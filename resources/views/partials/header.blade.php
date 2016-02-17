@@ -9,8 +9,9 @@
                     <a href="{{route('main.feature')}}">{{trans('phrases.capabilities')}}</a>
                     <a href="{{route('scan.main')}}">{{trans('phrases.analytics')}}</a>
                 </nav>
-                <a class="btn btn_header btn_header-login popup__open" data-popup="login">{{trans('phrases.login')}}</a>
+                @include('partials.login')
             </div>
+
         </div>
     </header>
 @elseif (!empty($route) && $route == 'main.feature')
@@ -24,7 +25,7 @@
                     <a href="{{route('main.feature')}}" class="active">{{trans('phrases.capabilities')}}</a>
                     <a href="{{route('scan.main')}}">{{trans('phrases.analytics')}}</a>
                 </nav>
-                <a class="btn btn_header btn_header-login popup__open" data-popup="login">{{trans('phrases.login')}}</a>
+                @include('partials.login')
             </div>
         </div>
     </header>
@@ -39,7 +40,7 @@
                     <a href="{{route('main.feature')}}">{{trans('phrases.capabilities')}}</a>
                     <a href="{{route('scan.main')}}" class="active">{{trans('phrases.analytics')}}</a>
                 </nav>
-                <a class="btn btn_header btn_header-login popup__open" data-popup="login">{{trans('phrases.login')}}</a>
+                @include('partials.login')
             </div>
         </div>
     </header>

@@ -35,4 +35,22 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'google' => [
+        'client_id'     => '547547974282-jtk4pb11frq0842s498bf3kajbjlbda2.apps.googleusercontent.com',
+        'client_secret' => 'twZZr7DczoVouzCvvldh-oag',
+        'redirect'      => env('APP_URL', 'http://get-loc.ru') . '/google/callback',
+    ],
+
+    'twitter' => [
+        'client_id'     => 'E5Ahcw784UGvB2sPp1Q11OOlh',
+        'client_secret' => 'Du1MlV4sPSpmaEFWAVinx7kVlMwKMK6cqgdZyELcQTsuTxeT9V',
+        'redirect'      => env('APP_URL', 'http://get-loc.ru') . '/twitter/callback',
+    ],
+
+    'facebook' => [
+        'client_id'     => '443779859134217',
+        'client_secret' => 'f7e34a6375f0f5087ae0bc15fece5873',
+        'redirect'      => env('APP_URL', 'http://get-loc.ru') . '/facebook/callback',
+    ],
+
 ];
