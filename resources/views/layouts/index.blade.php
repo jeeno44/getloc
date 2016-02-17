@@ -139,19 +139,19 @@
                             {!! Form::open(['route' => 'main.get-demo', 'novalidate']) !!}
                                 <fieldset>
                                     <label for="popup__email">{{trans('phrases.your_email')}}</label>
-                                    <input type="email" id="popup__email"  placeholder="yourmail@site.com" required/>
+                                    <input type="email" id="discount__email"  placeholder="yourmail@site.com" required/>
                                 </fieldset>
                                 <fieldset>
                                     <label for="popup__name">{{trans('phrases.name_last_name')}}</label>
-                                    <input type="text" id="popup__name"/>
+                                    <input type="text" id="discount__name"/>
                                 </fieldset>
                                 <fieldset>
                                     <label for="popup__address">{{trans('phrases.site_address')}}</label>
-                                    <input type="text" id="popup__address" placeholder="http://yoursite.com" required/>
+                                    <input type="text" id="discount__address" placeholder="http://yoursite.com" required/>
                                 </fieldset>
                                 <fieldset>
                                     <label for="popup__phone">{{trans('phrases.phone_number')}}</label>
-                                    <input type="tel" id="popup__phone"/>
+                                    <input type="tel" id="discount__phone"/>
                                 </fieldset>
                                 <fieldset class="discount__language">
                                     <div class="discount__selects-language" data-language='{

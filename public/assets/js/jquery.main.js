@@ -161,7 +161,6 @@ var FormValidation = function (obj) {
                         }
 
                         if (_obj.hasClass('discount__form')) {
-
                             var selectsVal = [];
 
                             $.each( $('.discount__selects-language select'), function(i){
@@ -178,7 +177,7 @@ var FormValidation = function (obj) {
                                     name: $('#discount__name').val(),
                                     email: $('#discount__email').val(),
                                     phone: $('#discount__phone').val(),
-                                    address: $('#discount__address').val(),
+                                    site: $('#discount__address').val(),
                                     language: selectsVal
                                 },
                                 success: function () {
@@ -212,7 +211,7 @@ var FormValidation = function (obj) {
                                     name: $('#popup__name').val(),
                                     email: $('#popup__email').val(),
                                     phone: $('#popup__phone').val(),
-                                    address: $('#popup__address').val(),
+                                    site: $('#popup__address').val(),
                                     language: selectsVal
                                 },
                                 success: function (data) {
