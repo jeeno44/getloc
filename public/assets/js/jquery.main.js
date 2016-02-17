@@ -169,7 +169,7 @@ var FormValidation = function (obj) {
                             } );
 
                             $.ajax({
-                                url: 'php/form.php',
+                                url: _action,
                                 dataType: 'html',
                                 timeout: 20000,
                                 type: "GET",
@@ -203,7 +203,7 @@ var FormValidation = function (obj) {
                             } );
 
                             $.ajax({
-                                url: 'php/form.php',
+                                url: _action,
                                 dataType: 'html',
                                 timeout: 20000,
                                 type: "GET",

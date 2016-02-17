@@ -136,7 +136,7 @@
                             <p>{!!trans('phrases.get_discount_form_header')!!}</p>
                         </div>
                         <div class="discount__form popup_form">
-                            {!! Form::open(['route' => 'main.get-demo']) !!}
+                            {!! Form::open(['route' => 'main.get-demo', 'novalidate']) !!}
                                 <fieldset>
                                     <label for="popup__email">{{trans('phrases.your_email')}}</label>
                                     <input type="email" id="popup__email"  placeholder="yourmail@site.com" required/>

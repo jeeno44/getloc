@@ -217,7 +217,7 @@
                         <p>Заполните форму и когда проект запуститься, у вас будет возможность пользоваться услугами сервиса со скидкой.</p>
                     </div>
                     <div class="discount__form">
-                        <form method="get" action="php/form.php" novalidate>
+                        {!! Form::open(['route' => 'main.get-demo', 'novalidate']) !!}
                             <fieldset>
                                 <label for="discount__email">Ваша эл. почта *</label>
                                 <input type="email" id="discount__email"  placeholder="yourmail@gmai" required/>
@@ -266,7 +266,7 @@
                             <button class="btn btn_discount">
                                 <span>Получить скидку</span>
                             </button>
-                        </form>
+                        {!! Form::close() !!}
                     </div>
                 </div>
                 <div class="discount__thanks">
