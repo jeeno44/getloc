@@ -76,9 +76,9 @@
                 <div class="popup__social">
                     Вы можете зайти через соцсети
                     <div class="social-2">
-                        <a href="#" class="social-2__fb">facebook</a>
-                        <a href="#" class="social-2__tw">twitter</a>
-                        <a href="#" class="social-2__google">google</a>
+                        <a href="{{route('facebook.redirect')}}" class="social-2__fb">facebook</a>
+                        <a href="{{route('twitter.redirect')}}" class="social-2__tw">twitter</a>
+                        <a href="{{route('google.redirect')}}" class="social-2__google">google</a>
                     </div>
                 </div>
             </div>
@@ -114,9 +114,9 @@
                 <div class="popup__social">
                     Вы можете зарегистрироваться через соцсети
                     <div class="social-2">
-                        <a href="#" class="social-2__fb">facebook</a>
-                        <a href="#" class="social-2__tw">twitter</a>
-                        <a href="#" class="social-2__google">google</a>
+                        <a href="{{route('facebook.redirect')}}" class="social-2__fb">facebook</a>
+                        <a href="{{route('twitter.redirect')}}" class="social-2__tw">twitter</a>
+                        <a href="{{route('google.redirect')}}" class="social-2__google">google</a>
                     </div>
                 </div>
             </div>
