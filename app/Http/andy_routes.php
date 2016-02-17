@@ -28,7 +28,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('register', ['as' => 'register.form', 'uses' => 'Auth\AuthController@showRegistrationForm']);
             Route::post('register', ['as' => 'register.post', 'uses' => 'Auth\AuthController@register']);
 
-            Route::get('password/reset/{token?}', ['as' => 'password.reset.token', 'uses' => 'Auth\PasswordController@showResetForm']);
+            Route::get('password/reset/{token?}', ['as' => 'password.reset.form', 'uses' => 'Auth\PasswordController@showResetForm']);
             Route::post('password/email', ['as' => 'password.email', 'uses' => 'Auth\PasswordController@sendResetLinkEmail']);
             Route::post('password/reset', ['as' => 'password.reset', 'uses' => 'Auth\PasswordController@reset']);
         });

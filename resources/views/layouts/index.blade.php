@@ -60,18 +60,19 @@
                 </a>
             </div>
             <div class="popup__inner">
-                <form action="#" class="site__form" novalidate>
+                <form action="{{route('login.post')}}" class="site__form" novalidate method="post">
+                    {!! csrf_field() !!}
                     <span class="site__form-title">Вход</span>
                     <fieldset>
                         <label for="email">Ваша эл. почта *</label>
-                        <input type="email" id="email" required>
+                        <input type="email" id="email" required name="email">
                     </fieldset>
                     <fieldset>
                         <label for="password">Пароль</label>
-                        <input type="password" id="password" required>
+                        <input type="password" id="password" required name="password">
                     </fieldset>
                     <button type="submit" class="btn btn_enroll">Войти</button>
-                    <a href="#" class="site__form-forgot">Забыли пароль?</a>
+                    <a href="{{route('password.reset.form')}}" class="site__form-forgot">Забыли пароль?</a>
                 </form>
                 <div class="popup__social">
                     Вы можете зайти через соцсети
@@ -95,7 +96,8 @@
                 </a>
             </div>
             <div class="popup__inner">
-                <form action="#" class="site__form" novalidate>
+                <form action="{{route('register.post')}}" class="site__form" novalidate method="post">
+                    {!! csrf_field() !!}
                     <span class="site__form-title">Регистрация</span>
                     <fieldset>
                         <label for="name">Ваше имя</label>

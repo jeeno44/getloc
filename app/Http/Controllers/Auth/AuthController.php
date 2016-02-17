@@ -7,6 +7,7 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -29,6 +30,15 @@ class AuthController extends Controller
      * @var string
      */
     protected $redirectTo = '/';
+
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        return redirect()->route('login.form')
+            ->withInput($request->only($this->loginUsername(), 'remember'))
+            ->withErrors([
+                $this->loginUsername() => $this->getFailedLoginMessage(),
+            ]);
+    }
 
     /**
      * Create a new authentication controller instance.
