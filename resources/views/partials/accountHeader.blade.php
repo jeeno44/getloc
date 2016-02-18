@@ -39,10 +39,10 @@
                     <!-- /site-list__add -->
 
                     <select id="site-list">
-                        <option value="deezout.ru">deezout.ru</option>
-                        <option value="buro3v.ru">buro3v.ru</option>
-                        <option value="megafonmoscow.ru">megafonmoscow.ru</option>
-                        <option value="http://all.ru">Все проекты</option>
+                        @foreach ( $sites as $site )
+                        <option @if (\Session::get('projectID') == $site->id) selected="selected" @endif value="{{URL::route('main.account.setProject', $site->id)}}">{{$site->url}}</option>
+                        @endforeach
+                        <option @if (\Session::get('projectID') == "") selected="selected" @endif value="{{URL::route('main.account.selectProject')}}">Все проекты</option>
                     </select>
                 </div>
                 <!-- /site-list -->

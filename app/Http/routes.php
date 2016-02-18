@@ -25,6 +25,8 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::get('/account', ['as' => 'main.account', 'uses' => 'AccountController@projectOverview']);
         Route::get('/account/overview', ['as' => 'main.account.overview', 'uses' => 'AccountController@projectOverview']);
         Route::get('/account/languages', ['as' => 'main.account.languages', 'uses' => 'AccountController@projectLanguages']);
+        Route::get('/account/projects', ['as' => 'main.account.selectProject', 'uses' => 'AccountController@selectProject']);
+        Route::get('/account/setProjects/{id}', ['as' => 'main.account.setProject', 'uses' => 'AccountController@setProject']);
     });
 
 });
