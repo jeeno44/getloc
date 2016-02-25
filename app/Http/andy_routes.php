@@ -12,6 +12,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
      * Base site routes
      */
     Route::group(['domain' => $domain], function () {
+
         Route::group(['middleware' => ['guest'], 'name' => 'auth'], function () {
             Route::get('/google/redirect', ['as' => 'google.redirect', 'uses' => 'Auth\SocialController@linkToGoogle']);
             Route::any('/google/callback', ['as' => 'google.callback', 'uses' => 'Auth\SocialController@googleCallback']);
@@ -31,8 +32,21 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('password/reset/{token?}', ['as' => 'password.reset.form', 'uses' => 'Auth\PasswordController@showResetForm']);
             Route::post('password/email', ['as' => 'password.email', 'uses' => 'Auth\PasswordController@sendResetLinkEmail']);
             Route::post('password/reset', ['as' => 'password.reset', 'uses' => 'Auth\PasswordController@reset']);
+
+            Route::get('admin/login', ['as' => 'admin.login.form', 'uses' => 'Auth\AuthController@adminForm']);
+            Route::post('admin/login', ['as' => 'admin.login.post', 'uses' => 'Auth\AuthController@adminLogin']);
         });
+
         Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@logout']);
+
+        Route::group(['middleware' => ['web', 'admin'], 'prefix' => 'admin'], function () {
+            Route::get('/', ['as' => 'admin.dashboard', 'uses' => 'Admin\DashboardController@index']);
+            Route::get('settings', 'Admin\SettingsController@getSettings');
+            Route::post('settings', 'Admin\SettingsController@postSettings');
+            Route::get('users/partners', 'Admin\UsersController@partners');
+            Route::resource('users', 'Admin\UsersController');
+        });
+
     });
 
 });

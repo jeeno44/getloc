@@ -79,4 +79,32 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+
+    public function adminForm()
+    {
+        return view('admin.layouts.login');
+    }
+
+    public function adminLogin(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required', 'password' => 'required',
+        ]);
+        $throttles = $this->isUsingThrottlesLoginsTrait();
+        if ($throttles && $this->hasTooManyLoginAttempts($request)) {
+            return $this->sendLockoutResponse($request);
+        }
+        $credentials = $request->only('name', 'password');
+        if (\Auth::guard($this->getGuard())->attempt($credentials, $request->has('remember'))) {
+            return redirect()->route('admin.dashboard');
+        }
+        if ($throttles) {
+            $this->incrementLoginAttempts($request);
+        }
+        return redirect()->route('admin.login.form')
+            ->withInput($request->only($this->loginUsername(), 'remember'))
+            ->withErrors([
+                'name' => $this->getFailedLoginMessage(),
+            ]);
+    }
 }

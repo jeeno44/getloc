@@ -113,3 +113,11 @@ function beautyUrl($url)
 {
     return trim(str_replace('http://', '', $url), '/');
 }
+
+if (!function_exists('widget')) {
+
+    function widget($class, $params = null)
+    {
+        return app('App\Widgets\\'.$class)->run();
+    }
+}
