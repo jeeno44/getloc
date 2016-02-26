@@ -132,7 +132,7 @@
                     </h1>
                 </div>
                 <div class="col-sm-5 text-right hidden-xs">
-                    {!! widget('AdminBreadCrumbs') !!}
+                    {!! widget('AdminBreadcrumbs') !!}
                 </div>
             </div>
         </div>
