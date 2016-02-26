@@ -1,7 +1,8 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Пользователи
+    Пользователи&nbsp;&nbsp;
+    <a class="btn btn-default btn-sm" href="/admin/users/create" data-toggle="tooltip" title="Новый пользователь"><span class="fa fa-plus"></span> </a>
 @stop
 
 @section('content')
@@ -11,7 +12,6 @@
                 <thead>
                 <tr>
                     <th>Почта</th>
-                    <th>Логин</th>
                     <th>Имя</th>
                     <th></th>
                 </tr>
@@ -21,9 +21,6 @@
                     <tr>
                         <td>
                             {{$item->email}}
-                        </td>
-                        <td>
-                            {{$item->name}}
                         </td>
                         <td>
                             {{$item->visibility_name}}
@@ -42,7 +39,7 @@
                                             <h4 class="modal-title text-left">Удалить пользователя?</h4>
                                         </div>
                                         <div class="modal-body text-left">
-                                            <p>Удалить пользователя {{$item->name}}?</p>
+                                            <p>Удалить пользователя {{$item->email}}?</p>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>

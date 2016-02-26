@@ -8,6 +8,11 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
 
     });
 
+    Route::group(['domain' => 'partners.'.$domain], function () {
+        Route::get('/', ['as' => 'partners.main', 'uses' => 'PartnersController@index']);
+        Route::post('/', ['as' => 'partners.register', 'uses' => 'PartnersController@register']);
+    });
+
     /**
      * Base site routes
      */
@@ -45,6 +50,9 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::post('settings', 'Admin\SettingsController@postSettings');
             Route::get('users/partners', 'Admin\UsersController@partners');
             Route::resource('users', 'Admin\UsersController');
+            Route::get('feedback/call', 'Admin\FeedbackController@call');
+            Route::get('feedback/demo', 'Admin\FeedbackController@demo');
+            Route::delete('feedback/{id}', 'Admin\FeedbackController@destroy');
         });
 
     });

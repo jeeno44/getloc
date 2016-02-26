@@ -11,9 +11,19 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public $options;
+
     public function __construct()
     {
         \View::share('route', \Route::getCurrentRoute()->getName());
         \View::share('locale', \App::getLocale());
+        $this->options = \DB::table('options')->pluck('val', 'key');
+        $tracker_id = \Cookie::get('tracker_id');
+        if (\Auth::check() && !empty($tracker_id)) {
+            if (empty(\Auth::user()->partner_id)) {
+                \Auth::user()->partner_id = $tracker_id;
+                \Auth::user()->save();
+            }
+        }
     }
 }

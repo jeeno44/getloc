@@ -20,7 +20,12 @@ class UsersController extends AdminController
     public function index()
     {
         \Session::set('usersPrevUrl', \URL::full());
-        $userWithRoles = \DB::table('role_user')->pluck('user_id', 'user_id');
+        $partnerRole = Role::where('name', 'partner')->first();
+        if (!empty($partnerRole)) {
+            $userWithRoles = \DB::table('role_user')->where('role_id', $partnerRole->id)->pluck('user_id', 'user_id');
+        } else {
+            $userWithRoles = \DB::table('role_user')->pluck('user_id', 'user_id');
+        }
         $items = User::latest()->whereNotIn('id', $userWithRoles)->paginate(20);
         return view('admin.users.index', compact('items'));
     }
@@ -31,6 +36,32 @@ class UsersController extends AdminController
         $rolePartner = Role::where('name', 'partner')->first();
         $items = $rolePartner->users()->latest()->paginate(20);
         return view('admin.users.partners', compact('items'));
+    }
+
+    public function create()
+    {
+        return view('admin.users.create');
+    }
+
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|confirmed|min:6',
+        ]);
+        $data = $request->all();
+        $data['name'] = $data['email'];
+        $data['password'] = bcrypt($data['password']);
+        $user = new User($data);
+        $user->save();
+        $roles = $request->get('roles');
+        if (!empty($roles)) {
+            foreach ($roles as $role) {
+                $user->roles()->attach($role);
+            }
+        }
+        $previousUrl = \Session::get('usersPrevUrl', 'admin/users');
+        return redirect($previousUrl)->with('messages', ['Сохранено']);
     }
 
     public function edit($id)
@@ -46,6 +77,9 @@ class UsersController extends AdminController
 	
     public function update(Request $request, $id)
     {
+        $this->validate($request, [
+            'password'                  => 'min:6|confirmed',
+        ]);
         $user = User::findOrfail($id);
         \DB::table('role_user')->where('user_id', $user->id)->delete();
         $roles = $request->get('roles');

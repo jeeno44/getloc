@@ -17,18 +17,26 @@ class SettingsController extends AdminController
 
     public function getSettings()
     {
-        return view('admin.settings.index');
+        $options = \DB::table('options')->get();
+        return view('admin.settings.index', compact('options'));
     }
 
     public function postSettings(Request $request)
     {
         $this->validate($request, [
-            'password'                  => 'required|min:6|confirmed',
-            'password_confirmation'     => 'required|min:6',
+            'password'                  => 'min:6|confirmed',
+            'password_confirmation'     => 'min:6',
         ]);
-        $user = \Auth::getUser();
-        $user->password = bcrypt($request->get('password'));
-        $user->save();
+        if ($request->has('password')) {
+            $user = \Auth::getUser();
+            $user->password = bcrypt($request->get('password'));
+            $user->save();
+        }
+        foreach ($this->options as $key => $val) {
+            if ($request->has($key) && $val != $request->get($key)) {
+                \DB::table('options')->where('key', $key)->update(['val' => $request->get($key)]);
+            }
+        }
         return redirect('admin/settings')->with('messages', ['Сохранено']);
     }
 }

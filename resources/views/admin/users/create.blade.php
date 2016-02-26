@@ -1,16 +1,11 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    @if($user->hasRole('partner'))
-        Редакирование парнера "{{$user->name}}"
-    @else
-        Редакирование пользователя "{{$user->name}}"
-    @endif
-
+    Новый пользователь
 @stop
 
 @section('content')
-{!! Form::model($user, ['url' => 'admin/users/'.$user->id, 'method' => 'PUT']) !!}
+{!! Form::open(['url' => 'admin/users/']) !!}
 <div class="block">
     <div class="block-header">
         <h3 class="block-title">Основная информация</h3>
@@ -72,19 +67,19 @@
     <div class="block-content">
         <div class="form-group col-sm-12 clearfix clearfix">
             <div class="col-sm-3 right-align for-label">
-                <label class="form-label">Новый пароль</label>
+                <label class="form-label">Новый пароль (6+ символов) *</label>
             </div>
             <div class="col-sm-6">
-                {!! Form::password('password', ['class' => 'form-control']) !!}
+                {!! Form::password('password', ['class' => 'form-control', 'required']) !!}
             </div>
         </div>
 
         <div class="form-group col-sm-12 clearfix clearfix">
             <div class="col-sm-3 right-align for-label">
-                <label class="form-label">Подтверждение пароля</label>
+                <label class="form-label">Подтверждение пароля *</label>
             </div>
             <div class="col-sm-6">
-                {!! Form::password('password_confirmation', ['class' => 'form-control']) !!}
+                {!! Form::password('password_confirmation', ['class' => 'form-control', 'required']) !!}
             </div>
         </div>
     </div>
@@ -99,7 +94,7 @@
             <div class="col-sm-6">
                 @foreach(App\Role::all() as $role)
                     <label>
-                        {!! Form::checkbox('roles[]', $role->id, $user->hasRole($role->name), ['class' => 'check-roles']) !!}
+                        {!! Form::checkbox('roles[]', $role->id, false, ['class' => 'check-roles']) !!}
                         {{$role->desc}}
                     </label>
                     <br>

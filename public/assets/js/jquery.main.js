@@ -1,6 +1,12 @@
+var popups;
+
 $(function(){
 
     $.each( $('.discount__form'), function(){
+        new FormValidation ( $(this) );
+    } );
+
+    $.each( $('.partners-program__sign-up'), function(){
         new FormValidation ( $(this) );
     } );
 
@@ -12,8 +18,16 @@ $(function(){
         new FormValidation ( $(this) )
     } );
 
-    $.each( $('.popup__form'), function(){
+    $.each( $('.popup__registry'), function(){
         new FormValidation ( $(this) )
+    } );
+
+    $.each( $('.forgot-password'), function(){
+        new FormValidation ( $(this) )
+    } );
+
+    $.each( $('.partners-program__sign-up'), function(){
+        new AsideForm ( $(this) );
     } );
 
     $('.swiper-container').each(function () {
@@ -21,7 +35,7 @@ $(function(){
     });
 
     $('.popup').each(function(){
-        new Popup($(this));
+       popups = new Popup($(this));
     });
 
     $('body').delegate( "input", "focus blur", function() {
@@ -58,12 +72,28 @@ $(function(){
     function navigation(){
         scrolling = $(window).scrollTop();
         if (scrolling > start) {
-            $('.site__header').addClass('header-fix')
+            $('.site__header').addClass('header-fix');
         }
         else{
-            $('.site__header').removeClass('header-fix')
+            $('.site__header').removeClass('header-fix');
         }
+        if (scrolling > start+50) {
+            $('.partners-program__sign-up').addClass('partners-program-fix')
+        }
+        else {
+
+            $('.partners-program__sign-up').removeClass('partners-program-fix')
+
+        }
+        //if($('.partners-program__sign-up').offset().top+40 > $('.site__footer').offset().top+40) {
+        //    $('.partners-program__sign-up').addClass('partners-program-absolute')
+        //}
+        //else {
+        //    $('.partners-program__sign-up').removeClass('partners-program-absolute')
+        //}
+
     }
+
 
     if ( $(".gallery").length ){
         var gallery = $( '.gallery' );
@@ -142,7 +172,7 @@ var FormValidation = function (obj) {
                                 url: _action,
                                 dataType: 'html',
                                 timeout: 20000,
-                                type: "GET",
+                                type: "POST",
                                 data: {
                                     enroll: 'true',
                                     email: $('#enroll__email').val()
@@ -160,7 +190,31 @@ var FormValidation = function (obj) {
                             return false;
                         }
 
+                        if (_obj.hasClass('forgot-password')) {
+                            $.ajax({
+                                url: _action,
+                                dataType: 'html',
+                                timeout: 20000,
+                                type: "POST",
+                                data: {
+                                    enroll: 'true',
+                                    email: $('#forgot-password__email').val()
+                                },
+                                success: function (msg) {
+
+                                    $('.forgot-password__message').slideDown(300);
+                                    $('.forgot-password__message').addClass('success');
+                                },
+                                error: function (XMLHttpRequest) {
+                                    if (XMLHttpRequest.statusText != "abort") {
+                                        alert(XMLHttpRequest.statusText);                                    }
+                                }
+                            });
+                            return false;
+                        }
+
                         if (_obj.hasClass('discount__form')) {
+
                             var selectsVal = [];
 
                             $.each( $('.discount__selects-language select'), function(i){
@@ -171,7 +225,7 @@ var FormValidation = function (obj) {
                                 url: _action,
                                 dataType: 'html',
                                 timeout: 20000,
-                                type: "GET",
+                                type: "POST",
                                 data: {
                                     discount: 'true',
                                     name: $('#discount__name').val(),
@@ -193,32 +247,24 @@ var FormValidation = function (obj) {
                             return false;
                         }
 
-                        if (_obj.hasClass('popup__form')) {
-
-                            var selectsVal = [];
-
-                            $.each( $('.discount__selects-language select'), function(i){
-                                selectsVal[i] = this.value;
-                            } );
+                        if (_obj.hasClass('partners-program__sign-up')) {
 
                             $.ajax({
                                 url: _action,
                                 dataType: 'html',
                                 timeout: 20000,
-                                type: "GET",
+                                type: "POST",
                                 data: {
-                                    discount: 'true',
-                                    name: $('#popup__name').val(),
-                                    email: $('#popup__email').val(),
-                                    phone: $('#popup__phone').val(),
-                                    site: $('#popup__address').val(),
-                                    language: selectsVal
+                                    send: 'true',
+                                    company: $('#organization').val(),
+                                    name: $('#contact-person').val(),
+                                    site: $('#site').val(),
+                                    phone: $('#phone').val(),
+                                    email: $('#email').val()
                                 },
-                                success: function (data) {
-                                    popup.core.show('thanks');
-                                    setTimeout(function () {
-                                        popup.core.hide('thanks')
-                                    }, 3000);
+                                success: function () {
+                                    $('.partners-program_form').addClass('success');
+                                    $('.partners-program__successfully').addClass('success');
                                 },
                                 error: function (XMLHttpRequest) {
                                     if (XMLHttpRequest.statusText != "abort") {
@@ -229,7 +275,35 @@ var FormValidation = function (obj) {
                             return false;
                         }
 
+                        if ( _obj.hasClass( 'popup__registry' ) ) {
+                            $.ajax({
+                                url: _action,
+                                dataType: 'html',
+                                timeout: 20000,
+                                type: "POST",
+                                data: {
+                                    registry: 'true',
+                                    name: $('#name').val(),
+                                    email: $('#email2').val(),
+                                    password: $('#password2').val()
+                                },
+                                success: function () {
+
+                                    popups.contents.css( 'display', '' );
+                                    popups.core.setPopupContent( 'end-registry' );
+
+                                },
+                                error: function (XMLHttpRequest) {
+                                    if (XMLHttpRequest.statusText != 'abort') {
+                                        alert(XMLHttpRequest.statusText);
+                                    }
+                                }
+                            });
+                            return false;
+                        }
+
                     } else {
+
                         return false;
 
                     }
@@ -264,7 +338,6 @@ var FormValidation = function (obj) {
                     curItem.closest("fieldset").removeClass('error');
                 }
             });
-
         },
         _init = function () {
             _addEvents();
@@ -639,4 +712,51 @@ Popup.prototype = {
 
         };
     }
+};
+
+var AsideForm = function (obj) {
+    var _obj = obj,
+        _objHeight,
+        _objTop,
+        _window = $( window ),
+        _footer = $( '.site__footer' ),
+        _windowHeight,
+        _windowScroll,
+        _footerTop,
+        _startTop;
+
+    var _addEvents = function () {
+
+            _window.on({
+                scroll: function(){
+                    _calculateTop();
+                }
+            })
+
+        },
+        _calculateTop = function(){
+
+            _objHeight = _obj.height();
+            _objTop = _obj.offset().top;
+            _windowHeight = _window.height();
+            _windowScroll = _window.scrollTop();
+            _footerTop = _footer.offset().top;
+            _startTop = $(".site__header").offset().top + $(".site__header").outerHeight();
+
+
+            if ((_objTop + _startTop) > _windowScroll){
+                _obj.removeClass( 'partners-program-absolute' );
+
+                if ((_windowScroll + _objHeight) > (_footerTop - 137)) {
+                    _obj.addClass( 'partners-program-absolute' );
+                }
+
+            }
+
+        },
+        _init = function () {
+            _addEvents();
+        };
+
+    _init();
 };

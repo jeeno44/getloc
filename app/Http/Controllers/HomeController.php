@@ -10,8 +10,15 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->has('tracker')) {
+            $user = User::where('partner_link', $request->get('tracker'))->first();
+            if (!empty($user)) {
+                $cookie = \Cookie::forever('tracker_id', $user->id);
+                return redirect()->route('main')->withCookie($cookie);
+            }
+        }
         $sites = Site::count();
         return view('pages.main', compact('sites'));
     }

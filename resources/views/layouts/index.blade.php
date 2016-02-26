@@ -101,15 +101,15 @@
                     <span class="site__form-title">Регистрация</span>
                     <fieldset>
                         <label for="name">Ваше имя</label>
-                        <input type="text" id="name" required>
+                        <input type="text" id="name" required name="name">
                     </fieldset>
                     <fieldset>
                         <label for="email2">Ваша эл. почта *</label>
-                        <input type="email" id="email2" required>
+                        <input type="email" id="email2" required name="email">
                     </fieldset>
                     <fieldset>
                         <label for="password2">Пароль</label>
-                        <input type="password" id="password2" required>
+                        <input type="password" id="password2" required name="password">
                     </fieldset>
                     <button type="submit" class="btn btn_enroll">Попробовать бесплатно</button>
                 </form>
