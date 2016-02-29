@@ -6,3 +6,4 @@ Homestead.json
 /storage
 /public/uploads
 nbproject/*
+/env/

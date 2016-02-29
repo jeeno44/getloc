@@ -15,13 +15,23 @@ return [
     'help'                     => 'Помощь',
     'searchPages'              => 'в проекте',
     'phrases'                  => 'фраз|фразы|фраз',
-    'ccPages'                  => 'страница|страниц',
+    'ccPages'                  => 'страница|страниц|страниц',
     'overviewProject'          => 'Обзор проекта',
     'languages'                => 'Языки',
     'pagesProject'             => 'Страницы проекта',
     'translatePhrases'         => 'Перевод фраз',
     'widget'                   => 'Виджет',
     'settingsProject'          => 'Настройки проекта',
-    'myOrders'                 => 'Мои заказы'
+    'myOrders'                 => 'Мои заказы',
+    /* select lang */
+    'inProcTranslate'          => 'переведено',
+    'notLangTrans'             => 'Не переведено',
+    'langManagement'           => 'Управление языками перевода',
+    'addLang'                  => 'Добавить язык',
+    'showTranslate'            => 'Посмотреть перевод',
+    'orderTrans'               => 'Заказать перевод',
+    'downloadFile'             => 'Скачать файл',
+    'offLang'                  => 'Отключенные языки'
+    
     
 ];

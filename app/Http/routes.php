@@ -22,11 +22,15 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::get('/feature', ['as' => 'main.feature', 'uses' => 'HomeController@feature']);
         Route::any('/call-me', ['as' => 'main.call-me', 'uses' => 'HomeController@callMe']);
         Route::any('/get-demo', ['as' => 'main.get-demo', 'uses' => 'HomeController@getDemo']);
+        
+        // Account
         Route::get('/account', ['as' => 'main.account', 'uses' => 'AccountController@projectOverview']);
         Route::get('/account/overview', ['as' => 'main.account.overview', 'uses' => 'AccountController@projectOverview']);
         Route::get('/account/languages', ['as' => 'main.account.languages', 'uses' => 'AccountController@projectLanguages']);
         Route::get('/account/projects', ['as' => 'main.account.selectProject', 'uses' => 'AccountController@selectProject']);
         Route::get('/account/setProjects/{id}', ['as' => 'main.account.setProject', 'uses' => 'AccountController@setProject']);
+        Route::post('/account/switchingLanguage', ['as' => 'main.account.switchLang', 'uses' => 'AccountController@turnLang']);
+        Route::get('/account/addLanguage/', ['as' => 'main.account.addlang', 'uses' => 'AccountController@addLanguage']);
     });
 
 });

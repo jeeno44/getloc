@@ -55,7 +55,7 @@
                         <li><a href="#">Персональные данные</a></li>
                         <li><a href="#">Настройка аккаунта</a></li>
                         <li><a href="#">Настройка команды</a></li>
-                        <li><a href="#">Выйти</a></li>
+                        <li><a href="{{URL::route('logout')}}">Выйти</a></li>
                     </ul>
                     <!-- /header__person-list -->
 

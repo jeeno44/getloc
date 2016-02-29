@@ -56,7 +56,7 @@ class AccountController extends Controller
         $this->user  = Auth::user();
         $this->sites = Site::where('user_id', $this->user->id)->orderBy('url')->get(); //TODO: Команды
         \View::share('sites', $this->sites);
-        
+                
         parent::__construct();
     }
     
@@ -145,6 +145,7 @@ class AccountController extends Controller
         {
             $stats                 = array(); 
             $stats['notTranslate'] = Translate::where('site_id', $siteID)->where('type_translate_id', NULL)->count(); //Не переведено
+            $stats['notLangTrans'] = Translate::where('site_id', $siteID)->where('language_id', $lang->id)->where('type_translate_id', NULL)->count(); //Не переведено в этом языке
             $dynamicStats          = DB::table('translates')->join('types_translates', 'translates.type_translate_id', '=', 'types_translates.id')
                                                             ->select('types_translates.name', DB::raw('count(*) as cc'))
                                                             ->where('site_id', $siteID)
@@ -177,6 +178,130 @@ class AccountController extends Controller
     }
     
     /**
+     * Стата для языков
+     * 
+     * @param  int $siteID
+     * @param  int $allCountBlocks
+     * @return array
+     * @access private
+     */
+    
+    private function getLangsStats($siteID, $allCountBlocks)
+    {
+        $data    = array();
+        $langs   = Site::find($siteID)->languages()->where('enabled', true)->orderBy('name')->get();
+        
+        foreach ( $langs as $lang )
+        {
+            $stats                 = array(); 
+            $stats['ccTranslates'] = Translate::where('site_id', $siteID)->where('language_id', $lang->id)->whereNotNull('type_translate_id')->count(); //Сколько переведено в этом языке
+            $stats['notLangTrans'] = Translate::where('site_id', $siteID)->where('language_id', $lang->id)->where('type_translate_id', NULL)->count(); //Не переведено в этом языке
+            $dynamicStats          = DB::table('translates')->join('types_translates', 'translates.type_translate_id', '=', 'types_translates.id')
+                                                            ->select('types_translates.name', DB::raw('count(*) as cc'))
+                                                            ->where('site_id', $siteID)
+                                                            ->groupBy('translates.type_translate_id')
+                                                            ->lists('cc','types_translates.name'); //Остальные типы
+            $_lines                = array_merge($dynamicStats, $stats);
+            $lines                 = array();
+            $iter                  = 1;
+            
+            foreach ( $_lines as $key => $line )
+            {
+                if ( $key == 'ccTranslates' )
+                    continue;
+                
+                if ( $key == 'notLangTrans' )
+                  {
+                    $graph = array('cc' => $line, 'i' => '4', 'name' => 'Не переведено', 'per' => round(($line/$allCountBlocks) * 100));
+                  }
+                else
+                  {
+                      $graph = array('cc' => $line, 'i' => $iter, 'name' => $key, 'per' => round(($line/$allCountBlocks) * 100));
+                      $iter++;
+                  }
+                  
+                $lines[] = $graph;
+            }
+            
+            $data['on'][$lang->name]['ccTranslates'] = $stats['ccTranslates'];
+            $data['on'][$lang->name]['langID']       = $lang->id;
+            $data['on'][$lang->name]['lines']        = $lines;
+        }
+        
+        $langs   = Site::find($siteID)->languages()->where('enabled', false)->orderBy('name')->get();
+        
+        foreach ( $langs as $lang )
+        {
+            $stats                 = array(); 
+            $stats['ccTranslates'] = Translate::where('site_id', $siteID)->where('language_id', $lang->id)->whereNotNull('type_translate_id')->count(); //Сколько переведено в этом языке
+            $stats['notLangTrans'] = Translate::where('site_id', $siteID)->where('language_id', $lang->id)->where('type_translate_id', NULL)->count(); //Не переведено в этом языке
+            $dynamicStats          = DB::table('translates')->join('types_translates', 'translates.type_translate_id', '=', 'types_translates.id')
+                                                            ->select('types_translates.name', DB::raw('count(*) as cc'))
+                                                            ->where('site_id', $siteID)
+                                                            ->groupBy('translates.type_translate_id')
+                                                            ->lists('cc','types_translates.name'); //Остальные типы
+            $_lines                = array_merge($dynamicStats, $stats);
+            $lines                 = array();
+            $iter                  = 1;
+            
+            foreach ( $_lines as $key => $line )
+            {
+                if ( $key == 'ccTranslates' )
+                    continue;
+                
+                if ( $key == 'notLangTrans' )
+                  {
+                     $graph = array('cc' => $line, 'i' => '4', 'name' => 'Не переведено', 'per' => round(($line/$allCountBlocks) * 100));
+                  }
+                else
+                  {
+                      $graph = array('cc' => $line, 'i' => $iter, 'name' => $key, 'per' => round(($line/$allCountBlocks) * 100));
+                      $iter++;
+                  }
+                  
+                $lines[] = $graph;
+            }
+            
+            $data['off'][$lang->name]['ccTranslates'] = $stats['ccTranslates'];
+            $data['off'][$lang->name]['langID']       = $lang->id;
+            $data['off'][$lang->name]['lines']        = $lines;
+        }
+        
+        return $data;
+    }
+    
+    /**
+     * Добавляем язык в проект
+     * Как я понимаю, тут же и будет управление.
+     * 
+     * @param  void
+     * @return string
+     * @access public
+     */
+    
+    public function addLanguage()
+    {
+        return view('account.addLanguage');
+    }
+    
+    /**
+     * Включение и выключение языка [AJAX]
+     * 
+     * @param  Request $request
+     * @return array
+     * @access public
+     */
+    
+    public function turnLang(Request $request)
+    {
+        if ( !$siteID = Session::get('projectID') )
+            return abort(403, 'Need select project'); 
+        
+        $enabled = DB::table('site_language')->where('language_id', $request->input('langID'))->where('site_id', $siteID)->first()->enabled;
+        DB::table('site_language')->where('language_id', $request->input('langID'))->where('site_id', $siteID)->update(['enabled' => ($enabled == 1) ? 0 : 1]);
+    }
+    
+    /**
      * Показываем языки проекта.
      * Так же осуществляем управление языками в проекте
      * 
@@ -187,6 +312,16 @@ class AccountController extends Controller
     
     public function projectLanguages()
     {
-        return view('account.languages');
+        if ( !Session::get('projectID') )
+          {
+            return redirect(URL::route('main.account.selectProject'));  
+          }
+        
+        $siteID     = Session::get('projectID');
+        $langs      = Site::find($siteID)->languages()->orderBy('name')->get();
+        $ccBlocks   = Block::where('site_id', $siteID)->count();
+        $lineStats  = $this->getLangsStats($siteID, $ccBlocks);
+        
+        return view('account.languages', compact('langs', 'lineStats', 'ccBlocks'));
     }
 }

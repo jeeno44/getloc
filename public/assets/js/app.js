@@ -8,5 +8,5 @@ $(function () {
             window.location.href = '/site/' + ui.item.key;
         }
     });
-
+    
 });
