@@ -281,8 +281,62 @@ class AccountController extends Controller
     
     public function addLanguage()
     {
-        return view('account.addLanguage');
+        if ( !$siteID = Session::get('projectID') )
+          {
+            return redirect(URL::route('main.account.selectProject'));  
+          }
+        
+        $site  = Site::find($siteID);
+        $langs = Language::where('id', '!=', $site->language_id)->get();
+        
+        return view('account.addLanguage', compact('site', 'langs'));
     }
+    
+    /**
+     * Смотрим какие были отключены и добавлены языки в проект
+     * Если отключили, то не удаляем переводы
+     * 
+     * @param  Request $request
+     * @return void
+     * @access public
+     */
+    
+    public function postAddLanguage(Request $request)
+    {
+        if ( !$siteID = Session::get('projectID') )
+          {
+            return redirect(URL::route('main.account.selectProject'));  
+          } 
+          
+        $newLangs = $request->get('languages', []);
+        $langs    = Site::find($siteID)->languages();
+        
+        #DB::table('site_language')->where('site_id', $siteID)->update(['enabled' => 0]);
+        foreach ( $newLangs as $langID )
+        {
+            if ( $lang = DB::table('site_language')->where('site_id', $siteID)->where('language_id', $langID)->get() )
+                DB::table('site_language')->where('site_id', $siteID)->where('language_id', $langID)->update(['enabled' => $lang[0]->enabled]);
+            else
+                DB::table('site_language')->insert(['site_id' => $siteID, 'language_id' => $langID, 'enabled' => 1]);
+        }
+        
+        \Event::fire('site.changed', Site::find($siteID));
+        
+        return redirect()->back();
+   }
+   
+   /**
+    * Добавление нового проекта
+    * 
+    * @param  void
+    * @return void
+    * @access public
+    */
+   
+   public function addProject()
+   {
+       return view('account.addProject');
+   }
     
     /**
      * Включение и выключение языка [AJAX]

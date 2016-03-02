@@ -31,6 +31,8 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::get('/account/setProjects/{id}', ['as' => 'main.account.setProject', 'uses' => 'AccountController@setProject']);
         Route::post('/account/switchingLanguage', ['as' => 'main.account.switchLang', 'uses' => 'AccountController@turnLang']);
         Route::get('/account/addLanguage/', ['as' => 'main.account.addlang', 'uses' => 'AccountController@addLanguage']);
+        Route::post('/account/addLanguage/', ['as' => 'main.account.postaddlang', 'uses' => 'AccountController@postAddLanguage']);
+        Route::get('/account/addProject/', ['as' => 'main.account.addproject', 'uses' => 'AccountController@addProject']);
     });
 
 });
