@@ -337,6 +337,20 @@ class AccountController extends Controller
    {
        return view('account.addProject');
    }
+   
+   /**
+    * Фразы проекта
+    * Делаем ручной и автоматический перевод текстов через BING.
+    * 
+    * @param  void
+    * @return void
+    * @access public
+    */
+   
+   public function phrase()
+   {
+       return view('account.phrase');
+   }
     
     /**
      * Включение и выключение языка [AJAX]
