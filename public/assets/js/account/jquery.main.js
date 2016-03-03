@@ -500,18 +500,21 @@ var FormValidation = function (obj) {
                             } );
 
                             $.ajax({
-                                url: 'php/form.php',
+                                url: _action,
                                 dataType: 'html',
                                 timeout: 20000,
-                                type: "GET",
+                                type: "POST",
                                 data: {
                                     name: $('#name-project').val(),
-                                    email: $('#link-project').val(),
+                                    url: $('#link-project').val(),
                                     check: $('#new-project__check-val').val(),
                                     language: selectsVal
                                 },
                                 success: function (data) {
-
+                                    console.log(data);
+                                    if ($.isNumeric(data)) {
+                                        window.location.href = '/account/project-created/' + data;
+                                    }
                                 },
                                 error: function (XMLHttpRequest) {
                                     if (XMLHttpRequest.statusText != "abort") {

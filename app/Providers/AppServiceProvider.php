@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Providers;
-
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
             \Queue::push(new \App\Jobs\TextsCollector($site));
         });
         \Event::listen('site.done', function($site) {
+            \Queue::push(new \App\Jobs\CreateEmptyTranslates($site));
             \Mail::send('emails.site-done', compact('site'), function($m) use ($site) {
                 $m->to($site->user->email)->subject('Мы проанализировали ваш проект "'.$site->url.'"');
             });

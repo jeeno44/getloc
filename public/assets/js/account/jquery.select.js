@@ -1,7 +1,7 @@
 var selects2 = [];
 $(function(){
 
-    $( '#site-list' ).each( function(i){
+    $( 'select' ).each( function(i){
         selects2[i] = new AresSelect2( {
             obj: $( this ),
             optionType: 1,
@@ -129,9 +129,9 @@ var AresSelect2 = function( params ){
                         self.obj.find( 'option' ).each( function(i){
                             var curItem = $( this );
                             if( i == curIndex ){
-                                list.append( '<li class="active"><span>' + curItem.text() + '</span></li>' );
+                                list.append( '<li class="active">' + curItem.text() + '</li>' );
                             } else {
-                                list.append( '<li><a href="' + curItem.val() + '">' + curItem.text() + '</a></li>' );
+                                list.append( '<li>' + curItem.text() + '</li>' );
                             }
                         } );
                     }
@@ -318,7 +318,7 @@ var Lenguages = function (obj) {
             _selectsWrapper.append( selectWrap );
             _initNewSelect( selectWrap.find( 'select' ) );
             _fillSelects();
-
+            
             if ( selectAmount == _arrLanguages.length - 1 ){
                 _addButton.css( 'display', 'none' );
             }
