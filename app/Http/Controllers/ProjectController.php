@@ -12,16 +12,19 @@ use App\Page;
 
 class ProjectController extends Controller
 {
-    protected $user;
-
     public function __construct()
     {
         parent::__construct();
+        $this->sites = Site::where('user_id', $this->user->id)->orderBy('url')->get();
+        \View::share('sites', $this->sites);
     }
 
+    /**
+     * Вывод формы добавления проекта
+     * @return \Illuminate\Http\Response
+     */
     public function addProject()
     {
-        $sites = Site::where('user_id', $this->user->id)->orderBy('url')->get();
         $langs = Language::all();
         $languages = [];
         foreach ($langs as $lang) {
@@ -32,9 +35,14 @@ class ProjectController extends Controller
             ];
         }
         $languages = json_encode($languages);
-        return view('project.create', compact('sites', 'languages'));
+        return view('project.create', compact('languages'));
     }
 
+    /**
+     * Добавление проекта в базу, добавление задач в очередь
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function postAddProject(Request $request)
     {
         $langs = $request->get('language');
@@ -71,9 +79,18 @@ class ProjectController extends Controller
         return $site->id;
     }
 
+    /**
+     * Вывод инфы о созданном проекте
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
     public function projectCreated($id)
     {
-
+        $site = Site::find($id);
+        if (empty($site) || $site->user_id != $this->user->id) {
+            abort(404);
+        }
+        return view('project.created', compact('site'));
     }
 
     public function languages()

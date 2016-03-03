@@ -59,7 +59,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         });
 
         Route::group(['middleware' => 'auth', 'prefix' => 'account'], function() {
-            
+            Route::get('/project-created/{id}', ['as' => 'main.account.project-created', 'uses' => 'ProjectController@projectCreated']);
         });
     });
 
