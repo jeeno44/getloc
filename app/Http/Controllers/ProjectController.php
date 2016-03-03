@@ -19,6 +19,11 @@ class ProjectController extends Controller
 
     }
 
+    public function postAddProject()
+    {
+
+    }
+
     public function languages()
     {
 
