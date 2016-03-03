@@ -35,7 +35,10 @@
                 <div class="site-list">
 
                     <!-- site-list__add -->
-                    <button class="site-list__add"></button>
+                    <form action="{{route('main.account.add-project')}}" style="display: inline">
+                        <button class="site-list__add"></button>
+                    </form>
+
                     <!-- /site-list__add -->
 
                     <select id="site-list">
@@ -62,7 +65,7 @@
                 </div>
                 <!-- /header__person -->
 
-                <!-- language -->
+                {{--
                 <div class="language">
 
                     <!-- language__btn -->
@@ -80,6 +83,7 @@
 
                 </div>
                 <!-- /language -->
+                --}}
 
             </div>
             <!-- /site__header-layout -->

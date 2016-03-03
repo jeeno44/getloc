@@ -53,8 +53,14 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('feedback/call', 'Admin\FeedbackController@call');
             Route::get('feedback/demo', 'Admin\FeedbackController@demo');
             Route::delete('feedback/{id}', 'Admin\FeedbackController@destroy');
+            Route::resource('billing/plans', 'Admin\PlansController');
+            Route::resource('billing/payments', 'Admin\PaymentsController');
+            Route::resource('billing/subscriptions', 'Admin\SubscriptionsController');
         });
 
+        Route::group(['middleware' => 'auth', 'prefix' => 'account'], function() {
+            
+        });
     });
 
 });

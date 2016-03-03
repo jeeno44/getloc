@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Translate extends Model
 {
-    protected $fillable = ['block_id', 'language_id', 'text', 'type_translate_id'];
+    protected $fillable = ['block_id', 'language_id', 'text', 'type_translate_id', 'count_words'];
 
     public function language()
     {

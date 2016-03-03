@@ -27,14 +27,17 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::group(['middleware' => 'auth', 'prefix' => 'account'], function() {
             Route::get('/', ['as' => 'main.account', 'uses' => 'AccountController@projectOverview']);
             Route::get('/overview', ['as' => 'main.account.overview', 'uses' => 'AccountController@projectOverview']);
-            Route::get('/languages', ['as' => 'main.account.languages', 'uses' => 'AccountController@projectLanguages']);
+            //Route::get('/languages', ['as' => 'main.account.languages', 'uses' => 'AccountController@projectLanguages']);
             Route::get('/projects', ['as' => 'main.account.selectProject', 'uses' => 'AccountController@selectProject']);
             Route::get('/setProjects/{id}', ['as' => 'main.account.setProject', 'uses' => 'AccountController@setProject']);
             Route::post('/switchingLanguage', ['as' => 'main.account.switchLang', 'uses' => 'AccountController@turnLang']);
             Route::get('/addLanguage/', ['as' => 'main.account.addlang', 'uses' => 'AccountController@addLanguage']);
             Route::post('/addLanguage/', ['as' => 'main.account.postaddlang', 'uses' => 'AccountController@postAddLanguage']);
-            Route::get('/addProject/', ['as' => 'main.account.addproject', 'uses' => 'AccountController@addProject']);
+            //Route::get('/addProject/', ['as' => 'main.account.addproject', 'uses' => 'AccountController@addProject']);
             Route::get('/phrase/', ['as' => 'main.account.phrase', 'uses' => 'AccountController@phrase']);
+            Route::get('/add-project/', ['as' => 'main.account.add-project', 'uses' => 'ProjectController@addProject']);
+            Route::get('/languages/', ['as' => 'main.account.languages', 'uses' => 'ProjectController@languages']);
+            Route::post('/languages/', ['as' => 'main.account.post-languages', 'uses' => 'ProjectController@postLanguages']);
         });
         
     });
