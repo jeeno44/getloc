@@ -47,10 +47,9 @@ class AccountController extends Controller
     
     public function __construct() 
     {
+        parent::__construct();
         $this->sites = Site::where('user_id', $this->user->id)->orderBy('url')->get(); //TODO: Команды
         \View::share('sites', $this->sites);
-                
-        parent::__construct();
     }
     
     /**
