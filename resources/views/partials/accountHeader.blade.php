@@ -43,7 +43,7 @@
 
                     <select id="site-list">
                         @foreach ( $sites as $site )
-                        <option @if (\Session::get('projectID') == $site->id) selected="selected" @endif value="{{URL::route('main.account.setProject', $site->id)}}">{{$site->url}}</option>
+                        <option @if (\Session::get('projectID') == $site->id) selected="selected" @endif value="{{URL::route('main.account.setProject', $site->id)}}">{{$site->name}}</option>
                         @endforeach
                         <option @if (\Session::get('projectID') == "") selected="selected" @endif value="{{URL::route('main.account.selectProject')}}">Все проекты</option>
                     </select>

@@ -33,8 +33,18 @@ class Site extends Model
         return $this->belongsToMany('App\Language', 'site_language');
     }
 
+    public function enabledLanguages()
+    {
+        return $this->belongsToMany('App\Language', 'site_language')->where('enabled', 1);
+    }
+
     public function hasLanguage($lang)
     {
         return in_array($lang, $this->languages()->lists('id', 'id')->toArray());
+    }
+
+    public function hasEnabledLanguage($lang)
+    {
+        return in_array($lang, $this->enabledLanguages()->lists('id', 'id')->toArray());
     }
 }

@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Language;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use Auth;
 use App\Site;
 use App\Page;
+use App\Translate;
 
 class ProjectController extends Controller
 {
@@ -95,7 +94,47 @@ class ProjectController extends Controller
 
     public function languages()
     {
+        if (!$siteID = \Session::get('projectID'))  {
+            return redirect()-route('main.account.selectProject');
+        }
+        $site  = Site::find($siteID);
+        $langs = Language::where('id', '!=', $site->language_id)->get();
+        return view('project.languages', compact('site', 'langs'));
+    }
 
+    public function postLanguages(Request $request, $id)
+    {
+        $site  = Site::find($id);
+        $blocks = $site->blocks;
+        $blocksIds = $site->blocks()->lists('id', 'id')->toArray();
+        $oldLangs = $site->enabledLanguages()->lists('id')->toArray();
+        $newLangs = $request->get('languages', []);
+        $langsToDel = array_diff($oldLangs, $newLangs);
+        $langsToAdd = array_diff($newLangs, $oldLangs);
+        foreach ($langsToDel as $l) {
+            \DB::table('site_language')->where('site_id', $site->id)->where('language_id', $l)->update(['enabled' => 0]);
+            foreach ($site->pages as $page) {
+                \Cache::forget($site->secret.'_'.$page->id.'_'.$l);
+            }
+        }
+        foreach ($langsToAdd as $l) {
+            if (!$site->hasLanguage($l)) {
+                $site->languages()->attach($l);
+                foreach ($blocks as $block) {
+                    Translate::create([
+                        'block_id'      => $block->id,
+                        'language_id'   => $l,
+                        'text'          => '',
+                        'count_words'   => $block->count_words,
+                        'site_id'       => $site->id
+                    ]);
+                }
+            } else {
+                \DB::table('site_language')->where('site_id', $site->id)->where('language_id', $l)->update(['enabled' => 1]);
+            }
+        }
+        \Event::fire('site.changed', $site);
+        return redirect()->back();
     }
 
 }

@@ -38,7 +38,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/add-project/', ['as' => 'main.account.add-project', 'uses' => 'ProjectController@addProject']);
             Route::post('/add-project/', ['as' => 'main.account.post-add-project', 'uses' => 'ProjectController@postAddProject']);
             Route::get('/languages/', ['as' => 'main.account.languages', 'uses' => 'ProjectController@languages']);
-            Route::post('/languages/', ['as' => 'main.account.post-languages', 'uses' => 'ProjectController@postLanguages']);
+            Route::post('/languages/{id}', ['as' => 'main.account.post-languages', 'uses' => 'ProjectController@postLanguages']);
         });
         
     });
