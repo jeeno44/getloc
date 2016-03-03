@@ -12,6 +12,7 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public $options;
+    protected $user;
 
     public function __construct()
     {
@@ -25,5 +26,6 @@ class Controller extends BaseController
                 \Auth::user()->save();
             }
         }
+        $this->user  = \Auth::user();
     }
 }

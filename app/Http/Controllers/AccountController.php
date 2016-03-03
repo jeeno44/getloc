@@ -32,12 +32,6 @@ class AccountController extends Controller
 {
     
     /**
-     * @var  object
-     */
-    
-    private $user  = null;
-    
-    /**
      * @var  array
      */
     
@@ -53,7 +47,6 @@ class AccountController extends Controller
     
     public function __construct() 
     {
-        $this->user  = Auth::user();
         $this->sites = Site::where('user_id', $this->user->id)->orderBy('url')->get(); //TODO: Команды
         \View::share('sites', $this->sites);
                 
