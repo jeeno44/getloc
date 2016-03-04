@@ -80,10 +80,10 @@ class ApiController extends Controller
         \Cache::forget($page->site->secret.'_'.$page->id.'_'.$trans->language_id);
     }
 
-    public function anyBing($id, Request $request)
+    public function anyBing($id)
     {
         $trans = Translate::find($id);
-        $page = Page::find($request->get('page'));
+        #$page  = Page::find($request->get('page'));
         $clientID     = "blackgremlin2";
         $clientSecret = "SMnjwvLx0bB2u9Cn05K2vkTE1bSkX0+fsLp/23gsytU=";
         $authUrl      = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/";
@@ -99,8 +99,10 @@ class ApiController extends Controller
         $xmlObj = simplexml_load_string($strResponse);
         $text = strval($xmlObj[0]);
         $trans->text = $text;
+        $trans->type_translate_id = 1;
         $trans->save();
-        \Cache::forget($page->site->secret.'_'.$page->id.'_'.$trans->language_id);
+        #Todo: нету больше page-id, надо что-то переделать
+        #\Cache::forget($page->site->secret.'_'.$page->id.'_'.$trans->language_id);
         return $text;
     }
 

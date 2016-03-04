@@ -136,7 +136,6 @@ class AccountController extends Controller
         foreach ( $langs as $lang )
         {
             $stats                 = array(); 
-            $stats['notTranslate'] = Translate::where('site_id', $siteID)->where('type_translate_id', NULL)->count(); //Не переведено
             $stats['notLangTrans'] = Translate::where('site_id', $siteID)->where('language_id', $lang->id)->where('type_translate_id', NULL)->count(); //Не переведено в этом языке
             $dynamicStats          = DB::table('translates')->join('types_translates', 'translates.type_translate_id', '=', 'types_translates.id')
                                                             ->select('types_translates.name', DB::raw('count(*) as cc'))
@@ -146,10 +145,13 @@ class AccountController extends Controller
             $_lines                = array_merge($dynamicStats, $stats);
             $lines                 = array();
             $iter                  = 1;
-            
+           
             foreach ( $_lines as $key => $line )
             {
-                if ( $key == 'notTranslate' )
+                if ( $allCountBlocks == 0 )
+                    continue;
+                
+                if ( $key == 'notLangTrans' )
                   {
                      $graph = array('cc' => $line, 'i' => '4', 'name' => 'Не переведено', 'per' => round(($line/$allCountBlocks) * 100));
                   }
@@ -331,19 +333,101 @@ class AccountController extends Controller
    }
    
    /**
-    * Фразы проекта
-    * Делаем ручной и автоматический перевод текстов через BING.
     * 
     * @param  void
+    * @return string
+    * @access public
+    */
+   
+   public function widget()
+   {
+       $siteID = Session::get('projectID');
+               
+       if ( !$siteID )
+            return redirect(URL::route('main.account.selectProject'));  
+       
+       $site = Site::find($siteID);
+
+       return view('account.widget', compact('site'));
+   }
+   
+   /**
+    * @param  Request $request
+    * @return string
+    * @param  void
+    */
+   
+   public function phrase(Request $request)
+   {
+       $siteID = Session::get('projectID');
+       
+       if ( !$siteID )
+            return redirect(URL::route('main.account.selectProject'));  
+       
+       $language_id = Site::find($siteID)->languages()->where('enabled', true)->orderBy('id')->first()->id;
+       $stats       = array();
+       
+       $stats['menu']          = array(1 => 0, 2 => 0, 3 => 0);
+       $stats['in_translate']  = Translate::where('site_id', $siteID)->where('language_id', $language_id)->whereNotNull('type_translate_id')->count(); //Сколько переведено в этом языке
+       $stats['not_translate'] = Translate::where('site_id', $siteID)->where('language_id', $language_id)->where('type_translate_id', NULL)->count(); //Не переведено в этом языке
+       $stats['publish']       = Block::where('site_id', $siteID)->count();
+       $stats['all']           = DB::table('translates')->join('types_translates', 'translates.type_translate_id', '=', 'types_translates.id')
+                                                        ->select('types_translates.id', DB::raw('count(*) as cc'))
+                                                        ->where('site_id', $siteID)
+                                                        ->groupBy('translates.type_translate_id')
+                                                        ->get();
+       foreach ( $stats['all'] as $key => $val )
+            $stats['menu'][$val->id] = $val->cc;
+       
+       $stats['all']           = array_sum(array_values($stats['all'])); //gospodi, kak ya vse delau
+       $colors                 = [1 => array('block' => 'blue', 'hex' => '#18baea'), 
+                                  2 => array('block' => 'green', 'hex' => '#70d579'), 
+                                  3 => array('block' => 'orange', 'hex' => '#ffa630')];
+       
+       $menu = array();
+       
+       $menu['langs']       = Site::find($siteID)->languages()->where('enabled', true)->orderBy('name')->get(); //Доступные языки
+       $menu['types']       = TypeTranslate::orderBy('id')->get();
+       $menu['active_lang'] = $language_id;
+       
+       
+       $translates = Translate::where('translates.site_id', $siteID)
+                              ->where('translates.language_id', $language_id)
+                              ->leftJoin('blocks', 'blocks.id', '=', 'translates.block_id')
+                              ->leftJoin('types_translates', 'types_translates.id', '=', 'translates.type_translate_id')
+                              ->orderBy('translates.id')
+                              ->select('translates.id as tid', 'blocks.enabled as enabled', 'translates.*',
+                                       'types_translates.name as name_translate', DB::raw('date_format(translates.updated_at, "%h:%i") as time'),
+                                       DB::raw('date_format(translates.updated_at, "%Y-%m-%d") as date'), 'blocks.text as original')
+                              ->paginate(25);
+       
+       
+       return view('account.phrase', compact('languages_enabled', 'translates', 'colors', 'stats', 'menu'));
+   }
+   
+   /**
+    * Ручной перевод [Ajax]
+    * 
+    * @param  Request $request
     * @return void
     * @access public
     */
    
-   public function phrase()
+   public function handTranslate(Request $request)
    {
-       return view('account.phrase');
+       if ( !$siteID = Session::get('projectID') )
+            return abort(403, 'Need select project');  
+          
+        $text  = trim(strip_tags($request->get('text')));
+        $id    = intval($request->get('id'));
+        $trans = Translate::find($id);
+        
+        $trans->text              = $text;
+        $trans->type_translate_id = 2;
+        
+        $trans->save();
    }
-    
+   
     /**
      * Включение и выключение языка [AJAX]
      * 

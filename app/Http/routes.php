@@ -33,12 +33,15 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::post('/switchingLanguage', ['as' => 'main.account.switchLang', 'uses' => 'AccountController@turnLang']);
             Route::get('/addLanguage/', ['as' => 'main.account.addlang', 'uses' => 'AccountController@addLanguage']);
             Route::post('/addLanguage/', ['as' => 'main.account.postaddlang', 'uses' => 'AccountController@postAddLanguage']);
+            Route::post('/handTranslate/', ['as' => 'main.account.handTranslate', 'uses' => 'AccountController@handTranslate']);
+            Route::get('/widget/', ['as' => 'main.account.widget', 'uses' => 'AccountController@widget']);
             //Route::get('/addProject/', ['as' => 'main.account.addproject', 'uses' => 'AccountController@addProject']);
             Route::get('/phrase/', ['as' => 'main.account.phrase', 'uses' => 'AccountController@phrase']);
             Route::get('/add-project/', ['as' => 'main.account.add-project', 'uses' => 'ProjectController@addProject']);
             Route::post('/add-project/', ['as' => 'main.account.post-add-project', 'uses' => 'ProjectController@postAddProject']);
             Route::get('/languages/', ['as' => 'main.account.languages', 'uses' => 'ProjectController@languages']);
             Route::post('/languages/{id}', ['as' => 'main.account.post-languages', 'uses' => 'ProjectController@postLanguages']);
+            Route::post('/robot/{id}', ['as' => 'api.robot', 'uses' => 'ApiController@anyBing']);
         });
         
     });

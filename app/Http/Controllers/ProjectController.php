@@ -24,7 +24,7 @@ class ProjectController extends Controller
      */
     public function addProject()
     {
-        $langs = Language::all();
+        $langs = Language::orderBy('name')->get();
         $languages = [];
         foreach ($langs as $lang) {
             $languages[] = [

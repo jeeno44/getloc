@@ -31,7 +31,26 @@ return [
     'showTranslate'            => 'Посмотреть перевод',
     'orderTrans'               => 'Заказать перевод',
     'downloadFile'             => 'Скачать файл',
-    'offLang'                  => 'Отключенные языки'
-    
+    'offLang'                  => 'Отключенные языки',
+    /* phrase */
+    'noTranslate'              => 'Без перевода',
+    'inTranslate'              => 'Переведенные',
+    'inPublish'                => 'Опубликованные',
+    'archive'                  => 'Архив',
+    'orderTranslate'           => 'Заказать перевод',
+    'save'                     => 'Сохранить',
+    'cancel'                   => 'Отмена',
+    'cancelPublishing'         => 'Отменить публикацию',
+    'history'                  => 'История',
+    'useRobotTrans'            => 'Использовать машинный перевод',
+    'markHand'                 => 'Отметить как ручной',
+    'addComment'               => 'Добавить комментарий',
+    'more'                     => 'Подробнее',
+    'sendInArchive'            => 'Отправить в архив',
+    'all'                      => 'Все',
+    'publishing'               => 'Опубликовать',
+    'filters'                  => 'Фильтры',
+    'langs'                    => 'Языки',
+    'types_translates'         => 'Типы перевода'
     
 ];
