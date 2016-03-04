@@ -56,10 +56,19 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::resource('billing/plans', 'Admin\PlansController');
             Route::resource('billing/payments', 'Admin\PaymentsController');
             Route::resource('billing/subscriptions', 'Admin\SubscriptionsController');
+
         });
 
         Route::group(['middleware' => 'auth', 'prefix' => 'account'], function() {
             Route::get('/project-created/{id}', ['as' => 'main.account.project-created', 'uses' => 'ProjectController@projectCreated']);
+
+            Route::group(['prefix' => 'billing'], function() {
+                Route::get('/', ['as' => 'main.billing', 'uses' => 'BillingController@index']);
+                Route::get('/prepare/{id}', ['as' => 'main.billing.prepare', 'uses' => 'BillingController@prepare']);
+                Route::get('/upgrade/{id}', ['as' => 'main.billing.upgrade', 'uses' => 'BillingController@upgrade']);
+                Route::get('/success', ['as' => 'main.billing.success', 'uses' => 'BillingController@success']);
+                Route::get('/fail', ['as' => 'main.billing.fail', 'uses' => 'BillingController@fail']);
+            });
         });
     });
 

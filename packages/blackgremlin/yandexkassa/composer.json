@@ -1,0 +1,12 @@
+{
+    "name": "blackgremlin/yandexkassa",
+    "description": "Yandex kassa payment package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andrey Malygin",
+            "email": "hello@andrey-malygin.ru"
+        }
+    ],
+    "require": {}
+}

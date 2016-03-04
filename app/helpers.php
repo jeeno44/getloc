@@ -181,3 +181,21 @@ function getLanguagesJson()
     }
     return json_encode(['languages' => $languages]);
 }
+
+/**
+ * Название статуса по ключу
+ * @param string $key
+ * @return string
+ */
+function getStatus($key)
+{
+    $statuses = [
+        'new'           => '<span class="label label-info">Новый</span>',
+        'confirmed'     => '<span class="label label-success">Обработан</span>',
+        'canceled'      => '<span class="label label-default">Отменен</span>'
+    ];
+    if (!empty($statuses[$key])) {
+        return $statuses[$key];
+    }
+    return '';
+}

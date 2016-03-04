@@ -11,7 +11,7 @@
 
 @section('content')
 {!! Form::model($user, ['url' => 'admin/users/'.$user->id, 'method' => 'PUT']) !!}
-<div class="block">
+<div class="block block-bordered">
     <div class="block-header">
         <h3 class="block-title">Основная информация</h3>
     </div>

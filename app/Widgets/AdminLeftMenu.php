@@ -49,9 +49,26 @@ class AdminLeftMenu
                     ],
                 ]
             ],
-            'Биллинг...' => [
+            'Биллинг' => [
                 'icon'  => 'fa fa-money',
-                'uri'   => 'admin',
+                'uri'   => 'admin/billing',
+                'items' => [
+
+                    'Тарифные планы' => [
+                        'icon'  => 'si si-equalizer',
+                        'uri'   => 'admin/billing/plans',
+                    ],
+
+                    'Подписки' => [
+                        'icon'  => 'fa fa-shopping-cart',
+                        'uri'   => 'admin/billing/subscriptions',
+                    ],
+
+                    'История платежей' => [
+                        'icon'  => 'fa fa-history',
+                        'uri'   => 'admin/billing/payments',
+                    ],
+                ]
             ],
         ];
 

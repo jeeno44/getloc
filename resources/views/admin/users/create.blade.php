@@ -6,7 +6,7 @@
 
 @section('content')
 {!! Form::open(['url' => 'admin/users/']) !!}
-<div class="block">
+<div class="block block-bordered">
     <div class="block-header">
         <h3 class="block-title">Основная информация</h3>
     </div>

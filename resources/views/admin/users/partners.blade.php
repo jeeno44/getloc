@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-    <div class="block">
+    <div class="block block-bordered">
         <div class="block-content">
             <table class="table">
                 <thead>
