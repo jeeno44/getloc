@@ -148,7 +148,7 @@ class ApiController extends Controller
             ]);
             if (!empty($langs)) {
                 foreach ($langs as $lang) {
-                    if (!$site->hasLanguage($lang)) {
+                    if (!empty($lang) && !$site->hasLanguage($lang)) {
                         $site->languages()->attach($lang);
                     }
                 }
