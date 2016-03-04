@@ -154,25 +154,14 @@
                                     <input type="tel" id="discount__phone"/>
                                 </fieldset>
                                 <fieldset class="discount__language">
-                                    <div class="discount__selects-language" data-language='{
-                                        "languages": [
-                                            {
-                                                "id": 1,
-                                                "name": "Английский",
-                                                "src": "img/icons-en.png"
-                                            },
-                                            {
-                                                "id": 2,
-                                                "name": "Русский",
-                                                "src": "img/icons-en.png"
-                                            },
-                                            {
-                                                "id": 3,
-                                                "name": "Украинский",
-                                                "src": "img/icons-ua.png"
-                                            }
-                                        ]
-                                        }'>
+                                    <label>Язык перевода *</label>
+                                    <div class="discount__selects-language" data-language='{{getLanguagesJson()}}'>
+                                        <div class="discount__language-wrapper">
+                                            <select name="lang_1" id="lang_1" required>
+                                                <option value="0">Выберите язык</option>
+                                            </select>
+                                            <a href="#" class="discount__languadge-add">Добавить язык перевода</a>
+                                        </div>
                                     </div>
                                 </fieldset>
                                 <button class="btn btn_discount">

@@ -63,7 +63,7 @@ class HomeController extends Controller
             $message->to($data['email'])->subject('Вы узнаете о запуске сервиса одним из первых!');
         });
         WebForm::create($data);
-        sendApiQuery(route('api.add-site'), ['url' => $data['site'], 'user_id' => $user->id]);
+        sendApiQuery(route('api.add-site'), ['url' => $data['site'], 'user_id' => $user->id, 'languages' => $data['language']]);
         return route('scan.main');
     }
 }

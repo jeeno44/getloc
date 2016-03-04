@@ -236,25 +236,7 @@
                             </fieldset>
                             <fieldset class="discount__language">
                                 <label>Язык перевода *</label>
-                                <div class="discount__selects-language" data-language='{
-                                        "languages": [
-                                            {
-                                                "id": 1,
-                                                "name": "Английский",
-                                                "src": "/assets/img/icons-en.png"
-                                            },
-                                            {
-                                                "id": 2,
-                                                "name": "Русский",
-                                                "src": "/assets/img/icons-en.png"
-                                            },
-                                            {
-                                                "id": 3,
-                                                "name": "Украинский",
-                                                "src": "/assets/img/icons-ua.png"
-                                            }
-                                        ]
-                                        }'>
+                                <div class="discount__selects-language" data-language='{{getLanguagesJson()}}'>
                                     <div class="discount__language-wrapper">
                                         <select name="lang_1" id="lang_1" required>
                                             <option value="0">Выберите язык</option>

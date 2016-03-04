@@ -58,7 +58,7 @@
                         файлов локализаций.
                     </div>
                 </div>
-                <div class="discount__selects-language " data-language='{"languages":{!!$languages!!}}'>
+                <div class="discount__selects-language " data-language='{{getLanguagesJson()}}'>
                     <div class="discount__language-wrapper">
                         <select name="lang_1" id="lang_1"  required>
                             <option value="0">Выберите язык</option>
@@ -77,7 +77,7 @@
                         файлов локализаций.
                     </div>
                 </div>
-                <div class="discount__selects-language discount__selects-language_2" data-language='{"languages":{!!$languages!!}}'>
+                <div class="discount__selects-language discount__selects-language_2" data-language='{{getLanguagesJson()}}'>
 
                     <div class="discount__language-wrapper">
                         <select name="lang_1" id="lang_3" required>

@@ -128,22 +128,31 @@ class ApiController extends Controller
     public function createSite(Request $request)
     {
         $url = $request->get('url');
+        $langs = $request->get('languages');
         $url = prepareUri($url);
         $site = Site::where('url', $url)->first();
         if (empty($site)) {
             $defaultLang = Language::where('short', 'ru')->first();
-            $site = Site::create([
+            $site = new Site([
                 'url'   => $url,
                 'name'  => $url,
                 'user_id'   => $request->get('user_id'),
                 'secret'    => str_random(32),
                 'language_id'   => $defaultLang->id,
             ]);
+            $site->save();
             Page::create([
                 'url'       => $url,
                 'site_id'   => $site->id,
                 'code'      => 200,
             ]);
+            if (!empty($langs)) {
+                foreach ($langs as $lang) {
+                    if (!$site->hasLanguage($lang)) {
+                        $site->languages()->attach($lang);
+                    }
+                }
+            }
         }
         $this->dispatch(new \App\Jobs\Spider($site));
     }

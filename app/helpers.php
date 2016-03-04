@@ -164,3 +164,20 @@ function calculateEndAt(\App\User $user, \App\Plan $newPlan)
 {
    
 }
+
+/**
+ * Списко языков в формате json
+ * @return string
+ */
+function getLanguagesJson()
+{
+    $languages = [];
+    foreach (\App\Language::all() as $lang) {
+        $languages[] = [
+            'id' => $lang->id,
+            'name'  => $lang->name,
+            'src' => '/icons/'.$lang->icon_file,
+        ];
+    }
+    return json_encode(['languages' => $languages]);
+}
