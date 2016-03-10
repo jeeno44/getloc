@@ -5,6 +5,7 @@
         @include('partials.account-menu')
     </aside>
     <div class="inside-content">
+        <a class="" href="{{route('main.account.project-remove', ['id' => Session::get('projectID')])}}">Удалить проект</a>
         <div class="statistic inside-content__wrap">
             <ul class="statistic__numbers">
                 <li>
@@ -55,23 +56,26 @@
                 <span class="project__status">Новые переведенные фразы сразу публикуются</span>
             </div>
         </div>
-        <div class="tariff inside-content__wrap">
-            <div class="inside-content__title">
-                <h2>Тарифный план</h2>
-                <a href="#" class="inside-content__tune">Изменить</a>
+        <?php $sub = Auth::user()->subscription()->first()?>
+        @if ($sub)
+            <div class="tariff inside-content__wrap">
+                <div class="inside-content__title">
+                    <h2>Тарифный план</h2>
+                    <a href="{{route('main.billing')}}" class="inside-content__tune">Изменить</a>
+                </div>
+                <div class="tariff__info">
+                    {{$sub->plan->name}} –
+                    <span class="tariff__sum">{{$sub->plan->cost}}</span>
+                    р/мес
+                </div>
+                <div class="tariff__period">
+                    <p>Осталось
+                        <span class="tariff__days">{{Carbon\Carbon::now()->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $sub->ends_at))}}</span>
+                        до истечения оплаченного периода</p>
+                    <p><a href="#">Информация об оплате</a></p>
+                </div>
             </div>
-            <div class="tariff__info">
-                Простечковый совсем –
-                <span class="tariff__sum">500</span>
-                р/мес
-            </div>
-            <div class="tariff__period">
-                <p>Осталось
-                    <span class="tariff__days">13 дней</span>
-                    до истечения оплаченного периода</p>
-                <p><a href="#">Информация об оплате</a></p>
-            </div>
-        </div>
+        @endif
         <div class="translation inside-content__wrap">
             <div class="inside-content__title">
                 <h2>{{trans('account.napLang')}}</h2>

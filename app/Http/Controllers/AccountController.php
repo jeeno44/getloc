@@ -9,7 +9,7 @@
   |   =============================================
   |   Web: http://get-loc.ru/
   |   Email: <sultanden@gmail.com>
-  |   TODO: ДЕЛЕНИЕ НА НОЛЬ, проверка на наличие настройк
+  |   TODO: ДЕЛЕНИЕ НА НОЛЬ, проверка на наличие настройки, добавить проверку на наличие сайта везде
   +---------------------------------------------------------------------------
  */
 
@@ -61,6 +61,7 @@ class AccountController extends Controller
     public function selectProject()
     {
         $mySites = $this->sites;
+        Session::remove('projectID');
         return view('account.selectProject', compact('mySites'));
     }
     
@@ -100,23 +101,25 @@ class AccountController extends Controller
     
     public function projectOverview()
     {
-        if ( !Session::get('projectID') )
-          {
-            return redirect(URL::route('main.account.selectProject'));  
-          }
-        
         $siteID   = Session::get('projectID');
+        $site     = Site::find($siteID);
+        if (!$siteID || !$site) {
+            return redirect(URL::route('main.account.selectProject'));  
+        }
         $ccBlocks = Block::where('site_id', $siteID)->count();
-        
-        $stats = array(
-            'ccBlocks'   => Block::where('site_id', $siteID)->count(),
-            'ccPages'    => Page::where('site_id', $siteID)->count(),
-            'listLangs'  => Site::find($siteID)->languages()->orderBy('name')->get(),
-            'lineGraph'  => $this->lineStatistics($siteID, $ccBlocks),
-            'langStats'  => $this->getStatusLangs($siteID, $ccBlocks)
-        );
-        
-        return view('account.overview', compact('sites', 'stats'));
+
+        if (Page::where('site_id', $siteID)->count() == Page::where('site_id', $siteID)->where('collected', 1)->count()) {
+            $stats = array(
+                'ccBlocks'   => Block::where('site_id', $siteID)->count(),
+                'ccPages'    => Page::where('site_id', $siteID)->count(),
+                'listLangs'  => $site->languages()->orderBy('name')->get(),
+                'lineGraph'  => $this->lineStatistics($siteID, $ccBlocks),
+                'langStats'  => $this->getStatusLangs($siteID, $ccBlocks)
+            );
+            return view('account.overview', compact('sites', 'stats'));
+        }
+        $pages = $site->pages()->paginate(20);
+        return view('account.waiting', compact('sites', 'site', 'pages'));
     }
     
     /**

@@ -26,7 +26,7 @@
                     <a class="add-code__links" href="#">Руководством по интеграции</a>
                 </li>
             </ul>
-            <a href="#" class="btn btn_2">Начать работать с проектом</a>
+            <a href="{{route('main.account')}}" class="btn btn_2">Начать работать с проектом</a>
         </div>
     </div>
 @stop

@@ -126,6 +126,7 @@ return [
     'page'                      => 'Страница',
     'page_done'                 => 'Обработана',
     'server_error'              => 'Ошибка сервера:',
+    'in_process'               => 'В обработке',
 
     /* emails */
 

@@ -91,7 +91,24 @@ class ProjectController extends Controller
         if (empty($site) || $site->user_id != $this->user->id) {
             abort(404);
         }
+        \Session::set('projectID', $site->id);
         return view('project.created', compact('site'));
+    }
+
+    /**
+     * Удаление проекта
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function projectRemove($id)
+    {
+        $site = Site::find($id);
+        if (empty($site) || $site->user_id != $this->user->id) {
+            abort(404);
+        }
+        $site->delete();
+        \Session::remove('projectID');
+        return redirect()->route('main.account');
     }
 
     public function languages()
@@ -100,7 +117,7 @@ class ProjectController extends Controller
             return redirect()-route('main.account.selectProject');
         }
         $site  = Site::find($siteID);
-        $langs = Language::where('id', '!=', $site->language_id)->get();
+        $langs = Language::where('id', '!=', $site->language_id)->whereNotIn('id', $site->languages()->lists('id')->toArray())->get();
         return view('project.languages', compact('site', 'langs'));
     }
 

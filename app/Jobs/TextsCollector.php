@@ -83,7 +83,7 @@ class TextsCollector extends Job implements ShouldQueue
                         $this->makeBlock($element, $page, $tag);
                     }
                 }
-
+                $this->scanCurveTexts($page, $content);
                 $page->collected = 1;
             } else {
                 $page->code = 500;
@@ -222,6 +222,21 @@ class TextsCollector extends Job implements ShouldQueue
         }
 
         return true;
+    }
+
+    public function scanCurveTexts($page, $content)
+    {
+        $pattern = '/>[a-zа-я0-9\.\,\s\;\:\?\$\%\№\"«»\+\-\!]+</ui';
+        preg_match_all($pattern, $content, $matches);
+        foreach ($matches[0] as $key => $value) {
+            $item = trim($value, '><');
+            $item = trim($item);
+            if (!empty($item)) {
+                $item = str_replace(["\r", "\n"], ' ', $item);
+                $item = trim($item);
+                $this->createBlock($item, $page, 'curve');
+            }
+        }
     }
 
 }
