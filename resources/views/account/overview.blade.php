@@ -88,7 +88,7 @@
                     <span class="translation__num">{{$lang['cc']}} / {{$lang['ccb']}}</span>
                     {{Lang::choice('account.phrases', $lang['cc'])}}
                 </div>
-                <div class="translation__status @if ($lang['per'] == 100)done @endif">
+                <div class="translation__status @if ($lang['per'] == 100)status-done @endif">
                     <div style="width: {{$lang['per']}}%"></div>
                 </div>
             </div>
