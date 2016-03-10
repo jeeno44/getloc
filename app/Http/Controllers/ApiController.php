@@ -14,6 +14,15 @@ use App\Http\Controllers\Controller;
 
 class ApiController extends Controller
 {
+    
+    /**
+     * 
+     * @TODO: cache...
+     * 
+     * @param Request $request
+     * @return type
+     */
+    
     public function anyTranslate(Request $request)
     {
         extract($request->only(['secret', 'uri', 'lang', 'callback']));
@@ -39,6 +48,7 @@ class ApiController extends Controller
                 if (empty($lang)) {
                     return \Response::json(['errors' => ['Language is invalid']]);
                 } else {
+                    \Cache::forget($secret.'_'.$page->id.'_'.$lang->id);
                     $response = \Cache::rememberForever($secret.'_'.$page->id.'_'.$lang->id, function() use ($lang, $site, $page) {
                         $response = [];
                         $response['errors'] = [];
