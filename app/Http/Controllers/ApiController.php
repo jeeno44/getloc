@@ -57,6 +57,7 @@ class ApiController extends Controller
                         } else {
                             $blocks = $page->blocks()->join('translates', 'blocks.id', '=', 'translates.block_id')
                                 ->where('translates.language_id', $lang->id)
+                                ->where('blocks.enabled', 1)
                                 ->select('blocks.text', 'translates.id as tid', 'translates.text as ttext')
                                 ->get();
                             foreach ($blocks as $block)
@@ -68,7 +69,7 @@ class ApiController extends Controller
                                 }
                             }
                         }
-                        $response['available_languages'] = $site->languages()->lists('name', 'short')->toArray();
+                        $response['available_languages'] = $site->languages()->where('enabled', 1)->lists('name', 'short')->toArray();
                         $response['available_languages'][$site->language->short] = $site->language->name;
                         return $response;
                     });

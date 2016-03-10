@@ -22,7 +22,7 @@
                         <div class="statistic__line">
                             @foreach ($lang as $graph)
                                 <div class="statistic__line-0{{$graph['i']}}" style="width: {{$graph['per']}}%">
-                                    <span class="statistic__line-number">{{$graph['cc']}}</span>
+                                    <span class="statistic__line-number">@if ($graph['cc'] != 0){{$graph['cc']}}@endif</span>
                                     <span class="statistic__line-popup">{{trans('account.'.$graph['name'])}}</span>
                                 </div>
                             @endforeach
@@ -88,7 +88,7 @@
                     <span class="translation__num">{{$lang['cc']}} / {{$lang['ccb']}}</span>
                     {{Lang::choice('account.phrases', $lang['cc'])}}
                 </div>
-                <div class="translation__status">
+                <div class="translation__status @if ($lang['per'] == 100)done @endif">
                     <div style="width: {{$lang['per']}}%"></div>
                 </div>
             </div>
