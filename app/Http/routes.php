@@ -69,6 +69,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
  */
 Route::group(['domain' => 'api.'.$domain], function () {
     Route::any('/add-site', ['as' => 'api.add-site', 'uses' => 'ApiController@createSite']);
+    Route::any('/translate', ['as' => 'api.translate', 'uses' => 'ApiController@anyTranslate']);
 });
 
 require_once 'andy_routes.php';
