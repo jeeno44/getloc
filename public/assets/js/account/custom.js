@@ -23,8 +23,24 @@ $(function(){
         });
     })
     
+    $('#setViewTypeID_1').click(function(){setFilterShow(1)});
+    $('#setViewTypeID_2').click(function(){setFilterShow(2)});
+    
+    $('#check').click(function(){
+        $(".checkboxPhrase").prop('checked', $(this).prop("checked"));
+    });
+    
+    $('#check-all-phrases').click(function(){
+        setStatusBlock(1)
+    })
+    
+    $('#nopublishing').click(function(){
+        setStatusBlock(2)
+    })
+        
     $('.go_robot').click(function(){
         var id = $(this).attr('data-id')
+        var ob = $(this)
         $.ajax({
             url     : "/account/robot/" + id,
             type    : 'post',
@@ -33,7 +49,54 @@ $(function(){
             success : function(res)
             {
                 $('#order_'+id).val(res).css('height', '50px')
+                if ( ob.hasClass('isLinkMoreMenu') )
+                  {
+                    alert('Готово')
+                  }
             }
         });
     })
 })
+
+setStatusBlock = function(status)
+{
+    var data = {status: status, ids: []}
+    $(".checkboxPhrase:checked").each(function(){
+        data['ids'].push($(this).val());
+    })
+    
+    $.ajax({
+        url     : "/account/setStatusBlock/",
+        type    : 'post',
+        data    : data,
+        success : function()
+        {
+            window.location.reload();
+        }
+    });
+}
+
+setFilterShow = function(typeViewID)
+{
+    $.ajax({
+        url     : "/account/setTypeView/",
+        type    : 'post',
+        data    : {typeViewID: typeViewID},
+        success : function()
+        {
+            window.location.reload()
+        }
+    });
+}
+
+markHandTranslate = function(id)
+{
+    $.ajax({
+        url     : "/account/markHandTranslate/" + id,
+        type    : 'post',
+        success : function()
+        {
+            alert('Готово')
+        }
+    });
+}

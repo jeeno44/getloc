@@ -74,37 +74,25 @@
         </div>
         <div class="translation inside-content__wrap">
             <div class="inside-content__title">
-                <h2>Направления перевода</h2>
-                <a href="#" class="inside-content__tune">Управление языками</a>
+                <h2>{{trans('account.napLang')}}</h2>
+                <a href="#" class="inside-content__tune">{{trans('account.controlLangs')}}</a>
             </div>
+            @foreach ($stats['langStats'] as $short => $lang)
             <div class="translation__item">
                 <div class="translation__language">
                     <span class="translation__language-flag" style="background-image: url('/assets/img/account/icons-en.png')"></span>
-                    Немецкий
+                    {{$lang['name']}}
                 </div>
                 <div class="translation__info">
-                    Переведено
-                    <span class="translation__num">200 / 3298</span>
-                    фраз
+                    {{trans('account.inProcTranslated')}}
+                    <span class="translation__num">{{$lang['cc']}} / {{$lang['ccb']}}</span>
+                    {{Lang::choice('account.ccPages', $lang['cc'])}}
                 </div>
                 <div class="translation__status">
-                    <div style="width: 62%"></div>
+                    <div style="width: {{$lang['per']}}%"></div>
                 </div>
             </div>
-            <div class="translation__item">
-                <div class="translation__language">
-                    <span class="translation__language-flag" style="background-image: url('/assets/img/account/icons-en.png')"></span>
-                    Японский
-                </div>
-                <div class="translation__info">
-                    Переведено
-                    <span class="translation__num">17263 / 17263</span>
-                    фраз
-                </div>
-                <div class="translation__status status-done">
-                    <div style="width: 100%"></div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 @stop

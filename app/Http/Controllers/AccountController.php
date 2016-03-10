@@ -14,17 +14,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests,
-    App\Site,
+use App\Site,
     App\Page,
     URL,
-    App\User,
     Session,
     DB,
     App\Block,
     App\Translate,
     App\TypeTranslate,
-    Auth,
     App\Language,
     Illuminate\Http\Request;
 
@@ -107,16 +104,43 @@ class AccountController extends Controller
             return redirect(URL::route('main.account.selectProject'));  
           }
         
-        $siteID = Session::get('projectID');
- 
+        $siteID   = Session::get('projectID');
+        $ccBlocks = Block::where('site_id', $siteID)->count();
+        
         $stats = array(
             'ccBlocks'   => Block::where('site_id', $siteID)->count(),
             'ccPages'    => Page::where('site_id', $siteID)->count(),
             'listLangs'  => Site::find($siteID)->languages()->orderBy('name')->get(),
-            'lineGraph'  => $this->lineStatistics($siteID, Block::where('site_id', $siteID)->count())
+            'lineGraph'  => $this->lineStatistics($siteID, $ccBlocks),
+            'langStats'  => $this->getStatusLangs($siteID, $ccBlocks)
         );
         
         return view('account.overview', compact('sites', 'stats'));
+    }
+    
+    /**
+     * Получаем статистику по направлению переведовов
+     * 
+     * @param  int $siteID
+     * @param  int $allCountBlocks
+     * @return array
+     * @access public
+     */
+    
+    private function getStatusLangs($siteID, $allCountBlocks)
+    {
+        $stats = array();
+        $langs = Site::find($siteID)->languages()->orderBy('name')->get();
+        
+        foreach ( $langs as $lang )
+        {
+            $ccTranslate = Translate::where('site_id', $siteID)->where('language_id', $lang->id)->whereNotNull('type_translate_id')->count();
+            $graph       = round(($ccTranslate/$allCountBlocks) * 100);
+            
+            $stats[$lang->short] = array('name' => $lang->name, 'per' => $graph, 'cc' => $ccTranslate, 'ccb' => $allCountBlocks);
+        }
+        
+        return $stats;
     }
     
     /**
@@ -140,12 +164,13 @@ class AccountController extends Controller
             $dynamicStats          = DB::table('translates')->join('types_translates', 'translates.type_translate_id', '=', 'types_translates.id')
                                                             ->select('types_translates.name', DB::raw('count(*) as cc'))
                                                             ->where('site_id', $siteID)
+                                                            ->where('language_id', $lang->id)
                                                             ->groupBy('translates.type_translate_id')
                                                             ->lists('cc','types_translates.name'); //Остальные типы
             $_lines                = array_merge($dynamicStats, $stats);
             $lines                 = array();
             $iter                  = 1;
-           
+            
             foreach ( $_lines as $key => $line )
             {
                 if ( $allCountBlocks == 0 )
@@ -166,7 +191,7 @@ class AccountController extends Controller
             
             $data[$lang->name] = $lines;
         }
-        
+
         return $data;
         
     }
@@ -333,6 +358,7 @@ class AccountController extends Controller
    }
    
    /**
+    * Показываем виджет
     * 
     * @param  void
     * @return string
@@ -352,59 +378,254 @@ class AccountController extends Controller
    }
    
    /**
-    * @param  Request $request
-    * @return string
-    * @param  void
+    * Генерируем статистику для фильтра во фразах
+    * 
+    * @param  int $siteID
+    * @param  int $languageID
+    * @return array
+    * @access public
     */
    
-   public function phrase(Request $request)
+   private function generateStatsForPhraseFilter($siteID, $languageID)
    {
-       $siteID = Session::get('projectID');
+       $filter = array();
        
-       if ( !$siteID )
-            return redirect(URL::route('main.account.selectProject'));  
+       $filter['stats']['menu']          = array(1 => 0, 2 => 0, 3 => 0);
+       $filter['stats']['in_translate']  = Translate::where('site_id', $siteID)->where('language_id', $languageID)->whereNotNull('type_translate_id')->count(); //Сколько переведено в этом языке
+       $filter['stats']['not_translate'] = Translate::where('site_id', $siteID)->where('language_id', $languageID)->where('type_translate_id', NULL)->count(); //Не переведено в этом языке
+       $filter['stats']['publish']       = Block::where('site_id', $siteID)->where('enabled', 1)->count();
+       $filter['stats']['all']           = DB::table('translates')->join('types_translates', 'translates.type_translate_id', '=', 'types_translates.id')
+                                                                  ->select('types_translates.id', DB::raw('count(*) as cc'))
+                                                                  ->where('site_id', $siteID)
+                                                                  ->where('language_id', $languageID)
+                                                                  ->groupBy('translates.type_translate_id')
+                                                                  ->get();
        
-       $language_id = Site::find($siteID)->languages()->where('enabled', true)->orderBy('id')->first()->id;
-       $stats       = array();
+       foreach ( $filter['stats']['all'] as $key => $val )
+            $filter['stats']['menu'][$val->id] = $val->cc;
        
-       $stats['menu']          = array(1 => 0, 2 => 0, 3 => 0);
-       $stats['in_translate']  = Translate::where('site_id', $siteID)->where('language_id', $language_id)->whereNotNull('type_translate_id')->count(); //Сколько переведено в этом языке
-       $stats['not_translate'] = Translate::where('site_id', $siteID)->where('language_id', $language_id)->where('type_translate_id', NULL)->count(); //Не переведено в этом языке
-       $stats['publish']       = Block::where('site_id', $siteID)->count();
-       $stats['all']           = DB::table('translates')->join('types_translates', 'translates.type_translate_id', '=', 'types_translates.id')
-                                                        ->select('types_translates.id', DB::raw('count(*) as cc'))
-                                                        ->where('site_id', $siteID)
-                                                        ->groupBy('translates.type_translate_id')
-                                                        ->get();
-       foreach ( $stats['all'] as $key => $val )
-            $stats['menu'][$val->id] = $val->cc;
-       
-       $stats['all']           = array_sum(array_values($stats['all'])); //gospodi, kak ya vse delau
-       $colors                 = [1 => array('block' => 'blue', 'hex' => '#18baea'), 
+       $filter['stats']['all'] = array_sum(array_values($filter['stats']['menu'])); 
+       $filter['colors']       = [1 => array('block' => 'blue', 'hex' => '#18baea'), 
                                   2 => array('block' => 'green', 'hex' => '#70d579'), 
                                   3 => array('block' => 'orange', 'hex' => '#ffa630')];
        
-       $menu = array();
+       $filter['menu'] = array();
        
-       $menu['langs']       = Site::find($siteID)->languages()->where('enabled', true)->orderBy('name')->get(); //Доступные языки
-       $menu['types']       = TypeTranslate::orderBy('id')->get();
-       $menu['active_lang'] = $language_id;
+       $filter['menu']['langs']       = Site::find($siteID)->languages()->where('enabled', true)->orderBy('name')->get(); //Доступные языки
+       $filter['menu']['types']       = TypeTranslate::orderBy('id')->get();
+       $filter['menu']['active_lang'] = $languageID;
+       $filter['menu']['active_type'] = Session::get('filter')['typeID'];
        
+       foreach ( $filter['menu']['langs'] as $lang )
+       {
+           $ccNull  = Translate::where('site_id', $siteID)->where('language_id', $lang->id)->whereNotNull('type_translate_id')->count(); 
+           $ccTrans = Translate::where('site_id', $siteID)->where('language_id', $lang->id)->count();
+           
+           $filter['stats']['proc'][$lang->id] = round(($ccNull/$ccTrans) * 100);
+       }
        
-       $translates = Translate::where('translates.site_id', $siteID)
-                              ->where('translates.language_id', $language_id)
+       return $filter;
+   }
+  
+   /**
+    * Установка фильтра во фразах и редирект в нужный таб, на первую страницу
+    * 
+    * @param  Request $request
+    * @return \Illuminate\Http\RedirectResponse
+    * @access public
+    */
+   
+   public function setFilterPharse(Request $request)
+   {
+       $filter = $request->get('filter');
+       $tab    = $request->get('view_page');
+       
+       Session::set('filter', $filter);
+       
+       if ( $request->get('clearFilter') )
+           Session::set('filter', NULL);
+       
+       return redirect()->back();
+   }
+
+   /**
+    * Без перевода, первый таб.
+    * @TODO: Команды
+    * 
+    * @param  Request $request
+    * @return string
+    * @access public
+    */
+   
+   public function phraseNotTranslatesTab(Request $request)
+   {
+       $siteID      = Session::get('projectID');
+       $tab_name    = 'not_translated';
+       $viewType    = Session::get('typeViewID', 1);
+       
+       if ( !$siteID )
+           return redirect(URL::route('main.account.selectProject'));  
+       
+       $languageID = Session::get('filter')['languageID'];
+       
+       if ( !$languageID )
+           $languageID = Site::find($siteID)->languages()->where('enabled', true)->orderBy('id')->first()->id;
+              
+       $filter     = $this->generateStatsForPhraseFilter($siteID, $languageID);
+       $buildQuery = Translate::where('translates.site_id', $siteID)
+                              ->where('translates.language_id', $languageID)
+                              ->where('translates.type_translate_id', NULL)
+                              ->leftJoin('blocks', 'blocks.id', '=', 'translates.block_id')
+                              ->leftJoin('types_translates', 'types_translates.id', '=', 'translates.type_translate_id')
+                              ->orderBy('translates.id')
+                              ->select('translates.id as tid', 'blocks.enabled as enabled', 'translates.*',
+                                     'types_translates.name as name_translate', DB::raw('date_format(translates.updated_at, "%h:%i") as time'),
+                                     DB::raw('date_format(translates.updated_at, "%Y-%m-%d") as date'), 'blocks.text as original');
+       
+       $blocks = $buildQuery->paginate(25);
+                                  
+       return view('account.phrase', compact('tab_name', 'blocks', 'filter', 'viewType'));
+   }
+   
+   /**
+    * Переведенные, второй таб
+    * @TODO: Команды
+    * 
+    * @param  Request $request
+    * @return string
+    * @access public
+    */
+   
+   public function phraseTranslatesTab(Request $request)
+   {
+       $siteID      = Session::get('projectID');
+       $tab_name    = 'translated';
+       $viewType    = Session::get('typeViewID', 1);
+       
+       if ( !$siteID )
+           return redirect(URL::route('main.account.selectProject'));  
+       
+       $languageID = Session::get('filter')['languageID'];
+       
+       if ( !$languageID )
+           $languageID = Site::find($siteID)->languages()->where('enabled', true)->orderBy('id')->first()->id;
+       
+       $filter     = $this->generateStatsForPhraseFilter($siteID, $languageID);
+       $buildQuery = Translate::where('translates.site_id', $siteID)
+                              ->where('translates.language_id', $languageID)
+                              ->whereNotNull('translates.type_translate_id')
                               ->leftJoin('blocks', 'blocks.id', '=', 'translates.block_id')
                               ->leftJoin('types_translates', 'types_translates.id', '=', 'translates.type_translate_id')
                               ->orderBy('translates.id')
                               ->select('translates.id as tid', 'blocks.enabled as enabled', 'translates.*',
                                        'types_translates.name as name_translate', DB::raw('date_format(translates.updated_at, "%h:%i") as time'),
-                                       DB::raw('date_format(translates.updated_at, "%Y-%m-%d") as date'), 'blocks.text as original')
-                              ->paginate(25);
+                                       DB::raw('date_format(translates.updated_at, "%Y-%m-%d") as date'), 'blocks.text as original');
        
+       if ( Session::get('filter')['typeID'] )
+           $buildQuery->where('translates.type_translate_id', '=', Session::get('filter')['typeID']);  
        
-       return view('account.phrase', compact('languages_enabled', 'translates', 'colors', 'stats', 'menu'));
+       $blocks = $buildQuery->paginate(25);
+                                  
+       return view('account.phrase', compact('tab_name', 'blocks', 'filter', 'viewType'));
    }
    
+   /**
+    * Опубликованные, третий таб
+    * @TODO: Команды
+    * 
+    * @param  Request $request
+    * @return string
+    * @access public
+    */
+   
+   public function phrasePublishingTab(Request $request)
+   {
+       $siteID      = Session::get('projectID');
+       $tab_name    = 'published';
+       $viewType    = Session::get('typeViewID', 1);
+       
+       if ( !$siteID )
+           return redirect(URL::route('main.account.selectProject'));  
+       
+       $languageID = Session::get('filter')['languageID'];
+       
+       if ( !$languageID )
+           $languageID = Site::find($siteID)->languages()->where('enabled', true)->orderBy('id')->first()->id;
+       
+       $filter     = $this->generateStatsForPhraseFilter($siteID, $languageID);
+       $buildQuery = Translate::where('translates.site_id', $siteID)
+                              ->where('translates.language_id', $languageID)
+                              ->where('blocks.enabled', '=', 1)
+                              ->leftJoin('blocks', 'blocks.id', '=', 'translates.block_id')
+                              ->leftJoin('types_translates', 'types_translates.id', '=', 'translates.type_translate_id')
+                              ->orderBy('translates.id')
+                              ->select('translates.id as tid', 'blocks.enabled as enabled', 'translates.*',
+                                       'types_translates.name as name_translate', DB::raw('date_format(translates.updated_at, "%h:%i") as time'),
+                                       DB::raw('date_format(translates.updated_at, "%Y-%m-%d") as date'), 'blocks.text as original');
+       
+       if ( Session::get('filter')['typeID'] )
+           $buildQuery->where('translates.type_translate_id', '=', Session::get('filter')['typeID']);  
+       
+       $blocks = $buildQuery->paginate(25);
+                                  
+       return view('account.phrase', compact('tab_name', 'blocks', 'filter', 'viewType'));
+   }
+   
+   /**
+    * Архив блоков и переводов, крайний таб.
+    * TODO: уточнить все детали у АЛ.
+    * @TODO: Команды
+    * 
+    * @param  Request $request
+    * @return string
+    * @access public
+    */
+   
+   public function phraseArchiveTab(Request $request)
+   {
+       return '';
+   }   
+   
+   /**
+    * Опубликовать или нет [AJAX]
+    * 
+    * @param  Request $request
+    * @return void
+    * @access public
+    */
+   
+   public function turnStatusPublishing(Request $request)
+   {
+       $allowed_status = array(1, 0);
+       
+       $ids     = $request->get('ids', []);
+       $status  = $request->get('status');
+       
+       if ( !in_array($status, $allowed_status) )
+            $status = 0;
+       
+       DB::table('blocks')->whereIn('id', $ids)->update(array('enabled' => $status));
+   }
+   
+   /**
+    * Установка, как отображать фразы [AJAX]
+    * 
+    * @param  Request $request
+    * @return void
+    * @access public
+    */
+   
+   public function setTypeView(Request $request)
+   {
+       $allowed_type = array(1, 2);
+       $type         = $request->get('typeViewID', 1);
+       
+       if ( !in_array($type, $allowed_type) )
+            $type = 1;
+       
+       Session::set('typeViewID', $type);
+   }
+      
    /**
     * Ручной перевод [Ajax]
     * 
@@ -425,6 +646,21 @@ class AccountController extends Controller
         $trans->text              = $text;
         $trans->type_translate_id = 2;
         
+        $trans->save();
+   }
+   
+   /**
+    * Отмечаем как ручной перевод
+    * 
+    * @param  int $id
+    * @return void
+    * @access public
+    */
+   
+   public function markHandTranslate($id)
+   {
+        $trans = Translate::find($id);
+        $trans->type_translate_id = 2;
         $trans->save();
    }
    

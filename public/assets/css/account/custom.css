@@ -28,3 +28,7 @@
     color: #66d1f1;
     border-color: #66d1f1;
 }
+
+.magic_tabs {position: relative;}
+
+.phrases__control button.active:after {opacity: 1;}

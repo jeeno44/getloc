@@ -79,10 +79,21 @@ class ApiController extends Controller
         $page = Page::find($request->get('page'));
         \Cache::forget($page->site->secret.'_'.$page->id.'_'.$trans->language_id);
     }
-
+    
+    /**
+     * @TODO: Нужна чистка кэша, пока хз как это сделать
+     * 
+     * 
+     * @param type $id
+     * @return type
+     */
+    
     public function anyBing($id)
     {
-        $trans = Translate::find($id);
+        $trans    = Translate::find($id);
+        $langID   = Site::find($trans->block->site_id)->language_id;
+        $fromLang = Language::find($langID)->short;
+        
         #$page  = Page::find($request->get('page'));
         $clientID     = "blackgremlin2";
         $clientSecret = "SMnjwvLx0bB2u9Cn05K2vkTE1bSkX0+fsLp/23gsytU=";
@@ -94,13 +105,16 @@ class ApiController extends Controller
         $authHeader = "Authorization: Bearer ". $accessToken;
         $translatorObj = new \Blackgremlin\Microsofttranslator\HTTPTranslator();
         $inputStr = $trans->block->text;
-        $translateUri = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text=" .urlencode($inputStr). "&from=ru&to=".$trans->language->short;
+        $translateUri = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text=" .urlencode($inputStr). "&from=".$fromLang."&to=".$trans->language->short;
         $strResponse = $translatorObj->curlRequest($translateUri, $authHeader);
         $xmlObj = simplexml_load_string($strResponse);
         $text = strval($xmlObj[0]);
         $trans->text = $text;
         $trans->type_translate_id = 1;
         $trans->save();
+        
+        \Event::fire('site.changed', Site::find($trans->block->site_id));
+        
         #Todo: нету больше page-id, надо что-то переделать
         #\Cache::forget($page->site->secret.'_'.$page->id.'_'.$trans->language_id);
         return $text;

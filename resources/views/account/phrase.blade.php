@@ -8,20 +8,11 @@
     <div class="inside-content">
         <div class="phrases">
         <h1 class="site__title">Фразы проекта</h1>
-        @if (isset($languages_enabled))
-        <div style="margin: 10px 0;">
-            <p>Выберите язык: 
-            @foreach ($languages_enabled as $lang)
-            <a href="{{URL::route('main.account.showPhrase', $lang->id)}}">{{$lang->name}}</a>, 
-            @endforeach
-            </p>
-        </div>
-        @endif
-        <div class="tabs">
+        <div class="magic_tabs"{{-- class="tabs"--}}>
             <div class="tabs__links">
-                <a href="#tab-1">{{trans('account.noTranslate')}}<span>{{$stats['not_translate']}}</span></a>
-                <a href="#tab-2">{{trans('account.inTranslate')}}<span>{{$stats['in_translate']}}</span></a>
-                <a href="#">{{trans('account.inPublish')}}<span>{{$stats['publish']}} </span></a>
+                <a @if (Request::is('account/phrase') or Request::is('account/phrase/not_translated'))class="active" @endif href="{{URL::route('main.account.phrase1')}}">{{trans('account.noTranslate')}}<span>{{$filter['stats']['not_translate']}}</span></a>
+                <a @if (Request::is('account/phrase/translated'))class="active" @endif href="{{URL::route('main.account.phrase2')}}">{{trans('account.inTranslate')}}<span>{{$filter['stats']['in_translate']}}</span></a>
+                <a @if (Request::is('account/phrase/published'))class="active" @endif href="{{URL::route('main.account.phrase3')}}">{{trans('account.inPublish')}}<span>{{$filter['stats']['publish']}} </span></a>
                 <div class="tabs__links-archive">
                     <a href="#">{{trans('account.archive')}}</a>
                 </div>
@@ -32,18 +23,19 @@
                     <label for="check"></label>
                 </div>
                 <div class="phrases__control-inner">
-                    <button class="phrases__control-check"></button>
-                    <button class="phrases__control-delete"></button>
+                    <button id="check-all-phrases" class="phrases__control-check"></button>
+                    <button id="nopublishing" class="phrases__control-delete"></button>
                     <button class="phrases__control-attached"></button>
                 </div>
-                <button class="phrases__control-horizontal"></button>
-                <button class="phrases__control-column"></button>
+                <button id="setViewTypeID_1" class="phrases__control-horizontal @if ($viewType == 1) active @endif"></button>
+                <button id="setViewTypeID_2" class="phrases__control-column @if ($viewType == 2) active @endif"></button>
                 <a href="#" class="btn btn_3">{{trans('account.orderTranslate')}}</a>
             </div>
             <div class="tabs__content">
-                <div class="phrases__tab">
-                    @foreach ($translates as $t)
-                    <div class="phrases__item">
+                <div class="active" style="display: block;" class="phrases__tab">
+                    @foreach ($blocks as $t)
+                    @if ( $viewType == 2)
+                    <div class="phrases__item @if ($t->type_translate_id)phrases__item_mark-{{$filter['colors'][$t->type_translate_id]['block']}} @endif">
                         <div class="phrases__item-col">
                             {{$t->original}}
                         </div>
@@ -53,31 +45,48 @@
                                 <button class="save save_translate" object-id="{{$t->tid}}" type="submit">{{trans('account.save')}}</button>
                                 <button class="cancel">{{trans('account.cancel')}}</button>
                             </div>
-                            <!--phrases__item-btn-translate-->
-                            <button class="phrases__item-btn-translate go_robot" data-id="{{$t->tid}}">Использовать машинный перевод</button>
-                            <!--/phrases__item-btn-translate-->
+                            <button class="phrases__item-btn-translate go_robot" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button>
                         </form>
                         
                         <div class="phrases__item-controls">
-                            @if ($t->enabled)
                             <div class="nice-check">
-                                <input type="checkbox" id="publish_{{$t->tid}}">
-                                <label for="publish_{{$t->tid}}">{{trans('account.cancelPublishing')}}</label>
+                                <input type="checkbox" name="blocks[]" value="{{$t->block_id}}" class="checkboxPhrase" id="publish_{{$t->tid}}">
+                                <label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>
                             </div>
-                            @endif
                             @include('partials.account-menu-phrase', ['ob' => $t])
                         </div>
                     </div>
+                    @else
+                    <div class="phrases__item @if ($t->type_translate_id)phrases__item_mark-{{$filter['colors'][$t->type_translate_id]['block']}} @endif">
+                        <div class="phrases__item-col phrases__item-col_block">
+                            {{$t->original}}
+                        </div>
+                        <div class="phrases__item-col phrases__item-col_block phrases__item-col_translate">
+                            <textarea id="order_{{$t->tid}}" readonly>{{$t->text}}</textarea>
+                            <div class="phrases__item-col-btns">
+                                <button class="save save_translate" object-id="{{$t->tid}}" type="submit">{{trans('account.save')}}</button>
+                                <button class="cancel">{{trans('account.cancel')}}</button>
+                            </div>
+                            <button class="phrases__item-btn-translate go_robot" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button>
+                        </div>
+                        <div class="phrases__item-controls">
+                            <div class="nice-check">
+                                <input type="checkbox" name="blocks[]" value="{{$t->block_id}}" class="checkboxPhrase" id="publish_{{$t->tid}}">
+                                <label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>
+                            </div>
+                            @include('partials.account-menu-phrase', ['ob' => $t])
+                        </div>
+                    </div>
+
+                    @endif
+                    
                     @endforeach
-                    @if (isset($translates))
-                        {!! $translates->render() !!}
+                    @if (isset($blocks))
+                        {!! $blocks->render() !!}
                     @endif
                 </div>
-                <!--/phrases__tab-->
-                <div>
-                    dsadsa
-                </div>
             </div>
+            
             <!-- tabs__content -->
 
         </div>

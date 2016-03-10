@@ -23,6 +23,9 @@ return [
     'widget'                   => 'Виджет',
     'settingsProject'          => 'Настройки проекта',
     'myOrders'                 => 'Мои заказы',
+    'napLang'                  => 'Направления перевода',
+    'controlLangs'             => 'Управление языками',
+    'inProcTranslated'         => 'Переведено',
     /* select lang */
     'inProcTranslate'          => 'переведено',
     'notLangTrans'             => 'Не переведено',
@@ -51,6 +54,17 @@ return [
     'publishing'               => 'Опубликовать',
     'filters'                  => 'Фильтры',
     'langs'                    => 'Языки',
-    'types_translates'         => 'Типы перевода'
-    
+    'types_translates'         => 'Типы перевода',
+    'yan'                      => 'Января',
+    'feb'                      => 'Февраля',
+    'mar'                      => 'Марта',
+    'apr'                      => 'Апреля',
+    'may'                      => 'Мая',
+    'iun'                      => 'Июня',
+    'iul'                      => 'Июля',
+    'avg'                      => 'Августа',
+    'sem'                      => 'Сентября',
+    'okt'                      => 'Октября',
+    'noy'                      => 'Ноября',
+    'dec'                      => 'Декабря'
 ];

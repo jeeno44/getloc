@@ -6,10 +6,10 @@
                     <a href="#">{{trans('account.history')}}</a>
                 </li>
                 <li>
-                    <a class="active" href="#">{{trans('account.useRobotTrans')}}</a>
+                    <a class="go_robot isLinkMoreMenu" data-id="{{$ob->tid}}" href="javascript:void(0);">{{trans('account.useRobotTrans')}}</a>
                 </li>
                 <li>
-                    <a href="#">{{trans('account.markHand')}}</a>
+                    <a onclick="markHandTranslate({{$ob->tid}}); return false;" href="#">{{trans('account.markHand')}}</a>
                 </li>
                 <li>
                     <a href="#">{{trans('account.addComment')}}</a>
@@ -31,9 +31,9 @@
         <?php
         // TODO: i18n
         $monthes = array(
-            1 => 'января', 2 => 'февраля', 3 => 'марта', 4 => 'апреля',
-            5 => 'мая', 6 => 'июня', 7 => 'июля', 8 => 'августа',
-            9 => 'сентября', 10 => 'октября', 11 => 'ноября', 12 => 'декабря'
+            1 => trans('account.yan'), 2 => trans('account.feb'), 3 => trans('account.mar'), 4 => trans('account.apr'),
+            5 => trans('account.may'), 6 => trans('account.iun'), 7 => trans('account.iul'), 8 => trans('account.avg'),
+            9 => trans('account.sem'), 10 => trans('account.okt'), 11 => trans('account.noy'), 12 => trans('account.dec')
         );
         $month = date('d', strtotime($ob->date)) . ' ' .$monthes[(date('n', strtotime($ob->date)))] . ' ' . date('Y', strtotime($ob->date));
         echo $month;

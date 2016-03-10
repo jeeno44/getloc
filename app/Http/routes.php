@@ -30,18 +30,34 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             //Route::get('/languages', ['as' => 'main.account.languages', 'uses' => 'AccountController@projectLanguages']);
             Route::get('/projects', ['as' => 'main.account.selectProject', 'uses' => 'AccountController@selectProject']);
             Route::get('/setProjects/{id}', ['as' => 'main.account.setProject', 'uses' => 'AccountController@setProject']);
+            
             Route::post('/switchingLanguage', ['as' => 'main.account.switchLang', 'uses' => 'AccountController@turnLang']);
             Route::get('/addLanguage/', ['as' => 'main.account.addlang', 'uses' => 'AccountController@addLanguage']);
             Route::post('/addLanguage/', ['as' => 'main.account.postaddlang', 'uses' => 'AccountController@postAddLanguage']);
-            Route::post('/handTranslate/', ['as' => 'main.account.handTranslate', 'uses' => 'AccountController@handTranslate']);
+            
+            
             Route::get('/widget/', ['as' => 'main.account.widget', 'uses' => 'AccountController@widget']);
             //Route::get('/addProject/', ['as' => 'main.account.addproject', 'uses' => 'AccountController@addProject']);
-            Route::get('/phrase/', ['as' => 'main.account.phrase', 'uses' => 'AccountController@phrase']);
+            
+            Route::get('/phrase/not_translated', ['as' => 'main.account.phrase1', 'uses' => 'AccountController@phraseNotTranslatesTab']);
+            Route::get('/phrase/translated', ['as' => 'main.account.phrase2', 'uses' => 'AccountController@phraseTranslatesTab']);
+            Route::get('/phrase/published', ['as' => 'main.account.phrase3', 'uses' => 'AccountController@phrasePublishingTab']);
+            Route::get('/phrase/', ['as' => 'main.account.phrase', 'uses' => 'AccountController@phraseNotTranslatesTab']);
+            
             Route::get('/add-project/', ['as' => 'main.account.add-project', 'uses' => 'ProjectController@addProject']);
             Route::post('/add-project/', ['as' => 'main.account.post-add-project', 'uses' => 'ProjectController@postAddProject']);
             Route::get('/languages/', ['as' => 'main.account.languages', 'uses' => 'ProjectController@languages']);
             Route::post('/languages/{id}', ['as' => 'main.account.post-languages', 'uses' => 'ProjectController@postLanguages']);
+            
+            Route::post('/phrase/setFilter', ['as' => 'main.account.setFilter', 'uses' => 'AccountController@setFilterPharse']);
+            
+            /* ajax */
             Route::post('/robot/{id}', ['as' => 'api.robot', 'uses' => 'ApiController@anyBing']);
+            Route::post('/handTranslate/', ['as' => 'main.account.handTranslate', 'uses' => 'AccountController@handTranslate']);
+            Route::post('/setTypeView/', ['as' => 'main.account.setTypeView', 'uses' => 'AccountController@setTypeView']);
+            Route::post('/setStatusBlock/', ['as' => 'main.account.setStatusBlock', 'uses' => 'AccountController@turnStatusPublishing']);
+            Route::post('/markHandTranslate/{id}', ['as' => 'main.account.markHandTranslate', 'uses' => 'AccountController@markHandTranslate']);
+            
         });
         
     });
