@@ -86,7 +86,7 @@
                 <div class="translation__info">
                     {{trans('account.inProcTranslated')}}
                     <span class="translation__num">{{$lang['cc']}} / {{$lang['ccb']}}</span>
-                    {{Lang::choice('account.ccPages', $lang['cc'])}}
+                    {{Lang::choice('account.phrases', $lang['cc'])}}
                 </div>
                 <div class="translation__status">
                     <div style="width: {{$lang['per']}}%"></div>
