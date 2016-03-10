@@ -73,6 +73,8 @@ class ProjectController extends Controller
                 'code'      => 200,
             ]);
             $page->save();
+            
+            \DB::table('sites_settings')->insert(['site_id' => $site->id]);
         }
         $this->dispatch(new \App\Jobs\Spider($site));
         return $site->id;

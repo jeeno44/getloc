@@ -27,13 +27,13 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::group(['middleware' => 'auth', 'prefix' => 'account'], function() {
             Route::get('/', ['as' => 'main.account', 'uses' => 'AccountController@projectOverview']);
             Route::get('/overview', ['as' => 'main.account.overview', 'uses' => 'AccountController@projectOverview']);
-            //Route::get('/languages', ['as' => 'main.account.languages', 'uses' => 'AccountController@projectLanguages']);
+            Route::get('/languages', ['as' => 'main.account.languages', 'uses' => 'AccountController@projectLanguages']);
             Route::get('/projects', ['as' => 'main.account.selectProject', 'uses' => 'AccountController@selectProject']);
             Route::get('/setProjects/{id}', ['as' => 'main.account.setProject', 'uses' => 'AccountController@setProject']);
             
             Route::post('/switchingLanguage', ['as' => 'main.account.switchLang', 'uses' => 'AccountController@turnLang']);
-            Route::get('/addLanguage/', ['as' => 'main.account.addlang', 'uses' => 'AccountController@addLanguage']);
-            Route::post('/addLanguage/', ['as' => 'main.account.postaddlang', 'uses' => 'AccountController@postAddLanguage']);
+            #Route::get('/addLanguage/', ['as' => 'main.account.addlang', 'uses' => 'AccountController@addLanguage']);
+            #Route::post('/addLanguage/', ['as' => 'main.account.postaddlang', 'uses' => 'AccountController@postAddLanguage']);
             
             
             Route::get('/widget/', ['as' => 'main.account.widget', 'uses' => 'AccountController@widget']);
@@ -46,7 +46,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             
             Route::get('/add-project/', ['as' => 'main.account.add-project', 'uses' => 'ProjectController@addProject']);
             Route::post('/add-project/', ['as' => 'main.account.post-add-project', 'uses' => 'ProjectController@postAddProject']);
-            Route::get('/languages/', ['as' => 'main.account.languages', 'uses' => 'ProjectController@languages']);
+            Route::get('/add_language/', ['as' => 'main.account.addlanguages', 'uses' => 'ProjectController@languages']);
             Route::post('/languages/{id}', ['as' => 'main.account.post-languages', 'uses' => 'ProjectController@postLanguages']);
             
             Route::post('/phrase/setFilter', ['as' => 'main.account.setFilter', 'uses' => 'AccountController@setFilterPharse']);

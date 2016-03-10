@@ -6,7 +6,7 @@
     </aside>
     <div class="inside-content">
         <h1 class="site__title">{{trans('account.langManagement')}}</h1>
-        <a href="{{URL::route('main.account.addlang')}}" class="btn_add"><span>{{trans('account.addLang')}}</span></a>
+        <a href="{{URL::route('main.account.addlanguages')}}" class="btn_add"><span>{{trans('account.addLang')}}</span></a>
         <div class="language__wrap">
             @if (isset($lineStats['on']))
                 @foreach ($lineStats['on'] as $lang => $data)

@@ -9,6 +9,7 @@
   |   =============================================
   |   Web: http://get-loc.ru/
   |   Email: <sultanden@gmail.com>
+  |   TODO: ДЕЛЕНИЕ НА НОЛЬ, проверка на наличие настройк
   +---------------------------------------------------------------------------
  */
 
@@ -197,6 +198,19 @@ class AccountController extends Controller
     }
     
     /**
+     * Получаю инфу про тарифы
+     * 
+     * @param  int $siteID
+     * @return void
+     * @access public
+     */
+    
+    private function getBillingInfo($siteID)
+    {
+        #\App\Subscription::where('')
+    }
+    
+    /**
      * Стата для языков
      * 
      * @param  int $siteID
@@ -218,6 +232,7 @@ class AccountController extends Controller
             $dynamicStats          = DB::table('translates')->join('types_translates', 'translates.type_translate_id', '=', 'types_translates.id')
                                                             ->select('types_translates.name', DB::raw('count(*) as cc'))
                                                             ->where('site_id', $siteID)
+                                                            ->where('language_id', $lang->id)
                                                             ->groupBy('translates.type_translate_id')
                                                             ->lists('cc','types_translates.name'); //Остальные типы
             $_lines                = array_merge($dynamicStats, $stats);
@@ -256,6 +271,7 @@ class AccountController extends Controller
             $stats['notLangTrans'] = Translate::where('site_id', $siteID)->where('language_id', $lang->id)->where('type_translate_id', NULL)->count(); //Не переведено в этом языке
             $dynamicStats          = DB::table('translates')->join('types_translates', 'translates.type_translate_id', '=', 'types_translates.id')
                                                             ->select('types_translates.name', DB::raw('count(*) as cc'))
+                                                            ->where('language_id', $lang->id)
                                                             ->where('site_id', $siteID)
                                                             ->groupBy('translates.type_translate_id')
                                                             ->lists('cc','types_translates.name'); //Остальные типы
