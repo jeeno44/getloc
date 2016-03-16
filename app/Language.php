@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Language extends Model
 {
-    protected $fillable = ['name', 'icon_file', 'short'];
+    protected $fillable = ['name', 'icon_file', 'short', 'original_name'];
 
     public $timestamps = false;
 }

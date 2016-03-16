@@ -309,7 +309,7 @@ var Lenguages = function (obj) {
         _addLanguage = function(){
             var selectAmount = _obj.find( 'select' ).length,
                 selectWrap = $( '<div class="discount__language-wrapper">\
-                                     <select name="lang_'+selectAmount+'" required>\
+                                     <select name="language[]" required>\
                                         <option value="0" selected>Выберите язык</option>\
                                      </select>\
                                      <a href="#" class="discount__languadge-delete"></a>\

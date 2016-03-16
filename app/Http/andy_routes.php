@@ -62,6 +62,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::group(['middleware' => 'auth', 'prefix' => 'account'], function() {
             Route::get('/project-created/{id}', ['as' => 'main.account.project-created', 'uses' => 'ProjectController@projectCreated']);
             Route::get('/project-remove/{id}', ['as' => 'main.account.project-remove', 'uses' => 'ProjectController@projectRemove']);
+            Route::get('/validate-project/{id}', ['as' => 'main.account.validate-project', 'uses' => 'ProjectController@validateProject']);
 
             Route::group(['prefix' => 'billing'], function() {
                 Route::get('/', ['as' => 'main.billing', 'uses' => 'BillingController@index']);

@@ -64,9 +64,40 @@ class AdminLeftMenu
                         'uri'   => 'admin/billing/subscriptions',
                     ],
 
-                    'История платежей' => [
+                    'Платежи' => [
                         'icon'  => 'fa fa-history',
                         'uri'   => 'admin/billing/payments',
+                    ],
+
+                    'Заказы переводов' => [
+                        'icon'  => 'fa fa-globe',
+                        'uri'   => 'admin/billing/orders',
+                    ],
+
+                    'Купоны' => [
+                        'icon'  => 'fa fa-money',
+                        'uri'   => 'admin/billing/coupons',
+                    ],
+                ]
+            ],
+            'Система' => [
+                'icon'  => 'fa fa-cog',
+                'uri'   => 'admin/settings',
+                'items' => [
+
+                    'Настройки' => [
+                        'icon'  => 'fa fa-cog',
+                        'uri'   => 'admin/settings',
+                    ],
+
+                    'Стоп-лист ресурсов' => [
+                        'icon'  => 'fa fa-warning',
+                        'uri'   => 'admin/settings/stop',
+                    ],
+
+                    'Языки' => [
+                        'icon'  => 'fa fa-language',
+                        'uri'   => 'admin/settings/languages',
                     ],
                 ]
             ],

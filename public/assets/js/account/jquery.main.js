@@ -5,7 +5,7 @@ $(function(){
     });
 
     $.each( $('.new-project__form'), function(){
-        new FormValidation ( $(this) );
+        //new FormValidation ( $(this) );
     } );
 
     $('.phrases__item-col_translate').each(function() {

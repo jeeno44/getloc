@@ -6,6 +6,7 @@ use App\Block;
 use App\Language;
 use App\Page;
 use App\Site;
+use App\SiteSettings;
 use App\Translate;
 use Illuminate\Http\Request;
 
@@ -48,7 +49,7 @@ class ApiController extends Controller
                 if (empty($lang)) {
                     return \Response::json(['errors' => ['Language is invalid']]);
                 } else {
-                    \Cache::forget($secret.'_'.$page->id.'_'.$lang->id);
+                    \Cache::forget($secret.'_'.$page->id.'_'.$lang->id);//TODO переделать кеширование для новых условий
                     $response = \Cache::rememberForever($secret.'_'.$page->id.'_'.$lang->id, function() use ($lang, $site, $page) {
                         $response = [];
                         $response['errors'] = [];
@@ -68,6 +69,9 @@ class ApiController extends Controller
                                     $response['results'][$block->text] = $block->text;
                                 }
                             }
+                        }
+                        if (empty($response['results'])) {
+                            $response['errors'][] = 'Site is processed';
                         }
                         $response['available_languages'] = $site->languages()->where('enabled', 1)->lists('name', 'short')->toArray();
                         $response['available_languages'][$site->language->short] = $site->language->name;
@@ -102,7 +106,7 @@ class ApiController extends Controller
     public function anyBing($id)
     {
         $trans    = Translate::find($id);
-        $langID   = Site::find($trans->block->site_id)->language_id;
+        $langID   = Site::find($trans->block->site_id)->language_id; //TODO сделать нормально, одним запросом, юзая связи 
         $fromLang = Language::find($langID)->short;
         
         #$page  = Page::find($request->get('page'));
@@ -180,6 +184,11 @@ class ApiController extends Controller
                     }
                 }
             }
+            \DB::table('sites_settings')->insert([
+                'site_id'           => $site->id,
+                'auto_publishing'   => $request->has('auto_publishing'),
+                'auto_translate'    => $request->has('auto_translate')
+            ]);
         }
         $this->dispatch(new \App\Jobs\Spider($site));
     }

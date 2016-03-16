@@ -24,7 +24,7 @@
         <form class="site__form" method="post" action="{{route('main.account.post-add-project')}}" novalidate>
             <fieldset>
                 <label for="name-project">Название проекта</label>
-                <input type="text" id="name-project" required/>
+                <input type="text" id="name-project" required name="name"/>
                 <div class="new-project__question">
                     <span></span>
                     <div class="new-project__question-text">
@@ -37,7 +37,7 @@
 
             <fieldset>
                 <label for="link-project">Ссылка на проект</label>
-                <input type="text" id="link-project" required/>
+                <input type="text" id="link-project" required name="url"/>
                 <div class="new-project__question">
                     <span></span>
                     <div class="new-project__question-text">
@@ -60,7 +60,7 @@
                 </div>
                 <div class="discount__selects-language " data-language='{{getLanguagesJson()}}'>
                     <div class="discount__language-wrapper">
-                        <select name="lang_1" id="lang_1"  required>
+                        <select name="language[]" id="lang_1"  required>
                             <option value="0">Выберите язык</option>
                         </select>
                     </div>
@@ -80,7 +80,7 @@
                 <div class="discount__selects-language discount__selects-language_2" data-language='{{getLanguagesJson()}}'>
 
                     <div class="discount__language-wrapper">
-                        <select name="lang_1" id="lang_3" required>
+                        <select name="language[]" id="lang_3" required>
                             <option value="0">Выберите язык</option>
                         </select>
                     </div>
@@ -89,7 +89,25 @@
                 </div>
             </fieldset>
             <fieldset class="new-project__check">
-                <label><input type="checkbox" value="1" name="project__check" id="new-project__check-val"><span class="new-project__checked"></span><span class="new-project__check-title">У меня есть файл перевода (локализации) проекта</span></label>
+                <label>
+                    <input type="checkbox" value="1" name="project__check" id="new-project__check-val">
+                    <span class="new-project__checked"></span><span class="new-project__check-title">
+                        У меня есть файл перевода (локализации) проекта</span>
+                </label>
+            </fieldset>
+            <fieldset class="new-project__check">
+                <label>
+                    <input type="checkbox" value="1" name="auto_publishing" checked>
+                    <span class="new-project__checked"></span><span class="new-project__check-title">
+                        Автоматически публиковать все новые фразы?</span>
+                </label>
+            </fieldset>
+            <fieldset class="new-project__check">
+                <label>
+                    <input type="checkbox" value="1" name="auto_translate" checked>
+                    <span class="new-project__checked"></span><span class="new-project__check-title">
+                        Автоматически переводить все новые фразы?</span>
+                </label>
             </fieldset>
             <button class="btn btn_2">
                 <span>Создать проект</span>

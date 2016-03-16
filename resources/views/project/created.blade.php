@@ -10,23 +10,17 @@
         </div>
         <div class="add-code__project">
             <ul>
-                <li>Вставьте следующий код над тегом body вашего сайта
-                    <div>
-                        <p>
-                            Доступные данные по проекту:<br>
-                            @foreach($site['attributes'] as $key => $val)
-                                {{$key}} => {{$val}}<br>
-                            @endforeach
-                        </p>
-                    </div>
+                <li>В конце тега <code>head</code> необходимо добавить:
+                    <textarea style="width: 600px; height: 60px;"><script type="text/javascript" src="http://api.get-loc.ru/getloc.js"></script></textarea>
                     <a class="add-code__copy" href="#">Скопировать в буфер-обмена</a>
                 </li>
-                <li>Вы не разработчик? <a class="add-code__links" href="#">Пригласите нового члена команды</a></li>
-                <li>Ознакомьтесь с нашей <a class="add-code__links" href="#">Инструкцией по быстрому старту</a> и
-                    <a class="add-code__links" href="#">Руководством по интеграции</a>
+                <li>Вставьте следующий код перед закрывающим тегом body вашего сайта
+                    <textarea style="width: 600px; height: 60px;"><script>getloc = new getloc({secret: '{{$site->secret}}', auto_detected: false, lang: 'ru'})</script></textarea>
+                    <a class="add-code__copy" href="#">Скопировать в буфер-обмена</a>
                 </li>
+                <li>После этого нажмите "Подтвердить права на управление сайтом"</li>
             </ul>
-            <a href="{{route('main.account')}}" class="btn btn_2">Начать работать с проектом</a>
+            <a href="#" class="btn btn_2" id="validate-site" data-id="{{$site->id}}">Начать работать с проектом</a>
         </div>
     </div>
 @stop

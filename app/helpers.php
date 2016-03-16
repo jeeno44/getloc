@@ -199,3 +199,24 @@ function getStatus($key)
     }
     return '';
 }
+
+function autoTranslate($trans, $site)
+{
+    $clientID     = "blackgremlin2";
+    $clientSecret = "SMnjwvLx0bB2u9Cn05K2vkTE1bSkX0+fsLp/23gsytU=";
+    $authUrl      = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/";
+    $scopeUrl     = "http://api.microsofttranslator.com";
+    $grantType    = "client_credentials";
+    $authObj      = new \Blackgremlin\Microsofttranslator\AccessTokenAuthentication();
+    $accessToken  = $authObj->getTokens($grantType, $scopeUrl, $clientID, $clientSecret, $authUrl);
+    $authHeader = "Authorization: Bearer ". $accessToken;
+    $translatorObj = new \Blackgremlin\Microsofttranslator\HTTPTranslator();
+    $inputStr = $trans->block->text;
+    $translateUri = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text=" .urlencode($inputStr). "&from=".$site->language->short."&to=".$trans->language->short;
+    $strResponse = $translatorObj->curlRequest($translateUri, $authHeader);
+    $xmlObj = simplexml_load_string($strResponse);
+    $text = strval($xmlObj[0]);
+    $trans->text = $text;
+    $trans->type_translate_id = 1;
+    $trans->save();
+}

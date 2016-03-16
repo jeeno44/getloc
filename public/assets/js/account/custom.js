@@ -56,6 +56,22 @@ $(function(){
             }
         });
     })
+
+    $('#validate-site').click(function (e) {
+        e.preventDefault();
+        var id = $(this).attr('data-id');
+        $.ajax({
+            url     : "/account/validate-project/" + id,
+            type    : 'get',
+            success : function(res) {
+                if (res == 'success') {
+                    window.location.href  = '/account'
+                } else {
+                    alert('Скрипт не найден на страницах вашего сайта')
+                }
+            }
+        });
+    });
 })
 
 setStatusBlock = function(status)

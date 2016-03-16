@@ -22,4 +22,9 @@ class Translate extends Model
     {
         return $this->belongsTo('App\TypeTranslate', 'type_translate_id');
     }
+
+    public function site()
+    {
+        return $this->belongsTo('App\Site');
+    }
 }

@@ -75,7 +75,12 @@ class TextsCollector extends Job implements ShouldQueue
 
         foreach ($pages as $page) {
             $content = getPageContent($page->url);
-
+            if (strpos($content, $this->site->secret) === false) {
+                 //Если на сайте не найден секрет кей, игнорим страницу
+                $page->code = 1000;
+                $page->save();
+                continue;
+            }
             if (!empty($content)) {
                 $html = new Htmldom($content);
                 foreach ($this->tags as $tag) {
@@ -88,7 +93,6 @@ class TextsCollector extends Job implements ShouldQueue
             } else {
                 $page->code = 500;
             }
-
             $page->save();
         }
 

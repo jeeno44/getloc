@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Site extends Model
 {
-    protected $fillable = ['name', 'url', 'count_words', 'count_symbols', 'count_blocks', 'user_id', 'secret', 'language_id'];
+    protected $fillable = ['name', 'url', 'count_words', 'count_symbols', 'count_blocks', 'user_id', 'secret', 'language_id', 'enabled'];
 
     public function pages()
     {
@@ -33,6 +33,11 @@ class Site extends Model
         return $this->belongsToMany('App\Language', 'site_language');
     }
 
+    public function translates()
+    {
+        return $this->hasMany('App\Translate');
+    }
+
     public function enabledLanguages()
     {
         return $this->belongsToMany('App\Language', 'site_language')->where('enabled', 1);
@@ -46,5 +51,11 @@ class Site extends Model
     public function hasEnabledLanguage($lang)
     {
         return in_array($lang, $this->enabledLanguages()->lists('id', 'id')->toArray());
+    }
+
+    public function getSettings()
+    {
+        $settings = \DB::table('sites_settings')->where('site_id', $this->id)->first();
+        return $settings;
     }
 }

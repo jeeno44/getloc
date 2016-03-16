@@ -52,11 +52,12 @@ class ProjectController extends Controller
         $site = Site::where('url', $url)->first();
         if (empty($site)) {
             $site = new Site([
-                'url'   => $url,
-                'name'  => $request->get('name'),
-                'user_id'   => $this->user->id,
-                'secret'    => str_random(32),
-                'language_id'   => $sourceLang,
+                'url'               => $url,
+                'name'              => $request->get('name'),
+                'user_id'           => $this->user->id,
+                'secret'            => str_random(32),
+                'language_id'       => $sourceLang,
+                'enabled'           => 0,
             ]);
             $site->save();
             $site->languages()->attach($targetLang);
@@ -68,16 +69,20 @@ class ProjectController extends Controller
                 }
             }
             $page = new Page([
-                'url'       => $url,
-                'site_id'   => $site->id,
-                'code'      => 200,
+                'url'               => $url,
+                'site_id'           => $site->id,
+                'code'              => 200,
             ]);
             $page->save();
-            
-            \DB::table('sites_settings')->insert(['site_id' => $site->id]);
+            \DB::table('sites_settings')->insert([
+                'site_id'           => $site->id,
+                'auto_publishing'   => $request->has('auto_publishing'),
+                'auto_translate'    => $request->has('auto_translate')
+            ]);
         }
-        $this->dispatch(new \App\Jobs\Spider($site));
-        return $site->id;
+        // TODO change this in ajax
+        //return $site->id;
+        return redirect()->route('main.account.project-created', ['id' => $site->id]);
     }
 
     /**
@@ -93,6 +98,24 @@ class ProjectController extends Controller
         }
         \Session::set('projectID', $site->id);
         return view('project.created', compact('site'));
+    }
+
+    /**
+     * Проверка на наличие секрет кея на сайте клиента
+     * @param int $id
+     * @return string
+     */
+    public function validateProject($id)
+    {
+        $site = Site::find($id);
+        $content = getPageContent($site->url);
+        if (!empty($content) && strpos($content, $site->secret) !== false) {
+            $site->enabled = 1;
+            $site->save();
+            $this->dispatch(new \App\Jobs\Spider($site));
+            return 'success';
+        }
+        return 'fail';
     }
 
     /**
