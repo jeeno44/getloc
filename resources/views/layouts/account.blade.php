@@ -29,6 +29,9 @@
     <script src="/assets/js/account/jquery.nicescroll.min.js"></script>
     <script src="/assets/js/account/jquery.select.js"></script>
     <script src="/assets/js/account/jquery.main.js"></script>
+    <script src="/assets/js/account/toastr.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/account/toastr.min.css" />
     <script src="/assets/js/account/custom.js"></script>
+    
 </body>
 </html>

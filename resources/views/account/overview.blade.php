@@ -5,7 +5,6 @@
         @include('partials.account-menu')
     </aside>
     <div class="inside-content">
-        <a class="" href="{{route('main.account.project-remove', ['id' => Session::get('projectID')])}}">Удалить проект</a>
         <div class="statistic inside-content__wrap">
             <ul class="statistic__numbers">
                 <li>
@@ -41,17 +40,17 @@
             <div class="inside-content__title">
                 <h2>
                     Проект –
-                    <span class="inside-content__name">itbFirst</span>
+                    <span class="inside-content__name">{{$site->name}}</span>
                 </h2>
-                <a href="#" class="inside-content__tune">Настроить</a>
+                <a href="{{URL::route('main.billing')}}" class="inside-content__tune">{{trans('account.settings')}}</a>
             </div>
             <div class="project__item">
-                <div class="btn-lock"></div>
+                <div id="setAutoTranslateProject" class="btn-lock @if ($site_settings->auto_translate == 1) btn-lock_on @endif"></div>
                 <span class="project__topic">Автоматический перевод</span>
                 <span class="project__status">Перевод новых страниц будет осуществляться автоматически</span>
             </div>
             <div class="project__item">
-                <div class="btn-lock btn-lock_on"></div>
+                <div id="setAutoPublishingProject" class="btn-lock @if ($site_settings->auto_publishing == 1) btn-lock_on @endif"></div>
                 <span class="project__topic">Автопубликация</span>
                 <span class="project__status">Новые переведенные фразы сразу публикуются</span>
             </div>
@@ -79,7 +78,7 @@
         <div class="translation inside-content__wrap">
             <div class="inside-content__title">
                 <h2>{{trans('account.napLang')}}</h2>
-                <a href="#" class="inside-content__tune">{{trans('account.controlLangs')}}</a>
+                <a href="{{URL::route('main.account.languages')}}" class="inside-content__tune">{{trans('account.controlLangs')}}</a>
             </div>
             @foreach ($stats['langStats'] as $short => $lang)
             <div class="translation__item">

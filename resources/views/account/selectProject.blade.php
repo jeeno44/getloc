@@ -9,7 +9,8 @@
         <ul>
             @foreach ($mySites as $site)
                 <li>
-                    <a href='{{URL::route('main.account.setProject', $site->id)}}'>{{$site->url}}</a>
+                    <a href='{{URL::route('main.account.setProject', $site->id)}}'>{{$site->url}}</a> 
+                    <a class="" href="{{route('main.account.project-remove', ['id' => $site->id])}}">Удалить проект</a>
                 </li>
             @endforeach
         </ul>

@@ -56,6 +56,32 @@ $(function(){
             }
         });
     })
+    
+    $('#setAutoTranslateProject').click(function()
+    {
+        $.ajax({
+            url     : "/account/setAutoTranslate/",
+            type    : 'post',
+            dataType: 'text',
+            cache   : false,
+            success : function(res){
+                toastr.success(res)
+            }
+        });
+    })
+    
+    $('#setAutoPublishingProject').click(function()
+    {
+        $.ajax({
+            url     : "/account/setAutoPublishing/",
+            type    : 'post',
+            dataType: 'text',
+            cache   : false,
+            success : function(res){
+                toastr.success(res)
+            }
+        });
+    })
 
     $('#validate-site').click(function (e) {
         e.preventDefault();

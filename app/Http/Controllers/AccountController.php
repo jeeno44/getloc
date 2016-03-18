@@ -112,11 +112,14 @@ class AccountController extends Controller
             $stats = array(
                 'ccBlocks'   => Block::where('site_id', $siteID)->count(),
                 'ccPages'    => Page::where('site_id', $siteID)->count(),
-                'listLangs'  => $site->languages()->orderBy('name')->get(),
+                'listLangs'  => $site->languages()->where('enabled', 1)->orderBy('name')->get(),
                 'lineGraph'  => $this->lineStatistics($siteID, $ccBlocks),
                 'langStats'  => $this->getStatusLangs($siteID, $ccBlocks)
             );
-            return view('account.overview', compact('sites', 'stats'));
+        
+            $site_settings = DB::table('sites_settings')->where('site_id', $siteID)->first();
+        
+            return view('account.overview', compact('sites', 'stats', 'site', 'site_settings'));
         }
         $pages = $site->pages()->paginate(20);
         return view('account.waiting', compact('sites', 'site', 'pages'));
@@ -159,7 +162,7 @@ class AccountController extends Controller
     private function lineStatistics($siteID, $allCountBlocks)
     {
         $data    = array();
-        $langs   = Site::find($siteID)->languages()->orderBy('name')->get();
+        $langs   = Site::find($siteID)->languages()->where('enabled', 1)->orderBy('name')->get();
         
         foreach ( $langs as $lang )
         {
@@ -211,6 +214,59 @@ class AccountController extends Controller
     private function getBillingInfo($siteID)
     {
         #\App\Subscription::where('')
+    }
+    
+    /**
+     * Делаем автоматический перевод проекта | настройки проекта [AJAX]
+     * 
+     * @param  Request $request
+     * @return string
+     * @access public
+     */
+    
+    public function setAutoTranslate(Request $request)
+    {
+        $siteID   = Session::get('projectID');
+        $site     = Site::find($siteID);
+
+        if ( !$siteID || !$site ) 
+            return abort(403, 'Need select project');    
+        
+        $status = (DB::table('sites_settings')->where('site_id', $siteID)->first()->auto_translate == 1) ? 0 : 1;
+        
+        DB::table('sites_settings')->where('site_id', $siteID)->update(array('auto_translate' => $status));
+        
+        if ( $status )
+            return trans('account.successAutoTranslate');
+        else
+            return trans('account.failAutoTranslate');
+        
+    }
+    
+    /**
+     * Автопубликация блоков проекта | настройки проекта [AJAX]
+     * 
+     * @param  Request $request
+     * @return string
+     * @access public
+     */
+    
+    public function setAutoPublishing(Request $request)
+    {
+        $siteID   = Session::get('projectID');
+        $site     = Site::find($siteID);
+
+        if ( !$siteID || !$site ) 
+            return abort(403, 'Need select project');  
+               
+        $status = (DB::table('sites_settings')->where('site_id', $siteID)->first()->auto_publishing == 1) ? 0 : 1;
+
+        DB::table('sites_settings')->where('site_id', $siteID)->update(array('auto_publishing' => $status));
+        
+        if ( $status )
+            return trans('account.successAutoPublish');
+        else
+            return trans('account.failAutoPublish');
     }
     
     /**

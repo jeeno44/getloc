@@ -26,6 +26,11 @@ return [
     'napLang'                  => 'Направления перевода',
     'controlLangs'             => 'Управление языками',
     'inProcTranslated'         => 'Переведено',
+    'successAutoTranslate'     => 'Автоперевод успешно включен',
+    'failAutoTranslate'        => 'Автоперевод отключен',
+    'successAutoPublish'       => 'Автопубликация успешно включена',
+    'failAutoPublish'          => 'Автопубликация отключена',
+    'settings'                 => 'Настроить',
     /* select lang */
     'inProcTranslate'          => 'переведено',
     'notLangTrans'             => 'Не переведено',
