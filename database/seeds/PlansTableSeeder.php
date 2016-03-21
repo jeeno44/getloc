@@ -42,6 +42,12 @@ class PlansTableSeeder extends Seeder
                 'count_words'       => 10000000,
                 'count_languages'   => 100,
             ],
+            [
+                'name'              => 'Индивидуальный',
+                'cost'              => 0,
+                'count_words'       => 0,
+                'count_languages'   => 0,
+            ],
         ];
         DB::table('plans')->delete();
         DB::statement('ALTER TABLE plans AUTO_INCREMENT = 1');

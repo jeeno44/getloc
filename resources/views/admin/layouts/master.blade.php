@@ -26,7 +26,9 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
     <link rel="stylesheet" href="/assets/admin/js/plugins/slick/slick.min.css">
     <link rel="stylesheet" href="/assets/admin/js/plugins/slick/slick-theme.min.css">
+    <link rel="stylesheet" href="/assets/admin/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css">
     <link rel="stylesheet" id="css-main" href="/assets/admin/css/oneui.css">
+    <script src="/assets/admin/js/core/jquery.min.js"></script>
 </head>
 <body>
 <div id="page-container" class="sidebar-l sidebar-o side-scroll header-navbar-fixed">
@@ -146,7 +148,6 @@
 <!-- END Page Container -->
 
 <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
-<script src="/assets/admin/js/core/jquery.min.js"></script>
 <script src="/assets/admin/js/core/bootstrap.min.js"></script>
 <script src="/assets/admin/js/core/jquery.slimscroll.min.js"></script>
 <script src="/assets/admin/js/core/jquery.scrollLock.min.js"></script>
@@ -158,10 +159,11 @@
 <script src="/assets/admin/js/plugins/slick/slick.min.js"></script>
 <script src="/assets/admin/js/plugins/chartjs/Chart.min.js"></script>
 <script src="/assets/admin/js/pages/base_pages_dashboard.js"></script>
+<script src="/assets/admin/js/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
 <script>
     $(function () {
         // Init page helpers (Slick Slider plugin)
-        App.initHelpers('slick');
+        App.initHelpers(['slick', 'datepicker']);
     });
 </script>
 </body>

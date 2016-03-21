@@ -8,7 +8,7 @@ class Subscription extends Model
 {
     protected $table = 'subscriptions';
 
-    protected $fillable = ['user_id', 'plan_id', 'ends_at', 'last_id', 'count_words'];
+    protected $fillable = ['user_id', 'plan_id', 'site_id', 'ends_at', 'last_id', 'count_words', 'count_languages', 'white_label'];
 
     public function plan()
     {
@@ -18,5 +18,10 @@ class Subscription extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    public function site()
+    {
+        return $this->belongsTo('App\Site');
     }
 }

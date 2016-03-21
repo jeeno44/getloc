@@ -861,7 +861,8 @@ var App = function() {
         jQuery('.js-datepicker').add('.input-daterange').datepicker({
             weekStart: 1,
             autoclose: true,
-            todayHighlight: true
+            todayHighlight: true,
+            format: 'dd.mm.yyyy'
         });
     };
 

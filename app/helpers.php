@@ -187,7 +187,7 @@ function getLanguagesJson()
  * @param string $key
  * @return string
  */
-function getStatus($key)
+function getPaymentStatus($key)
 {
     $statuses = [
         'new'           => '<span class="label label-info">Новый</span>',
@@ -200,6 +200,31 @@ function getStatus($key)
     return '';
 }
 
+/**
+ * Название статуса по ключу
+ * @param string $key
+ * @return string
+ */
+function getOrderStatus($key)
+{
+    $statuses = [
+        'new'           => '<span class="label label-info">Новый</span>',
+        'process'       => '<span class="label label-primary">В работе</span>',
+        'done'          => '<span class="label label-success">Завершен</span>',
+        'canceled'      => '<span class="label label-default">Отменен</span>'
+    ];
+    if (!empty($statuses[$key])) {
+        return $statuses[$key];
+    }
+    return '';
+}
+
+/**
+ * @param \App\Translate $trans
+ * @param \App\Site $site
+ * @throws Exception
+ * @return void
+ */
 function autoTranslate($trans, $site)
 {
     $clientID     = "blackgremlin2";
@@ -219,4 +244,20 @@ function autoTranslate($trans, $site)
     $trans->text = $text;
     $trans->type_translate_id = 1;
     $trans->save();
+}
+
+/**
+ * @param string $key
+ * @return array|mixed
+ */
+function getCouponTypes($key = '') {
+    $types = [
+        'once'          => 'Разовый',
+        'fixed'         => 'Действителен до',
+        'unlimited'     => 'Бессрочный'
+    ];
+    if (!empty($key) && !empty($types[$key])) {
+        return $types[$key];
+    }
+    return $types;
 }

@@ -49,9 +49,6 @@ class CreateEmptyTranslates extends Job implements ShouldQueue
                         'enabled'       => $autoPub,
                     ]);
                     $trans->save();
-                    if ($autoTrans == 1) {
-                        autoTranslate($trans, $this->site);
-                    }
                 } else {
                     $oldTrans->update([
                         'count_words'   => $block->count_words,
@@ -59,7 +56,7 @@ class CreateEmptyTranslates extends Job implements ShouldQueue
                 }
             }
         }
-        if ($autoTrans == 1) {
+        if ($autoTrans == 1 && $this->site->demo == 0) {
             \Queue::push(new \App\Jobs\Translator($this->site));
         } else {
             \Event::fire('site.changed', $this->site);

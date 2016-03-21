@@ -43,6 +43,12 @@ class ApiController extends Controller
             $uri = prepareUri($uri);
             $page = Page::where('url', $uri)->first();
             if (empty($page)) {
+                Page::create([
+                    'url'           => $uri,
+                    'site_id'       => $site->id,
+                    'code'          => 200,
+                ]);
+                $this->dispatch(new \App\Jobs\Spider($site));
                 return \Response::json(['errors' => ['Page does not exists']]);
             } else {
                 $lang = Language::where('short', $lang)->first();
@@ -109,7 +115,6 @@ class ApiController extends Controller
         $langID   = Site::find($trans->block->site_id)->language_id; //TODO сделать нормально, одним запросом, юзая связи 
         $fromLang = Language::find($langID)->short;
         
-        #$page  = Page::find($request->get('page'));
         $clientID     = "blackgremlin2";
         $clientSecret = "SMnjwvLx0bB2u9Cn05K2vkTE1bSkX0+fsLp/23gsytU=";
         $authUrl      = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/";
@@ -165,17 +170,18 @@ class ApiController extends Controller
         if (empty($site)) {
             $defaultLang = Language::where('short', 'ru')->first();
             $site = new Site([
-                'url'   => $url,
-                'name'  => $url,
-                'user_id'   => $request->get('user_id'),
-                'secret'    => str_random(32),
+                'url'           => $url,
+                'name'          => $url,
+                'user_id'       => $request->get('user_id'),
+                'secret'        => str_random(32),
                 'language_id'   => $defaultLang->id,
+                'demo'          => 1,
             ]);
             $site->save();
             Page::create([
-                'url'       => $url,
-                'site_id'   => $site->id,
-                'code'      => 200,
+                'url'           => $url,
+                'site_id'       => $site->id,
+                'code'          => 200,
             ]);
             if (!empty($langs)) {
                 foreach ($langs as $lang) {

@@ -47,6 +47,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::group(['middleware' => ['web', 'admin'], 'prefix' => 'admin'], function () {
             Route::get('/', ['as' => 'admin.dashboard', 'uses' => 'Admin\DashboardController@index']);
             Route::get('settings', 'Admin\SettingsController@getSettings');
+            Route::get('settings/stop', 'Admin\SettingsController@getStopWords');
             Route::post('settings', 'Admin\SettingsController@postSettings');
             Route::get('users/partners', 'Admin\UsersController@partners');
             Route::resource('users', 'Admin\UsersController');
@@ -56,7 +57,9 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::resource('billing/plans', 'Admin\PlansController');
             Route::resource('billing/payments', 'Admin\PaymentsController');
             Route::resource('billing/subscriptions', 'Admin\SubscriptionsController');
-
+            Route::resource('settings/languages', 'Admin\LanguagesController');
+            Route::resource('billing/coupons', 'Admin\CouponsController');
+            Route::resource('billing/orders', 'Admin\OrdersController');
         });
 
         Route::group(['middleware' => 'auth', 'prefix' => 'account'], function() {

@@ -12,14 +12,17 @@
         </div>
         <div class="block-content">
             @foreach($options as $opt)
-                <div class="form-group col-sm-12 clearfix">
-                    <div class="col-sm-3 right-align for-label">
-                        <label class="form-label">{{$opt->name}}</label>
+                @if ($opt->key != 'stop_words')
+                    <div class="form-group col-sm-12 clearfix">
+                        <div class="col-sm-3 right-align for-label">
+                            <label class="form-label">{{$opt->name}}</label>
+                        </div>
+                        <div class="col-sm-6">
+                            {!! Form::textarea($opt->key, $opt->val, ['class' => 'form-control']) !!}
+                        </div>
                     </div>
-                    <div class="col-sm-6">
-                        {!! Form::textarea($opt->key, $opt->val, ['class' => 'form-control']) !!}
-                    </div>
-                </div>
+                @endif
+
             @endforeach
         </div>
         <div class="block-header">

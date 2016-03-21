@@ -3,22 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\AdminController;
-use App\Payment;
+use App\Order;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 
-class PaymentsController extends AdminController
+class OrdersController extends AdminController
 {
     public function __construct()
     {
         parent::__construct();
-        $this->breadcrumbs->add('admin/billing/payments', 'История платежей');
+        $this->breadcrumbs->add('admin/billing/orders', 'Заказы');
     }
 
     public function index()
     {
-        $items = Payment::latest()->paginate(20);
-        return view('admin.payments.index', compact('items'));
+        $items = Order::latest()->paginate(20);
+        return view('admin.orders.index', compact('items'));
     }
 
     public function create()
@@ -50,15 +50,4 @@ class PaymentsController extends AdminController
     {
         //
     }
-
-    public function approve($id)
-    {
-
-    }
-    
-    public function cancel($id)
-    {
-
-    }
-
 }

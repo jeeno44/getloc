@@ -21,6 +21,13 @@ class SettingsController extends AdminController
         return view('admin.settings.index', compact('options'));
     }
 
+    public function getStopWords()
+    {
+        $options = \DB::table('options')->get();
+        $this->breadcrumbs->add('admin/settings', 'Стоп-лист');
+        return view('admin.settings.stop', compact('options'));
+    }
+
     public function postSettings(Request $request)
     {
         $this->validate($request, [
@@ -37,6 +44,6 @@ class SettingsController extends AdminController
                 \DB::table('options')->where('key', $key)->update(['val' => $request->get($key)]);
             }
         }
-        return redirect('admin/settings')->with('messages', ['Сохранено']);
+        return redirect()->back()->with('messages', ['Сохранено']);
     }
 }

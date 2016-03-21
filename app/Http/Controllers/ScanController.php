@@ -16,9 +16,9 @@ class ScanController extends Controller
     {
         $newSite = \Session::get('site');
         if (!empty($request->get('search'))) {
-            $sites = Site::latest()->where('name', 'like', '%'.$request->get('search').'%')->paginate(20);
+            $sites = Site::latest()->where('name', 'like', '%'.$request->get('search').'%')->where('enabled', 1)->paginate(20);
         } else {
-            $sites = Site::latest()->paginate(20);
+            $sites = Site::latest()->where('enabled', 1)->paginate(20);
         }
         $countSites = Site::count();
         $countPages = Page::count();
