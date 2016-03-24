@@ -138,7 +138,7 @@ setEventInContent = function()
         });
     })
     
-    $(document).on('click', '.pagination a', function (e) {
+    $('.pagination a').click(function(e){
         loadPhrases($(this).attr('href').split('page=')[1]);
         e.preventDefault();
     });
