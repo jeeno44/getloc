@@ -137,9 +137,41 @@ class ApiController extends Controller
         
         #Todo: нету больше page-id, надо что-то переделать
         #\Cache::forget($page->site->secret.'_'.$page->id.'_'.$trans->language_id);
-        return $text;
+        return json_encode(array('text' => $text, 'message' => trans('account.successTranslate')));
     }
-
+    
+    /**
+     * Выводим в текстареа перевод
+     * 
+     * @param  int $id
+     * @return string
+     * @access public
+     */
+    
+    public function maybeTranslateFromBing($id)
+    {
+        $trans    = Translate::find($id);
+        $langID   = Site::find($trans->block->site_id)->language_id; //TODO сделать нормально, одним запросом, юзая связи 
+        $fromLang = Language::find($langID)->short;
+        
+        $clientID     = "blackgremlin2";
+        $clientSecret = "SMnjwvLx0bB2u9Cn05K2vkTE1bSkX0+fsLp/23gsytU=";
+        $authUrl      = "https://datamarket.accesscontrol.windows.net/v2/OAuth2-13/";
+        $scopeUrl     = "http://api.microsofttranslator.com";
+        $grantType    = "client_credentials";
+        $authObj      = new \Blackgremlin\Microsofttranslator\AccessTokenAuthentication();
+        $accessToken  = $authObj->getTokens($grantType, $scopeUrl, $clientID, $clientSecret, $authUrl);
+        $authHeader = "Authorization: Bearer ". $accessToken;
+        $translatorObj = new \Blackgremlin\Microsofttranslator\HTTPTranslator();
+        $inputStr = $trans->block->text;
+        $translateUri = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text=" .urlencode($inputStr). "&from=".$fromLang."&to=".$trans->language->short;
+        $strResponse = $translatorObj->curlRequest($translateUri, $authHeader);
+        $xmlObj = simplexml_load_string($strResponse);
+        $text = strval($xmlObj[0]);
+        
+        return json_encode(array('text' => $text, 'message' => trans('account.successTranslate')));
+    }
+    
     public function anyBingTranslate($id, Request $request)
     {
         $trans = Translate::find($id);

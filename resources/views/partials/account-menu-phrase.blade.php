@@ -22,12 +22,14 @@
         </div>
     </div>
     @if ( $ob->name_translate )
-    <button class="phrases__item-controls-type phrases__item-controls-type_machine">
+    <button id="typeTranslate_{{$ob->id}}" class="phrases__item-controls-type phrases__item-controls-type_machine">
         {{$ob->name_translate}}
     </button>
+    @else
+    <button id="typeTranslate_{{$ob->tid}}" style="display: none" class=""></button>
     @endif
-    <time datetime="{{$ob->date}}">
-        <span>{{$ob->time}}</span>
+    <time id="dDatetime_{{$ob->tid}}" datetime="{{$ob->date}}">
+        <span id="dTime_{{$ob->tid}}">{{$ob->time}}</span>
         <?php
         // TODO: i18n
         $monthes = array(

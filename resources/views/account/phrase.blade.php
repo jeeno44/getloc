@@ -10,9 +10,9 @@
         <h1 class="site__title">Фразы проекта</h1>
         <div class="magic_tabs"{{-- class="tabs"--}}>
             <div class="tabs__links">
-                <a @if (Request::is('account/phrase') or Request::is('account/phrase/not_translated'))class="active" @endif href="{{URL::route('main.account.phrase1')}}">{{trans('account.noTranslate')}}<span>{{$filter['stats']['not_translate']}}</span></a>
-                <a @if (Request::is('account/phrase/translated'))class="active" @endif href="{{URL::route('main.account.phrase2')}}">{{trans('account.inTranslate')}}<span>{{$filter['stats']['in_translate']}}</span></a>
-                <a @if (Request::is('account/phrase/published'))class="active" @endif href="{{URL::route('main.account.phrase3')}}">{{trans('account.inPublish')}}<span>{{$filter['stats']['publish']}} </span></a>
+                <a id="tab_not_translated" @if (Request::is('account/phrase') or Request::is('account/phrase/not_translated'))class="active" @endif href="#">{{trans('account.noTranslate')}}<span id="stNotTranslate">{{$filter['stats']['not_translate']}}</span></a>
+                <a id="tab_translated" @if (Request::is('account/phrase/translated'))class="active" @endif href="#">{{trans('account.inTranslate')}}<span id="stInTranslate">{{$filter['stats']['in_translate']}}</span></a>
+                <a id="tab_published" @if (Request::is('account/phrase/published'))class="active" @endif href="#">{{trans('account.inPublish')}}<span id="stPublish">{{$filter['stats']['publish']}} </span></a>
                 <div class="tabs__links-archive">
                     <a href="#">{{trans('account.archive')}}</a>
                 </div>
@@ -32,20 +32,25 @@
                 <a href="#" class="btn btn_3">{{trans('account.orderTranslate')}}</a>
             </div>
             <div class="tabs__content">
-                <div class="active" style="display: block;" class="phrases__tab">
+                <div class="active" style="display: block;" class="phrases__tab" id="renderPhrases">
                     @foreach ($blocks as $t)
                     @if ( $viewType == 2)
-                    <div class="phrases__item @if ($t->type_translate_id)phrases__item_mark-{{$filter['colors'][$t->type_translate_id]['block']}} @endif">
+                    <div class="phrases__item @if ($t->type_translate_id)phrases__item_mark-{{$filter['colors'][$t->type_translate_id]['block']}} @endif" id="phrase_{{$t->tid}}">
                         <div class="phrases__item-col">
-                            {{$t->original}}
+                            <label for="order_{{$t->tid}}">{!! $t->original !!}</label>
                         </div>
                         <form class="phrases__item-col phrases__item-col_translate">
-                            <textarea id="order_{{$t->tid}}">{{$t->text}}</textarea>
+                            <textarea onkeyup="$(this).attr('data-type', 2)" id="order_{{$t->tid}}">{{$t->text}}</textarea>
                             <div class="phrases__item-col-btns">
                                 <button class="save save_translate" object-id="{{$t->tid}}" type="submit">{{trans('account.save')}}</button>
                                 <button class="cancel">{{trans('account.cancel')}}</button>
+                                @if ( $tab_name != 'tab_not_translated' )
+                                <div>
+                                    <a class="phrases__item-btn-translate go_robot" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</a>
+                                </div>
+                                @endif
                             </div>
-                            <button class="phrases__item-btn-translate go_robot" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button>
+                            @if (empty($t->text)) <button class="phrases__item-btn-translate go_robot isLinkMoreMenu" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button> @endif
                         </form>
                         
                         <div class="phrases__item-controls">
@@ -57,17 +62,22 @@
                         </div>
                     </div>
                     @else
-                    <div class="phrases__item @if ($t->type_translate_id)phrases__item_mark-{{$filter['colors'][$t->type_translate_id]['block']}} @endif">
+                    <div class="phrases__item @if ($t->type_translate_id)phrases__item_mark-{{$filter['colors'][$t->type_translate_id]['block']}} @endif" id="phrase_{{$t->tid}}">
                         <div class="phrases__item-col phrases__item-col_block">
-                            {{$t->original}}
+                            <label for="order_{{$t->tid}}">{{$t->original}}</label>
                         </div>
                         <div class="phrases__item-col phrases__item-col_block phrases__item-col_translate">
-                            <textarea id="order_{{$t->tid}}" readonly>{{$t->text}}</textarea>
+                            <textarea onkeyup="$(this).attr('data-type', 2)" id="order_{{$t->tid}}" readonly>{{$t->text}}</textarea>
                             <div class="phrases__item-col-btns">
                                 <button class="save save_translate" object-id="{{$t->tid}}" type="submit">{{trans('account.save')}}</button>
                                 <button class="cancel">{{trans('account.cancel')}}</button>
+                                @if ( $tab_name != 'tab_not_translated' )
+                                <div>
+                                    <a class="phrases__item-btn-translate go_robot" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</a>
+                                </div>
+                                @endif
                             </div>
-                            <button class="phrases__item-btn-translate go_robot" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button>
+                            @if (empty($t->text)) <button class="phrases__item-btn-translate go_robot isLinkMoreMenu" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button> @endif
                         </div>
                         <div class="phrases__item-controls">
                             <div class="nice-check">

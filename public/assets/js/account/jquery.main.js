@@ -20,9 +20,9 @@ $(function(){
         Accordion($(this));
     });
 
-    $('.phrases__item-controls-menu').each(function() {
-        SubMenu($(this));
-    });
+//    $('.phrases__item-controls-menu').each(function() {
+//        SubMenu($(this));
+//    });
 
     $('.menu').each(function () {
         mobileMenu($(this));
