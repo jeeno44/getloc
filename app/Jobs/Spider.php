@@ -60,7 +60,7 @@ class Spider extends Job implements ShouldQueue
     protected function strPosInArr($text)
     {
         foreach ($this->stopWords as $word) {
-            if (mb_strpos($text, $word) !== false || mb_strpos($text, $word) > 0) {
+            if (strpos($text, $word) !== false || strpos($text, $word) > 0) {
                 return false;
             }
         }
@@ -71,11 +71,11 @@ class Spider extends Job implements ShouldQueue
     {
         $url = trim($url, '#');
         $url = trim($url, '/');
-        $url = str_replace('/..', '', $url);
+        $url = str_replace('../', '', $url);
         if (empty($url)) {
             return null;
         }
-        if ($this->strPosInArr($url) === false) {
+        if ($this->strPosInArr('_'.$url) === false) { // чтобы strpos 0 не ловил
             return null;
         }
         if (mb_strpos($url, 'http') === false) {
