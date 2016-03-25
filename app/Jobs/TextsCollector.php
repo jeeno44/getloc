@@ -46,7 +46,7 @@ class TextsCollector extends Job implements ShouldQueue
 
     private $tags = ['title', 'p', 'a', 'div', 'th',
         'td', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'b', 'strong', 'li', 'pre', 'code', 'option',
-        'label', 'span', 'button', 'meta', 'input', 'button', 'img', 'textarea'
+        'label', 'span', 'button', 'meta', 'input', 'button', 'img', 'textarea', 'font'
     ];
 
     /**
@@ -92,6 +92,7 @@ class TextsCollector extends Job implements ShouldQueue
                 $page->collected = 1;
             } else {
                 $page->code = 500;
+                $page->collected = 1;
             }
             $page->save();
         }
@@ -121,8 +122,16 @@ class TextsCollector extends Job implements ShouldQueue
                     $this->createBlock($element->content, $page, $type);
                     return;
                 }
+            } elseif ($type == 'input') {
+                foreach ($this->need_check_attr[$type] as $attr) {
+                    if ($element->{$attr} && $element->type != 'hidden') {
+                        if ($plaintext = $element->{$attr}) {
+                            $this->createBlock($plaintext, $page, $type);
+                        }
+                    }
+                }
             } else {
-                if ($type != 'meta') {
+                if ($type != 'meta' && $type != 'input') {
                     foreach ($this->need_check_attr[$type] as $attr) {
                         if ($element->{$attr}) {
                             if ($plaintext = $element->{$attr}) {
@@ -142,30 +151,7 @@ class TextsCollector extends Job implements ShouldQueue
         $element->innertext = trim($element->innertext);
 
         if (!empty($element->plaintext) && $element->plaintext == $element->innertext && $element->plaintext != '&nbsp;') {
-            $block = Block::where('site_id', $this->site->id)->where('text', $element->plaintext)->first();
-
-            if ($block == null) {
-                $countSymbols = mb_strlen($element->plaintext, 'UTF-8');
-                $countWords = $this->countWords($element->plaintext);
-
-                $block = new Block([
-                    'site_id' => $this->site->id,
-                    'text' => $element->plaintext,
-                    'type' => $type,
-                    'count_words' => $countWords,
-                    'count_symbols' => $countSymbols,
-                ]);
-                $block->save();
-
-                $this->site->increment('count_words', $countWords);
-                $this->site->increment('count_symbols', $countSymbols);
-                $this->site->increment('count_blocks', 1);
-            }
-
-            if (!$page->hasBlock($block->id)) {
-                $page->blocks()->attach($block->id);
-            }
-
+            $this->createBlock($element->plaintext, $page, $type);
         }
     }
 
@@ -197,7 +183,7 @@ class TextsCollector extends Job implements ShouldQueue
     {
         $text = trim(strip_tags($text));
 
-        if (!$text || $text == '&nbsp;') {
+        if (!$text || $text == '&nbsp;' || !$this->isExistsAlpha($text)) {
             return false;
         }
 
@@ -230,17 +216,30 @@ class TextsCollector extends Job implements ShouldQueue
 
     public function scanCurveTexts($page, $content)
     {
-        $pattern = '/>[a-zа-я0-9\.\,\s\;\:\?\$\%\№\"«»\+\-\!]+</ui';
+        $pattern = '/>[a-zа-я0-9\.\,\s\;\:\?\$\%\№\"«»\+\-\!\(\)]+</ui';
         preg_match_all($pattern, $content, $matches);
         foreach ($matches[0] as $key => $value) {
             $item = trim($value, '><');
-            $item = trim($item);
+            $item = trim($item, ',.!?\\/*+-=_#@');
             if (!empty($item)) {
                 $item = str_replace(["\r", "\n"], ' ', $item);
                 $item = trim($item);
                 $this->createBlock($item, $page, 'curve');
             }
         }
+    }
+
+    /**
+     * Есть ли в тексте буквы
+     * @param string $text
+     * @return bool
+     */
+    private function isExistsAlpha($text = '') {
+        preg_match_all('/[a-zа-я]/ui', $text, $matches);
+        if (!$matches[0]) {
+            return false;
+        }
+        return true;
     }
 
 }

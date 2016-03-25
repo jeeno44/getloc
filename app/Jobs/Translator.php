@@ -31,7 +31,7 @@ class Translator extends Job implements ShouldQueue
     public function handle()
     {
         foreach ($this->site->translates()->where('text', '')->get() as $translate) {
-            autoTranslate($translate, $this->site());
+            autoTranslate($translate, $this->site);
         }
         \Event::fire('site.changed', $this->site);
     }

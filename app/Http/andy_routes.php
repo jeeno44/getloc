@@ -87,5 +87,6 @@ Route::group(['domain' => 'api.'.$domain], function () {
 });
 
 Route::get('test', function() {
-    
+    preg_match_all('/[a-zа-я]/ui', '+7(495) 781 31 71', $matches);
+    dd($matches);
 });

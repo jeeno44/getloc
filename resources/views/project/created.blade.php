@@ -15,7 +15,7 @@
                     <a class="add-code__copy" href="#">Скопировать в буфер-обмена</a>
                 </li>
                 <li>Вставьте следующий код перед закрывающим тегом body вашего сайта
-                    <textarea style="width: 600px; height: 60px;"><script>getloc = new getloc({secret: '{{$site->secret}}', auto_detected: false, lang: 'ru'})</script></textarea>
+                    <textarea style="width: 600px; height: 60px;"><script>getloc = new getloc({secret: '{{$site->secret}}', auto_detected: false, lang: 'ru'});getlock.run()</script></textarea>
                     <a class="add-code__copy" href="#">Скопировать в буфер-обмена</a>
                 </li>
                 <li>После этого нажмите "Подтвердить права на управление сайтом"</li>
