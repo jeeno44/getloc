@@ -26,8 +26,6 @@
             @endforeach
         </div>
     </div>
-    <div class="site__aside-filter">
-        <input type="submit" name="clearFilter" value="Очистить фильтр" />
-    </div>
+    <input type="submit" name="clearFilter" value="Очистить фильтр" />
     </form>
 </div>

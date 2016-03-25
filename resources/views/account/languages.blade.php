@@ -63,7 +63,7 @@
                         <div class="language_line statistic__line">
                             @foreach ($data['lines'] as $graph)
                                 <div class="statistic__line-0{{$graph['i']}}" style="width: {{$graph['per']}}%">
-                                    <span class="statistic__line-number">{{$graph['cc']}}</span>
+                                    <span class="statistic__line-number">@if ($graph['cc'] != 0){{$graph['cc']}}@endif</span>
                                     <span class="statistic__line-popup">{{trans('account.'.$graph['name'])}}</span>
                                 </div>
                             @endforeach

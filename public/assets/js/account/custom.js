@@ -250,6 +250,7 @@ setFilterShow = function(typeViewID)
         {
             $('#setViewTypeID_1, #setViewTypeID_2').removeClass('active')
             $('#setViewTypeID_' + typeViewID).addClass('active')
+            
             loadPhrases()
         }
     });
