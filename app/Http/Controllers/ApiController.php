@@ -66,6 +66,7 @@ class ApiController extends Controller
                                 ->where('translates.language_id', $lang->id)
                                 ->where('blocks.enabled', 1)
                                 ->select('blocks.text', 'translates.id as tid', 'translates.text as ttext')
+                                ->orderBy(\DB::raw('LENGTH(blocks.text)'), 'DESC')
                                 ->get();
                             foreach ($blocks as $block)
                             {

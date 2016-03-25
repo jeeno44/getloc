@@ -17,12 +17,12 @@ if ( !getloc_off )
 
     if ( style.styleSheet )
         style.styleSheet.cssText = css;
-    else 
+    else
         style.appendChild(document.createTextNode(css));
 
     head.appendChild(style)
 
-    window.console.log('insert css')  
+    window.console.log('insert css')
   }
 
 
@@ -32,7 +32,7 @@ function getloc(settings)
     this.lang          = settings['lang']
     this.uri           = window.location.href
     this.secret        = settings['secret']
-    this.uri_api       = 'http://api.getloc.ru/translate?'
+    this.uri_api       = 'http://api.get-loc.dev/translate?'
     this.callback      = 'getloc.setTranslate'
     this.response      = ''
     this.showChoice    = true
@@ -128,13 +128,16 @@ function getloc(settings)
           }
         
         if ( !this.complete )
-            for ( var original in this.response.results ) 
+            for ( var original in this.response.results ) {
+                console.log(original);
                 content.innerHTML = content.innerHTML.replace(new RegExp(this.decodeSpecialChars(original), 'g'), this.response.results[original]);
+            }
+
         else
            {
             var temp_content  = this.originalCont
 
-            for ( var original in this.response.results ) 
+            for ( var original in this.response.results )
                 this.originalCont = this.originalCont.replace(new RegExp(this.decodeSpecialChars(original), 'g'), this.response.results[original]);
 
             document.getElementsByTagName('html')[0].innerHTML = this.originalCont
@@ -178,15 +181,15 @@ function getloc(settings)
         if ( this.showChoice )
           {
             this.htmlWidget = '<div style="position:fixed;left: 5%;bottom: 0;display:inline-block;" class="dropdown"><button onclick="getloc.openMenu()" style="background-color:#4CAF50;color:#fff;padding:16px;font-size:16px;border:none;cursor:pointer;} :hover:focus {background-color:#3e8e41}" id="showLang" class="dropbtn">'+this.lang+'</button><div id="myDropdown" class="dropdown-content" style="display:none;position:relative;background-color:#f9f9f9;min-width:160px;box-shadow:0 8px 16px 0 rgba(0,0,0,0.2)">'
-            for ( var lang in this.response.available_languages ) 
+            for ( var lang in this.response.available_languages )
             {
                 this.htmlWidget += '<a href="#" onclick="getloc.changeLanguage(\''+lang+'\'); return false;" style="color:#000;padding:12px 16px;text-decoration:none;display:block; :hover{background-color:#f1f1f1}">'+lang+'</a>'
             }
             this.htmlWidget += '</div></div>'
             var body = document.getElementsByTagName('body')[0]
-            body.innerHTML = body.innerHTML + this.htmlWidget  
-            
-            window.onclick = function(event) 
+            body.innerHTML = body.innerHTML + this.htmlWidget
+
+            window.onclick = function(event)
             {
                 if ( !event.target.matches('.dropbtn') )
                   {
@@ -195,7 +198,7 @@ function getloc(settings)
                     for ( i = 0; i < dropdowns.length; i++ )
                     {
                       var openDropdown = dropdowns[i];
-                      if ( openDropdown.style.display == 'block' ) 
+                      if ( openDropdown.style.display == 'block' )
                         openDropdown.style.display = 'none'
                     }
                   }
@@ -284,7 +287,7 @@ function getloc(settings)
         if ( !getloc_off )
           {
             this.detect_language()
-            this.getTranslate()          
+            this.getTranslate()
           }
     }
 }

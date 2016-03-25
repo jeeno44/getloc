@@ -103,7 +103,7 @@
                             <td class="projects__status">
                                 <span class="projects__picking">{{trans('phrases.building_structure')}}</span>
                             </td>
-                        @elseif ($site->pages()->where('collected', 0)->count() > 0)
+                        @elseif ($site->pages()->where('collected', 0)->where('code', '<', 400)->count() > 0)
                             <td>{{beautyUrl($site->url)}}</td>
                             <td class="projects__status">
                                 <span class="projects__picking">{{trans('phrases.collect_text')}}</span>
@@ -114,7 +114,7 @@
                                 <span class="projects__done">{{trans('phrases.site_done')}}</span>
                             </td>
                         @endif
-                        <td>{{$site->pages()->count()}}</td>
+                        <td>{{$site->pages()->where('code', '<', 400)->count()}}</td>
                         <td>{{$site->count_blocks}}</td>
                         <td>{{$site->count_words}}</td>
                         <td>{{$site->count_symbols}}</td>
