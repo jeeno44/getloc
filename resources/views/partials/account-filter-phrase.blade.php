@@ -28,7 +28,6 @@
     </div>
     <div class="site__aside-filter">
         <input type="submit" name="clearFilter" value="Очистить фильтр" />
-        <input type="submit" name="setFilter" value="Фильтровать" />
     </div>
     </form>
 </div>

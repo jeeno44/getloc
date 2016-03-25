@@ -92,7 +92,9 @@
                     
                     @endforeach
                     @if (isset($blocks))
+                    <div class="paginationAjax">
                         {!! $blocks->render() !!}
+                    </div>
                     @endif
                 </div>
             </div>

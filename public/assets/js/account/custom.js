@@ -138,7 +138,7 @@ setEventInContent = function()
         });
     })
     
-    $('.pagination a').click(function(e){
+    $('.paginationAjax a').click(function(e){
         loadPhrases($(this).attr('href').split('page=')[1]);
         e.preventDefault();
     });
