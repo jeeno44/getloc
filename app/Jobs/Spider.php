@@ -48,7 +48,6 @@ class Spider extends Job implements ShouldQueue
                     }
                 } else {
                     $page->code = 500;
-                    $page->collected = 1;
                 }
                 $page->visited = 1;
                 $page->save();

@@ -102,11 +102,15 @@
                             <td>{{beautyUrl($site->url)}}</td>
                             <td class="projects__status">
                                 <span class="projects__picking">{{trans('phrases.building_structure')}}</span>
+                                ({{$site->pages()->where('visited', 1)->count()}} / {{$site->pages()->count()}})
                             </td>
                         @elseif ($site->pages()->where('collected', 0)->where('code', '<', 400)->count() > 0)
                             <td>{{beautyUrl($site->url)}}</td>
                             <td class="projects__status">
-                                <span class="projects__picking">{{trans('phrases.collect_text')}}</span>
+                                <span class="projects__picking">
+                                    {{trans('phrases.collect_text')}}
+                                    ({{$site->pages()->where('collected', 1)->count()}} / {{$site->pages()->count()}})
+                                </span>
                             </td>
                         @else
                             <td><a href="{{route('scan.site', ['id' => $site->id])}}">{{beautyUrl($site->url)}}</a></td>
@@ -114,7 +118,7 @@
                                 <span class="projects__done">{{trans('phrases.site_done')}}</span>
                             </td>
                         @endif
-                        <td>{{$site->pages()->where('code', '<', 400)->count()}}</td>
+                        <td>{{$site->pages()->count()}}</td>
                         <td>{{$site->count_blocks}}</td>
                         <td>{{$site->count_words}}</td>
                         <td>{{$site->count_symbols}}</td>

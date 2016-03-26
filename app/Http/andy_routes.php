@@ -87,6 +87,21 @@ Route::group(['domain' => 'api.'.$domain], function () {
 });
 
 Route::get('test', function() {
-    preg_match_all('/[a-zа-я]/ui', '+7(495) 781 31 71', $matches);
-    dd($matches);
+    /*DB::table('sites')->delete();
+    DB::table('jobs')->delete();
+    $site = new \App\Site([
+        'url'           => 'http://www.nordiqc.org/',
+        'name'          => 'http://www.nordiqc.org/',
+        'user_id'       => 1,
+        'secret'        => str_random(32),
+        'language_id'   => 8,
+        'demo'          => 1,
+    ]);
+    $site->save();
+    \App\Page::create([
+        'url'           => 'http://www.nordiqc.org/',
+        'site_id'       => $site->id,
+        'code'          => 200,
+    ]);*/
+    //Queue::push(new \App\Jobs\Spider($site));
 });
