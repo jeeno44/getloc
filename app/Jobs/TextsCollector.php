@@ -92,7 +92,6 @@ class TextsCollector extends Job implements ShouldQueue
                 $page->collected = 1;
             } else {
                 $page->code = 500;
-                $page->collected = 1;
             }
             $page->save();
         }

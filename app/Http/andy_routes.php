@@ -86,22 +86,8 @@ Route::group(['domain' => 'api.'.$domain], function () {
 
 });
 
-Route::get('test', function() {
-    /*DB::table('sites')->delete();
-    DB::table('jobs')->delete();
-    $site = new \App\Site([
-        'url'           => 'http://www.nordiqc.org/',
-        'name'          => 'http://www.nordiqc.org/',
-        'user_id'       => 1,
-        'secret'        => str_random(32),
-        'language_id'   => 8,
-        'demo'          => 1,
-    ]);
-    $site->save();
-    \App\Page::create([
-        'url'           => 'http://www.nordiqc.org/',
-        'site_id'       => $site->id,
-        'code'          => 200,
-    ]);*/
-    //Queue::push(new \App\Jobs\Spider($site));
+Route::get('rescan/{id}', function($id) {
+    $site = \App\Site::find($id);
+    DB::table('pages')->where('code', 500)->update(['code' => 200, 'collected' => 0]);
+    Queue::push(new \App\Jobs\Spider($site));
 });
