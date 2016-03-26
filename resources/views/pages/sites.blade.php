@@ -101,8 +101,11 @@
                         @if ($site->pages()->where('visited', 0)->count() > 0)
                             <td>{{beautyUrl($site->url)}}</td>
                             <td class="projects__status">
-                                <span class="projects__picking">{{trans('phrases.building_structure')}}</span>
-                                ({{$site->pages()->where('visited', 1)->count()}} / {{$site->pages()->count()}})
+                                <span class="projects__picking">
+                                    {{trans('phrases.building_structure')}}
+                                    ({{$site->pages()->where('visited', 1)->count()}} / {{$site->pages()->count()}})
+                                </span>
+
                             </td>
                         @elseif ($site->pages()->where('collected', 0)->where('code', '<', 400)->count() > 0)
                             <td>{{beautyUrl($site->url)}}</td>
