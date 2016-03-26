@@ -86,8 +86,31 @@ Route::group(['domain' => 'api.'.$domain], function () {
 
 });
 
-Route::get('rescan/{id}', function($id) {
+Route::get('rescan-errors/{id}', function($id) {
     $site = \App\Site::find($id);
-    DB::table('pages')->where('code', 500)->update(['code' => 200, 'collected' => 0]);
-    Queue::push(new \App\Jobs\Spider($site));
+    if (!empty($site)) {
+        DB::table('pages')->where('code', 500)->where('site_id', $site->id)->update(['code' => 200, 'collected' => 0]);
+        Queue::push(new \App\Jobs\Spider($site));
+    }
+});
+Route::get('rebuild-errors/{id}', function($id) {
+    $site = \App\Site::find($id);
+    if (!empty($site)) {
+        DB::table('pages')->where('code', 500)->where('site_id', $site->id)->update(['code' => 200, 'collected' => 0, 'visited' => 0]);
+        Queue::push(new \App\Jobs\Spider($site));
+    }
+});
+Route::get('rescan-all/{id}', function($id) {
+    $site = \App\Site::find($id);
+    if (!empty($site)) {
+        DB::table('pages')->where('site_id', $site->id)->update(['code' => 200, 'collected' => 0]);
+        Queue::push(new \App\Jobs\Spider($site));
+    }
+});
+Route::get('rebuild-all/{id}', function($id) {
+    $site = \App\Site::find($id);
+    if (!empty($site)) {
+        DB::table('pages')->where('site_id', $site->id)->update(['code' => 200, 'collected' => 0, 'visited' => 0]);
+        Queue::push(new \App\Jobs\Spider($site));
+    }
 });
