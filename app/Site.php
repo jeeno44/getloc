@@ -58,4 +58,9 @@ class Site extends Model
         $settings = \DB::table('sites_settings')->where('site_id', $this->id)->first();
         return $settings;
     }
+    
+    public function subscription()
+    {
+        return $this->hasOne('App\Subscription');
+    }
 }

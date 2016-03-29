@@ -42,7 +42,9 @@
                     Проект –
                     <span class="inside-content__name">{{$site->name}}</span>
                 </h2>
-                <a href="{{URL::route('main.billing')}}" class="inside-content__tune">{{trans('account.settings')}}</a>
+                {{--
+                <a href="#" class="inside-content__tune">{{trans('account.settings')}}</a>
+                --}}
             </div>
             <div class="project__item">
                 <div id="setAutoTranslateProject" class="btn-lock @if ($site_settings->auto_translate == 1) btn-lock_on @endif"></div>
@@ -55,26 +57,39 @@
                 <span class="project__status">Новые переведенные фразы сразу публикуются</span>
             </div>
         </div>
-        <?php $sub = Auth::user()->subscription()->first()?>
-        @if ($sub)
-            <div class="tariff inside-content__wrap">
-                <div class="inside-content__title">
-                    <h2>Тарифный план</h2>
-                    <a href="{{route('main.billing')}}" class="inside-content__tune">Изменить</a>
-                </div>
-                <div class="tariff__info">
-                    {{$sub->plan->name}} –
-                    <span class="tariff__sum">{{$sub->plan->cost}}</span>
-                    р/мес
-                </div>
-                <div class="tariff__period">
-                    <p>Осталось
-                        <span class="tariff__days">{{Carbon\Carbon::now()->diffForHumans(\Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $sub->ends_at))}}</span>
-                        до истечения оплаченного периода</p>
-                    <p><a href="#">Информация об оплате</a></p>
-                </div>
+        <div class="tariff inside-content__wrap">
+            <div class="inside-content__title">
+                <h2>Тарифный план</h2>
+                @if($site->subscription)
+                    <a href="{{route('main.billing', ['id' => $site->id])}}" class="">Изменить</a>
+                    <a href="{{route('main.billing', ['id' => $site->id])}}" class="">Продлить</a>
+                @else
+                    <a href="{{route('main.billing', ['id' => $site->id])}}" class="inside-content__tune">Купить</a>
+                @endif
+
             </div>
-        @endif
+            @if($site->subscription)
+            <div class="tariff__info">
+                {{$site->subscription->plan->name}} –
+                <span class="tariff__sum">{{$site->subscription->month_cost}}</span>р/мес
+            </div>
+            <div class="tariff__period">
+                @if($site->subscription->deposit > 0.00)
+                    <?php $diff = round($site->subscription->deposit / ($site->subscription->month_cost / 30 ))?>
+                    <p>{{Lang::choice('phrases.ostalos', $diff)}} <span class="tariff__days">
+                            {{$diff}}</span>
+                        {{Lang::choice('phrases.count_days', $diff)}} до истечения оплаченного периода
+                    </p>
+                @else
+                    <p>Оплаченный период истек</p>
+                @endif
+            </div>
+            @else
+                <div class="tariff__info">
+                    не подключен ни один тарифный план
+                </div>
+            @endif
+        </div>
         <div class="translation inside-content__wrap">
             <div class="inside-content__title">
                 <h2>{{trans('account.napLang')}}</h2>

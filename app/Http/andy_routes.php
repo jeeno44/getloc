@@ -60,6 +60,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::resource('settings/languages', 'Admin\LanguagesController');
             Route::resource('billing/coupons', 'Admin\CouponsController');
             Route::resource('billing/orders', 'Admin\OrdersController');
+
         });
 
         Route::group(['middleware' => 'auth', 'prefix' => 'account'], function() {
@@ -68,7 +69,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/validate-project/{id}', ['as' => 'main.account.validate-project', 'uses' => 'ProjectController@validateProject']);
 
             Route::group(['prefix' => 'billing'], function() {
-                Route::get('/', ['as' => 'main.billing', 'uses' => 'BillingController@index']);
+                Route::get('/{id}', ['as' => 'main.billing', 'uses' => 'BillingController@index']);
                 Route::get('/prepare/{id}', ['as' => 'main.billing.prepare', 'uses' => 'BillingController@prepare']);
                 Route::get('/upgrade/{id}', ['as' => 'main.billing.upgrade', 'uses' => 'BillingController@upgrade']);
                 Route::get('/success', ['as' => 'main.billing.success', 'uses' => 'BillingController@success']);
