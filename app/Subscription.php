@@ -8,7 +8,7 @@ class Subscription extends Model
 {
     protected $table = 'subscriptions';
 
-    protected $fillable = ['user_id', 'plan_id', 'site_id', 'ends_at', 'last_id', 'count_words', 'count_languages', 'white_label'];
+    protected $fillable = ['user_id', 'plan_id', 'site_id', 'ends_at', 'last_id', 'count_words', 'count_languages', 'white_label', 'month_cost', 'deposit'];
 
     public function plan()
     {

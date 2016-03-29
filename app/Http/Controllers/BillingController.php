@@ -28,7 +28,7 @@ class BillingController extends Controller
      * Вывод списка тарифов
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($siteId)
     {
         $plans = Plan::where('enabled', 1)->get();
         $activity = true;

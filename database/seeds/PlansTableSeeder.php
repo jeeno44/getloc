@@ -47,6 +47,7 @@ class PlansTableSeeder extends Seeder
                 'cost'              => 0,
                 'count_words'       => 0,
                 'count_languages'   => 0,
+                'enabled'           => 0,
             ],
         ];
         DB::table('plans')->delete();
