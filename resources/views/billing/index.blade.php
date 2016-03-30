@@ -1,33 +1,33 @@
 @extends('layouts.account')
-@section('title') Тарифные планы @stop
+@section('title') Покупка тарифа @stop
 @section('content')
-    <h1 class="site__title title_project">Тарифные планы</h1>
-    @if($activity)
-        <p style="text-align: center; font-weight: bold">Ваш тарифный план {{$subscription->plan->name}} до {{$subscription->ends_at}}<br><br></p>
-        @foreach($plans as $plan)
-            <div>
-                <p><strong>Тариф: </strong>{{$plan->name}}</p>
-                <p><strong>Стоимость: </strong>{{$plan->cost}}</p>
-                <p><strong>Слов: </strong>{{$plan->count_words}}</p>
-                <p><strong>Языков: </strong>{{$plan->count_languages}}</p>
-                <p><strong>whitelabel виджета: </strong>{{$plan->white_label}}</p>
-                @if ($subscription->plan_id != $plan->id)
-                    <p><a class="btn btn-success" href="{{route('main.billing.upgrade', ['planId' => $plan->id])}}">Перейти на тарифный план</a> </p>
-                @endif
-            </div>
-            <hr>
-        @endforeach
-    @else
-        @foreach($plans as $plan)
-            <div>
-                <p><strong>Тариф: </strong>{{$plan->name}}</p>
-                <p><strong>Стоимость: </strong>{{$plan->cost}}</p>
-                <p><strong>Слов: </strong>{{$plan->count_words}}</p>
-                <p><strong>Языков: </strong>{{$plan->count_languages}}</p>
-                <p><strong>whitelabel виджета: </strong>{{$plan->white_label}}</p>
-                <p><a class="btn btn-success" href="{{route('main.billing.prepare', ['planId' => $plan->id])}}">Оплатить</a> </p>
-            </div>
-            <hr>
-        @endforeach
-    @endif
+    <h1 class="">Покупка тарифа</h1>
+    {!! Form::model($detail, ['route' => 'main.billing.prepare', 'class' => 'new-project__form']) !!}
+
+    <label>Тариф *</label>
+    {!! Form::select('plan_id', $plans, null, ['class' => 'billing-inp']) !!}
+    <p>или <a href="{{route('main.billing.individual', ['id' => $site->id])}}">запросить индвидидуальные условия</a> </p>
+    <br>
+
+    <label>Срок *</label>
+    {!! Form::select('time', getDurations(), null, ['class' => 'billing-inp']) !!}
+    <br><br>
+
+    <label>Способ оплаты *</label>
+    {!! Form::select('payment_type_id', $paymentTypes, null) !!}
+    <br><br>
+
+    <label>Купон</label>
+    {!! Form::text('coupon', null, ['class' => 'billing-inp']) !!}
+    <div id="coupon_validate"></div>
+    {!! Form::hidden('site_id', $site->id, ['class' => 'billing-inp']) !!}
+    <br><br>
+    <div id="subtotal">
+
+    </div>
+
+
+    <input type="submit" value="Продолжить">
+
+    {!! Form::close() !!}
 @stop

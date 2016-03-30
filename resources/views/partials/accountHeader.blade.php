@@ -26,7 +26,7 @@
                 <!-- /header__menu -->
 
                 <!-- logo -->
-                <a href="#" class="logo">
+                <a href="{{route('main.account')}}" class="logo">
                     <img src="/assets/img/account/logo.png" width="90" height="26" alt="GETLOC">
                 </a>
                 <!-- /logo -->

@@ -17,7 +17,7 @@ class PaymentsController extends AdminController
 
     public function index()
     {
-        $items = Payment::latest()->paginate(20);
+        $items = Payment::latest()->where('is_draft', 0)->paginate(20);
         return view('admin.payments.index', compact('items'));
     }
 

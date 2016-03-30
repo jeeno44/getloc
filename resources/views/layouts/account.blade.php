@@ -32,6 +32,6 @@
     <script src="/assets/js/account/toastr.min.js"></script>
     <link rel="stylesheet" href="/assets/css/account/toastr.min.css" />
     <script src="/assets/js/account/custom.js"></script>
-    
+    <script src="/assets/js/account/billing.js"></script>
 </body>
 </html>

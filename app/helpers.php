@@ -146,24 +146,13 @@ function widget($class)
 }
 
 /**
- * Получаем id последнего оплаченного переведеннго блока (table translates)
- * @param \App\User $user
+ * Получаем id последнего оплаченного блока
+ * @param \App\Site $site
  * @return int
  */
-function rebuildAvailableTranslates(\App\User $user)
+function rebuildAvailableBlocks(\App\Site $site)
 {
     
-}
-
-/**
- * Получаем новую дату при смене тарифа пользователем
- * @param \App\User $user
- * @param \App\Plan $newPlan
- * @return string
- */
-function calculateEndAt(\App\User $user, \App\Plan $newPlan)
-{
-   
 }
 
 /**
@@ -261,4 +250,114 @@ function getCouponTypes($key = '') {
         return $types[$key];
     }
     return $types;
+}
+
+/**
+ * Проверка состояния купона
+ * @param string $code
+ * @param int $siteId
+ * @return bool
+ */
+function getCouponState($code, $siteId)
+{
+    $site = \App\Site::find($siteId);
+    $coupon = \App\Coupon::where('code', $code)->first();
+    if (!$coupon
+        || !$site
+        || $coupon->enabled == 0
+        || ($coupon->type == 'fixed' && $coupon->ends_at <= date('Y-m-d H:i:s'))
+        || ($coupon->site_id != null && $coupon->site_id != $site->id)
+        || ($coupon->user_id != null && $coupon->user_id != $site->user_id)) {
+        return null;
+    }
+    return $coupon;
+}
+
+/**
+ * Обновление состояния купона
+ * @param \App\Coupon $coupon
+ * @param \App\Site $site
+ */
+function updateCouponState($coupon, $site)
+{
+    if($coupon->activated_at == '0000-00-00 00:00:00') {
+        $coupon->activated_at = date('Y-m-d H:i:s');
+    }
+    if($coupon->site_id == null) {
+        $coupon->site_id = $site->id;
+    }
+    if($coupon->user_id == null) {
+        $coupon->user_id = $site->user->id;
+    }
+    if($coupon->type == 'once' || ($coupon->type == 'fixed' && $coupon->ends_at <= date('Y-m-d H:i:s'))) {
+        $coupon->enabled = 0;
+    }
+    $coupon->save();
+}
+
+function getDurations()
+{
+    $items =  [
+        1   => trans('phrases.1_month'),
+        3   => trans('phrases.3_months_discount'),
+        6   => trans('phrases.6_months_discount'),
+        12  => trans('phrases.1_year_discount'),
+    ];
+    return $items;
+}
+
+function getDurationsByKey($key = 0)
+{
+    $items =  [
+        1   => trans('phrases.1_month'),
+        3   => trans('phrases.3_months'),
+        6   => trans('phrases.6_months'),
+        12  => trans('phrases.1_year'),
+    ];
+    return !empty($items[$key]) ? $items[$key] : $items;
+}
+
+/**
+ * Размер скидки платежа в зависимости от срока
+ * @param int $key
+ * @return int
+ */
+function getDiscountByTime($key)
+{
+    $discounts = [
+        1   => 0,
+        3   => 15,
+        6   => 20,
+        12  => 25
+    ];
+    return !empty($discounts[$key]) ? $discounts[$key] : 0;
+}
+
+/**
+ * Расчет итоговой суммы для оплаты
+ * @param float $cost
+ * @param string $code
+ * @param int $siteId
+ * @param int $time
+ * @return float
+ */
+function getSubTotal($cost, $code, $siteId, $time = 0)
+{
+    $subtotal = $cost * $time;
+    $couponDiscount = 0;
+    if ($coupon = getCouponState($code, $siteId)) {
+        if ($coupon->is_percent == 0) {
+            $couponDiscount = $coupon->discount;
+        } else {
+            $couponDiscount = $subtotal / 100 * $coupon->discount;
+        }
+    }
+    $subtotal = $subtotal - $couponDiscount;
+    $timeDiscount = getDiscountByTime($time);
+    $timeDiscountSum = $subtotal / 100 * $timeDiscount;
+    $subtotal = $subtotal - $timeDiscountSum;
+    if ($subtotal < 0) {
+        $subtotal = 0;
+    }
+    return $subtotal;
 }

@@ -11,8 +11,9 @@
                 <thead>
                 <tr>
                     <th>Пользователь</th>
+                    <th>Сайт</th>
                     <th>Тариф</th>
-                    <th>Дата окончания</th>
+                    <th>Депозит</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -23,12 +24,15 @@
                             {{$item->user->name}}
                         </td>
                         <td>
-                            {{$item->plan->name}}
+                            {{beautyUrl($item->site->url)}}
                         </td>
                         <td>
-                            {{$item->ends_at}}
+                            {{$item->plan->name}} ({{$item->month_cost}} руб./мес.)
                         </td>
                         <td>
+                            {{$item->deposit}} руб.
+                        </td>
+                        <td class="text-right">
                             <button class="btn btn-sm btn-default" type="button" data-toggle="modal" title="Удалить" data-target="#remove{{$item->id}}"><i class="fa fa-times"></i></button>
                             <div class="modal fade" tabindex="-1" role="dialog" id="remove{{$item->id}}">
                                 <div class="modal-dialog">

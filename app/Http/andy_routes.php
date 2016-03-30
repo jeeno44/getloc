@@ -69,11 +69,17 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/validate-project/{id}', ['as' => 'main.account.validate-project', 'uses' => 'ProjectController@validateProject']);
 
             Route::group(['prefix' => 'billing'], function() {
-                Route::get('/{id}', ['as' => 'main.billing', 'uses' => 'BillingController@index']);
-                Route::get('/prepare/{id}', ['as' => 'main.billing.prepare', 'uses' => 'BillingController@prepare']);
+                Route::any('/coupon_validate', ['as' => 'main.billing.coupon_validate', 'uses' => 'BillingController@validateCoupon']);
+                Route::any('/subtotal', ['as' => 'main.billing.subtotal', 'uses' => 'BillingController@subtotal']);
+                Route::post('/prepare', ['as' => 'main.billing.prepare', 'uses' => 'BillingController@prepare']);
                 Route::get('/upgrade/{id}', ['as' => 'main.billing.upgrade', 'uses' => 'BillingController@upgrade']);
+                Route::get('/individual/{id}', ['as' => 'main.billing.individual', 'uses' => 'BillingController@individual']);
+                Route::get('/details-form/{id}', ['as' => 'main.billing.details-form', 'uses' => 'BillingController@detailsForm']);
+                Route::post('/details-form/{id}', ['as' => 'main.billing.details-store', 'uses' => 'BillingController@detailsStore']);
+                Route::get('/prolong/{id}', ['as' => 'main.billing.prolong', 'uses' => 'BillingController@prolong']);
                 Route::get('/success', ['as' => 'main.billing.success', 'uses' => 'BillingController@success']);
                 Route::get('/fail', ['as' => 'main.billing.fail', 'uses' => 'BillingController@fail']);
+                Route::get('/{id}', ['as' => 'main.billing', 'uses' => 'BillingController@index'])->where(['id' => '[0-9]+']);
             });
         });
     });

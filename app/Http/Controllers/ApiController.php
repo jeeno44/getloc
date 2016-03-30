@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Block;
+use App\Coupon;
 use App\Language;
 use App\Page;
 use App\Site;
@@ -65,6 +66,7 @@ class ApiController extends Controller
                             $blocks = $page->blocks()->join('translates', 'blocks.id', '=', 'translates.block_id')
                                 ->where('translates.language_id', $lang->id)
                                 ->where('blocks.enabled', 1)
+                                ->where('translates.enabled', 1)
                                 ->select('blocks.text', 'translates.id as tid', 'translates.text as ttext')
                                 ->orderBy(\DB::raw('LENGTH(blocks.text)'), 'DESC')
                                 ->get();
@@ -231,5 +233,4 @@ class ApiController extends Controller
         }
         $this->dispatch(new \App\Jobs\Spider($site));
     }
-
 }
