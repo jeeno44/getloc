@@ -148,17 +148,18 @@ class ProjectController extends Controller
     {
         $site  = Site::find($id);
         $blocks = $site->blocks;
-        $blocksIds = $site->blocks()->lists('id', 'id')->toArray();
+        //$blocksIds = $site->blocks()->lists('id', 'id')->toArray();
         $oldLangs = $site->enabledLanguages()->lists('id')->toArray();
         $newLangs = $request->get('languages', []);
-        $langsToDel = array_diff($oldLangs, $newLangs);
+        //$langsToDel = array_diff($oldLangs, $newLangs);
         $langsToAdd = array_diff($newLangs, $oldLangs);
-        foreach ($langsToDel as $l) {
+        /*foreach ($langsToDel as $l) {
             \DB::table('site_language')->where('site_id', $site->id)->where('language_id', $l)->update(['enabled' => 0]);
             foreach ($site->pages as $page) {
                 \Cache::forget($site->secret.'_'.$page->id.'_'.$l);
+                TODO новое кеширование
             }
-        }
+        }*/
         foreach ($langsToAdd as $l) {
             if (!$site->hasLanguage($l)) {
                 $site->languages()->attach($l);
