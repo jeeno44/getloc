@@ -29,17 +29,17 @@ class ApiController extends Controller
     {
         extract($request->only(['secret', 'uri', 'lang', 'callback']));
         if (empty($secret)) {
-            return \Response::json(['errors' => ['Secret key required']]);
+            return \Response::json(['error' => ['msg' => 'Secret key required', 'code' => 1]]);
         }
         if (empty($uri)) {
-            return \Response::json(['errors' => ['Uri required']]);
+            return \Response::json(['error' => ['msg' => 'Uri required', 'code' => 2]]);
         }
         if (empty($lang)) {
-            return \Response::json(['errors' => ['Lang required']]);
+            return \Response::json(['error' => ['msg' => 'Lang required', 'code' => 3]]);
         }
         $site = Site::where('secret', $secret)->first();
         if (empty($site)) {
-            return \Response::json(['errors' => ['Auth failed. Invalid Secret key']]);
+            return \Response::json(['error' => ['msg' => 'Auth failed. Invalid Secret key', 'code' => 4]]);
         } else {
             $uri = prepareUri($uri);
             $page = Page::where('url', $uri)->first();
@@ -50,11 +50,11 @@ class ApiController extends Controller
                     'code'          => 200,
                 ]);
                 $this->dispatch(new \App\Jobs\Spider($site));
-                return \Response::json(['errors' => ['Page does not exists']]);
+                return \Response::json(['error' => ['msg' => 'Page does not exists', 'code' => 5]]);
             } else {
                 $lang = Language::where('short', $lang)->first();
                 if (empty($lang)) {
-                    return \Response::json(['errors' => ['Language is invalid']]);
+                    return \Response::json(['error' => ['msg' => 'Language is invalid', 'code' => 6]]);
                 } else {
                     \Cache::forget($secret.'_'.$page->id.'_'.$lang->id);//TODO переделать кеширование для новых условий
                     $response = \Cache::rememberForever($secret.'_'.$page->id.'_'.$lang->id, function() use ($lang, $site, $page) {
@@ -80,7 +80,7 @@ class ApiController extends Controller
                             }
                         }
                         if (empty($response['results'])) {
-                            $response['errors'][] = 'Site is processed';
+                            $response['error'] = ['msg' => 'Site is processed', 'code' => 7];
                         }
                         $response['available_languages'] = $site->languages()->where('enabled', 1)->lists('name', 'short')->toArray();
                         $response['available_languages'][$site->language->short] = $site->language->name;
