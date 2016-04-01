@@ -170,6 +170,22 @@ getCurentTab = function()
     return active_tab
 }
 
+setArchive = function(id)
+{
+    $.ajax({
+        url         : "/account/setArchive/",
+        type        : 'post',
+        data        : {id: id},
+        dataType    : 'json',
+        success     : function(res)
+        {
+            toastr.success(res.message)
+            setNewStats(res.stats)
+            $('#phrase_'+id).remove();
+        }
+    })
+}
+
 loadPhrases = function(page)
 {
     var page  = !page ? 0 : page
@@ -232,10 +248,17 @@ setStatusBlock = function(status)
     $.ajax({
         url     : "/account/setStatusBlock/",
         type    : 'post',
+        dataType: 'json',
         data    : data,
-        success : function()
+        success : function(res)
         {
-            window.location.reload();
+            if ( status == 2 )
+                $.each( data['ids'], function(i, id) {
+                    $('#phrase_'+id).remove()
+                });
+            
+            toastr.success(res.message)
+            setNewStats(res.stats)
         }
     });
 }

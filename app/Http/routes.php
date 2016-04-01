@@ -61,6 +61,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::post('/setAutoPublishing', ['as' => 'main.account.autoPub', 'uses' => 'AccountController@setAutoPublishing']);
             Route::post('/setAutoTranslate', ['as' => 'main.account.autoTrans', 'uses' => 'AccountController@setAutoTranslate']);
             Route::post('/ajaxPhraseRender', ['as' => 'main.account.ajaxphrase', 'uses' => 'AccountController@phraseAjaxRender']);
+            Route::post('/setArchive', ['as' => 'main.account.setArchive', 'uses' => 'AccountController@setArchiveTranslate']);
         });
         
     });
