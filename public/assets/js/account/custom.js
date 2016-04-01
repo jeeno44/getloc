@@ -157,6 +157,26 @@ setEventInContent = function()
     $('.phrases__item-field').each(function() {
         EditComments($(this));
     });
+
+
+    /*
+     |------------------------------------------------------------
+     | тестовая кнопка
+     |------------------------------------------------------------
+     */
+    $('#page_auto_complete').myAutoComplete({
+        theme: 'default',
+        urlRequest: '/account/ajaxRenderingBlocksPages',
+        titleBlockEl: '.block_for_title',
+        dataBlockEl: '#renderPhrases',
+        paginationEl: '.paginationAjax',
+        customObjData: {
+            site_id: $('#page_auto_complete').attr('data-site-id'),
+            language_id: $('[name="filter[languageID]"]:checked').val(),
+            tab: getCurentTab()
+        },
+        method: 'post'
+    });
 }
 
 preloadLoader = function(url)
@@ -171,6 +191,22 @@ getCurentTab = function()
     $('.tabs__links').find('a').each(function(){ if ($(this).hasClass('active')) active_tab = $(this).attr('id') })
     
     return active_tab
+}
+
+setArchive = function(id)
+{
+    $.ajax({
+        url         : "/account/setArchive/",
+        type        : 'post',
+        data        : {id: id},
+        dataType    : 'json',
+        success     : function(res)
+        {
+            toastr.success(res.message)
+            setNewStats(res.stats)
+            $('#phrase_'+id).remove();
+        }
+    })
 }
 
 loadPhrases = function(page)
@@ -235,10 +271,17 @@ setStatusBlock = function(status)
     $.ajax({
         url     : "/account/setStatusBlock/",
         type    : 'post',
+        dataType: 'json',
         data    : data,
-        success : function()
+        success : function(res)
         {
-            window.location.reload();
+            if ( status == 2 )
+                $.each( data['ids'], function(i, id) {
+                    $('#phrase_'+id).remove()
+                });
+            
+            toastr.success(res.message)
+            setNewStats(res.stats)
         }
     });
 }

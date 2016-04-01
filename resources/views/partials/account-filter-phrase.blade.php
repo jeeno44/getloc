@@ -26,7 +26,12 @@
             @endforeach
         </div>
     </div>
-{{--        {{ dd($lang->id) }}--}}
+
+        <div class="filter_page_site_wrap">
+            <input type="text" data-site-id="{{ Session::get('projectID') }}" data-language-id="{{ Session::get('filter')['languageID'] }}" id="page_auto_complete" name="page_auto_complete" placeholder="Фильтр по страницам">
+            <ul class="found_for_title_wrap"></ul>
+            <div class="selected_for_title"></div>
+        </div>
     <input type="submit" name="clearFilter" value="Очистить фильтр" />
     </form>
 </div>

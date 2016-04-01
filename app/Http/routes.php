@@ -62,7 +62,11 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::post('/setAutoTranslate', ['as' => 'main.account.autoTrans', 'uses' => 'AccountController@setAutoTranslate']);
             Route::post('/ajaxPhraseRender', ['as' => 'main.account.ajaxphrase', 'uses' => 'AccountController@phraseAjaxRender']);
 
+
             Route::post('/ajaxRenderingBlocksPages', ['as' => 'main.account.ajaxRenderingBlocksPages', 'uses' => 'AccountController@ajaxRenderingBlocksPages']);
+
+            Route::post('/setArchive', ['as' => 'main.account.setArchive', 'uses' => 'AccountController@setArchiveTranslate']);
+
         });
         
     });

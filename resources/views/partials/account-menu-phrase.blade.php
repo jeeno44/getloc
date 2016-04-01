@@ -18,7 +18,7 @@
                     <a href="#">{{trans('account.more')}}</a>
                 </li>
             </ul>
-            <a href="#">{{trans('account.sendInArchive')}}</a>
+            <a onclick="setArchive({{$ob->tid}}); return false;" href="#">{{trans('account.sendInArchive')}}</a>
         </div>
     </div>
     @if ( $ob->name_translate )

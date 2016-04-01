@@ -20,7 +20,7 @@
 
     <div class="phrases__item-controls">
         <div class="nice-check">
-            <input type="checkbox" name="blocks[]" value="{{$t->block_id}}" class="checkboxPhrase" id="publish_{{$t->tid}}">
+            <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">
             <label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>
         </div>
         @include('partials.account-menu-phrase', ['ob' => $t])
@@ -46,7 +46,7 @@
     </div>
     <div class="phrases__item-controls">
         <div class="nice-check">
-            <input type="checkbox" name="blocks[]" value="{{$t->block_id}}" class="checkboxPhrase" id="publish_{{$t->tid}}">
+            <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">
             <label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>
         </div>
         @include('partials.account-menu-phrase', ['ob' => $t])
