@@ -1,6 +1,15 @@
 beautifulsoup4==4.4.1
 futures==3.0.5
+grab==0.6.30
 html2text==2016.1.8
+lxml==3.6.0
+mstranslator==0.2.5
 MySQL-python==1.2.5
+pycurl==7.43.0
+pytils==0.3
 redis==2.10.5
-wheel==0.26.0
+requests==2.9.1
+selection==0.0.11
+six==1.10.0
+user-agent==0.1.1
+weblib==0.1.20
