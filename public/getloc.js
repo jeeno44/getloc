@@ -109,7 +109,18 @@ function getloc(settings)
 
         document.cookie = updatedCookie;
       }
-        
+    
+    /**
+     * @param  string s
+     * @returns string
+     */
+    
+    this.regexpEscape = function(s)
+    {
+        return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
+    
+    
     /**
      * Переводим текст на странице
      * 
@@ -130,7 +141,7 @@ function getloc(settings)
         if ( !this.complete )
             for ( var original in this.response.results ) {
                 console.log(original);
-                content.innerHTML = content.innerHTML.replace(new RegExp(this.decodeSpecialChars(original), 'g'), this.response.results[original]);
+                content.innerHTML = content.innerHTML.replace(new RegExp(this.decodeSpecialChars(this.regexpEscape(original)), 'g'), this.response.results[original]);
             }
 
         else
