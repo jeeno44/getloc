@@ -32,7 +32,7 @@ function getloc(settings)
     this.lang          = settings['lang']
     this.uri           = window.location.href
     this.secret        = settings['secret']
-    this.uri_api       = 'http://api.get-loc.ru/translate?'
+    this.uri_api       = 'http://api.getloc.ru/translate?'
     this.callback      = 'getloc.setTranslate'
     this.response      = ''
     this.showChoice    = true
