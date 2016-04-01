@@ -492,7 +492,7 @@ class AccountController extends Controller
      * @TODO: Команды
      *
      * @param  Request $request
-     * @return string
+     * @return stringphraseAjaxRender
      * @access public
      */
 

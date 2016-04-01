@@ -26,6 +26,7 @@
             @endforeach
         </div>
     </div>
+{{--        {{ dd($lang->id) }}--}}
     <input type="submit" name="clearFilter" value="Очистить фильтр" />
     </form>
 </div>

@@ -82,6 +82,9 @@ $(function(){
     $('.site__aside-filter').find('input[type=radio]').each(function(){
         $(this).click(loadPhrases)
     })
+
+
+
 })
 
 setEventInContent = function()
