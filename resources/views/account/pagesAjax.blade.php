@@ -1,4 +1,5 @@
 @foreach ($blocks as $t)
+{{--    {{ dd($t) }}--}}
 @if ( $viewType == 2)
 <div class="phrases__item @if ($t->type_translate_id)phrases__item_mark-{{$filter['colors'][$t->type_translate_id]['block']}} @endif" id="phrase_{{$t->tid}}">
     <div class="phrases__item-col">

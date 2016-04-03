@@ -2,6 +2,25 @@
     <h2 class="site__aside-title">{{trans('account.filters')}}</h2>
     <form action="{{URL::route('main.account.setFilter')}}" method="POST">
     <input type="hidden" name="view_page" value="{{$tab_name}}" />
+
+
+    <div id="filter_page_site_wrap" class="filter_page_site_wrap">
+        <div class="selected_for_title_wrap b-r_5">
+            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
+            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
+            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
+            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
+            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
+        </div>
+        <input class="input_page_auto_complete bordered" type="text" data-site-id="{{ Session::get('projectID') }}" data-language-id="{{ Session::get('filter')['languageID'] }}" id="input_page_auto_complete" name="input_page_auto_complete" placeholder="Фильтр по страницам">
+        <ul class="found_for_title_wrap b-r_5">
+            {{--<li class="found_for_title_item">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/</li>--}}
+            {{--<li class="found_for_title_item">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/</li>--}}
+            {{--<li class="found_for_title_item">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/</li>--}}
+            {{--<li class="found_for_title_item">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/</li>--}}
+        </ul>
+    </div>
+
     <div class="site__aside-filter">
         <span>{{trans('account.langs')}}</span>
         @foreach ($filter['menu']['langs'] as $lang)
@@ -27,11 +46,6 @@
         </div>
     </div>
 
-        <div class="filter_page_site_wrap">
-            <input type="text" data-site-id="{{ Session::get('projectID') }}" data-language-id="{{ Session::get('filter')['languageID'] }}" id="page_auto_complete" name="page_auto_complete" placeholder="Фильтр по страницам">
-            <ul class="found_for_title_wrap"></ul>
-            <div class="selected_for_title"></div>
-        </div>
     <input type="submit" name="clearFilter" value="Очистить фильтр" />
     </form>
 </div>

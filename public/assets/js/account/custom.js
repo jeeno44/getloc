@@ -4,7 +4,7 @@ $(function(){
     
     $('.turnLang').click(function(){
         $.ajax({
-            url     : "/account/switchingLanguage/",
+            url     : "/account/switchingLanguage",
             type    : 'post',
             data    : {langID: parseInt($(this).attr('data-langid'))}
         }); 
@@ -40,7 +40,7 @@ $(function(){
     $('#setAutoTranslateProject').click(function()
     {
         $.ajax({
-            url     : "/account/setAutoTranslate/",
+            url     : "/account/setAutoTranslate",
             type    : 'post',
             dataType: 'text',
             cache   : false,
@@ -53,7 +53,7 @@ $(function(){
     $('#setAutoPublishingProject').click(function()
     {
         $.ajax({
-            url     : "/account/setAutoPublishing/",
+            url     : "/account/setAutoPublishing",
             type    : 'post',
             dataType: 'text',
             cache   : false,
@@ -67,7 +67,7 @@ $(function(){
         e.preventDefault();
         var id = $(this).attr('data-id');
         $.ajax({
-            url     : "/account/validate-project/" + id,
+            url     : "/account/validate-project" + id,
             type    : 'get',
             success : function(res) {
                 if (res == 'success') {
@@ -99,7 +99,7 @@ setEventInContent = function()
         var type    = $('#order_'+blockID).attr('data-type') 
         
         $.ajax({
-            url      : "/account/saveTranslate/",
+            url      : "/account/saveTranslate",
             type     : 'post',
             dataType : 'json',
             data     : {text: $('#order_'+$(this).attr('object-id')).val(), id: $(this).attr('object-id'), type: parseInt(type)},
@@ -161,22 +161,10 @@ setEventInContent = function()
 
     /*
      |------------------------------------------------------------
-     | тестовая кнопка
+     | Инициализация плагина
      |------------------------------------------------------------
      */
-    $('#page_auto_complete').myAutoComplete({
-        theme: 'default',
-        urlRequest: '/account/ajaxRenderingBlocksPages',
-        titleBlockEl: '.block_for_title',
-        dataBlockEl: '#renderPhrases',
-        paginationEl: '.paginationAjax',
-        customObjData: {
-            site_id: $('#page_auto_complete').attr('data-site-id'),
-            language_id: $('[name="filter[languageID]"]:checked').val(),
-            tab: getCurentTab()
-        },
-        method: 'post'
-    });
+    $(document).account();
 }
 
 preloadLoader = function(url)
@@ -196,7 +184,7 @@ getCurentTab = function()
 setArchive = function(id)
 {
     $.ajax({
-        url         : "/account/setArchive/",
+        url         : "/account/setArchive",
         type        : 'post',
         data        : {id: id},
         dataType    : 'json',
@@ -217,7 +205,7 @@ loadPhrases = function(page)
         data += '&page='+page
     
     $.ajax({
-        url         : "/account/ajaxPhraseRender/",
+        url         : "/account/ajaxPhraseRender",
         type        : 'post',
         data        : data,
         dataType    : 'json',
@@ -269,7 +257,7 @@ setStatusBlock = function(status)
     })
     
     $.ajax({
-        url     : "/account/setStatusBlock/",
+        url     : "/account/setStatusBlock",
         type    : 'post',
         dataType: 'json',
         data    : data,
@@ -289,7 +277,7 @@ setStatusBlock = function(status)
 setFilterShow = function(typeViewID)
 {
     $.ajax({
-        url     : "/account/setTypeView/",
+        url     : "/account/setTypeView",
         type    : 'post',
         data    : {typeViewID: typeViewID},
         success : function()
@@ -305,7 +293,7 @@ setFilterShow = function(typeViewID)
 markHandTranslate = function(id, save)
 {
     $.ajax({
-        url     : "/account/markHandTranslate/" + id,
+        url     : "/account/markHandTranslate" + id,
         type    : 'post',
         success : function()
         {

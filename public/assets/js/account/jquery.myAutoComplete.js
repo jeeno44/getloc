@@ -15,6 +15,8 @@
                 dataType: 'json'
             }, options);
 
+            console.log(obj);
+            
             if (settings.theme === 'default') {
                 methods.addingStyles();
             }
@@ -31,6 +33,24 @@
 
                     console.log(data);
                 }
+            });
+            $('.found_for_title_wrap').find('.found_for_title_item').on('click', function () {
+                var title = $(this).text();
+                var titleBlock = $('<div/>', {
+                    stile: "position: relative;",
+                    text: title,
+                    class: 'found_for_title_item'
+                });
+                var close = $('<div/>', {
+                    class: 'close',
+                    text: '✕',
+                    stile: "position: absolute; top: 0; right:0;"
+                });
+                titleBlock.append(close);
+                $('.selected_for_title').append(titleBlock);
+                $('.selected_for_title').css({border: "solid 1px #b2b2b2"});
+                $(this).detach();
+
             })
         },
         getData: function (obj) {
@@ -71,8 +91,11 @@
                     if (phrases.success) {
                         methods.stopLoader()
                     }
-
-                    $('.found_for_title_wrap').html(phrases.html);
+                    if (phrases.html != '') {
+                        $('.found_for_title_wrap').html(phrases.html);
+                        $('.found_for_title_wrap').css({border: "solid 1px #000000"});
+                        methods.eventListener();
+                    }
                 }
             });
         }

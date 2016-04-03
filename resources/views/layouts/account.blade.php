@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html> 
+﻿﻿<!DOCTYPE html> 
 <html lang="ru">
 <head>
     <meta charset="utf-8" />
@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/assets/css/account/select.css" />
     <link rel="stylesheet" href="/assets/css/account/main.css" />
     <link rel="stylesheet" href="/assets/css/account/custom.css" />
+    <link rel="stylesheet" href="/assets/css/account/account.css" />
 </head>
 <body>
     <div class="site" id="up">
@@ -31,7 +32,7 @@
     <script src="/assets/js/account/jquery.main.js"></script>
     <script src="/assets/js/account/toastr.min.js"></script>
     <link rel="stylesheet" href="/assets/css/account/toastr.min.css" />
-    <script src="/assets/js/account/jquery.myAutoComplete.js"></script>
+    <script src="/assets/js/account/jquery.account.js"></script>
     <script src="/assets/js/account/custom.js"></script>
     <script src="/assets/js/account/billing.js"></script>
 </body>

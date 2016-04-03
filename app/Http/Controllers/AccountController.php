@@ -848,7 +848,7 @@ class AccountController extends Controller
 
 
 
-    public function ajaxRenderingBlocksPages(Request $request)
+    public function ajaxRenderingTitlePages(Request $request)
     {
         $ret_data = [];
         $tab = $request->input('tab');
@@ -860,8 +860,37 @@ class AccountController extends Controller
         return $ret_data;
     }
 
+    public function ajaxRenderingBlocksPages(Request $request)
+    {
+        $ret_data = [];
+        $tab = $request->input('tab');
+        $viewType = Session::get('typeViewID', 1);
+        $filter = $this->generateStatsForPhraseFilter($request->input('site_id'), $request->input('language_id'));
+        $blocks = $this->buildQueryBlocks($request->input('site_id'), $request->input('page_id'), $request->input('language_id'));
+        $ret_data['html'] = (String)\View::make('account.pagesAjax', compact('blocks', 'filter', 'viewType', 'tab'))->render();
+        $ret_data['data'] = $request->input();
+        $ret_data['success'] = true;
+        return $ret_data;
+    }
+
     public function buildQueryTitle($site_id, $value)
     {
         return Page::where('site_id', $site_id)->where('url', 'LIKE', '%' . $value . '%')->get();
+    }
+
+    public function buildQueryBlocks($site_id, $page_id, $language_id)
+    {
+        return Page::where('pages.site_id', $site_id)
+	        ->where('pages.id', $page_id)
+	        ->leftJoin('page_block', 'page_block.page_id', '=', 'pages.id')
+	        ->leftJoin('blocks', 'blocks.id', '=', 'page_block.block_id')
+	        ->leftJoin('translates', function($join) use ($language_id) {
+		        $join->on('translates.block_id', '=', 'page_block.block_id')
+			        ->where('translates.language_id', '=', $language_id);
+	        })
+	        ->leftJoin('types_translates', 'types_translates.id', '=', 'translates.type_translate_id')
+	        ->orderBy('pages.id')
+	        ->select('translates.id as tid', 'pages.*', 'blocks.text as original', 'translates.*')
+	        ->paginate(25);
     }
 }
