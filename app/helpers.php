@@ -68,7 +68,7 @@ function prepareUri($uri)
 {
     $uri = rtrim($uri, '/');
     $uri = str_replace('http://', '', $uri);
-    return 'http://'.$uri.'/';
+    return 'http://'.$uri;
 }
 
 /**

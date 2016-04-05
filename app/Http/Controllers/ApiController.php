@@ -213,11 +213,6 @@ class ApiController extends Controller
                 'demo'          => 1,
             ]);
             $site->save();
-            Page::create([
-                'url'           => $url,
-                'site_id'       => $site->id,
-                'code'          => 200,
-            ]);
             if (!empty($langs)) {
                 foreach ($langs as $lang) {
                     if (!empty($lang) && !$site->hasLanguage($lang)) {
@@ -231,6 +226,7 @@ class ApiController extends Controller
                 'auto_translate'    => $request->has('auto_translate')
             ]);
         }
-        $this->dispatch(new \App\Jobs\Spider($site));
+        \Event::fire('site.start', $site);
+        //$this->dispatch(new \App\Jobs\Spider($site));
     }
 }

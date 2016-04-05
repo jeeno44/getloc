@@ -68,12 +68,6 @@ class ProjectController extends Controller
                     }
                 }
             }
-            $page = new Page([
-                'url'               => $url,
-                'site_id'           => $site->id,
-                'code'              => 200,
-            ]);
-            $page->save();
             \DB::table('sites_settings')->insert([
                 'site_id'           => $site->id,
                 'auto_publishing'   => $request->has('auto_publishing'),
@@ -112,7 +106,8 @@ class ProjectController extends Controller
         if (!empty($content) && strpos($content, $site->secret) !== false) {
             $site->enabled = 1;
             $site->save();
-            $this->dispatch(new \App\Jobs\Spider($site));
+            //$this->dispatch(new \App\Jobs\Spider($site));
+            \Event::fire('site.start', $site);
             return 'success';
         }
         return 'fail';

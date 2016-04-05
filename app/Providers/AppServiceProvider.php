@@ -21,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
                 $m->to($site->user->email)->subject('Мы проанализировали ваш проект "'.$site->url.'"');
             });
         });
+        \Event::listen('site.start', function($site){
+            $domain = env('APP_DOMAIN');
+            \Redis::publish('spider', json_encode(['site' => $site->id, 'api' => 'api.'.$domain], JSON_UNESCAPED_UNICODE));
+        });
     }
 
     /**
