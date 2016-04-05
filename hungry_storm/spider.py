@@ -5,6 +5,7 @@ from grab import Grab
 import time
 import pymysql
 import urllib.request
+from db_access import mysql_credentials
 
 start = time.time()
 r = redis.Redis()
@@ -66,7 +67,23 @@ for item in ps.listen():
            print('start')
            site = data['site']
            api  = 'http://' + data['api'] + '/python/map-done/' + str(site)
-           connection = pymysql.connect(host='localhost', user='root', password='Ceknfyjd123321', db='getloc', charset='utf8')
+           if mysql_credentials['unix_socket']:
+               connection      = pymysql.connect(
+                   host        = mysql_credentials['host'],
+                   user        = mysql_credentials['user'],
+                   password    = mysql_credentials['password'],
+                   db          = mysql_credentials['db'],
+                   charset     = mysql_credentials['charset'],
+                   unix_socket = mysql_credentials['unix_socket'],
+               )
+           else:
+               connection      = pymysql.connect(
+                   host        = mysql_credentials['host'],
+                   user        = mysql_credentials['user'],
+                   password    = mysql_credentials['password'],
+                   db          = mysql_credentials['db'],
+                   charset     = mysql_credentials['charset'],
+               )
            try:
                with connection.cursor() as cursor:
                    sql = "SELECT `url`, `secret` FROM `sites` WHERE `id` = %s"
