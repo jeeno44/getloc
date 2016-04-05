@@ -63,9 +63,10 @@ for item in ps.listen():
    if (item['type'] == "message"):
        try:
            data = json.loads(item['data'].decode("utf-8"))
+           print('start')
            site = data['site']
            api  = 'http://' + data['api'] + '/python/map-done/' + str(site)
-           connection = pymysql.connect(host='localhost', user='root', password='fastdick228', db='getloc', charset='utf8', unix_socket="/var/run/mysqld/mysqld.sock")
+           connection = pymysql.connect(host='localhost', user='root', password='Ceknfyjd123321', db='getloc', charset='utf8')
            try:
                with connection.cursor() as cursor:
                    sql = "SELECT `url`, `secret` FROM `sites` WHERE `id` = %s"
@@ -80,6 +81,7 @@ for item in ps.listen():
                                sql = "INSERT INTO `pages` (`site_id`, `url`, `code`, `visited`, `level`, `collected`) VALUES (%s, %s, 200 ,1, 1, 0)"
                                cursor.execute(sql, (site, page))
                                connection.commit()
+                               print(page)
 
            finally:
                connection.close()
