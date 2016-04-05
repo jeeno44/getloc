@@ -65,7 +65,7 @@ for item in ps.listen():
            data = json.loads(item['data'].decode("utf-8"))
            site = data['site']
            api  = 'http://' + data['api'] + '/python/map-done/' + str(site)
-           connection = pymysql.connect(host='localhost', user='root', password='fastdick228', db='getloc', charset='utf8')
+           connection = pymysql.connect(host='localhost', user='root', password='fastdick228', db='getloc', charset='utf8', unix_socket="/var/run/mysqld/mysqld.sock")
            try:
                with connection.cursor() as cursor:
                    sql = "SELECT `url`, `secret` FROM `sites` WHERE `id` = %s"
