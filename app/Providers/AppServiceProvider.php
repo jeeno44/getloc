@@ -13,10 +13,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         \Event::listen('maps.done', function($site) {
-            \Queue::push(new \App\Jobs\TextsCollector($site));
+            //\Queue::push(new \App\Jobs\TextsCollector($site));
+            $domain = env('APP_DOMAIN');
+            \Redis::publish('collector', json_encode(['site' => $site->id, 'api' => 'api.'.$domain], JSON_UNESCAPED_UNICODE));
         });
         \Event::listen('site.done', function($site) {
-            \Queue::push(new \App\Jobs\CreateEmptyTranslates($site));
+            //\Queue::push(new \App\Jobs\CreateEmptyTranslates($site));
             \Mail::send('emails.site-done', compact('site'), function($m) use ($site) {
                 $m->to($site->user->email)->subject('Мы проанализировали ваш проект "'.$site->url.'"');
             });

@@ -96,6 +96,12 @@ Route::group(['domain' => 'api.'.$domain], function () {
             \Event::fire('maps.done', $site);
         }
     });
+    Route::get('python/collector/{id}', function($id){
+        $site = \App\Site::find($id);
+        if ($site) {
+            \Event::fire('site.done', $site);
+        }
+    });
 });
 
 Route::get('publish', function () use ($domain) {
