@@ -22,5 +22,11 @@ import json
 
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
+test = ['K-FLEX ST', 'черный']
+if 'K-FLEX ST' not in test:
+	print 'ok'
+if 'черный' not in test:
+	print 'ok'
+
 r.publish('collector', json.dumps({'site': 3, 'api': 'api.'}))
 #r.publish('spider', json.dumps({'site': 3, 'api': 'api.'}))
