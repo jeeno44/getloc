@@ -3,24 +3,34 @@
     <form action="{{URL::route('main.account.setFilter')}}" method="POST">
     <input type="hidden" name="view_page" value="{{$tab_name}}" />
 
+    <div id="block_page_title" class="filter_page_title" style="max-height: 250px; overflow: auto;">
 
-    <div id="filter_page_site_wrap" class="filter_page_site_wrap">
-        <div class="selected_for_title_wrap b-r_5">
-            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
-            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
-            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
-            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
-            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
-        </div>
-        <input class="input_page_auto_complete bordered" type="text" data-site-id="{{ Session::get('projectID') }}" data-language-id="{{ Session::get('filter')['languageID'] }}" id="input_page_auto_complete" name="input_page_auto_complete" placeholder="Фильтр по страницам">
-        <ul class="found_for_title_wrap b-r_5">
-            {{--<li class="found_for_title_item">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/</li>--}}
-            {{--<li class="found_for_title_item">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/</li>--}}
-            {{--<li class="found_for_title_item">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/</li>--}}
-            {{--<li class="found_for_title_item">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/</li>--}}
-        </ul>
     </div>
+    <form action="" class="site__form">
+        <fieldset>
+            <input type="text" id="search_page" name="search_page" class="bordered" style="width: 100%; height: 40px; border-radius: 5px; margin-bottom: 10px;" />
+        </fieldset>
+    </form>
 
+
+
+    {{--<div id="filter_page_site_wrap" class="filter_page_site_wrap">--}}
+        {{--<div class="selected_for_title_wrap b-r_5">--}}
+            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
+            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
+            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
+            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
+            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
+        {{--</div>--}}
+        {{--<input class="input_page_auto_complete bordered" type="text" data-site-id="{{ Session::get('projectID') }}" data-language-id="{{ Session::get('filter')['languageID'] }}" id="input_page_auto_complete" name="input_page_auto_complete" placeholder="Фильтр по страницам">--}}
+        {{--<ul class="found_for_title_wrap b-r_5">--}}
+            {{--<li class="found_for_title_item">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/</li>--}}
+            {{--<li class="found_for_title_item">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/</li>--}}
+            {{--<li class="found_for_title_item">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/</li>--}}
+            {{--<li class="found_for_title_item">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/</li>--}}
+        {{--</ul>--}}
+    {{--</div>--}}
+{{--{{ dd($filter) }}--}}
     <div class="site__aside-filter">
         <span>{{trans('account.langs')}}</span>
         @foreach ($filter['menu']['langs'] as $lang)

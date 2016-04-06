@@ -1,8 +1,8 @@
 
 
-.filter_page_site_wrap{
-    margin-bottom: 10px !important;
-}
+/*.filter_page_title{*/
+    /*margin-bottom: 10px !important;*/
+/*}*/
 .input_page_auto_complete{
     width: 100% !important;
     height: 40px !important;
@@ -41,10 +41,17 @@ li.found_for_title{
     /*height: 30px;*/
     margin-bottom: 15px;
 }
-.selected_for_title_wrap{
+.filter_page_title{
     max-height: 300px;
     overflow: auto;
-    padding: 2px;
+    padding: 2px 2px 0 2px;
+    margin: 0 0 5px 0;
+}
+.selected_for_title_item{
+    position: relative;
+    min-height: 30px;
+    padding: 2px 25px 2px 2px;
+    margin-bottom: 2px;
 }
 .selected_for_title_item .remove_item{
     position: absolute;
@@ -74,4 +81,8 @@ div.selected_for_title{
 }
 .inactive{
     color: #b2b2b2;
+}
+.ui-autocomplete{
+    max-height: 220px;
+    overflow: auto;
 }

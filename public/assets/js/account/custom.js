@@ -67,7 +67,7 @@ $(function(){
         e.preventDefault();
         var id = $(this).attr('data-id');
         $.ajax({
-            url     : "/account/validate-project" + id,
+            url     : "/account/validate-project/" + id,
             type    : 'get',
             success : function(res) {
                 if (res == 'success') {
@@ -164,7 +164,90 @@ setEventInContent = function()
      | Инициализация плагина
      |------------------------------------------------------------
      */
-    $(document).account();
+    // $(document).account();
+
+    $('#search_page').autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '/account/ajaxRenderingTitlePages',
+                method: 'post',
+                dataType: 'json',
+                data: {
+                    name: request.term,
+                    site_id: $('#site-list').children('option:selected').val().substr($('#site-list').children('option:selected').val().lastIndexOf('/') + 1),
+                    language_id: $('[name="filter[languageID]"]:checked').val(),
+                    tab: getCurentTab(),
+                    name_none: getNameNone()
+                },
+                success: function (data) {
+                    response($.map(data.blocks, function(item){
+                        return item.url;
+                    }));
+                }
+            });
+        },
+        minLength: 3,
+        select: function (event, ui) {
+            $('#block_page_title').addClass('bordered');
+            $('#block_page_title').append('<div class="selected_for_title_item bordered">' + ui.item.value + '<span class="remove_item">✕</span></div>');
+            $(document).on('click', '.remove_item', removeItemPageName)
+            addBlocksPages(ui.item.value);
+            // console.log(ui);
+        }
+    });
+
+    /*
+     |------------------------------------------------------------
+     | Инициализация плагина Autocomplete jQuery UI
+     |------------------------------------------------------------
+     */
+}
+addBlocksPages = function (value) {
+    var data = {
+        name: value,
+        site_id: $('#site-list').children('option:selected').val().substr($('#site-list').children('option:selected').val().lastIndexOf('/') + 1),
+        language_id: $('[name="filter[languageID]"]:checked').val(),
+        tab: getCurentTab(),
+        name_none: getNameNone()
+    }
+    $.ajax({
+        url: '/account/ajaxRenderingBlocksPages',
+        method: 'post',
+        dataType: 'json',
+        data: data,
+        beforeSend: startLoader(),
+        success: function (data) {
+            if (data.success) {
+                stopLoader()
+            }
+            if (data.html != '') {
+                $('#renderPhrases').html(data.html);
+            }
+        }
+    });
+    console.log(data);
+}
+removeItemPageName = function () {
+    $('.remove_item').on('click', function () {
+        // console.log(123);
+        var obj = $(this);
+        $(this).parent('.selected_for_title_item').remove();
+        onRemoveClassBordered();
+    })
+}
+onRemoveClassBordered = function () {
+    var count = $('#block_page_title').children().length;
+    if (Number(count) === 0) {
+        $('#block_page_title').removeClass('bordered');
+    }
+}
+getNameNone = function () {
+    var ret_data = '',
+    none_name_block = $('#block_page_title').children('.selected_for_title_item');
+    $.each(none_name_block, function (i, e) {
+        ret_data += $(this).text().trim().replace('✕', '') + ','
+    });
+    return ret_data.slice(0, -1);
 }
 
 preloadLoader = function(url)
