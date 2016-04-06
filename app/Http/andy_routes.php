@@ -90,7 +90,22 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
  * Api routes
  */
 Route::group(['domain' => 'api.'.$domain], function () {
+    Route::get('python/map-done/{id}', function($id){
+        $site = \App\Site::find($id);
+        if ($site) {
+            \Event::fire('maps.done', $site);
+        }
+    });
+    Route::get('python/collector/{id}', function($id){
+        $site = \App\Site::find($id);
+        if ($site) {
+            \Event::fire('site.done', $site);
+        }
+    });
+});
 
+Route::get('publish', function () use ($domain) {
+    
 });
 
 Route::get('rescan-errors/{id}', function($id) {

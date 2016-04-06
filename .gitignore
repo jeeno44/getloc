@@ -7,3 +7,4 @@ Homestead.json
 /public/uploads
 nbproject/*
 /env/
+/hungry_storm/db_access.py

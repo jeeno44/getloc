@@ -1,66 +1,34 @@
 @extends('layouts.index')
-
+@section('title') Вход @stop
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
-                        {!! csrf_field() !!}
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input type="email" class="form-control" name="email" value="{{ old('email') }}">
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input type="password" class="form-control" name="password">
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember"> Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-sign-in"></i>Login
-                                </button>
-
-                                <a class="btn btn-link" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+    <form action="{{route('login.post')}}" class="site__form" novalidate method="post" style="margin: 0 auto; width: 400px;">
+        {!! csrf_field() !!}
+        <span class="site__form-title">Вход</span>
+        <fieldset>
+            <label for="email">Ваша эл. почта *</label>
+            <input type="email" id="email" required name="email">
+            @if ($errors->has('email'))
+                <span class="help-block"><strong>{{ $errors->first('email') }}</strong></span>
+            @endif
+        </fieldset>
+        <fieldset>
+            <label>Пароль</label>
+            <input type="password" required name="password">
+            @if ($errors->has('password'))
+                <span class="help-block"><strong>{{ $errors->first('password') }}</strong></span>
+            @endif
+        </fieldset>
+        <button type="submit" class="btn btn_enroll">Войти</button>
+        <a href="{{route('password.reset.form')}}" class="site__form-forgot">Забыли пароль?</a>
+    </form>
+    <div class="popup__social"  style="margin: 0 auto; width: 400px;">
+        Вы можете зайти через соцсети
+        <div class="social-2">
+            <a href="{{route('facebook.redirect')}}" class="social-2__fb">facebook</a>
+            <a href="{{route('twitter.redirect')}}" class="social-2__tw">twitter</a>
+            <a href="{{route('google.redirect')}}" class="social-2__google">google</a>
         </div>
     </div>
-</div>
+
 @endsection

@@ -98,7 +98,15 @@
                 <tbody>
                 @foreach($sites as $site)
                     <tr>
-                        @if ($site->pages()->where('visited', 0)->count() > 0)
+                        @if ($site->pages()->count() == 0)
+                            <td>{{beautyUrl($site->url)}}</td>
+                            <td class="projects__status">
+                                <span class="projects__picking">
+                                    {{trans('phrases.building_structure')}}
+                                </span>
+
+                            </td>
+                        @elseif ($site->pages()->where('visited', 0)->count() > 0)
                             <td>{{beautyUrl($site->url)}}</td>
                             <td class="projects__status">
                                 <span class="projects__picking">
