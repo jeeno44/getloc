@@ -63,7 +63,8 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::post('/ajaxPhraseRender', ['as' => 'main.account.ajaxphrase', 'uses' => 'AccountController@phraseAjaxRender']);
 
 
-            Route::post('/ajaxRenderingBlocksPages', ['as' => 'main.account.ajaxRenderingBlocksPages', 'uses' => 'AccountController@ajaxRenderingBlocksPages']);
+//            Route::post('/ajaxRenderingBlocksPages', ['as' => 'main.account.ajaxRenderingBlocksPages', 'uses' => 'AccountController@ajaxRenderingBlocksPages']);
+            Route::any('/ajaxRenderingBlocksPages', ['as' => 'main.account.ajaxRenderingBlocksPages', 'uses' => 'AccountController@ajaxRenderingBlocksPages']);
             Route::post('/ajaxRenderingTitlePages', ['as' => 'main.account.ajaxRenderingTitlePages', 'uses' => 'AccountController@ajaxRenderingTitlePages']);
 
             Route::post('/setArchive', ['as' => 'main.account.setArchive', 'uses' => 'AccountController@setArchiveTranslate']);
