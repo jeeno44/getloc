@@ -31,12 +31,14 @@ r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 def getSettingsProject(projectID):
     global auto_publishing, auto_translate, fromLang
+    cursor = db.cursor()
     sql = 'SELECT auto_publishing, auto_translate FROM sites_settings WHERE site_id = {projectID}'.format(projectID=projectID)
     cursor.execute(sql)
     auto_publishing, auto_translate = cursor.fetchall()[0]
     sql = 'SELECT l.short FROM sites s LEFT JOIN languages l ON (l.id = s.language_id) WHERE s.id = {projectID}'.format(projectID=projectID)
     cursor.execute(sql)
     fromLang = cursor.fetchone()[0]
+    cursor.close()
 
 #------------------------------------------------------------------------------------------------------
 # Функция делает перевод на нужные языки
@@ -49,8 +51,10 @@ def translateBlock(block):
     iBlockInsert += 1
 
     if len(loadSQL) >= maxBlockInsert:
+        cursor = db.cursor()
         iBlockInsert = 0
         cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
+        cursor.close()
         loadSQL = []
 
 #------------------------------------------------------------------------------------------------------
@@ -59,7 +63,9 @@ def translateBlock(block):
 
 def getLangsProject(projectID):
     sql = 'select l.* from site_language sl left join languages l ON (l.id = sl.language_id) where sl.site_id = {projectID}'.format(projectID=projectID)
+    cursor = db.cursor()
     cursor.execute(sql)
+    cursor.close()
     return cursor.fetchall()
 
 #------------------------------------------------------------------------------------------------------
@@ -68,10 +74,12 @@ def getLangsProject(projectID):
 
 def getAllBlocks(projectID):
     global issetBlocks
+    cursor = db.cursor()
     sql = 'SELECT text FROM blocks where site_id = {projectID}'.format(projectID=projectID)
     cursor.execute(sql)
     for block in cursor.fetchall():
         issetBlocks.append(block[0])
+    cursor.close()
 
 #------------------------------------------------------------------------------------------------------
 # Кол. слов в блоке
@@ -100,10 +108,13 @@ def iri2uri(uri):
 # Загружаем страницу
 #------------------------------------------------------------------------------------------------------
 
-def load_url(url, siteID, cursor, timeout):
+def load_url(url, siteID, timeout):
     response = urllib2.urlopen(iri2uri(url), timeout=timeout)
     html = response.read()
     if html:
+        cursor = db.cursor()
+        cursor.execute('UPDATE pages SET collected = 1 WHERE url = "{url}" AND site_id = {siteid}'.format(url=MySQLdb.escape_string(url), siteid=siteID))
+        cursor.close()
         return html
 
 #------------------------------------------------------------------------------------------------------
@@ -117,21 +128,27 @@ def makeBlock(siteID, text, element):
     #block = cursor.execute('SELECT `text` FROM blocks WHERE `text` = "{text}"'.format(text=MySQLdb.escape_string(text.encode('utf8'))))
 
     if text not in issetBlocks:
+
+    	iBlockInsert_ += 1
+        
         ccword = len(text.split())
         ccsymb = count_letters(text)
-        sql    = """INSERT INTO blocks SET site_id = {site_id}, `text` = "{text}", 
-                    `type` = "{type}", count_words = {ccword}, count_symbols = {ccsymb},
-                    created_at = NOW(), updated_at = NOW(), enabled = {enable}""".format(site_id=siteID, text=MySQLdb.escape_string(text.encode('utf8')), 
-                                                                                        type=MySQLdb.escape_string(element), ccword=ccword, ccsymb=ccsymb, enable=auto_publishing)
-        cursor.execute(sql)
-
+        loadSQL_.append("({site_id}, '{text}', '{type}', {ccword}, {ccsymb}, NOW(), NOW(), {enable})".format(site_id=siteID, text=MySQLdb.escape_string(text.encode('utf8')), 
+                                                                                        type=MySQLdb.escape_string(element), ccword=ccword, ccsymb=ccsymb, enable=auto_publishing))       
         countWords      += ccword
         countSymbols    += ccsymb
         countBlocks     += 1
 
         issetBlocks.append(text)
 
-        return db.insert_id()
+        if len(loadSQL_) >= maxBlockInsert_:
+    		cursor = db.cursor()
+	        iBlockInsert = 0
+	        cursor.execute(insertSQLTrans_ + ','.join(loadSQL_) + ";")
+	        cursor.close()
+	        loadSQL_ = []
+        
+        return True
     else:
         return False
 
@@ -140,29 +157,38 @@ def makeBlock(siteID, text, element):
 #------------------------------------------------------------------------------------------------------
 
 def getPageID(url, siteID):
+    cursor = db.cursor()
     block = cursor.execute('SELECT `id` FROM pages WHERE site_id = {siteID} AND url = "{url}"'.format(siteID=siteID, url=MySQLdb.escape_string(url)))
-    return cursor.fetchone()[0]
+    data = cursor.fetchone()[0]
+    cursor.close()
+    return data
 
 #------------------------------------------------------------------------------------------------------
 # Обновляем статистику о проекте
 #------------------------------------------------------------------------------------------------------
 
 def finishStats(siteID, words, symbols, blocks):
-    sql    = """UPDATE sites SET count_blocks = count_blocks + {blocks}, count_words= count_words + {words}, updated_at = NOW(),
-                count_symbols= count_symbols + {symbols}, updated_at = NOW() WHERE id = {siteID} LIMIT 1""".format(siteID=siteID, blocks=blocks, words=words, symbols=symbols)
+    cursor = db.cursor()
+    sql    = """UPDATE sites SET count_blocks = count_blocks + {blocks}, count_words = count_words + {words}, count_symbols = count_symbols + {symbols},
+                updated_at = NOW() WHERE id = {siteID} LIMIT 1""".format(siteID=siteID, blocks=blocks, words=words, symbols=symbols)
+    print(sql)
     cursor.execute(sql)
+    cursor.close()
 
 #------------------------------------------------------------------------------------------------------
 # Делаем связь block -> pageID
 #------------------------------------------------------------------------------------------------------
 
 def makePageBlock(pageID, blockID):
+    cursor = db.cursor()
     block = cursor.execute('SELECT `block_id` FROM page_block WHERE block_id = {blockID}'.format(blockID=blockID))
     block = cursor.fetchone()
     if block is None:
         sql    = "INSERT INTO page_block SET page_id = {pageID}, block_id = {blockID}".format(pageID=pageID, blockID=blockID)
         cursor.execute(sql)
+        cursor.close()
     else:
+        cursor.close()
         return False
 
 #------------------------------------------------------------------------------------------------------
@@ -196,13 +222,18 @@ for item in ps.listen():
         fromLang        = None
         issetBlocks     = []
 
-        maxBlockInsert  = 50
-        iBlockInsert    = 0
-        insertSQLTrans  = 'INSERT INTO translates (block_id, language_id, `text`, created_at, updated_at, type_translate_id, site_id, count_words, `enabled`) VALUES '
-        loadSQL         = []
-        langTo          = ''
-        langID          = 0
-        translator      = None
+        maxBlockInsert   = 50
+        iBlockInsert     = 0
+        maxBlockInsert_  = 50
+        iBlockInsert_    = 0
+        insertSQLTrans   = 'INSERT INTO translates (block_id, language_id, `text`, created_at, updated_at, type_translate_id, site_id, count_words, `enabled`) VALUES '
+        insertSQLTrans_  = 'INSERT INTO blocks (site_id, `text`, `type`, count_words, count_symbols, created_at, updated_at, enabled) VALUES'
+        loadSQL          = []
+        loadSQL_         = []
+        makePageBlock_   = []
+        langTo           = ''
+        langID           = 0
+        translator       = None
 
         db.autocommit(True)
 
@@ -229,14 +260,10 @@ for item in ps.listen():
         #------------------------------------------------------------------------------------------------------
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=countPools) as executor:
-            future_to_url = {executor.submit(load_url, url, siteID, cursor, 60): url for url in urls }
+            future_to_url = {executor.submit(load_url, url, siteID, 60): url for url in urls }
             for future in concurrent.futures.as_completed(future_to_url):
                 url = future_to_url[future]
                 try:
-                    print(url)
-
-                    cursor.execute('UPDATE pages SET collected = 1 WHERE url = "{url}" AND site_id = {siteid}'.format(url=MySQLdb.escape_string(url), siteid=siteID))
-
                     html = future.result()
                     soup = BeautifulSoup(html, 'html.parser')
 
@@ -294,8 +321,6 @@ for item in ps.listen():
                                     if block_id is not False:
                                         makePageBlock(getPageID(url, siteID), block_id)
 
-                    count += 1
-
                 except Exception as exc:
                     print '%r generated an exception: %s, %s' % (url, exc, sys.exc_info()[-1].tb_lineno)
                     pass
@@ -308,31 +333,10 @@ for item in ps.listen():
                 else:
                     #print '"%s" fetched in %ss' % (url,(time.time() - start))
                     pass
-                
+                count += 1
+
             if count > 0:    
                 finishStats(siteID, countWords, countSymbols, countBlocks)
-
-        #------------------------------------------------------------------------------------------------------
-        # Запускаем автоперевод блоков, тоже в потоках
-        # Если была такая настройка у проекта
-        #------------------------------------------------------------------------------------------------------
-
-        if auto_translate:
-            translator = Translator(trans_client, trans_secret)
-            langs      = getLangsProject(siteID)
-            
-            sql        = 'SELECT * FROM blocks WHERE site_id = {projectID}'.format(projectID=siteID)
-
-            cursor.execute(sql)
-            blocks = cursor.fetchall()
-
-            for lang in langs:
-                langTo  = lang[3]
-                langID  = lang[0]
-                pool    = ThreadPool(4)
-                results = pool.map(translateBlock, blocks)
-                pool.close()
-                pool.join()
                                       
 
         auto_publishing = None
@@ -340,11 +344,8 @@ for item in ps.listen():
         fromLang        = None
         issetBlocks     = []
 
+        cursor.close()
         db.close()
-
-        site = data_['site']
-        api  = 'http://' + data_['api'] + '/python/collector/' + str(site)
-        urllib2.urlopen(api, timeout=10)
 
         print "Страниц %s" % count
         print "Elapsed Time: %ss" % (time.time() - start)
