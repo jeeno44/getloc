@@ -295,6 +295,7 @@ for item in ps.listen():
                                         makePageBlock(getPageID(url, siteID), block_id)
 
                     count += 1
+                    del html
 
                 except Exception as exc:
                     print '%r generated an exception: %s, %s' % (url, exc, sys.exc_info()[-1].tb_lineno)
@@ -317,34 +318,35 @@ for item in ps.listen():
         # Если была такая настройка у проекта
         #------------------------------------------------------------------------------------------------------
 
-        if auto_translate:
-            translator = Translator(trans_client, trans_secret)
-            langs      = getLangsProject(siteID)
+        #if auto_translate:
+        #    translator = Translator(trans_client, trans_secret)
+        #    langs      = getLangsProject(siteID)
             
-            sql        = 'SELECT * FROM blocks WHERE site_id = {projectID}'.format(projectID=siteID)
+        #    sql        = 'SELECT * FROM blocks WHERE site_id = {projectID}'.format(projectID=siteID)
 
-            cursor.execute(sql)
-            blocks = cursor.fetchall()
+        #    cursor.execute(sql)
+        #    blocks = cursor.fetchall()
 
-            for lang in langs:
-                langTo  = lang[3]
-                langID  = lang[0]
-                pool    = ThreadPool(4)
-                results = pool.map(translateBlock, blocks)
-                pool.close()
-                pool.join()
+        #    for lang in langs:
+        #        langTo  = lang[3]
+        #        langID  = lang[0]
+        #        pool    = ThreadPool(4)
+        #        results = pool.map(translateBlock, blocks)
+        #        pool.close()
+        #        pool.join()
                                       
 
-        auto_publishing = None
-        auto_translate  = None
-        fromLang        = None
-        issetBlocks     = []
-
         db.close()
+        cursor.close()
+
+        del soup
+        del issetBlocks
+        del urls
+        del db
 
         site = data_['site']
         api  = 'http://' + data_['api'] + '/python/collector/' + str(site)
         urllib2.urlopen(api, timeout=10)
 
         print "Страниц %s" % count
-        print "Elapsed Time: %ss" % (time.time() - start)
+        print "Отработал за: %ss" % (time.time() - start)

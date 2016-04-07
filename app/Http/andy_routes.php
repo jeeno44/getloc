@@ -99,6 +99,10 @@ Route::group(['domain' => 'api.'.$domain], function () {
     Route::get('python/collector/{id}', function($id){
         $site = \App\Site::find($id);
         if ($site) {
+            \DB::table('site_tate_collector')->where('siteID', $site->id)->delete(); 
+            if ( $state = \DB::table('site_tate_collector')->first() )
+                \Redis::publish('collector', json_encode(['site' => $state->siteID, 'api' => 'api.'.env('APP_DOMAIN')], JSON_UNESCAPED_UNICODE));
+            
             \Event::fire('site.done', $site);
         }
     });
