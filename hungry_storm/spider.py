@@ -37,6 +37,7 @@ def scan(starting_url):
             if g.response.code < 400 and g.response.headers['Content-Type'].find('text/html') != -1:
                 #print(str(cn) + '. ' + url)
                 #cn += 1
+                print(url)
                 links = g.doc.select('//a[@href]')
                 for link in links:
                     href = prep(link.attr('href'))
@@ -98,7 +99,6 @@ for item in ps.listen():
                                sql = "INSERT INTO `pages` (`site_id`, `url`, `code`, `visited`, `level`, `collected`) VALUES (%s, %s, 200 ,1, 1, 0)"
                                cursor.execute(sql, (site, page))
                                connection.commit()
-                               print(page)
 
            finally:
                connection.close()
