@@ -104,6 +104,7 @@ def iri2uri(uri):
 def load_url(url, siteID, cursor, timeout):
     response = urllib2.urlopen(iri2uri(url), timeout=timeout)
     html = response.read()
+    time.sleep(0.5)
     if html:
         return html
 
@@ -111,7 +112,7 @@ def load_url(url, siteID, cursor, timeout):
 # Создаем блок и возвращаем insert_id
 #------------------------------------------------------------------------------------------------------
 
-def makeBlock(siteID, text, element):
+def makeBlock(siteID, text, element, url):
     global countWords, countSymbols, countBlocks
 
     text  = text.strip()
@@ -132,8 +133,11 @@ def makeBlock(siteID, text, element):
 
         issetBlocks.append(text)
 
-        return db.insert_id()
+        id = db.insert_id()
+        blocksID[text] = id
+        return id
     else:
+        makePageBlock(urlPageID[str(url)], blocksID[text])
         return False
 
 #------------------------------------------------------------------------------------------------------
@@ -158,13 +162,12 @@ def finishStats(siteID, words, symbols, blocks):
 #------------------------------------------------------------------------------------------------------
 
 def makePageBlock(pageID, blockID):
-    block = cursor.execute('SELECT `block_id` FROM page_block WHERE block_id = {blockID}'.format(blockID=blockID))
-    block = cursor.fetchone()
-    if block is None:
+    sql    = "SELECT * FROM page_block WHERE page_id = {pageID} AND block_id = {blockID}".format(pageID=pageID, blockID=blockID)
+    cursor.execute(sql)
+    isset = cursor.fetchone()
+    if isset is None:
         sql    = "INSERT INTO page_block SET page_id = {pageID}, block_id = {blockID}".format(pageID=pageID, blockID=blockID)
         cursor.execute(sql)
-    else:
-        return False
 
 #------------------------------------------------------------------------------------------------------
 # Ждем команды от редиса и начинаем потоковую обработку всех ссылок
@@ -178,13 +181,16 @@ for item in ps.listen():
         start = time.time()
         urls  = []
 
+        urlPageID = {}
+
         data_           = json.loads(item['data'].decode("utf-8"))
-        db              = MySQLdb.connect(host=mysql_credentials['host'], user=mysql_credentials['user'], passwd=mysql_credentials['password'], db=mysql_credentials['db'], charset=mysql_credentials['charset'], unix_socket=mysql_credentials['unix_socket'])
+        #, unix_socket=mysql_credentials['unix_socket']
+        db              = MySQLdb.connect(host=mysql_credentials['host'], user=mysql_credentials['user'], passwd=mysql_credentials['password'], db=mysql_credentials['db'], charset=mysql_credentials['charset'])
         trans_client    = 'blackgremlin2'
         trans_secret    = 'SMnjwvLx0bB2u9Cn05K2vkTE1bSkX0+fsLp/23gsytU='
         
         cursor          = db.cursor()
-        countPools      = 100
+        countPools      = 10
         countWords      = 0
         countSymbols    = 0
         countBlocks     = 0
@@ -196,6 +202,7 @@ for item in ps.listen():
         auto_translate  = None
         fromLang        = None
         issetBlocks     = []
+        blocksID        = {}
 
         maxBlockInsert  = 50
         iBlockInsert    = 0
@@ -222,6 +229,7 @@ for item in ps.listen():
         for page in pages:
             pageID, siteID, url, code, level, visited, collected, created_at, updated_at = page
             urls.append(str(url))
+            urlPageID[str(url)] = pageID
 
         count = 0
 
@@ -260,26 +268,26 @@ for item in ps.listen():
                             string = ''
                             if element.name == 'meta' and 'name' in element and (element['name'] == 'keywords' or element['name'] == 'description'):
                                 if element['content']:
-                                    block_id = makeBlock(siteID, element['content'], 'meta')
+                                    block_id = makeBlock(siteID, element['content'], 'meta', url)
                                     if block_id is not False:
                                         makePageBlock(getPageID(url, siteID), block_id)
                             elif element.name == 'title':
                                 if element.string:
-                                    block_id = makeBlock(siteID, element.string, element.name)
+                                    block_id = makeBlock(siteID, element.string, element.name, url)
                                     if block_id:
                                         makePageBlock(getPageID(url, siteID), block_id)
                             elif element.name == 'img' and element.has_attr('alt'):
                                 if element['alt'].isdigit() != True and element['alt']: 
-                                    block_id = makeBlock(siteID, element['alt'], element.name)
+                                    block_id = makeBlock(siteID, element['alt'], element.name, url)
                                     if block_id is not False:
                                         makePageBlock(getPageID(url, siteID), block_id)
                             elif element.name == 'input':
                                 if element.has_attr('placeholder') and element['placeholder'].isdigit() != True and element['placeholder']:
-                                    block_id = makeBlock(siteID, element['placeholder'], element.name)
+                                    block_id = makeBlock(siteID, element['placeholder'], element.name, url)
                                     if block_id is not False:
                                         makePageBlock(getPageID(url, siteID), block_id)
                                 if element.has_attr('value') and element['value'].isdigit() != True and element['value']:
-                                    block_id = makeBlock(siteID, element['value'], element.name)
+                                    block_id = makeBlock(siteID, element['value'], element.name, url)
                                     if block_id is not False:
                                         makePageBlock(getPageID(url, siteID), block_id)
                             else:
@@ -291,7 +299,7 @@ for item in ps.listen():
 
                                 string = string.strip()    
                                 if string.isdigit() != True and string: #Цифры нам нинужныыыы!
-                                    block_id = makeBlock(siteID, string, element.name)
+                                    block_id = makeBlock(siteID, string, element.name, url)
                                     if block_id is not False:
                                         makePageBlock(getPageID(url, siteID), block_id)
 
