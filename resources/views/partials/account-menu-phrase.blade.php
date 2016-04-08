@@ -17,8 +17,21 @@
                 <li>
                     <a href="#">{{trans('account.more')}}</a>
                 </li>
+                {{--<li>--}}
+                    {{--@if($ob->blocks_enabled)--}}
+                        {{--<a href="#" class="disable_display_phrase">{{trans('account.offOutputPhrase')}}</a>--}}
+                    {{--@else--}}
+                        {{--<a href="#" class="enabled_display_phrase">{{trans('account.onOutputPhrase')}}</a>--}}
+                    {{--@endif--}}
+
+                {{--</li>--}}
             </ul>
-            <a onclick="setArchive({{$ob->tid}}); return false;" href="#">{{trans('account.sendInArchive')}}</a>
+            @if($ob->translates_enabled)
+                <a onclick="setArchive({{$ob->tid}}); return false;" href="#">{{trans('account.cancelPublishing')}}</a>
+            @else
+                <a onclick="setArchive({{$ob->tid}}); return false;" href="#">{{trans('account.addPublishing')}}</a>
+            @endif
+
         </div>
     </div>
     @if ( $ob->name_translate )

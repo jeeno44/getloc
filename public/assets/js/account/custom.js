@@ -1,6 +1,16 @@
 $(function(){
     
     preloadLoader('/assets/img/account/loader.gif')
+
+    /*
+     |------------------------------------------------------------
+     | Прячем таб без перевода
+     |------------------------------------------------------------
+     */
+    hideTabNotTranslated();
+
+    eventAccount();
+
     
     $('.turnLang').click(function(){
         $.ajax({
@@ -86,6 +96,83 @@ $(function(){
 
 
 })
+eventAccount = function () {
+    /*
+     |------------------------------------------------------------
+     | Инициализация плагина
+     |------------------------------------------------------------
+     */
+    // $(document).account();
+
+    $('#search_page').autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '/account/ajaxRenderingTitlePages',
+                method: 'post',
+                dataType: 'json',
+                data: {
+                    name: request.term,
+                    site_id: $('#site-list').children('option:selected').val().substr($('#site-list').children('option:selected').val().lastIndexOf('/') + 1),
+                    language_id: $('[name="filter[languageID]"]:checked').val(),
+                    tab: getCurentTab(),
+                    name_none: getNameNone()
+                },
+                success: function (data) {
+                    response($.map(data.blocks, function(item){
+                        return item.url;
+                    }));
+                }
+            });
+        },
+        minLength: 3,
+        select: function (event, ui) {
+            $('#block_page_title').addClass('bordered');
+            $('#block_page_title').append('<div class="selected_for_title_item bordered">' + ui.item.value + '<span class="remove_item">✕</span></div>');
+            $(document).on('click', '.remove_item', removeItemPageName);
+            loadPhrases();
+            // console.log($(this).attr('href').split('page=')[1]);
+        }
+    });
+
+    $('.disable_display_phrase').on('click', function (e) {
+        e.preventDefault();
+        disableDisplayPhrase($(this));
+    });
+
+    $('.search_language').on('click', function (e) {
+        e.preventDefault();
+        var data = {
+            href: $(this).attr('href'),
+            language_id: $(this).closest('.language__links').siblings('.language__control').find('.turnLang').attr('data-langid')
+        };
+        var link = data.href + '?language_id=' + data.language_id;
+        location.href = link;
+        // console.log(link);
+    });
+
+    $('#checkboxPhraseInOrder').on('click', function () {
+        loadPhrases();
+    });
+
+    $('.button_search_text').on('click', function (e) {
+        e.preventDefault();
+        loadPhrases();
+    });
+    $('#date_filter').ionRangeSlider({
+        hide_min_max: true,
+        keyboard: true,
+        min: 0,
+        max: 5000,
+        from: 1000,
+        to: 4000,
+        type: 'double',
+        step: 1,
+        prefix: "$",
+        grid: true
+    });
+
+
+}
 
 setEventInContent = function()
 {
@@ -140,7 +227,10 @@ setEventInContent = function()
             }
         });
     })
-    
+    // $('.pagination').find('a').on('click', function (e) {
+    //     e.preventDefault()
+    //     console.log(123456);
+    // })
     $('.paginationAjax a').click(function(e){
         loadPhrases($(this).attr('href').split('page=')[1]);
         e.preventDefault();
@@ -159,74 +249,35 @@ setEventInContent = function()
     });
 
 
-    /*
-     |------------------------------------------------------------
-     | Инициализация плагина
-     |------------------------------------------------------------
-     */
-    // $(document).account();
 
-    $('#search_page').autocomplete({
-        source: function (request, response) {
-            $.ajax({
-                url: '/account/ajaxRenderingTitlePages',
-                method: 'post',
-                dataType: 'json',
-                data: {
-                    name: request.term,
-                    site_id: $('#site-list').children('option:selected').val().substr($('#site-list').children('option:selected').val().lastIndexOf('/') + 1),
-                    language_id: $('[name="filter[languageID]"]:checked').val(),
-                    tab: getCurentTab(),
-                    name_none: getNameNone()
-                },
-                success: function (data) {
-                    response($.map(data.blocks, function(item){
-                        return item.url;
-                    }));
-                }
-            });
-        },
-        minLength: 3,
-        select: function (event, ui) {
-            $('#block_page_title').addClass('bordered');
-            $('#block_page_title').append('<div class="selected_for_title_item bordered">' + ui.item.value + '<span class="remove_item">✕</span></div>');
-            $(document).on('click', '.remove_item', removeItemPageName)
-            addBlocksPages(ui.item.value);
-            // console.log(ui);
-        }
-    });
-
-    /*
-     |------------------------------------------------------------
-     | Инициализация плагина Autocomplete jQuery UI
-     |------------------------------------------------------------
-     */
 }
-addBlocksPages = function (value) {
+disableDisplayPhrase = function (obj) {
     var data = {
-        name: value,
+        translates_id: obj.closest('.phrases__item').attr('id').split('_').pop(),
         site_id: $('#site-list').children('option:selected').val().substr($('#site-list').children('option:selected').val().lastIndexOf('/') + 1),
-        language_id: $('[name="filter[languageID]"]:checked').val(),
-        tab: getCurentTab(),
-        name_none: getNameNone()
-    }
+        language_id: $('[name="filter[languageID]"]:checked').val()
+    };
     $.ajax({
-        url: '/account/ajaxRenderingBlocksPages',
-        method: 'post',
-        dataType: 'json',
-        data: data,
-        beforeSend: startLoader(),
-        success: function (data) {
+        url         : "/account/disableDisplayPhrase",
+        type        : 'post',
+        data        : data,
+        dataType    : 'json',
+        success     : function(data)
+        {
             if (data.success) {
-                stopLoader()
+                toastr.success(data.message)
+                setNewStats(data.stats)
+                obj.closest('.phrases__item').remove();
+            } else {
+                toastr.error(data.message)
             }
-            if (data.html != '') {
-                $('#renderPhrases').html(data.html);
-            }
+            console.log(data);
+            // $('#phrase_'+id).remove();
         }
-    });
-    console.log(data);
+    })
+
 }
+
 removeItemPageName = function () {
     $('.remove_item').on('click', function () {
         // console.log(123);
@@ -282,11 +333,22 @@ setArchive = function(id)
 
 loadPhrases = function(page)
 {
-    var page  = !page ? 0 : page
-    var data  = $('.site__aside-filter').find('input[type=radio]').serialize();
+    var page  = !page ? 0 : page,
+        view_type = $('#setViewTypeID_1').hasClass('active') ? 1 : 2,
+        phrase_in_order = $('#checkboxPhraseInOrder').prop('checked') ? 1 : 0 ,
+        data  = $('.site__aside-filter').find('input[type=radio]').serialize();
         data += '&tab='+getCurentTab()
         data += '&page='+page
-    
+        data += '&site_id='+$('#site-list').children('option:selected').val().substr($('#site-list').children('option:selected').val().lastIndexOf('/') + 1)
+        if (getNameNone() != '') {
+            data += '&name_none='+getNameNone()
+        }
+        if ($('.search_text').val() != '') {
+            data += '&search_text='+$('.search_text').val();
+        }
+        data += '&phrase_in_order=' + phrase_in_order;
+        data += '&view_type='+view_type
+
     $.ajax({
         url         : "/account/ajaxPhraseRender",
         type        : 'post',
@@ -383,4 +445,21 @@ markHandTranslate = function(id, save)
             alert('Готово')
         }
     });
+}
+
+hideTabNotTranslated = function () {
+
+    /*
+     |------------------------------------------------------------
+     | Прячем таб без перевода
+     |------------------------------------------------------------
+     */
+    var tab_not_translated = $('#tab_not_translated');
+    var count = tab_not_translated.find('#stNotTranslate').text();
+    if (Number(count) === 0) {
+        tab_not_translated.css({display: 'none'}).removeClass('active').next().addClass('active').prev('#stNotTranslate');
+        $(document).on('click', '.remove_item', removeItemPageName);
+        loadPhrases();
+        // $(document).on('click', '.remove_item', setEventInContent());
+    }
 }

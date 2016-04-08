@@ -469,14 +469,32 @@ class AccountController extends Controller
         $filter = array();
 
         $filter['stats']['menu'] = array(1 => 0, 2 => 0, 3 => 0);
-        $filter['stats']['in_translate'] = Translate::where('site_id', $siteID)->where('language_id', $languageID)->whereNotNull('type_translate_id')->count(); //Сколько переведено в этом языке
-        $filter['stats']['not_translate'] = Translate::where('site_id', $siteID)->where('language_id', $languageID)->where('type_translate_id', NULL)->count(); //Не переведено в этом языке
-        $filter['stats']['publish'] = Translate::where('site_id', $siteID)->where('language_id', $languageID)->where('enabled', 1)->count();
-        $filter['stats']['all'] = DB::table('translates')->join('types_translates', 'translates.type_translate_id', '=', 'types_translates.id')
+        $filter['stats']['in_translate'] = Translate::where('translates.site_id', $siteID)
+	        ->where('translates.language_id', $languageID)
+	        ->whereNotNull('translates.type_translate_id')
+	        ->join('blocks', 'blocks.id', '=', 'translates.block_id')
+	        ->where('blocks.enabled', 1)
+	        ->count(); //Сколько переведено в этом языке
+        $filter['stats']['not_translate'] = Translate::where('translates.site_id', $siteID)
+	        ->where('translates.language_id', $languageID)
+	        ->where('translates.type_translate_id', NULL)
+	        ->join('blocks', 'blocks.id', '=', 'translates.block_id')
+	        ->where('blocks.enabled', 1)
+	        ->count(); //Не переведено в этом языке
+        $filter['stats']['publish'] = Translate::where('translates.site_id', $siteID)
+	        ->where('translates.language_id', $languageID)
+	        ->where('translates.enabled', 1)
+	        ->join('blocks', 'blocks.id', '=', 'translates.block_id')
+	        ->where('blocks.enabled', 1)
+	        ->count();
+        $filter['stats']['all'] = DB::table('translates')
+	        ->join('types_translates', 'translates.type_translate_id', '=', 'types_translates.id')
             ->select('types_translates.id', DB::raw('count(*) as cc'))
-            ->where('site_id', $siteID)
+            ->where('translates.site_id', $siteID)
             ->where('language_id', $languageID)
-            ->groupBy('translates.type_translate_id')
+	        ->join('blocks', 'blocks.id', '=', 'translates.block_id')
+	        ->where('blocks.enabled', 1)
+	        ->groupBy('translates.type_translate_id')
             ->get();
 
         foreach ($filter['stats']['all'] as $key => $val)
@@ -500,6 +518,7 @@ class AccountController extends Controller
 
             $filter['stats']['proc'][$lang->id] = round(($ccNull / $ccTrans) * 100);
         }
+	    $filter['pages_url'] = Session::get('pages_url');
 
         return $filter;
     }
@@ -562,11 +581,28 @@ class AccountController extends Controller
             ->orderBy('translates.id')
             ->select('translates.id as tid', 'blocks.enabled as enabled', 'translates.*',
                 'types_translates.name as name_translate', DB::raw('date_format(translates.updated_at, "%h:%i") as time'),
-                DB::raw('date_format(translates.updated_at, "%Y-%m-%d") as date'), 'blocks.text as original');
+                DB::raw('date_format(translates.updated_at, "%Y-%m-%d") as date'), 'blocks.text as original', 'blocks.enabled as blocks_enabled');
 
-        $blocks = $buildQuery->paginate(25);
 
-        return view('account.phrase', compact('tab_name', 'blocks', 'filter', 'viewType', 'filterDef'));
+	    $blocks = $buildQuery->paginate(25);
+
+	    $translate_is_ordered =  Translate::where('is_ordered', 1)->get();
+	    $phrasesInOrder = $translate_is_ordered->count();
+
+
+	    $count_words = 0;
+	    if ($translate_is_ordered) {
+		    foreach ($translate_is_ordered as $item) {
+			    $block_is_ordered = $item->block;
+			    $count_words = (int)$count_words + $block_is_ordered->count_words;
+		    }
+	    }
+
+	    $costOrder = (int)$count_words * 0.01;
+
+
+
+        return view('account.phrase', compact('tab_name', 'blocks', 'filter', 'viewType', 'filterDef', 'phrasesInOrder', 'costOrder'));
     }
 
     /**
@@ -695,31 +731,125 @@ class AccountController extends Controller
 
     public function phraseAjaxRender(Request $request)
     {
+        
         $filter = $request->get('filter');
         $tab = $request->get('tab');
-        $viewType = Session::get('typeViewID', 1);
+        $languageID = $filter['languageID'];
+        $siteID = $request->get('site_id');
+        $viewType = $request->get('view_type');
+        $typeID = $filter['typeID'];
+	    $pagesUrl = $request->get('name_none') != '' ? explode(',', $request->get('name_none')) : [];
+        $phraseInOrder = $request->get('phrase_in_order');
+
+	    $searchText = $request->get('search_text');
+
+//        $viewType = Session::get('typeViewID', 1);
+//        $viewType = Session::get('typeViewID', 1);
+//        $languageID = Session::get('filter')['languageID'];
 
         Session::set('filter', $filter);
 
-        if ($request->get('clearFilter'))
-            Session::set('filter', NULL);
+	    $searchText = false;
+	    if ($request->get('search_text')) {
+		    $searchText = $request->get('search_text');
+	    }
 
-        $siteID = Session::get('projectID');
-        $viewType = Session::get('typeViewID', 1);
+	    if ($request->get('name_none')) {
+		    Session::set('pages_url', $request->get('name_none'));
+	    }
 
-        if (!$siteID)
-            return redirect(URL::route('main.account.selectProject'));
 
-        $json = array();
-        $languageID = Session::get('filter')['languageID'];
+        if ($request->get('clearFilter')) {
+	        Session::set('filter', NULL);
+        }
+
+        if (!$siteID) {
+	        return redirect(URL::route('main.account.selectProject'));
+        }
+
+	    $arrQuery = compact('tab', 'siteID', 'languageID', 'typeID', 'pagesUrl', 'phraseInOrder', 'searchText');
+
+        $json = [];
         $filter = $this->generateStatsForPhraseFilter($siteID, $languageID);
-        $blocks = $this->buildQueryPhrase($tab, $siteID, $languageID);
-
-        $json['html'] = (String)\View::make('account.phraseAjax', compact('blocks', 'filter', 'viewType', 'tab'))->render();
+        $blocks = $this->buildQueryPhrase($arrQuery);
+	    $data = compact('blocks', 'filter', 'viewType', 'tab');
+        $json['html'] = (String)\View::make('account.phraseAjax', $data)->render();
         unset($filter['menu']['langs']);
         $json['info'] = $filter;
+        $json['data'] = $data;
 
         return json_encode($json, JSON_HEX_QUOT | JSON_HEX_TAG);
+    }
+
+	/**
+	 * Генерируем запрос на получение фраз
+	 *
+	 * @param $arrQuery
+	 * @return array
+	 * @internal param string $type
+	 * @access public
+	 */
+
+    private function buildQueryPhrase($arrQuery)
+    {
+	    $languageID = $arrQuery['languageID'];
+	    $siteID = $arrQuery['siteID'];
+	    $phraseInOrder = $arrQuery['phraseInOrder'];
+
+        $buildQuery = Page::where('pages.site_id', $arrQuery['siteID']);
+
+		if (count($arrQuery['pagesUrl']) > 0) {
+			$buildQuery->whereIn('pages.url', $arrQuery['pagesUrl']);
+		}
+
+	    $buildQuery->leftJoin('page_block', 'page_block.page_id', '=', 'pages.id')
+		    ->leftJoin('blocks', 'blocks.id', '=', 'page_block.block_id')
+		    ->where('blocks.enabled', '=', 1)
+		    ->leftJoin('translates', function($join) use ($languageID) {
+			    $join->on('translates.block_id', '=', 'page_block.block_id')
+				    ->where('translates.language_id', '=', $languageID);
+
+		    });
+
+
+//		    ->leftJoin('sites', function($join) use ($siteID) {
+//			    $join->where('sites.language_id', '=', $siteID);
+//		    })
+//	        ->leftJoin('sites', 'sites.id', '=', $arrQuery['siteID']);
+
+	    switch ($arrQuery['tab']) {
+		    case 'tab_not_translated':
+		    default:
+		        $buildQuery->where('translates.type_translate_id', NULL);
+		        break;
+		    case 'tab_translated':
+			    $buildQuery->whereNotNull('translates.type_translate_id');
+			    break;
+		    case 'tab_published':
+			    $buildQuery->where('translates.enabled', '=', 1);
+			    break;
+		    case 'tab_acrhive':
+			    $buildQuery->where('translates.enabled', 0);
+			    break;
+	    }
+
+	    if ($arrQuery['phraseInOrder']) {
+		    $buildQuery->where('translates.is_ordered', $arrQuery['phraseInOrder']);
+	    }
+
+	    if ($arrQuery['searchText']) {
+		    $buildQuery->where('blocks.text', 'LIKE', '%' . $arrQuery['searchText'] . '%')
+			    ->orWhere('translates.text', 'LIKE', '%' . $arrQuery['searchText'] . '%');
+	    }
+
+	    $buildQuery->leftJoin('types_translates', 'types_translates.id', '=', 'translates.type_translate_id')
+				    ->orderBy('pages.id')
+		            ->select('pages.id as pages_id', 'pages.*', 'translates.id as tid', 'blocks.enabled as blocks_enabled', 'translates.*',
+			            'translates.enabled as translates_enabled', 'types_translates.name as name_translate', DB::raw('date_format(translates.updated_at, "%h:%i") as time'),
+                        DB::raw('date_format(translates.updated_at, "%Y-%m-%d") as date'), 'blocks.text as original');
+
+	    return $buildQuery->paginate(25);
+
     }
 
     /**
@@ -730,7 +860,7 @@ class AccountController extends Controller
      * @access public
      */
 
-    private function buildQueryPhrase($type, $siteID, $languageID, $pageId)
+    private function __buildQueryPhrase($type, $siteID, $languageID)
     {
         $buildQuery = null;
 
@@ -1036,4 +1166,38 @@ class AccountController extends Controller
 
 	    return $buildQuery->paginate(25);
     }
+
+	public function disableDisplayPhrase(Request $request)
+	{
+		$retData = [];
+		$siteId = $request->input('site_id');
+		$languageId = $request->input('language_id');
+		$translatesId = $request->input('translates_id');
+
+		$query = Translate::find($translatesId);
+		if ($query) {
+			$block = $query->block;
+			$block->enabled = 0;
+			$connect = $block->save();
+			$stats = $this->generateStatsForPhraseFilter($siteId, $languageId);
+			if ($connect) {
+				$retData['success'] = true;
+				$retData['message'] = trans('account.outputPhraseMessage_' . $block->enabled);
+				$retData['stats'] = $stats['stats'];
+			} else {
+				$retData['success'] = false;
+				$retData['message'] = trans('account.errorOutputPhrase_' . $block->enabled);
+				$retData['stats'] = $stats['stats'];
+			}
+		}
+//		$stats = $this->generateStatsForPhraseFilter($siteId, $languageId);
+//		array('message' => trans('account.outputPhraseMessage_' . $block->enabled), 'stats' => $stats['stats'])
+		echo json_encode($retData);
+	}
+
+	public function projectPages()
+	{
+//		, compact('tab_name', 'blocks', 'filter', 'viewType', 'filterDef', 'phrasesInOrder', 'costOrder')
+		return view('account.phrase');
+	}
 }

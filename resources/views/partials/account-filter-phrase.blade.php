@@ -3,8 +3,31 @@
     <form action="{{URL::route('main.account.setFilter')}}" method="POST">
     <input type="hidden" name="view_page" value="{{$tab_name}}" />
 
-    <div id="block_page_title" class="filter_page_title" style="max-height: 250px; overflow: auto;">
 
+    <div  style="margin-bottom: 15px;" class="date_filter_wrap">
+        <input type="text" name="date_filter" id="date_filter" value="" class="date_filter">
+        <button class="button_search_text">поиск</button>
+    </div>
+
+    <div class="search_text_wrap" style="margin-bottom: 10px;">
+        <input type="text" class="search_text">
+        <button class="button_search_text">поиск</button>
+    </div>
+
+
+    <div  style="margin-bottom: 15px;" class="phrases_in_order">
+        <input type="checkbox" name="checkboxPhraseInOrder" id="checkboxPhraseInOrder" value="" class="checkboxPhraseInOrder">
+        <label for="checkboxPhraseInOrder">{{trans('account.phrasesInOrder')}} <span class="phrasesCount">{{ $phrasesInOrder }}</span></label>
+    </div>
+
+    <div id="block_page_title" class="filter_page_title" style="max-height: 250px; overflow: auto;">
+{{--        {{ $pages_url = Session::get('pages_url') }}--}}
+{{--        {{ dd(Session::get('pages_url')) }}--}}
+        @if(Session::get('pages_url') && Session::get('pages_url') != '')
+            @foreach(explode(',', Session::get('pages_url')) as $page_url)
+                <div class="selected_for_title_item bordered">{{ $page_url }}<span class="remove_item">✕</span></div>
+            @endforeach
+        @endif
     </div>
     <form action="" class="site__form">
         <fieldset>
@@ -12,30 +35,12 @@
         </fieldset>
     </form>
 
-
-
-    {{--<div id="filter_page_site_wrap" class="filter_page_site_wrap">--}}
-        {{--<div class="selected_for_title_wrap b-r_5">--}}
-            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
-            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
-            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
-            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
-            {{--<div class="selected_for_title_item bordered">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/<span class="remove_item">✕</span></div>--}}
-        {{--</div>--}}
-        {{--<input class="input_page_auto_complete bordered" type="text" data-site-id="{{ Session::get('projectID') }}" data-language-id="{{ Session::get('filter')['languageID'] }}" id="input_page_auto_complete" name="input_page_auto_complete" placeholder="Фильтр по страницам">--}}
-        {{--<ul class="found_for_title_wrap b-r_5">--}}
-            {{--<li class="found_for_title_item">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/</li>--}}
-            {{--<li class="found_for_title_item">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/</li>--}}
-            {{--<li class="found_for_title_item">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/</li>--}}
-            {{--<li class="found_for_title_item">http://sad.andrey-malygin.ru/zanyatiya-v-detskom-sadu/</li>--}}
-        {{--</ul>--}}
-    {{--</div>--}}
 {{--{{ dd($filter) }}--}}
     <div class="site__aside-filter">
         <span>{{trans('account.langs')}}</span>
         @foreach ($filter['menu']['langs'] as $lang)
         <div class="nice-radio" @if ($filterDef != 1) style="display: block;" @endif>
-            <input type="radio" value="{{$lang->id}}" name="filter[languageID]" id="lang_{{$lang->id}}" @if ($lang->id == $filter['menu']['active_lang']) checked @endif>
+            <input type="radio" value="{{$lang->id}}" name="filter[languageID]" id="lang_{{$lang->id}}" @if(isset($_GET['language_id']) && $_GET['language_id'] == $lang->id) checked @else  @if ($lang->id == $filter['menu']['active_lang']) checked @endif @endif>
             <label for="lang_{{$lang->id}}">{{$lang->name}}<span id="lang_proc_{{$lang->id}}">{{$filter['stats']['proc'][$lang->id]}}%</span></label>
         </div>
         @endforeach

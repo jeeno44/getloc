@@ -31,6 +31,17 @@
                 <button id="setViewTypeID_2" class="phrases__control-column @if ($viewType == 2) active @endif"></button>
                 <a href="#" class="btn btn_3">{{trans('account.orderTranslate')}}</a>
             </div>
+            <div class="phrases__control">
+
+                <div class="phrases__control-inner">
+                    <div id="phrases_in_order"  style="min-height: 35px; line-height: 35px;"class="phrases_in_order">{{trans('account.phrasesInOrder')}} <span class="phrasesCount">{{ $phrasesInOrder }}</span></div>
+                </div>
+                <div class="phrases__control-inner">
+                    <div id="cost_order" style="min-height: 35px; line-height: 35px;" class="cost_order">{{trans('account.costOrder')}} <span class="costCount">{{ $costOrder }}</span> &#36;</div>
+                    {{--&#8381 - знак рубль--}}
+                </div>
+                <a href="/orders/create?phrasesInOrder=&costOrder=" style="margin-top: 10px;" class="btn btn_3">{{trans('account.pay')}}</a>
+            </div>
             <div class="tabs__content">
                 <div class="active" style="display: block;" class="phrases__tab" id="renderPhrases">
                     @foreach ($blocks as $t)
@@ -54,10 +65,10 @@
                         </form>
                         
                         <div class="phrases__item-controls">
-                            <div class="nice-check">
-                                <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">
-                                <label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>
-                            </div>
+                            {{--<div class="nice-check">--}}
+                                {{--<input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">--}}
+                                {{--<label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>--}}
+                            {{--</div>--}}
                             @include('partials.account-menu-phrase', ['ob' => $t])
                         </div>
                     </div>
@@ -80,10 +91,10 @@
                             @if (empty($t->text)) <button class="phrases__item-btn-translate go_robot isLinkMoreMenu" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button> @endif
                         </div>
                         <div class="phrases__item-controls">
-                            <div class="nice-check">
-                                <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">
-                                <label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>
-                            </div>
+                            {{--<div class="nice-check">--}}
+                                {{--<input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">--}}
+                                {{--<label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>--}}
+                            {{--</div>--}}
                             @include('partials.account-menu-phrase', ['ob' => $t])
                         </div>
                     </div>

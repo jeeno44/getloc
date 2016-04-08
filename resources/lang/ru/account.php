@@ -49,6 +49,7 @@ return [
     'save'                     => 'Сохранить',
     'cancel'                   => 'Отмена',
     'cancelPublishing'         => 'Отменить публикацию',
+	'addPublishing'            => 'Опубликовать',
     'history'                  => 'История',
     'useRobotTrans'            => 'Использовать машинный перевод',
     'markHand'                 => 'Отметить как ручной',
@@ -75,5 +76,17 @@ return [
     'successTranslate'         => 'Перевод успешно сохранен',
     'successArhive0'           => 'Отправлено в архив',
     'successArhive1'           => 'Теперь данный перевод публикуются',
-    'success'                  => 'Успешно'
+    'success'                  => 'Успешно',
+	'onOutputPhrase'           => 'Включить вывод фразы',
+	'offOutputPhrase'          => 'Отключить вывод фразы',
+	'outputPhraseMessage_1'    => 'Вывод фразы включен!',
+	'outputPhraseMessage_0'    => 'Вывод фразы отключен!',
+	'pay'                      => 'Оплатить',
+	'phrasesInOrder'           => 'Фраз в заказе',
+	'costOrder'                => 'Стоимость заказа',
+
+	/*error*/
+	'errorOutputPhrase_1'      => 'Не удалось включить вывод фразы!',
+	'errorOutputPhrase_0'      => 'Не удалось отключить вывод фразы!',
+
 ];

@@ -11,6 +11,9 @@
 
     <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,300,500,700&subset=cyrillic' rel='stylesheet' type='text/css'>
 
+    <link rel="stylesheet" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" href="/assets/css/ion.rangeSlider.css" />
+    <link rel="stylesheet" href="/assets/css/ion.rangeSlider.skinFlat.css" />
     <link rel="stylesheet" href="/assets/css/account/select.css" />
     <link rel="stylesheet" href="/assets/css/account/main.css" />
     <link rel="stylesheet" href="/assets/css/account/custom.css" />
@@ -30,6 +33,7 @@
         @include('partials.accountFooter')
     </div>
     <script src="/assets/js/account/jquery-2.1.3.min.js"></script>
+    <script src="/assets/js/account/ion.rangeSlider.js"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.4/jquery-ui.min.js"></script>
 
     {{--<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>--}}
