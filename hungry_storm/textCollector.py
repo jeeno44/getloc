@@ -183,7 +183,7 @@ for item in ps.listen():
         urlPageID = {}
 
         data_           = json.loads(item['data'].decode("utf-8"))
-        db              = MySQLdb.connect(host=mysql_credentials['host'], user=mysql_credentials['user'], passwd=mysql_credentials['password'], db=mysql_credentials['db'], charset=mysql_credentials['charset'], unix_socket=mysql_credentials['unix_socket'])
+        db              = MySQLdb.connect(host=mysql_credentials['host'], user=mysql_credentials['user'], passwd=mysql_credentials['password'], db=mysql_credentials['db'], charset=mysql_credentials['charset'])
         trans_client    = 'blackgremlin2'
         trans_secret    = 'SMnjwvLx0bB2u9Cn05K2vkTE1bSkX0+fsLp/23gsytU='
         
@@ -280,11 +280,11 @@ for item in ps.listen():
                                     if block_id is not False:
                                         makePageBlock(getPageID(url, siteID), block_id)
                             elif element.name == 'input':
-                                if element.has_attr('placeholder') and element['placeholder'].isdigit() != True and element['placeholder']:
+                                if element.has_attr('placeholder') and element['placeholder'].isdigit() != True and element['placeholder'] and element['type'] != 'hidden':
                                     block_id = makeBlock(siteID, element['placeholder'], element.name, url)
                                     if block_id is not False:
                                         makePageBlock(getPageID(url, siteID), block_id)
-                                if element.has_attr('value') and element['value'].isdigit() != True and element['value']:
+                                if element.has_attr('value') and element['value'].isdigit() != True and element['value'] and element['type'] != 'hidden':
                                     block_id = makeBlock(siteID, element['value'], element.name, url)
                                     if block_id is not False:
                                         makePageBlock(getPageID(url, siteID), block_id)
