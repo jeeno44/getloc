@@ -11,7 +11,7 @@ start = time.time()
 r = redis.Redis()
 ps = r.pubsub()
 ps.subscribe('spider')
-STOP_WORDS = ['mailto', 'redirect_to', 'youtube.com', 'uploads', 'upload', '(', '#', 'share', 'facebook.com', '.pdf', '..', '.ppt', '.jpg', 'redirect', 'tel:', 'doc', 'docx', '.eps', '.cdr']
+STOP_WORDS = ['mailto', 'redirect_to', 'youtube.com', 'uploads', 'upload', '(', '#', 'share', 'facebook.com', '.pdf', '..', '.ppt', '.jpg', 'redirect', 'tel:', '.doc', '.docx', '.eps', '.cdr']
 
 def prep(href):
     href = href.strip('/')
