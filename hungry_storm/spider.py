@@ -11,7 +11,7 @@ start = time.time()
 r = redis.Redis()
 ps = r.pubsub()
 ps.subscribe('spider')
-STOP_WORDS = ['mailto', 'redirect_to', 'youtube.com', 'uploads', 'upload', '(', '#', 'share', 'facebook.com', '.pdf', '..', '.ppt', '.jpg']
+STOP_WORDS = ['mailto', 'redirect_to', 'youtube.com', 'uploads', 'upload', '(', '#', 'share', 'facebook.com', '.pdf', '..', '.ppt', '.jpg', 'redirect', 'tel:', 'doc', 'docx', '.eps', '.cdr']
 
 def prep(href):
     href = href.strip('/')
@@ -58,6 +58,7 @@ def scan(starting_url):
                 found_urls.remove(url)
         except:
             pass
+        time.sleep(0.5)
     return found_urls
 
 
