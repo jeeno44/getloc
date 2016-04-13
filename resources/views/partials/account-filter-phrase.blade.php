@@ -4,9 +4,11 @@
     <input type="hidden" name="view_page" value="{{$tab_name}}" />
 
 
-    <div  style="margin-bottom: 15px;" class="date_filter_wrap">
-        <input type="text" name="date_filter" id="date_filter" value="" class="date_filter">
-        <button class="button_search_text">поиск</button>
+    <div  style="margin-bottom: 15px; text-align: center;" class="date_filter_wrap">
+        <div for="date_filter_start" style="text-align: center; margin-bottom: 5px;">Выбрать даты для фильтра</div>
+        <input type="date" style="width: 49%;" name="date_filter_start" id="date_filter_start" value="" class="date_filter_start" placeholder="от">
+        <input type="date" style="width: 49%;" name="date_filter_end" id="date_filter_end" value="" class="date_filter_end" placeholder="до">
+        <button class="button_date_filter" style="margin-top: 5px">Фильтровать</button>
     </div>
 
     <div class="search_text_wrap" style="margin-bottom: 10px;">

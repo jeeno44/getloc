@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSiteStateCollector extends Migration
+class AddFieldPagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,8 @@ class CreateSiteStateCollector extends Migration
      */
     public function up()
     {
-        Schema::create('site_tate_collector', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('siteID', false, true)->nullable()->index();
-            $table->timestamps();
+        Schema::table('pages', function (Blueprint $table) {
+            $table->boolean('enabled')->after('collected')->default(true);
         });
     }
 
@@ -26,6 +24,8 @@ class CreateSiteStateCollector extends Migration
      */
     public function down()
     {
-        Schema::drop('site_tate_collector');
+        Schema::table('pages', function (Blueprint $table) {
+            $table->dropColumn('enabled');
+        });
     }
 }

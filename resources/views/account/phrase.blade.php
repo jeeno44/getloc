@@ -19,7 +19,7 @@
             </div>
             <div class="phrases__control">
                 <div class="nice-check">
-                    <input type="checkbox" id="check">
+                    <input type="checkbox" id="check" class="select_all">
                     <label for="check"></label>
                 </div>
                 <div class="phrases__control-inner">
@@ -29,7 +29,7 @@
                 </div>
                 <button id="setViewTypeID_1" class="phrases__control-horizontal @if ($viewType == 1) active @endif"></button>
                 <button id="setViewTypeID_2" class="phrases__control-column @if ($viewType == 2) active @endif"></button>
-                <a href="#" class="btn btn_3">{{trans('account.orderTranslate')}}</a>
+                <a href="#" class="btn btn_3" id="orderTranslate">{{trans('account.orderTranslate')}}</a>
             </div>
             <div class="phrases__control">
 
@@ -40,68 +40,100 @@
                     <div id="cost_order" style="min-height: 35px; line-height: 35px;" class="cost_order">{{trans('account.costOrder')}} <span class="costCount">{{ $costOrder }}</span> &#36;</div>
                     {{--&#8381 - знак рубль--}}
                 </div>
-                <a href="/orders/create?phrasesInOrder=&costOrder=" style="margin-top: 10px;" class="btn btn_3">{{trans('account.pay')}}</a>
+                {{--<a href="/orders/create?phrasesInOrder=&costOrder=" style="margin-top: 10px;" class="btn btn_3">{{trans('account.pay')}}</a>--}}
             </div>
             <div class="tabs__content">
                 <div class="active" style="display: block;" class="phrases__tab" id="renderPhrases">
-                    @foreach ($blocks as $t)
-                    @if ( $viewType == 2)
-                    <div class="phrases__item @if ($t->type_translate_id)phrases__item_mark-{{$filter['colors'][$t->type_translate_id]['block']}} @endif" id="phrase_{{$t->tid}}">
-                        <div class="phrases__item-col">
-                            <label for="order_{{$t->tid}}">{!! $t->original !!}</label>
-                        </div>
-                        <form class="phrases__item-col phrases__item-col_translate">
-                            <textarea onkeyup="$(this).attr('data-type', 2)" id="order_{{$t->tid}}">{{$t->text}}</textarea>
-                            <div class="phrases__item-col-btns">
-                                <button class="save save_translate" object-id="{{$t->tid}}" type="submit">{{trans('account.save')}}</button>
-                                <button class="cancel">{{trans('account.cancel')}}</button>
-                                @if ( $tab_name != 'tab_not_translated' )
-                                <div>
-                                    <a class="phrases__item-btn-translate go_robot" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</a>
+
+                    @if(request()->is('account/phrase'))
+
+                        @foreach ($blocks as $t)
+
+                            @if($t->blocks_enabled)
+
+                                @if ( $viewType == 2)
+                                    <div class="phrases__item @if ($t->type_translate_id)phrases__item_mark-{{$filter['colors'][$t->type_translate_id]['block']}} @endif" id="phrase_{{$t->tid}}">
+                                    <div class="phrases__item-col">
+                                        <label for="order_{{$t->tid}}">{!! $t->original !!}</label>
+                                    </div>
+                                    <form class="phrases__item-col phrases__item-col_translate">
+                                        <textarea onkeyup="$(this).attr('data-type', 2)" id="order_{{$t->tid}}">{{$t->text}}</textarea>
+                                        <div class="phrases__item-col-btns">
+                                            <button class="save save_translate" object-id="{{$t->tid}}" type="submit">{{trans('account.save')}}</button>
+                                            <button class="cancel">{{trans('account.cancel')}}</button>
+                                            @if ( $tab_name != 'tab_not_translated' )
+                                            <div>
+                                                <a class="phrases__item-btn-translate go_robot" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</a>
+                                            </div>
+                                            @endif
+                                        </div>
+                                        @if (empty($t->text)) <button class="phrases__item-btn-translate go_robot isLinkMoreMenu" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button> @endif
+                                    </form>
+
+                                    <div class="phrases__item-controls">
+                                        <div class="nice-check">
+                                            <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkbox_ordering_translation" id="ordering_translation_{{$t->tid}}" @if ($t->is_ordered) checked @endif>
+                                            <label for="ordering_translation_{{$t->tid}}">{{ trans('account.addOrder') }}</label>
+                                        </div>
+                                        {{--<div class="nice-check">--}}
+                                            {{--<input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">--}}
+                                            {{--<label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>--}}
+                                        {{--</div>--}}
+                                        @include('partials.account-menu-phrase', ['ob' => $t])
+                                    </div>
+                                </div>
+                                @else
+                                    <div class="phrases__item @if ($t->type_translate_id)phrases__item_mark-{{$filter['colors'][$t->type_translate_id]['block']}} @endif" id="phrase_{{$t->tid}}">
+                                    <div class="phrases__item-col phrases__item-col_block">
+                                        <label for="order_{{$t->tid}}">{{$t->original}}</label>
+                                    </div>
+                                    <div class="phrases__item-col phrases__item-col_block phrases__item-col_translate">
+                                        <textarea onkeyup="$(this).attr('data-type', 2)" id="order_{{$t->tid}}" readonly>{{$t->text}}</textarea>
+                                        <div class="phrases__item-col-btns">
+                                            <button class="save save_translate" object-id="{{$t->tid}}" type="submit">{{trans('account.save')}}</button>
+                                            <button class="cancel">{{trans('account.cancel')}}</button>
+                                            @if ( $tab_name != 'tab_not_translated' )
+                                            <div>
+                                                <a class="phrases__item-btn-translate go_robot" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</a>
+                                            </div>
+                                            @endif
+                                        </div>
+                                        @if (empty($t->text)) <button class="phrases__item-btn-translate go_robot isLinkMoreMenu" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button> @endif
+                                    </div>
+                                    <div class="phrases__item-controls">
+                                        <div class="nice-check">
+                                            <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkbox_ordering_translation" id="ordering_translation_{{$t->tid}}" @if ($t->is_ordered) checked @endif>
+                                            <label for="ordering_translation_{{$t->tid}}">{{ trans('account.addOrder') }}</label>
+                                        </div>
+                                        {{--<div class="nice-check">--}}
+                                            {{--<input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">--}}
+                                            {{--<label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>--}}
+                                        {{--</div>--}}
+                                        @include('partials.account-menu-phrase', ['ob' => $t])
+                                    </div>
                                 </div>
                                 @endif
-                            </div>
-                            @if (empty($t->text)) <button class="phrases__item-btn-translate go_robot isLinkMoreMenu" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button> @endif
-                        </form>
-                        
-                        <div class="phrases__item-controls">
-                            {{--<div class="nice-check">--}}
-                                {{--<input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">--}}
-                                {{--<label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>--}}
-                            {{--</div>--}}
-                            @include('partials.account-menu-phrase', ['ob' => $t])
-                        </div>
-                    </div>
-                    @else
-                    <div class="phrases__item @if ($t->type_translate_id)phrases__item_mark-{{$filter['colors'][$t->type_translate_id]['block']}} @endif" id="phrase_{{$t->tid}}">
-                        <div class="phrases__item-col phrases__item-col_block">
-                            <label for="order_{{$t->tid}}">{{$t->original}}</label>
-                        </div>
-                        <div class="phrases__item-col phrases__item-col_block phrases__item-col_translate">
-                            <textarea onkeyup="$(this).attr('data-type', 2)" id="order_{{$t->tid}}" readonly>{{$t->text}}</textarea>
-                            <div class="phrases__item-col-btns">
-                                <button class="save save_translate" object-id="{{$t->tid}}" type="submit">{{trans('account.save')}}</button>
-                                <button class="cancel">{{trans('account.cancel')}}</button>
-                                @if ( $tab_name != 'tab_not_translated' )
-                                <div>
-                                    <a class="phrases__item-btn-translate go_robot" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</a>
-                                </div>
-                                @endif
-                            </div>
-                            @if (empty($t->text)) <button class="phrases__item-btn-translate go_robot isLinkMoreMenu" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button> @endif
-                        </div>
-                        <div class="phrases__item-controls">
-                            {{--<div class="nice-check">--}}
-                                {{--<input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">--}}
-                                {{--<label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>--}}
-                            {{--</div>--}}
-                            @include('partials.account-menu-phrase', ['ob' => $t])
-                        </div>
-                    </div>
+
+                            @endif
+
+                        @endforeach
 
                     @endif
-                    
-                    @endforeach
+
+                    @if(request()->is('account/pages'))
+
+                        @foreach ($blocks as $t)
+
+                            <div class="pages_block_wrap">
+                                <input type="checkbox" data-id="{{ $t->id }}" class="pages_disable" @if($t->enabled) checked @endif>
+                                <a href="account/phrase" class="link_pages">{{ $t->url }}</a>
+                            </div>
+
+                        @endforeach
+                        
+                    @endif
+
+
                     @if (isset($blocks))
                     <div class="paginationAjax">
                         {!! $blocks->render() !!}

@@ -24,6 +24,8 @@ class AddDraftColumnToPaymentTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('payments', function(Blueprint $table) {
+	        $table->dropColumn('is_draft');
+	    });
     }
 }

@@ -91,7 +91,43 @@ $(function(){
     
     $('.site__aside-filter').find('input[type=radio]').each(function(){
         $(this).click(loadPhrases)
-    })
+    });
+
+
+
+    $('#orderTranslate').on('click', function (e) {
+        e.preventDefault()
+        var data_id = {}, count = 0;
+
+        $.each($('.nice-check').find('.checkbox_ordering_translation'), function (i, e) {
+            data_id[count] = {
+                id: $(e).val(),
+                check: $(e).prop('checked') ? 1 : 0
+            };
+            count ++;
+        });
+        if (count > 0) {
+            var data = {
+                data_id: data_id
+            };
+            $.post('/account/orderingTranslation', data, function (obj) {
+                var obj = $.parseJSON(obj);
+                console.log(obj);
+            });
+        }
+    });
+
+    $('.select_all').on('click', function () {
+        if ($(this).prop('checked')) {
+            $.each($('.nice-check').find('.checkbox_ordering_translation'), function (i, e) {
+                $(e).prop('checked', true);
+            });
+        } else {
+            $.each($('.nice-check').find('.checkbox_ordering_translation'), function (i, e) {
+                $(e).prop('checked', false);
+            });
+        }
+    });
 
 
 
@@ -158,17 +194,78 @@ eventAccount = function () {
         e.preventDefault();
         loadPhrases();
     });
-    $('#date_filter').ionRangeSlider({
-        hide_min_max: true,
-        keyboard: true,
-        min: 0,
-        max: 5000,
-        from: 1000,
-        to: 4000,
-        type: 'double',
-        step: 1,
-        prefix: "$",
-        grid: true
+    $('.button_date_filter').on('click', function (e) {
+        e.preventDefault();
+        loadPhrases();
+    });
+
+    $('.pages_disable').on('click', function () {
+        // var url = $(this).parent().html();
+        var data = {
+            url: $(this).siblings('a.link_pages').text(),
+            check: $(this).prop('checked') ? 1 : 0
+        };
+        $.post('/account/pagesDisable', data, function (obj) {
+            console.log(obj);
+        });
+    });
+    $('.link_pages').on('click', function (e) {
+        e.preventDefault();
+        var data = {
+            url: $(this).text(),
+            href: $(this).attr('href'),
+            check: $(this).siblings('.pages_disable').prop('checked') ? 1 : 0
+        };
+        if (data.check) {
+            $.post('/account/locationPhrase', data, function (obj) {
+                var obj = $.parseJSON(obj);
+                console.log(obj);
+                if (obj.success) {
+                    location.href = location.origin + data.href;
+                    console.log(location);
+                }
+            })
+        }
+    });
+
+    $('.addOrder').on('click', function (e) {
+        e.preventDefault();
+        $('#ordering_translation_'+$(this).attr('data-id')).prop('checked', true);
+        var data_id = {}, count = 0, $this = $(this);
+        data_id[count] = {
+            id: $(this).attr('data-id'),
+            check: $('#ordering_translation_'+$(this).attr('data-id')) ? 1 : 0
+        };
+        var data = {
+            data_id: data_id
+        };
+        console.log(data);
+        $.post('/account/orderingTranslation', data, function (obj) {
+            var obj = $.parseJSON(obj);
+            $this.removeClass('addOrder').addClass('delOrder').text('Убрать из заказа');
+            eventAccount();
+            console.log(obj);
+        });
+    });
+
+    $('.delOrder').on('click', function (e) {
+        e.preventDefault();
+        $('#ordering_translation_'+$(this).attr('data-id')).prop('checked', false);
+        var data_id = {}, count = 0, $this = $(this);
+        data_id[count] = {
+            id: $(this).attr('data-id'),
+            check: $('#ordering_translation_'+$(this).attr('data-id')) ? 1 : 0
+        };
+        console.log(data_id);
+        var data = {
+            data_id: data_id
+        };
+        $.post('/account/orderingTranslation', data, function (obj) {
+            var obj = $.parseJSON(obj);
+            console.log(obj);
+            $this.removeClass('delOrder').addClass('addOrder').text('Добавить в заказ');
+            eventAccount();
+        });
     });
 
 
@@ -336,6 +433,8 @@ loadPhrases = function(page)
     var page  = !page ? 0 : page,
         view_type = $('#setViewTypeID_1').hasClass('active') ? 1 : 2,
         phrase_in_order = $('#checkboxPhraseInOrder').prop('checked') ? 1 : 0 ,
+        min_date = $('.date_filter_start').val() != '' ? $('.date_filter_start').val() : 0,
+        max_date = $('.date_filter_end').val() != '' ? $('.date_filter_end').val() : 0,
         data  = $('.site__aside-filter').find('input[type=radio]').serialize();
         data += '&tab='+getCurentTab()
         data += '&page='+page
@@ -347,7 +446,18 @@ loadPhrases = function(page)
             data += '&search_text='+$('.search_text').val();
         }
         data += '&phrase_in_order=' + phrase_in_order;
-        data += '&view_type='+view_type
+        data += '&view_type='+view_type;
+        data += '&min_date='+min_date;
+        data += '&max_date='+max_date;
+        data += '&pathname='+window.location.pathname;
+
+
+    /*
+    |------------------------------------------------------------
+    | TODO: удалить после тестирования
+    |------------------------------------------------------------
+    */
+    console.log(data);
 
     $.ajax({
         url         : "/account/ajaxPhraseRender",
@@ -360,6 +470,7 @@ loadPhrases = function(page)
             setNewStats(phrases.info.stats)
             stopLoader()
             $('#renderPhrases').html(phrases.html).promise().done(setEventInContent)
+            eventAccount()
         }
     })
 }

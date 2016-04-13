@@ -25,6 +25,14 @@
                     {{--@endif--}}
 
                 {{--</li>--}}
+
+                <li>
+                    @if(!$ob->is_ordered)
+                    <a href="" data-id="{{ $ob->tid }}" class="addOrder">{{trans('account.addOrder')}}</a>
+                    @else
+                    <a href="" data-id="{{ $ob->tid }}" class="delOrder">{{trans('account.delOrder')}}</a>
+                    @endif
+                </li>
             </ul>
             @if($ob->translates_enabled)
                 <a onclick="setArchive({{$ob->tid}}); return false;" href="#">{{trans('account.cancelPublishing')}}</a>
