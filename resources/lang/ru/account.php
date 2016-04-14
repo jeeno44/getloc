@@ -88,6 +88,7 @@ return [
 	'delOrder'                 => 'Убрать из заказа',
 	'selectPhraseInOrder'      => 'Выбрать фразу в заказ',
 	'deselectPhraseInOrder'    => 'Отменить выбор фразы в заказ',
+	'unpublished'              => 'Неопубликованные',
 
 	/*error*/
 	'errorOutputPhrase_1'      => 'Не удалось включить вывод фразы!',

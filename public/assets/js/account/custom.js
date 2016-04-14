@@ -9,6 +9,11 @@ $(function(){
      */
     hideTabNotTranslated();
 
+    /**
+    |------------------------------------------------------------
+    | События
+    |------------------------------------------------------------
+    */
     eventAccount();
 
     
@@ -97,6 +102,11 @@ $(function(){
 })
 eventAccount = function () {
 
+    /**
+    |------------------------------------------------------------
+    | Поиск по названию страницы
+    |------------------------------------------------------------
+    */
     autoCompletePages();
 
 
@@ -124,6 +134,7 @@ eventAccount = function () {
         e.preventDefault();
         loadPhrases();
     });
+
     $('.button_date_filter').on('click', function (e) {
         e.preventDefault();
         loadPhrases();
@@ -141,6 +152,7 @@ eventAccount = function () {
 
     selectAllOrder();
 
+    removeItemPageName()
 
 }
 
@@ -625,19 +637,27 @@ pagesDisable = function () {
                 var block_page_title = $('#block_page_title');
                 block_page_title.addClass('bordered');
                 block_page_title.append('<div class="selected_for_title_item bordered">' + ui.item.value + '<span class="remove_item">✕</span></div>');
-                block_page_title.on('click', '.remove_item', removeItemPageName);
+                // block_page_title.on('click', '.remove_item', removeItemPageName);
                 loadPhrases();
                 console.log(event);
+                $('#search_page').delay(5000).val('');
+                // $('')
+                setTimeout(
+                    function () {
+                        $('#search_page').val('');
+                    }, 2000
+                )
             }
-        }).autocomplete('search', '');
+        });
     }
 
     removeItemPageName = function () {
-        $('.remove_item').on('click', function () {
+        $('#block_page_title').on('click', '.remove_item', function () {
             // console.log(123);
             var obj = $(this);
             $(this).parent('.selected_for_title_item').remove();
             onRemoveClassBordered();
+            loadPhrases();
         })
     }
 

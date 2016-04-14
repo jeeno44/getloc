@@ -597,7 +597,7 @@ class AccountController extends Controller
 	    $phrasesInOrder = $this->getCountPhrasesInOrder();
 	    $costOrder = $this->getCostOrder();
 
-	    return view('account.phrase', compact('tab_name', 'blocks', 'filter', 'viewType', 'filterDef', 'phrasesInOrder', 'costOrder'));
+	    return view('account.phrase', compact('tab_name', 'blocks', 'filter', 'viewType', 'filterDef', 'phrasesInOrder', 'costOrder', 'siteID'));
 
 
     }
@@ -761,6 +761,7 @@ class AccountController extends Controller
         $minDate = $request->get('min_date');
         $maxDate = $request->get('max_date');
         $pathName = $request->get('pathname');
+	    
         $ttt = 2;
 //        $ttt = Carbon::parse($request->get('max_date'));
 //        $ttt = Carbon::parse($request->get('min_date'))->toDateTimeString();
@@ -778,7 +779,11 @@ class AccountController extends Controller
 	    }
 
 	    if ($request->get('name_none')) {
-		    Session::set('pages_url', $request->get('name_none'));
+		    Session::set('pages_url_'.$siteID, $request->get('name_none'));
+	    }
+//	    dd($request->get('name_none'));
+	    if ($request->get('name_none') === null) {
+		    Session::set('pages_url_'.$siteID, null);
 	    }
 
 
@@ -796,7 +801,7 @@ class AccountController extends Controller
         $filter = $this->generateStatsForPhraseFilter($siteID, $languageID);
 
 	    if ($pathName === '/account/pages') {
-		    $blocks = $this->buildQueryPages();
+		    $blocks = $this->buildQueryPages($arrQuery);
 	    } elseif ($pathName === '/account/phrase') {
 		    $blocks = $this->buildQueryPhrase($arrQuery);
 	    } else {
@@ -1048,9 +1053,9 @@ class AccountController extends Controller
     }
 
 
-	private function buildQueryPages()
+	private function buildQueryPages($arrQuery)
 	{
-		$buildQuery = Page::select('pages.*');
+		$buildQuery = Page::where('site_id', $arrQuery['siteID'])->select('pages.*');
 
 		return $buildQuery->paginate(25);
 	}

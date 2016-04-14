@@ -25,7 +25,8 @@
                 <div class="phrases__item-controls">
                     <div class="nice-check">
                         <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkbox_ordering_translation" id="ordering_translation_{{$t->tid}}" @if ($t->is_ordered) checked @endif>
-                        <label for="ordering_translation_{{$t->tid}}">@if ($t->is_ordered) {{ trans('account.deselectPhraseInOrder') }} @else {{ trans('account.selectPhraseInOrder') }} @endif</label>
+                        <label for="ordering_translation_{{$t->tid}}"></label>
+                        {{--<label for="ordering_translation_{{$t->tid}}">@if ($t->is_ordered) {{ trans('account.deselectPhraseInOrder') }} @else {{ trans('account.selectPhraseInOrder') }} @endif</label>--}}
                     </div>
                     {{--<div class="nice-check">--}}
                         {{--<input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">--}}
@@ -55,7 +56,8 @@
                 <div class="phrases__item-controls">
                     <div class="nice-check">
                         <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkbox_ordering_translation" id="ordering_translation_{{$t->tid}}" @if ($t->is_ordered) checked @endif>
-                        <label for="ordering_translation_{{$t->tid}}">@if ($t->is_ordered) {{ trans('account.deselectPhraseInOrder') }} @else {{ trans('account.selectPhraseInOrder') }} @endif</label>
+                        <label for="ordering_translation_{{$t->tid}}"></label>
+                        {{--<label for="ordering_translation_{{$t->tid}}">@if ($t->is_ordered) {{ trans('account.deselectPhraseInOrder') }} @else {{ trans('account.selectPhraseInOrder') }} @endif</label>--}}
                     </div>
                     {{--<div class="nice-check">--}}
                         {{--<input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">--}}
@@ -74,7 +76,7 @@
 
         <div class="pages_block_wrap">
             <input type="checkbox" data-id="{{ $t->id }}" class="pages_disable" @if($t->enabled) checked @endif>
-            <a href="/account/phrase" class="link_pages">{{ $t->url }}</a>
+            <a href="/account/phrase?url={{ urlencode($t->url) }}" class="link_pages">{{ $t->url }}</a>
         </div>
 
     @endforeach
