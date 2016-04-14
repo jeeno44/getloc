@@ -86,6 +86,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
                 Route::get('/{id}', ['as' => 'main.billing', 'uses' => 'BillingController@index'])->where(['id' => '[0-9]+']);
                 Route::post('/individual/{id}', ['as' => 'main.billing.individual-send', 'uses' => 'BillingController@individualSend']);
                 Route::get('status', ['as' => 'main.billing.status', 'uses' => 'BillingController@status']);
+                Route::get('orders', ['as' => 'main.billing.order', 'uses' => 'BillingController@orders']);
             });
         });
     });
