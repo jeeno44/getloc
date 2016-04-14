@@ -833,14 +833,12 @@ class AccountController extends Controller
 			$buildQuery->whereIn('pages.url', $arrQuery['pagesUrl']);
 		}
 
-	    $buildQuery->leftJoin('page_block', 'page_block.page_id', '=', 'pages.id')
-		    ->leftJoin('blocks', 'blocks.id', '=', 'page_block.block_id')
-		    ->where('blocks.enabled', '=', 1)
-		    ->leftJoin('translates', function($join) use ($languageID) {
-			    $join->on('translates.block_id', '=', 'page_block.block_id')
-				    ->where('translates.language_id', '=', $languageID);
-
-		    });
+        $buildQuery->leftJoin('page_block', 'page_block.page_id', '=', 'pages.id')
+            ->leftJoin('blocks', 'blocks.id', '=', 'page_block.block_id')
+            ->where('blocks.enabled', '=', 1)
+            ->where('translates.language_id', '=', $languageID)
+            ->leftJoin('translates', 'translates.block_id', '=', 'page_block.block_id')
+            ->groupBy('page_block.block_id');
 
 	    switch ($arrQuery['tab']) {
 		    case 'tab_not_translated':
@@ -1019,7 +1017,7 @@ class AccountController extends Controller
         $tab = $request->input('tab');
         $viewType = Session::get('typeViewID', 1);
 	    $name_none = explode(',', $request->input('name_none'));
-        $blocks = $this->buildQueryTitle($request->input('site_id'), $request->input('value'), $name_none);
+        $blocks = $this->buildQueryTitle($request->input('site_id'), $request->input('name'), $name_none);
 //        $ret_data['html'] = (String)\View::make('account.titleAjax', compact('blocks'))->render();
 
         $ret_data['blocks'] = $blocks;
