@@ -155,7 +155,7 @@ function rebuildAvailableBlocks(\App\Subscription $subscription)
     $maxCountWords = $subscription->count_words;
     $countWords = 0;
     $lastBlockId = null;
-    $blocks = \App\Block::where('site_id', $subscription->site_id)->get();
+    $blocks = \App\Block::where('site_id', $subscription->site_id)->where('enabled', 1)->get();
     foreach ($blocks as $block) {
         if ($block->count_words + $countWords <= $maxCountWords) {
             $lastBlockId = $block->id;

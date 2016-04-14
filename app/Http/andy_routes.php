@@ -107,14 +107,13 @@ Route::group(['domain' => 'api.'.$domain], function () {
             \DB::table('site_tate_collector')->where('siteID', $site->id)->delete(); 
             if ( $state = \DB::table('site_tate_collector')->first() )
                 \Redis::publish('collector', json_encode(['site' => $state->siteID, 'api' => 'api.'.env('APP_DOMAIN')], JSON_UNESCAPED_UNICODE));
-            
             \Event::fire('site.done', $site);
         }
     });
 });
 
 Route::get('publish', function () use ($domain) {
-    
+
 });
 
 Route::get('rescan-errors/{id}', function($id) {

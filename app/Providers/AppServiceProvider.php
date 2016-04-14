@@ -40,6 +40,12 @@ class AppServiceProvider extends ServiceProvider
         \Event::listen('blocks.changed', function ($subscription) {
             rebuildAvailableBlocks($subscription);
         });
+        \Event::listen('site.blocks-changed', function ($site) {
+            $subscription = \App\Subscription::where('site_id', $site->id)->first();
+            if ($subscription) {
+                rebuildAvailableBlocks($subscription);
+            }
+        });
     }
 
     /**

@@ -41,6 +41,10 @@ class ApiController extends Controller
         if (empty($site)) {
             return \Response::json(['error' => ['msg' => 'Auth failed. Invalid Secret key', 'code' => 4]]);
         } else {
+            $subscription = \App\Subscription::where('site_id', $site->id)->first();
+            if (!$subscription || $subscription->deposit <= 0.00 || !$subscription->last_id) {
+                return \Response::json(['error' => ['msg' => 'No money. No honey.', 'code' => 8]]);
+            }
             $uri = prepareUri($uri);
             $page = Page::where('url', $uri)->first();
             if (!$page && strpos('_'.$uri, $site->url) > 0) {
@@ -57,7 +61,7 @@ class ApiController extends Controller
                     return \Response::json(['error' => ['msg' => 'Language is invalid', 'code' => 6]]);
                 } else {
                     \Cache::forget($secret.'_'.$page->id.'_'.$lang->id);//TODO переделать кеширование для новых условий
-                    $response = \Cache::rememberForever($secret.'_'.$page->id.'_'.$lang->id, function() use ($lang, $site, $page) {
+                    $response = \Cache::rememberForever($secret.'_'.$page->id.'_'.$lang->id, function() use ($lang, $site, $page, $subscription) {
                         $response = [];
                         $response['errors'] = [];
                         if ($lang->id == $site->language_id) {
@@ -66,6 +70,7 @@ class ApiController extends Controller
                             $blocks = $page->blocks()->join('translates', 'blocks.id', '=', 'translates.block_id')
                                 ->where('translates.language_id', $lang->id)
                                 ->where('blocks.enabled', 1)
+                                ->where('blocks.id', '<=', $subscription->last_id)
                                 ->where('translates.enabled', 1)
                                 ->select('blocks.text', 'translates.id as tid', 'translates.text as ttext')
                                 ->orderBy(\DB::raw('LENGTH(blocks.text)'), 'DESC')
@@ -82,7 +87,9 @@ class ApiController extends Controller
                         if (empty($response['results'])) {
                             $response['error'] = ['msg' => 'Site is processed', 'code' => 7];
                         }
-                        $response['available_languages'] = $site->languages()->where('enabled', 1)->lists('name', 'short')->toArray();
+                        $response['available_languages'] = $site->languages()->where('enabled', 1)->lists('name', 'short')
+                            ->take($subscription->count_languages)
+                            ->toArray();
                         $response['available_languages'][$site->language->short] = $site->language->name;
                         return $response;
                     });
