@@ -25,8 +25,10 @@
                         </div>
                         <div class="language__links" data-langid='{{$data['langID']}}'>
                             <a href="/account/phrase" class="search_language">{{trans('account.showTranslate')}}</a>
-                            <a href="#" class="order_translation">{{trans('account.orderTrans')}}</a>
-                            <a href="#" class="download_file">{{trans('account.downloadFile')}}</a>
+                            <a href="{{route('main.billing.make-order', ['id' => $data['langID']])}}" class="order_translation">{{trans('account.orderTrans')}}</a>
+                            {{--
+                                <a href="#" class="download_file">{{trans('account.downloadFile')}}</a>
+                            --}}
                         </div>
                         <div class="language_line statistic__line">
                             @foreach ($data['lines'] as $graph)

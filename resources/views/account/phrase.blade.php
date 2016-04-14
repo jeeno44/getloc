@@ -29,7 +29,7 @@
                 </div>
                 <button id="setViewTypeID_1" class="phrases__control-horizontal @if ($viewType == 1) active @endif"></button>
                 <button id="setViewTypeID_2" class="phrases__control-column @if ($viewType == 2) active @endif"></button>
-                <a href="#" class="btn btn_3" id="orderTranslate">{{trans('account.orderTranslate')}}</a>
+                <a href="{{route('main.billing.make-order')}}" class="btn btn_3">{{trans('account.orderTranslate')}}</a>
             </div>
             <div class="phrases__control">
 

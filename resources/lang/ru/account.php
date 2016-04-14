@@ -37,7 +37,7 @@ return [
     'langManagement'           => 'Управление языками перевода',
     'addLang'                  => 'Добавить язык',
     'showTranslate'            => 'Посмотреть перевод',
-//    'orderTrans'               => 'Заказать перевод',
+    'orderTrans'               => 'Заказать перевод',
     'downloadFile'             => 'Скачать файл',
     'offLang'                  => 'Отключенные языки',
     /* phrase */
@@ -84,10 +84,10 @@ return [
 	'pay'                      => 'Оплатить',
 	'phrasesInOrder'           => 'Фраз в заказе',
 	'costOrder'                => 'Стоимость заказа',
-	'addOrder'                => 'Добавить в заказ',
-	'delOrder'                => 'Убрать из заказа',
-	'selectPhraseInOrder'     => 'Выбрать фразу в заказ',
-	'deselectPhraseInOrder'   => 'Отменить выбор фразы в заказ',
+	'addOrder'                 => 'Добавить в заказ',
+	'delOrder'                 => 'Убрать из заказа',
+	'selectPhraseInOrder'      => 'Выбрать фразу в заказ',
+	'deselectPhraseInOrder'    => 'Отменить выбор фразы в заказ',
 
 	/*error*/
 	'errorOutputPhrase_1'      => 'Не удалось включить вывод фразы!',

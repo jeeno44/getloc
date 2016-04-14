@@ -1,1 +1,1 @@
-mysql_credentials = {'host': 'localhost', 'user': 'root', 'password': 'fastfast', 'db': 'gl', 'charset': 'utf8', 'unix_socket': None}
+mysql_credentials = {'host': 'localhost', 'user': 'root', 'password': 'fastdick228', 'db': 'getloc', 'charset': 'utf8', 'unix_socket': '/var/run/mysqld/mysqld.sock'}
