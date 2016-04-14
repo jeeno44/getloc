@@ -21,6 +21,11 @@
 
     </div>
     <div class="new-project__form">
+        @if($errors->any())
+            @foreach($errors->all() as $e)
+                <div style="background: red;color: white">{{$e}}</div>
+            @endforeach
+        @endif
         <form class="site__form" method="post" action="{{route('main.account.post-add-project')}}" novalidate>
             <fieldset>
                 <label for="name-project">Название проекта</label>
@@ -102,13 +107,14 @@
                         Автоматически публиковать все новые фразы?</span>
                 </label>
             </fieldset>
+            <!--
             <fieldset class="new-project__check">
                 <label>
-                    <input type="checkbox" value="1" name="auto_translate" checked>
+                    <input type="checkbox" value="1" name="auto_translate" disabled>
                     <span class="new-project__checked"></span><span class="new-project__check-title">
                         Автоматически переводить все новые фразы?</span>
                 </label>
-            </fieldset>
+            </fieldset> -->
             <button class="btn btn_2">
                 <span>Создать проект</span>
             </button>

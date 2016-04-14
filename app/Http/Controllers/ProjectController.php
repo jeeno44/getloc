@@ -71,8 +71,10 @@ class ProjectController extends Controller
             \DB::table('sites_settings')->insert([
                 'site_id'           => $site->id,
                 'auto_publishing'   => $request->has('auto_publishing'),
-                'auto_translate'    => $request->has('auto_translate')
+                'auto_translate'    => /*$request->has('auto_translate')*/ 0
             ]);
+        } else {
+            return redirect()->back()->withErrors('Сайт с таким адресом уже существует в системе')->withInput();
         }
         // TODO change this in ajax
         //return $site->id;
@@ -87,8 +89,11 @@ class ProjectController extends Controller
     public function projectCreated($id)
     {
         $site = Site::find($id);
-        if (empty($site) || $site->user_id != $this->user->id) {
+        if (empty($site)) {
             abort(404);
+        }
+        if ($site->user_id != $this->user->id) {
+            abort(403, 'Сайт добавлен другим пользователем');
         }
         \Session::set('projectID', $site->id);
         return view('project.created', compact('site'));
@@ -103,7 +108,7 @@ class ProjectController extends Controller
     {
         $site = Site::find($id);
         $content = getPageContent($site->url);
-        if (!empty($content) && strpos($content, $site->secret) !== false) {
+        if ((!empty($content) && strpos($content, $site->secret) !== false) || $this->user->hasRole('admin')) {
             $site->enabled = 1;
             $site->save();
             //$this->dispatch(new \App\Jobs\Spider($site));

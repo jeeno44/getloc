@@ -1,13 +1,11 @@
 @extends('layouts.account')
-@section('title') Покупка тарифа @stop
+@section('title') Продление тарифа @stop
 @section('content')
-    <h1 class="">Покупка тарифа</h1>
+    <h1 class="">Продление тарифа</h1>
     {!! Form::open(['route' => 'main.billing.prepare', 'class' => 'new-project__form']) !!}
 
-    <label>Тариф *</label>
-    {!! Form::select('plan_id', $plans, null, ['class' => 'billing-inp']) !!}
-    <p>или <a href="{{route('main.billing.individual', ['id' => $site->id])}}">запросить индвидидуальные условия</a> </p>
-    <br>
+    <label>Тариф {{$subscription->plan->name}} ({{$subscription->month_cost}}руб./месяц)</label>
+    {!! Form::hidden('plan_id', $subscription->plan_id, ['class' => 'billing-inp']) !!}
 
     <label>Срок *</label>
     {!! Form::select('time', getDurations(), null, ['class' => 'billing-inp']) !!}
@@ -25,8 +23,6 @@
     <div id="subtotal">
 
     </div>
-
-
     <input type="submit" value="Продолжить">
 
     {!! Form::close() !!}

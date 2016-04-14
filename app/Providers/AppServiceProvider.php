@@ -30,6 +30,9 @@ class AppServiceProvider extends ServiceProvider
             $domain = env('APP_DOMAIN');
             \Redis::publish('spider', json_encode(['site' => $site->id, 'api' => 'api.'.$domain], JSON_UNESCAPED_UNICODE));
         });
+        \Event::listen('order.payed', function ($order) {
+            // TODO отсылать заказ переводчику
+        });
     }
 
     /**

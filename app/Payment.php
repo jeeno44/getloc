@@ -17,16 +17,26 @@ class Payment extends Model
 
     public function type()
     {
-        return $this->belongsTo('App\PaymentType');
+        return $this->belongsTo('App\PaymentType', 'payment_type_id');
     }
 
     public function subscription()
     {
-        return $this->belongsTo('App\Subscription', 'outer_id')->where('relation', 'App\Subscription');
+        return $this->belongsTo('App\Subscription', 'outer_id');
     }
 
     public function order()
     {
         return $this->belongsTo('App\Order', 'outer_id')->where('relation', 'order');
+    }
+
+    public function details()
+    {
+        return $this->hasMany('App\PaymentDetail', 'payment_id');
+    }
+
+    public function detail()
+    {
+        return $this->hasOne('App\PaymentDetail', 'payment_id', 'id');
     }
 }

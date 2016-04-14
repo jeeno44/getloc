@@ -351,6 +351,10 @@ function getSubTotal($cost, $code, $siteId, $time = 0)
         } else {
             $couponDiscount = $subtotal / 100 * $coupon->discount;
         }
+        $site = \App\Site::find($siteId);
+        if ($site) {
+            updateCouponState($coupon, $site);
+        }
     }
     $subtotal = $subtotal - $couponDiscount;
     $timeDiscount = getDiscountByTime($time);

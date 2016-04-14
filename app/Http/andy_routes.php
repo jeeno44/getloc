@@ -53,6 +53,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::resource('users', 'Admin\UsersController');
             Route::get('feedback/call', 'Admin\FeedbackController@call');
             Route::get('feedback/demo', 'Admin\FeedbackController@demo');
+            Route::get('feedback/individual', 'Admin\FeedbackController@individual');
             Route::delete('feedback/{id}', 'Admin\FeedbackController@destroy');
             Route::resource('billing/plans', 'Admin\PlansController');
             Route::resource('billing/payments', 'Admin\PaymentsController');
@@ -67,12 +68,14 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/project-created/{id}', ['as' => 'main.account.project-created', 'uses' => 'ProjectController@projectCreated']);
             Route::get('/project-remove/{id}', ['as' => 'main.account.project-remove', 'uses' => 'ProjectController@projectRemove']);
             Route::get('/validate-project/{id}', ['as' => 'main.account.validate-project', 'uses' => 'ProjectController@validateProject']);
+            Route::get('payments', ['as' => 'main.account.payments', 'uses' => 'BillingController@paymentsHistory']);
 
             Route::group(['prefix' => 'billing'], function() {
                 Route::any('/coupon_validate', ['as' => 'main.billing.coupon_validate', 'uses' => 'BillingController@validateCoupon']);
                 Route::any('/subtotal', ['as' => 'main.billing.subtotal', 'uses' => 'BillingController@subtotal']);
                 Route::post('/prepare', ['as' => 'main.billing.prepare', 'uses' => 'BillingController@prepare']);
                 Route::get('/upgrade/{id}', ['as' => 'main.billing.upgrade', 'uses' => 'BillingController@upgrade']);
+                Route::post('/upgrade', ['as' => 'main.billing.upgrade-store', 'uses' => 'BillingController@upgradeStore']);
                 Route::get('/individual/{id}', ['as' => 'main.billing.individual', 'uses' => 'BillingController@individual']);
                 Route::get('/details-form/{id}', ['as' => 'main.billing.details-form', 'uses' => 'BillingController@detailsForm']);
                 Route::post('/details-form/{id}', ['as' => 'main.billing.details-store', 'uses' => 'BillingController@detailsStore']);
@@ -80,6 +83,8 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
                 Route::get('/success', ['as' => 'main.billing.success', 'uses' => 'BillingController@success']);
                 Route::get('/fail', ['as' => 'main.billing.fail', 'uses' => 'BillingController@fail']);
                 Route::get('/{id}', ['as' => 'main.billing', 'uses' => 'BillingController@index'])->where(['id' => '[0-9]+']);
+                Route::post('/individual/{id}', ['as' => 'main.billing.individual-send', 'uses' => 'BillingController@individualSend']);
+                Route::get('status', ['as' => 'main.billing.status', 'uses' => 'BillingController@status']);
             });
         });
     });
