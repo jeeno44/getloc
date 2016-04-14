@@ -86,6 +86,8 @@ return [
 	'costOrder'                => 'Стоимость заказа',
 	'addOrder'                => 'Добавить в заказ',
 	'delOrder'                => 'Убрать из заказа',
+	'selectPhraseInOrder'     => 'Выбрать фразу в заказ',
+	'deselectPhraseInOrder'   => 'Отменить выбор фразы в заказ',
 
 	/*error*/
 	'errorOutputPhrase_1'      => 'Не удалось включить вывод фразы!',

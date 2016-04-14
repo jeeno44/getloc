@@ -593,23 +593,33 @@ class AccountController extends Controller
 	    $blocks = $buildQuery->paginate(25);
 //	    dd($blocks);
 
-	    $translate_is_ordered =  Translate::where('is_ordered', 1)->get();
-	    $phrasesInOrder = $translate_is_ordered->count();
-
-
-	    $count_words = 0;
-	    if ($translate_is_ordered) {
-		    foreach ($translate_is_ordered as $item) {
-			    $block_is_ordered = $item->block;
-			    $count_words = (int)$count_words + $block_is_ordered->count_words;
-		    }
-	    }
-
-	    $costOrder = (int)$count_words * 0.01;
+	    $phrasesInOrder = $this->getCountPhrasesInOrder();
+	    $costOrder = $this->getCostOrder();
 
 	    return view('account.phrase', compact('tab_name', 'blocks', 'filter', 'viewType', 'filterDef', 'phrasesInOrder', 'costOrder'));
 
 
+    }
+
+	public function getCountPhrasesInOrder()
+	{
+		$translate_is_ordered =  Translate::where('is_ordered', 1)->get();
+		return $phrasesInOrder = $translate_is_ordered->count();
+    }
+
+	public function getCostOrder()
+	{
+		$translate_is_ordered =  Translate::where('is_ordered', 1)->get();
+		$count_words = 0;
+
+		if ($translate_is_ordered) {
+			foreach ($translate_is_ordered as $item) {
+				$block_is_ordered = $item->block;
+				$count_words = (int)$count_words + $block_is_ordered->count_words;
+			}
+		}
+//		dd($count_words);
+		return (int)$count_words * 0.01;
     }
 
     /**
@@ -1170,7 +1180,10 @@ class AccountController extends Controller
 		echo json_encode($ret_data);
 	}
 
-    public function setOrderingTranslation(Request $request)
+	/**
+	 * @param Request $request
+	 */
+	public function setOrderingTranslation(Request $request)
     {
 	    $data_id = $request->input('data_id');
 	    $ret_data = [];
@@ -1183,6 +1196,8 @@ class AccountController extends Controller
 //		    }
 
 	    }
+	    $ret_data['phrasesInOrder'] = $this->getCountPhrasesInOrder();
+	    $ret_data['costOrder'] = $this->getCostOrder();
 
 
         echo json_encode($ret_data);

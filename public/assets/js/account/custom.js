@@ -94,81 +94,11 @@ $(function(){
     });
 
 
-
-    $('#orderTranslate').on('click', function (e) {
-        e.preventDefault()
-        var data_id = {}, count = 0;
-
-        $.each($('.nice-check').find('.checkbox_ordering_translation'), function (i, e) {
-            data_id[count] = {
-                id: $(e).val(),
-                check: $(e).prop('checked') ? 1 : 0
-            };
-            count ++;
-        });
-        if (count > 0) {
-            var data = {
-                data_id: data_id
-            };
-            $.post('/account/orderingTranslation', data, function (obj) {
-                var obj = $.parseJSON(obj);
-                console.log(obj);
-            });
-        }
-    });
-
-    $('.select_all').on('click', function () {
-        if ($(this).prop('checked')) {
-            $.each($('.nice-check').find('.checkbox_ordering_translation'), function (i, e) {
-                $(e).prop('checked', true);
-            });
-        } else {
-            $.each($('.nice-check').find('.checkbox_ordering_translation'), function (i, e) {
-                $(e).prop('checked', false);
-            });
-        }
-    });
-
-
-
 })
 eventAccount = function () {
-    /*
-     |------------------------------------------------------------
-     | Инициализация плагина
-     |------------------------------------------------------------
-     */
-    // $(document).account();
 
-    $('#search_page').autocomplete({
-        source: function (request, response) {
-            $.ajax({
-                url: '/account/ajaxRenderingTitlePages',
-                method: 'post',
-                dataType: 'json',
-                data: {
-                    name: request.term,
-                    site_id: $('#site-list').children('option:selected').val().substr($('#site-list').children('option:selected').val().lastIndexOf('/') + 1),
-                    language_id: $('[name="filter[languageID]"]:checked').val(),
-                    tab: getCurentTab(),
-                    name_none: getNameNone()
-                },
-                success: function (data) {
-                    response($.map(data.blocks, function(item){
-                        return item.url;
-                    }));
-                }
-            });
-        },
-        minLength: 3,
-        select: function (event, ui) {
-            $('#block_page_title').addClass('bordered');
-            $('#block_page_title').append('<div class="selected_for_title_item bordered">' + ui.item.value + '<span class="remove_item">✕</span></div>');
-            $(document).on('click', '.remove_item', removeItemPageName);
-            loadPhrases();
-            // console.log($(this).attr('href').split('page=')[1]);
-        }
-    });
+    autoCompletePages();
+
 
     $('.disable_display_phrase').on('click', function (e) {
         e.preventDefault();
@@ -199,74 +129,17 @@ eventAccount = function () {
         loadPhrases();
     });
 
-    $('.pages_disable').on('click', function () {
-        // var url = $(this).parent().html();
-        var data = {
-            url: $(this).siblings('a.link_pages').text(),
-            check: $(this).prop('checked') ? 1 : 0
-        };
-        $.post('/account/pagesDisable', data, function (obj) {
-            console.log(obj);
-        });
-    });
-    $('.link_pages').on('click', function (e) {
-        e.preventDefault();
-        var data = {
-            url: $(this).text(),
-            href: $(this).attr('href'),
-            check: $(this).siblings('.pages_disable').prop('checked') ? 1 : 0
-        };
-        if (data.check) {
-            $.post('/account/locationPhrase', data, function (obj) {
-                var obj = $.parseJSON(obj);
-                console.log(obj);
-                if (obj.success) {
-                    location.href = location.origin + data.href;
-                    console.log(location);
-                }
-            })
-        }
-    });
+    pagesDisable();
 
-    $('.addOrder').on('click', function (e) {
-        e.preventDefault();
-        $('#ordering_translation_'+$(this).attr('data-id')).prop('checked', true);
-        var data_id = {}, count = 0, $this = $(this);
-        data_id[count] = {
-            id: $(this).attr('data-id'),
-            check: $('#ordering_translation_'+$(this).attr('data-id')) ? 1 : 0
-        };
-        var data = {
-            data_id: data_id
-        };
-        console.log(data);
-        $.post('/account/orderingTranslation', data, function (obj) {
-            var obj = $.parseJSON(obj);
-            $this.removeClass('addOrder').addClass('delOrder').text('Убрать из заказа');
-            eventAccount();
-            console.log(obj);
-        });
-    });
+    goToPage();
 
-    $('.delOrder').on('click', function (e) {
-        e.preventDefault();
-        $('#ordering_translation_'+$(this).attr('data-id')).prop('checked', false);
-        var data_id = {}, count = 0, $this = $(this);
-        data_id[count] = {
-            id: $(this).attr('data-id'),
-            check: $('#ordering_translation_'+$(this).attr('data-id')) ? 1 : 0
-        };
-        console.log(data_id);
-        var data = {
-            data_id: data_id
-        };
-        $.post('/account/orderingTranslation', data, function (obj) {
-            var obj = $.parseJSON(obj);
-            console.log(obj);
-            $this.removeClass('delOrder').addClass('addOrder').text('Добавить в заказ');
-            eventAccount();
-        });
-    });
+    orderAddDel();
+
+    checkOrderingTranslation();
+
+    orderTranslate();
+
+    selectAllOrder();
 
 
 }
@@ -375,20 +248,6 @@ disableDisplayPhrase = function (obj) {
 
 }
 
-removeItemPageName = function () {
-    $('.remove_item').on('click', function () {
-        // console.log(123);
-        var obj = $(this);
-        $(this).parent('.selected_for_title_item').remove();
-        onRemoveClassBordered();
-    })
-}
-onRemoveClassBordered = function () {
-    var count = $('#block_page_title').children().length;
-    if (Number(count) === 0) {
-        $('#block_page_title').removeClass('bordered');
-    }
-}
 getNameNone = function () {
     var ret_data = '',
     none_name_block = $('#block_page_title').children('.selected_for_title_item');
@@ -470,7 +329,7 @@ loadPhrases = function(page)
             setNewStats(phrases.info.stats)
             stopLoader()
             $('#renderPhrases').html(phrases.html).promise().done(setEventInContent)
-            eventAccount()
+            // eventAccount()
         }
     })
 }
@@ -574,3 +433,219 @@ hideTabNotTranslated = function () {
         // $(document).on('click', '.remove_item', setEventInContent());
     }
 }
+
+/** -------------------- Start.translation to order -------------------- */
+
+orderTranslate = function () {
+
+    $('#orderTranslate').on('click', function (e) {
+        e.preventDefault()
+        var data_id = {}, count = 0;
+
+        $.each($('.nice-check').find('.checkbox_ordering_translation'), function (i, e) {
+            data_id[count] = {
+                id: $(e).val(),
+                check: $(e).prop('checked') ? 1 : 0
+            };
+            count ++;
+        });
+        if (count > 0) {
+            var data = {
+                data_id: data_id
+            };
+            $.post('/account/orderingTranslation', data, function (obj) {
+                var obj_data = $.parseJSON(obj);
+                // console.log(obj_data);
+                $('.phrases_in_order').find('.phrasesCount').text(obj_data.phrasesInOrder);
+                $('#phrases_in_order').find('.phrasesCount').text(obj_data.phrasesInOrder);
+                $('#cost_order').find('.costCount').text(obj_data.costOrder);
+            });
+        }
+    });
+}
+
+addOrder = function (obj) {
+    $('#ordering_translation_'+obj.attr('data-id')).prop('checked', true);
+    $('#ordering_translation_'+obj.attr('data-id')).next('label').text('Отменить выбор фразы в заказ');
+    obj.removeClass('addOrder').addClass('delOrder').text('Убрать из заказа');
+    var data_id = {}, count = 0;
+    data_id[count] = {
+        id: obj.attr('data-id'),
+        check: $('#ordering_translation_'+obj.attr('data-id')).prop('checked') ? 1 : 0
+    };
+    // console.log(data_id);
+    var data = {
+        data_id: data_id
+    };
+    $.post('/account/orderingTranslation', data, function (obj_data) {
+        var obj_data = $.parseJSON(obj_data);
+        // console.log(obj_data);
+        $('.phrases_in_order').find('.phrasesCount').text(obj_data.phrasesInOrder);
+        $('#phrases_in_order').find('.phrasesCount').text(obj_data.phrasesInOrder);
+        $('#cost_order').find('.costCount').text(obj_data.costOrder);
+    });
+}
+
+delOrder = function (obj) {
+    $('#ordering_translation_'+obj.attr('data-id')).prop('checked', false);
+    $('#ordering_translation_'+obj.attr('data-id')).next('label').text('Выбрать фразу в заказ');
+    obj.removeClass('delOrder').addClass('addOrder').text('Добавить в заказ');
+    var data_id = {}, count = 0, $this = $(this);
+    data_id[count] = {
+        id: obj.attr('data-id'),
+        check: $('#ordering_translation_'+obj.attr('data-id')).prop('checked') ? 1 : 0
+    };
+    // console.log(data_id);
+    var data = {
+        data_id: data_id
+    };
+    $.post('/account/orderingTranslation', data, function (obj_data) {
+        var obj_data = $.parseJSON(obj_data);
+        // console.log(obj_data);
+        $('.phrases_in_order').find('.phrasesCount').text(obj_data.phrasesInOrder);
+        $('#phrases_in_order').find('.phrasesCount').text(obj_data.phrasesInOrder);
+        $('#cost_order').find('.costCount').text(obj_data.costOrder);
+    });
+}
+
+selectAllOrder = function () {
+
+    $('.select_all').on('click', function () {
+        if ($(this).prop('checked')) {
+            $.each($('.nice-check').find('.checkbox_ordering_translation'), function (i, e) {
+                $(e).prop('checked', true);
+            });
+        } else {
+            $.each($('.nice-check').find('.checkbox_ordering_translation'), function (i, e) {
+                $(e).prop('checked', false);
+            });
+        }
+    });
+}
+
+checkOrderingTranslation = function () {
+
+    $('.checkbox_ordering_translation').on('change', function () {
+        if ($(this).prop('checked')) {
+            $(this).next('label').text('Отменить выбор фразы в заказ');
+        } else {
+            $(this).next('label').text('Выбрать фразу в заказ');
+        }
+    });
+}
+
+orderAddDel = function () {
+    var phrases_icm = $('.phrases__item-controls-menu');
+    phrases_icm.on('click', '.addOrder',  function (e) {
+        e.preventDefault();
+        addOrder($(this))
+    });
+
+    phrases_icm.on('click', '.delOrder',  function (e) {
+        e.preventDefault();
+        delOrder($(this))
+    });
+}
+
+/** -------------------- End.translation to order -------------------- */
+
+/** -------------------- Start.Disable pages -------------------- */
+
+pagesDisable = function () {
+    $('.pages_disable').on('click', function () {
+        // var url = $(this).parent().html();
+        var data = {
+            url: $(this).siblings('a.link_pages').text(),
+            check: $(this).prop('checked') ? 1 : 0
+        };
+        $.post('/account/pagesDisable', data, function (obj) {
+            console.log(obj);
+        });
+    });
+}
+
+/** -------------------- End.Disable pages -------------------- */
+
+/** -------------------- Start.Go to page -------------------- */
+
+    goToPage = function () {
+        $('.link_pages').on('click', function (e) {
+            e.preventDefault();
+            var data = {
+                url: $(this).text(),
+                href: $(this).attr('href'),
+                check: $(this).siblings('.pages_disable').prop('checked') ? 1 : 0
+            };
+            if (data.check) {
+                $.post('/account/locationPhrase', data, function (obj) {
+                    var obj = $.parseJSON(obj);
+                    console.log(obj);
+                    if (obj.success) {
+                        location.href = location.origin + data.href;
+                        console.log(location);
+                    }
+                })
+            }
+        });
+    }
+
+/** -------------------- End.Go to page -------------------- */
+
+/** -------------------- Start.Autocomplete -------------------- */
+
+    autoCompletePages = function () {
+
+        /*
+         |------------------------------------------------------------
+         | Инициализация плагина
+         |------------------------------------------------------------
+         */
+        $('#search_page').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '/account/ajaxRenderingTitlePages',
+                    method: 'post',
+                    dataType: 'json',
+                    data: {
+                        name: request.term,
+                        site_id: $('#site-list').children('option:selected').val().substr($('#site-list').children('option:selected').val().lastIndexOf('/') + 1),
+                        language_id: $('[name="filter[languageID]"]:checked').val(),
+                        tab: getCurentTab(),
+                        name_none: getNameNone()
+                    },
+                    success: function (data) {
+                        response($.map(data.blocks, function(item){
+                            return item.url;
+                        }));
+                    }
+                });
+            },
+            minLength: 3,
+            select: function (event, ui) {
+                var block_page_title = $('#block_page_title');
+                block_page_title.addClass('bordered');
+                block_page_title.append('<div class="selected_for_title_item bordered">' + ui.item.value + '<span class="remove_item">✕</span></div>');
+                block_page_title.on('click', '.remove_item', removeItemPageName);
+                loadPhrases();
+                console.log(event);
+            }
+        }).autocomplete('search', '');
+    }
+
+    removeItemPageName = function () {
+        $('.remove_item').on('click', function () {
+            // console.log(123);
+            var obj = $(this);
+            $(this).parent('.selected_for_title_item').remove();
+            onRemoveClassBordered();
+        })
+    }
+
+    onRemoveClassBordered = function () {
+        var count = $('#block_page_title').children().length;
+        if (Number(count) === 0) {
+            $('#block_page_title').removeClass('bordered');
+        }
+    }
+
+/** -------------------- End.Autocomplete -------------------- */
