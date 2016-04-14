@@ -48,6 +48,7 @@ class PaymentsController extends AdminController
                 if ($subscription) {
                     $subscription->deposit = $subscription->deposit + $payment->original_sum;
                     $subscription->save();
+                    \Event::fire('blocks.changed', $subscription);
                 }
             }
             if ($payment->relation == 'App\Order') {

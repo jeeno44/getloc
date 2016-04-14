@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Event;
 use App\Payment;
 use App\PaymentDetail;
 use App\PaymentType;
@@ -103,6 +104,7 @@ class BillingController extends Controller
         $subscription->count_languages = $plan->count_languages;
         $subscription->plan_id = $plan->id;
         $subscription->save();
+        \Event::fire('blocks.changed', $subscription);
         return redirect()->route('main.account');
     }
 
