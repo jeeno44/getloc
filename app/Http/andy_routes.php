@@ -61,6 +61,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::resource('settings/languages', 'Admin\LanguagesController');
             Route::resource('billing/coupons', 'Admin\CouponsController');
             Route::resource('billing/orders', 'Admin\OrdersController');
+            Route::any('get-plan-data/{id}', 'Admin\SubscriptionsController@planData');
 
         });
 

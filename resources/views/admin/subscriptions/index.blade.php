@@ -1,7 +1,8 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Приобретенные подписки
+    Приобретенные подписки&nbsp;&nbsp;
+    <a class="btn btn-default btn-sm" href="/admin/billing/subscriptions/create" data-toggle="tooltip" title="Новая подписка"><span class="fa fa-plus"></span> </a>
 @stop
 
 @section('content')
@@ -33,6 +34,8 @@
                             {{$item->deposit}} руб.
                         </td>
                         <td class="text-right">
+                            <a class="btn btn-sm btn-default" type="button" data-toggle="tooltip" title="Редактировать" href="/admin/billing/subscriptions/{{$item->id}}/edit"><i class="fa fa-pencil"></i></a>
+                            &nbsp;&nbsp;
                             <button class="btn btn-sm btn-default" type="button" data-toggle="modal" title="Удалить" data-target="#remove{{$item->id}}"><i class="fa fa-times"></i></button>
                             <div class="modal fade" tabindex="-1" role="dialog" id="remove{{$item->id}}">
                                 <div class="modal-dialog">

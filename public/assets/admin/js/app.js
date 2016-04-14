@@ -1125,4 +1125,26 @@ var App = function() {
 }();
 
 // Initialize app when page loads
-jQuery(function(){ App.init(); });
+jQuery(function(){
+    App.init();
+    $('select[name=plan_id]').change(function () {
+        var id = $(this).val();
+        if (id != '') {
+            $.ajax({
+                url     : "/admin/get-plan-data/" + id,
+                type    : 'post',
+                dataType: 'json',
+                cache   : false,
+                success : function(res){
+                    $('input[name=month_cost]').val(res.cost);
+                    $('input[name=count_languages]').val(res.count_languages);
+                    $('input[name=count_words]').val(res.count_words);
+                }
+            });
+        } else {
+            $('input[name=month_cost]').val(0);
+            $('input[name=count_languages]').val(0);
+            $('input[name=count_words]').val(0);
+        }
+    });
+});
