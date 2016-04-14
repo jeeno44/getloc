@@ -18,7 +18,7 @@
                             <label class="form-label">{{$opt->name}}</label>
                         </div>
                         <div class="col-sm-6">
-                            {!! Form::textarea($opt->key, $opt->val, ['class' => 'form-control']) !!}
+                            {!! Form::text($opt->key, $opt->val, ['class' => 'form-control']) !!}
                         </div>
                     </div>
                 @endif
