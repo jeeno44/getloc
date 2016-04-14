@@ -25,10 +25,26 @@ class AppServiceProvider extends ServiceProvider
             \Mail::send('emails.site-done', compact('site'), function($m) use ($site) {
                 $m->to($site->user->email)->subject('Мы проанализировали ваш проект "'.$site->url.'"');
             });
+            $subscription = \App\Subscription::where('site_id', $site)->first();
+            if ($subscription) {
+                \Event::fire('blocks.changed', $subscription);
+            }
         });
         \Event::listen('site.start', function($site){
             $domain = env('APP_DOMAIN');
             \Redis::publish('spider', json_encode(['site' => $site->id, 'api' => 'api.'.$domain], JSON_UNESCAPED_UNICODE));
+        });
+        \Event::listen('order.payed', function ($order) {
+            // TODO отсылать заказ переводчику
+        });
+        \Event::listen('blocks.changed', function ($subscription) {
+            rebuildAvailableBlocks($subscription);
+        });
+        \Event::listen('site.blocks-changed', function ($site) {
+            $subscription = \App\Subscription::where('site_id', $site->id)->first();
+            if ($subscription) {
+                rebuildAvailableBlocks($subscription);
+            }
         });
     }
 

@@ -1,8 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Приобретенные подписки&nbsp;&nbsp;
-    <a class="btn btn-default btn-sm" href="/admin/billing/subscriptions/create" data-toggle="tooltip" title="Новая подписка"><span class="fa fa-plus"></span> </a>
+    Список запросов индивидуальных условий
 @stop
 
 @section('content')
@@ -11,10 +10,11 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th>Пользователь</th>
+                    <th>Почта</th>
+                    <th>Имя</th>
                     <th>Сайт</th>
-                    <th>Тариф</th>
-                    <th>Депозит</th>
+                    <th>Телефон</th>
+                    <th>Причины</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -22,32 +22,33 @@
                 @foreach($items as $item)
                     <tr>
                         <td>
-                            {{$item->user->name}}
+                            {{$item->email}}
                         </td>
                         <td>
-                            {{beautyUrl($item->site->url)}}
+                            {{$item->name}}
                         </td>
                         <td>
-                            {{$item->plan->name}} ({{$item->month_cost}} руб./мес.)
+                            {{$item->site}}
                         </td>
                         <td>
-                            {{$item->deposit}} руб.
+                            {{$item->phone}}
+                        </td>
+                        <td>
+                            {{$item->text}}
                         </td>
                         <td class="text-right">
-                            <a class="btn btn-sm btn-default" type="button" data-toggle="tooltip" title="Редактировать" href="/admin/billing/subscriptions/{{$item->id}}/edit"><i class="fa fa-pencil"></i></a>
-                            &nbsp;&nbsp;
                             <button class="btn btn-sm btn-default" type="button" data-toggle="modal" title="Удалить" data-target="#remove{{$item->id}}"><i class="fa fa-times"></i></button>
                             <div class="modal fade" tabindex="-1" role="dialog" id="remove{{$item->id}}">
                                 <div class="modal-dialog">
-                                    <form class="modal-content" method="post" action="/admin/billing/subscriptions/{{$item->id}}">
+                                    <form class="modal-content" method="post" action="/admin/feedback/{{$item->id}}">
                                         {!! Form::hidden('_method', 'DElETE') !!}
                                         {!! csrf_field() !!}
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title text-left">Удалить подписку?</h4>
+                                            <h4 class="modal-title text-left">Удалить запрос?</h4>
                                         </div>
                                         <div class="modal-body text-left">
-                                            <p>Удалить подписку пользователя {{$item->user->name}}?</p>
+                                            <p>Удалить запрос {{$item->email}}?</p>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>

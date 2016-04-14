@@ -47,6 +47,11 @@ class AdminLeftMenu
                         'icon'  => 'si si-rocket',
                         'uri'   => 'admin/feedback/demo',
                     ],
+
+                    'Индивидуальные условия' => [
+                        'icon'  => 'fa fa-percent',
+                        'uri'   => 'admin/feedback/individual',
+                    ],
                 ]
             ],
             'Биллинг' => [

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Event;
 use App\Payment;
+use App\PaymentDetail;
 use App\PaymentType;
 use App\Subscription;
 use App\User;
 use App\UserDetail;
+use App\WebForm;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -47,6 +50,62 @@ class BillingController extends Controller
             $detail = new UserDetail();
         }
         return view('billing.index', compact('plans', 'site', 'detail', 'paymentTypes'));
+    }
+
+    public function prolong($siteId)
+    {
+        $site = Site::find($siteId);
+        if ($site && $site->user_id == $this->user->id) {
+            $user = $this->user;
+            $subscription = Subscription::where('user_id', $this->user->id)->where('site_id', $siteId)->first();
+            if (!$subscription) {
+                return redirect()->route('main.billing', ['id' => $siteId]);
+            }
+            $paymentTypes = PaymentType::lists('name', 'id')->toArray();
+            return view('billing.prolong', compact('site', 'user', 'subscription', 'paymentTypes'));
+        }
+        abort(403, 'У вас нет доступа к этому сайту');
+    }
+
+    /**
+     * Апгрейд тарифного плана
+     * @param int $planId
+     * @return \Illuminate\Http\Response
+     */
+    public function upgrade($siteId)
+    {
+        $site = Site::find($siteId);
+        if (!$site || $site->user_id != $this->user->id) {
+            abort(403, 'У вас нет доступа к этому сайту');
+        }
+        $subscription = Subscription::where('site_id', $siteId)->first();
+        if (!$subscription) {
+            return redirect()->route('main.billing', ['id' => $siteId]);
+        }
+        $objPlans = Plan::where('enabled', 1)->where('id', '!=', $subscription->plan_id)->get();
+        $plans = [];
+        foreach ($objPlans as $p) {
+            $plans[$p->id] = $p->name.' - '.$p->cost.' '.trans('phrases.rubles');
+        }
+        $paymentTypes = PaymentType::lists('name', 'id')->toArray();
+        return view('billing.upgrade', compact('plans', 'site', 'paymentTypes'));
+    }
+
+    public function upgradeStore(Request $request)
+    {
+        $plan = Plan::find($request->get('plan_id'));
+        $site = Site::find($request->get('site_id'));
+        $subscription = Subscription::where('site_id', $request->get('site_id'))->first();
+        if (!$site || $site->user_id != $this->user->id || !$plan || !$subscription) {
+            abort(403, 'У вас нет доступа к этому сайту');
+        }
+        $subscription->month_cost = $plan->cost;
+        $subscription->count_words = $plan->count_words;
+        $subscription->count_languages = $plan->count_languages;
+        $subscription->plan_id = $plan->id;
+        $subscription->save();
+        \Event::fire('blocks.changed', $subscription);
+        return redirect()->route('main.account');
     }
 
     /**
@@ -117,20 +176,60 @@ class BillingController extends Controller
         return view('billing.details-form', compact('detail', 'payment'));
     }
 
-    public function detailsStore($id)
+    public function detailsStore($id, Request $request)
     {
+        $data = $request->all();
+        $detail = UserDetail::where('user_id', $this->user->id)->first();
+        if (!$detail) {
+            $data['user_id'] = $this->user->id;
+            $detail = new UserDetail($data);
+        }
+        $detail->fill($data);
+        $detail->save();
+        $paymentDetail = new PaymentDetail($data);
         $payment = Payment::find($id);
-        return redirect()->route('main.account')->with('success', trans('phrases.vam_invoice'));
+        $paymentDetail->payment_id = $payment->id;
+        $paymentDetail->save();
+        $payment->is_draft = 0;
+        $payment->save();
+        return redirect()->route('main.billing.status')->with(['status' => trans('phrases.vam_invoice')]);
     }
 
-    /**
-     * Апгрейд тарифного плана
-     * @param int $planId
-     * @return \Illuminate\Http\Response
-     */
-    public function upgrade($planId)
+    public function individual($siteId)
     {
-        // TODO обновление тарифа, пересчет дат и блоков
+        $site = Site::find($siteId);
+        if ($site && $site->user_id == $this->user->id) {
+            $user = $this->user;
+            return view('billing.individual', compact('site', 'user'));
+        }
+        abort(403, 'У вас нет доступа к этому сайту');
+    }
+
+    public function individualSend($siteId, Request $request)
+    {
+        $site = Site::find($siteId);
+        if ($site && $site->user_id == $this->user->id) {
+            WebForm::create([
+                'site'      => $site->url,
+                'name'      => $request->get('name'),
+                'phone'     => $request->get('phone'),
+                'email'     => $request->get('email'),
+                'text'      => $request->get('text'),
+                'form_name' => 'Индивидуальные условия'
+            ]);
+            return redirect()->route('main.billing.status')->with(['status' => 'Спасибо за обращение. Мы рассмотрим вашу заявку']);
+        }
+        abort(403, 'У вас нет доступа к этому сайту');
+    }
+
+    public function status()
+    {
+        return view('billing.status');
+    }
+
+    public function paymentsHistory()
+    {
+
     }
 
     /**
@@ -139,8 +238,7 @@ class BillingController extends Controller
      */
     public function success()
     {
-        // TODO вьюхи или редирект
-        return "Все хорошо";
+        return redirect()->route('main.billing.status')->with(['status' => 'Спасибо. Ваш платеж успешно завершен']);
     }
 
     /**
@@ -149,8 +247,7 @@ class BillingController extends Controller
      */
     public function fail()
     {
-        // TODO вьюхи или редирект
-        return "Все не очень хорошо";
+        return redirect()->route('main.billing.status')->with(['status' => 'Вы отказались от платежа']);
     }
 
     /**
@@ -187,6 +284,7 @@ class BillingController extends Controller
                 $couponDiscount = $subtotal / 100 * $coupon->discount;
                 $end = ' ('.$coupon->discount. '%): '.$couponDiscount.' '.trans('phrases.rubles');
             } else {
+                $couponDiscount = $coupon->discount;
                 $end = $couponDiscount. ': '.trans('phrases.rubles');
             }
             $couponShow = $end;

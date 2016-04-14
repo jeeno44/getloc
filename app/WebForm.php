@@ -8,5 +8,5 @@ class WebForm extends Model
 {
     protected $table = 'webforms';
 
-    protected $fillable = ['name', 'email', 'phone', 'site', 'form_name', 'languages'];
+    protected $fillable = ['name', 'email', 'phone', 'site', 'form_name', 'languages', 'text'];
 }

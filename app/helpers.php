@@ -146,13 +146,29 @@ function widget($class)
 }
 
 /**
- * Получаем id последнего оплаченного блока
- * @param \App\Site $site
- * @return int
+ * Устанавливаем ID последнего блока, входящего в подписку
+ * @param \App\Subscription $subscription
+ * @return void
  */
-function rebuildAvailableBlocks(\App\Site $site)
+function rebuildAvailableBlocks(\App\Subscription $subscription)
 {
-    
+    $maxCountWords = $subscription->count_words;
+    $countWords = 0;
+    $lastBlockId = null;
+    $blocks = \App\Block::where('site_id', $subscription->site_id)->where('enabled', 1)->get();
+    foreach ($blocks as $block) {
+        if ($block->count_words + $countWords <= $maxCountWords) {
+            $lastBlockId = $block->id;
+        }
+        $countWords += $block->count_words;
+        if ($countWords > $maxCountWords) {
+            break;
+        }
+    }
+    if ($lastBlockId) {
+        $subscription->last_id = $lastBlockId;
+        $subscription->save();
+    }
 }
 
 /**
@@ -350,6 +366,10 @@ function getSubTotal($cost, $code, $siteId, $time = 0)
             $couponDiscount = $coupon->discount;
         } else {
             $couponDiscount = $subtotal / 100 * $coupon->discount;
+        }
+        $site = \App\Site::find($siteId);
+        if ($site) {
+            updateCouponState($coupon, $site);
         }
     }
     $subtotal = $subtotal - $couponDiscount;

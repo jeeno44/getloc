@@ -61,8 +61,8 @@
             <div class="inside-content__title">
                 <h2>Тарифный план</h2>
                 @if($site->subscription)
-                    <a href="{{route('main.billing', ['id' => $site->id])}}" class="">Изменить</a>
-                    <a href="{{route('main.billing', ['id' => $site->id])}}" class="">Продлить</a>
+                    <a href="{{route('main.billing.upgrade', ['id' => $site->id])}}" class="">Изменить</a>
+                    <a href="{{route('main.billing.prolong', ['id' => $site->id])}}" class="">Продлить</a>
                 @else
                     <a href="{{route('main.billing', ['id' => $site->id])}}" class="inside-content__tune">Купить</a>
                 @endif

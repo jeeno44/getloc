@@ -14,5 +14,5 @@ return [
     /*
      * Пароль магазина, выдается при подключении к Яндекс.Кассе
      */
-    'shopPassword'      => 'fastdick228'
+    'shopPassword'      => 'somepassword'
 ];

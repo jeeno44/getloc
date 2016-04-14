@@ -28,6 +28,12 @@ class FeedbackController extends AdminController
         return view('admin.feedback.demo', compact('items'));
     }
 
+    public function individual()
+    {
+        $items = WebForm::latest()->where('form_name', 'Индивидуальные условия')->paginate(20);
+        return view('admin.feedback.individual', compact('items'));
+    }
+
     public function destroy($id)
     {
         $i = WebForm::find($id);

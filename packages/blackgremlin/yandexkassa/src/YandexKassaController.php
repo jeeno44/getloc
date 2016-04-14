@@ -62,33 +62,27 @@ class YandexKassaController extends Controller
         echo $xml;
         $payment = \App\Payment::find($invId);
         if (!empty($payment)) {
-            $plan = \App\Plan::find($payment->plan_id);
+            $payment->is_draft = 0;
             $payment->status = 'confirmed';
             $payment->save();
-            $subscription = \App\Subscription::where('user_id', $payment->user_id)->first();
-            if (empty($subscription)) {
-                $subscription = new \App\Subscription([
-                    'plan_id'       => $plan->id,
-                    'user_id'       => $payment->user_id,
-                    'count_words'   => $plan->count_words,
-                    'ends_at'       => Carbon::now()->addMonth()->toDateTimeString(),
-                    'last_id'       => 0,
-                ]);
-                $subscription->save();
-            } else {
-                if ($subscription->ends_at >= Carbon::now()->toDateTimeString()) {
-                    $diff = Carbon::createFromFormat('Y-m-d H:i:s', $subscription->ends_at)->diffInSeconds(Carbon::now());
-                    $subscription->ends_at = Carbon::now()->addSeconds($diff)->addMonth()->toDateTimeString();
-                } else {
-                    $subscription->ends_at = Carbon::now()->toDateTimeString();
+            if ($payment->relation == 'App\Subscription') {
+                $subscription = \App\Subscription::find($payment->outer_id);
+                if ($subscription) {
+                    $subscription->deposit = $subscription->deposit + $payment->original_sum;
+                    $subscription->save();
+                    \Event::fire('blocks.changed', $subscription);
                 }
-                $subscription->plan_id = $plan->id;
-                $subscription->count_words = $plan->count_words;
-                $subscription->save();
+            }
+            if ($payment->relation == 'App\Order') {
+                $order = \App\Order::find($payment->outer_id);
+                if ($order) {
+                    $order->status = 'process';
+                    $order->save();
+                    \Event::fire('order.payed', $order);
+                }
             }
         }
         // TODO начисления партнеру
-        // TODO пересчет блоков и даты
     }
 
 }
