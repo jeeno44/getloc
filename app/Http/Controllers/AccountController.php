@@ -101,11 +101,11 @@ class AccountController extends Controller
     {
         $siteID = Session::get('projectID');
         $site = Site::find($siteID);
-        if (!$siteID || !$site) {
+        $ccBlocks = Block::where('site_id', $siteID)->count();
+        if (!$siteID || !$site || $ccBlocks == 0) {
+            Session::remove('projectID');
             return redirect(URL::route('main.account.selectProject'));
         }
-        $ccBlocks = Block::where('site_id', $siteID)->count();
-
         if (Page::where('site_id', $siteID)->count() == Page::where('site_id', $siteID)->where('collected', 1)->count()) {
             $stats = array(
                 'ccBlocks' => Block::where('site_id', $siteID)->count(),
@@ -114,9 +114,7 @@ class AccountController extends Controller
                 'lineGraph' => $this->lineStatistics($siteID, $ccBlocks),
                 'langStats' => $this->getStatusLangs($siteID, $ccBlocks)
             );
-
             $site_settings = DB::table('sites_settings')->where('site_id', $siteID)->first();
-
             return view('account.overview', compact('sites', 'stats', 'site', 'site_settings'));
         }
         $pages = $site->pages()->paginate(20);
@@ -447,12 +445,11 @@ class AccountController extends Controller
     public function widget()
     {
         $siteID = Session::get('projectID');
-
-        if (!$siteID)
-            return redirect(URL::route('main.account.selectProject'));
-
         $site = Site::find($siteID);
-
+        if (!$siteID || !$site) {
+            Session::remove('projectID');
+            return redirect(URL::route('main.account.selectProject'));
+        }
         return view('account.widget', compact('site'));
     }
 
@@ -561,9 +558,13 @@ class AccountController extends Controller
         $tab_name = 'tab_not_translated';
         $viewType = Session::get('typeViewID', 1);
         $filterDef = 0;
+        $site = Site::find($siteID);
 
-        if (!$siteID)
+        if (!$siteID || !$site) {
+            Session::remove('projectID');
             return redirect(URL::route('main.account.selectProject'));
+        }
+
 
         $languageID = Session::get('filter')['languageID'];
 
