@@ -237,6 +237,12 @@ setEventInContent = function()
 
 
 }
+
+/**
+ |------------------------------------------------------------
+ | Отключаем/подключаем блок
+ |------------------------------------------------------------
+ */
 disableDisplayPhrase = function (obj) {
     var data = {
         translates_id: obj.closest('.phrases__item').attr('id').split('_').pop(),

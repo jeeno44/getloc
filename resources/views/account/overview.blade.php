@@ -2,7 +2,7 @@
 @section('title') Обзор проекта @stop
 @section('content')
     <aside class="site__aside">
-        @include('partials.account-menu', $arrData)
+        @include('partials.account-menu')
     </aside>
     <div class="inside-content">
         <div class="statistic inside-content__wrap">

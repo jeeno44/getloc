@@ -2,7 +2,7 @@
 @section('title') Страницы проекта @stop
 @section('content')
     <aside class="site__aside">
-        @include('partials.account-menu', ['id' => $siteId])
+        @include('partials.account-menu')
     </aside>
     <div class="inside-content">
         <div class="phrases">
