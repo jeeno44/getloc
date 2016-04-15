@@ -76,6 +76,10 @@
                 <strong>Итого</strong> {{$fullCost}} {{trans('phrases.rubles')}}
             </p>
             <a href="{{route('main.billing.prepare-order', ['id' => $order->id])}}">Перейти к оплате</a>
+        @elseif
+            <hr>
+            <h1 class="">Текущий заказ</h1>
+            <p>Не добавлено ни одной фразы к заказу</p>
         @endif
 
 
