@@ -12,8 +12,15 @@ class CreateHistoryChangesPhrasesTable extends Migration
      */
     public function up()
     {
-        Schema::table('history_changes_phrases', function (Blueprint $table) {
+        Schema::create('history_changes_phrases', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('translate_id')->unsigned()->index();
+            $table->text('text');
+//	        $table->foreign('translate_id')->references('id')->on('translates');
+	        $table->foreign('translate_id')
+		        ->references('id')->on('translates')
+		        ->onDelete('cascade');
+	        $table->timestamps();
         });
     }
 

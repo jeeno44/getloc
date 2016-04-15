@@ -34,3 +34,34 @@
 
 .phrases__control button.active:after {opacity: 1;}
 
+
+.historyPhrase{
+    height: 30px;
+    width: 250px;
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+.historyPhrase > table{
+    position: absolute;
+    width: 100%;
+    max-height: 250px;
+    overflow: auto;
+    display: none;
+    background-color: #FFFFFF;
+    bottom: 30px;
+    border: solid 1px #999999;
+}
+.historyPhrase > table td{
+    padding: 2px;
+}
+.historyPhrase > table th{
+    padding: 2px;
+}
+.historyPhrase:hover > table{
+    display: block;
+}
+.historyPhrase.disable{
+    color: #999999;
+}
+

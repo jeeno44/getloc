@@ -15,6 +15,7 @@
 
 namespace App\Http\Controllers;
 
+use App\HistoryPhrase;
 use App\Site,
     App\Page,
     URL,
@@ -761,7 +762,7 @@ class AccountController extends Controller
         $minDate = $request->get('min_date');
         $maxDate = $request->get('max_date');
         $pathName = $request->get('pathname');
-	    
+
         $ttt = 2;
 //        $ttt = Carbon::parse($request->get('max_date'));
 //        $ttt = Carbon::parse($request->get('min_date'))->toDateTimeString();
@@ -807,8 +808,8 @@ class AccountController extends Controller
 	    } else {
 		    $blocks = $this->buildQueryPhrase($arrQuery);
 	    }
-
-	    $data = compact('blocks', 'filter', 'viewType', 'tab', 'pathName');
+	    $historyPhrase = HistoryPhrase::all();
+	    $data = compact('blocks', 'filter', 'viewType', 'tab', 'pathName', 'historyPhrase');
         $json['html'] = (String)\View::make('account.phraseAjax', $data)->render();
         unset($filter['menu']['langs']);
         $json['info'] = $filter;
@@ -843,6 +844,7 @@ class AccountController extends Controller
             ->where('blocks.enabled', '=', 1)
             ->where('translates.language_id', '=', $languageID)
             ->leftJoin('translates', 'translates.block_id', '=', 'page_block.block_id')
+            ->leftJoin('history_changes_phrases', 'history_changes_phrases.translate_id', '=', 'translates.id')
             ->groupBy('page_block.block_id');
 
 	    switch ($arrQuery['tab']) {
@@ -882,7 +884,7 @@ class AccountController extends Controller
 
 	    $buildQuery->leftJoin('types_translates', 'types_translates.id', '=', 'translates.type_translate_id')
 				    ->orderBy('pages.id')
-		            ->select('pages.id as pages_id', 'pages.*', 'translates.id as tid', 'blocks.enabled as blocks_enabled', 'translates.*',
+		            ->select('history_changes_phrases.id as history_changes_phrases_id', 'history_changes_phrases.translate_id as history_changes_phrases_translate_id', 'history_changes_phrases.text as history_changes_phrases_text', 'history_changes_phrases.created_at as history_changes_phrases_created_at', 'history_changes_phrases.updated_at as history_changes_phrases_updated_at', 'pages.id as pages_id', 'pages.*', 'translates.id as tid', 'blocks.enabled as blocks_enabled', 'translates.*',
 			            'translates.enabled as translates_enabled', 'types_translates.name as name_translate', DB::raw('date_format(translates.updated_at, "%h:%i") as time'),
                         DB::raw('date_format(translates.updated_at, "%Y-%m-%d") as date'), 'blocks.text as original');
 
