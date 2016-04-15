@@ -17,7 +17,7 @@ class OrdersController extends AdminController
 
     public function index()
     {
-        $items = Order::latest()->paginate(20);
+        $items = Order::latest()->where('status', '!=', 'new')->paginate(20);
         return view('admin.orders.index', compact('items'));
     }
 

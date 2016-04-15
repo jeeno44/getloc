@@ -215,6 +215,7 @@ function getOrderStatus($key)
 {
     $statuses = [
         'new'           => '<span class="label label-info">Новый</span>',
+        'wait'          => '<span class="label label-primary">Ожидает оплаты</span>',
         'process'       => '<span class="label label-primary">В работе</span>',
         'done'          => '<span class="label label-success">Завершен</span>',
         'canceled'      => '<span class="label label-default">Отменен</span>'
@@ -382,6 +383,34 @@ function getSubTotal($cost, $code, $siteId, $time = 0)
     return $subtotal;
 }
 
+/**
+ * @param $cost
+ * @param $code
+ * @param $siteId
+ * @return int
+ */
+function getOrderSubTotal($cost, $code, $siteId)
+{
+    $subtotal = $cost;
+    $couponDiscount = 0;
+    if ($coupon = getCouponState($code, $siteId)) {
+        if ($coupon->is_percent == 0) {
+            $couponDiscount = $coupon->discount;
+        } else {
+            $couponDiscount = $subtotal / 100 * $coupon->discount;
+        }
+        $site = \App\Site::find($siteId);
+        if ($site) {
+            updateCouponState($coupon, $site);
+        }
+    }
+    $subtotal = $subtotal - $couponDiscount;
+    if ($subtotal < 0) {
+        $subtotal = 0;
+    }
+    return $subtotal;
+}
+
 function getCountOrders($siteID = null)
 {
     if ($siteID) {
@@ -391,4 +420,14 @@ function getCountOrders($siteID = null)
         }
     }
     return '';
+}
+
+function array_to_xml(array $arr, SimpleXMLElement $xml)
+{
+    foreach ($arr as $k => $v) {
+        is_array($v)
+            ? array_to_xml($v, $xml->addChild('item'))
+            : $xml->addChild($k, $v);
+    }
+    return $xml;
 }

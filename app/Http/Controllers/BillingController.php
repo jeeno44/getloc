@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Coupon;
 use App\Events\Event;
+use App\Order;
 use App\Payment;
 use App\PaymentDetail;
 use App\PaymentType;
@@ -161,6 +163,11 @@ class BillingController extends Controller
         if ($paymentType->slug == 'yandex.kassa') {
             return redirect()->route('yandex-kassa.form', [$payment->id, $this->user->id, intval($payment->cost)]);
         } elseif ($paymentType->slug == 'beznal') {
+            $coupon = Coupon::find($payment->coupon_id);
+            if ($coupon) {
+                $coupon->enabled = 1;
+                $coupon->save();
+            }
             return redirect()->route('main.billing.details-form', [$payment->id]);
         }
         return redirect()->back();
@@ -172,6 +179,16 @@ class BillingController extends Controller
         $detail = UserDetail::where('user_id', $this->user->id)->first();
         if (!$detail) {
             $detail = new UserDetail();
+        }
+        if ($payment->relation == 'App\Order') {
+            $order = Order::find($payment->outer_id);
+            if ($order) {
+                $coupon = Coupon::find($order->coupon_id);
+                if ($coupon) {
+                    $coupon->enabled = 1;
+                    $coupon->save();
+                }
+            }
         }
         return view('billing.details-form', compact('detail', 'payment'));
     }
@@ -191,6 +208,17 @@ class BillingController extends Controller
         $paymentDetail->payment_id = $payment->id;
         $paymentDetail->save();
         $payment->is_draft = 0;
+        if ($payment->relation == 'App\Order') {
+            $order = Order::find($payment->outer_id);
+            if ($order) {
+                $order->status = 'wait';
+                $order->save();
+                \DB::table('translates')->where('site_id', $order->site->id)->update(['is_ordered' => 0]);
+                if ($coupon = Coupon::find($order->coupon_id)) {
+                    updateCouponState($coupon, $order->site);
+                }
+            }
+        }
         $payment->save();
         return redirect()->route('main.billing.status')->with(['status' => trans('phrases.vam_invoice')]);
     }

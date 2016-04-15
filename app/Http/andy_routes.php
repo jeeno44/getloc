@@ -90,9 +90,12 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             });
 
             Route::group(['prefix' => 'orders'], function (){
-                Route::get('/{id?}', ['as' => 'main.billing.order', 'uses' => 'OrdersController@index']);
                 Route::get('make/{id?}', ['as' => 'main.billing.make-order', 'uses' => 'OrdersController@make']);
-                Route::post('store', ['as' => 'main.billing.store-order', 'uses' => 'OrdersController@store']);
+                Route::get('prepare/{id}', ['as' => 'main.billing.prepare-order', 'uses' => 'OrdersController@prepare']);
+                Route::post('store/{id}', ['as' => 'main.billing.store-order', 'uses' => 'OrdersController@store']);
+                Route::get('del-lang/{lang}',  ['as' => 'main.billing.del-lang-order', 'uses' => 'OrdersController@delLang']);
+                Route::any('/subtotal', ['as' => 'main.billing.orders.subtotal', 'uses' => 'OrdersController@subtotal']);
+                Route::get('/{id?}', ['as' => 'main.billing.order', 'uses' => 'OrdersController@index']);
             });
         });
     });
@@ -120,8 +123,9 @@ Route::group(['domain' => 'api.'.$domain], function () {
     });
 });
 
-Route::get('publish', function () use ($domain) {
-
+Route::get('test', function () use ($domain) {
+    $order = \App\Order::first();
+    
 });
 
 Route::get('rescan-errors/{id}', function($id) {

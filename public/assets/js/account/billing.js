@@ -7,6 +7,10 @@ $(function(){
         getSubTotal();
         $('.billing-inp').bind('change keyup', getSubTotal);
     }
+    if($('#order-subtotal').length > 0) {
+        getOrderSubTotal();
+        $('.billing-inp').bind('change keyup', getOrderSubTotal);
+    }
 });
 
 function getSubTotal() {
@@ -21,6 +25,23 @@ function getSubTotal() {
         dataType: 'json',
         success: function (answer) {
             $('#subtotal').html(answer.html);
+            $('#coupon_validate').html(answer.coupon)
+        }
+    });
+}
+
+function getOrderSubTotal() {
+    var data = {};
+    $('.billing-inp').each(function () {
+        data[$(this).attr('name')] = $(this).val();
+    });
+    $.ajax({
+        url: "/account/orders/subtotal",
+        type: 'post',
+        data: data,
+        dataType: 'json',
+        success: function (answer) {
+            $('#order-subtotal').html(answer.html);
             $('#coupon_validate').html(answer.coupon)
         }
     });

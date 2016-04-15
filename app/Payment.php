@@ -27,7 +27,7 @@ class Payment extends Model
 
     public function order()
     {
-        return $this->belongsTo('App\Order', 'outer_id')->where('relation', 'order');
+        return $this->belongsTo('App\Order', 'outer_id');
     }
 
     public function details()

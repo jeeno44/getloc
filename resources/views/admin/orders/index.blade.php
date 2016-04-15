@@ -23,10 +23,10 @@
                             {{$item->user->name}}
                         </td>
                         <td>
-                            &#8381;{{number_format($item->sum, 0, '.', ' ') }}
+                            &#8381;{{number_format($item->payment_sum, 0, '.', ' ') }}
                         </td>
                         <td>
-                            {{date('d.m.Y H:i:s', $item->created_at)}}
+                            {{date('d.m.Y H:i:s', strtotime($item->created_at))}}
                         </td>
                         <td>
                             {!! getOrderStatus($item->status) !!}

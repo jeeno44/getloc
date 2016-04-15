@@ -26,10 +26,15 @@
                             {{$item->user->name}}
                         </td>
                         <td>
-                            @if ($item->relation == 'order')
-                                <a href="/admin/billing/orders/{{$item->outer_id}}">Заказ перевода № {{$item->outer_id}}</a>
+                            @if ($item->relation == 'App\Order')
+                                Заказ перевода № {{$item->outer_id}}
                             @else
-                                Подписка на тарифный план {{$item->subscription->plan->name}} для проекта {{$item->subscription->site->name}}
+                                @if(!empty($item->subscription->plan->name) && !empty($item->subscription->site->name))
+                                    Подписка на тарифный план {{$item->subscription->plan->name}} для проекта {{$item->subscription->site->name}}
+                                @else
+                                    Оплата подписки (проект или подписка удалены)
+                                @endif
+
                             @endif
                         </td>
                         <td>
