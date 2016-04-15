@@ -19,6 +19,7 @@ class Controller extends BaseController
         \View::share('route', \Route::getCurrentRoute()->getName());
         \View::share('locale', \App::getLocale());
         $this->options = \DB::table('options')->pluck('val', 'key');
+        \View::share('options', $this->options);
         $tracker_id = \Cookie::get('tracker_id');
         if (\Auth::check() && !empty($tracker_id)) {
             if (empty(\Auth::user()->partner_id)) {

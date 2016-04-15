@@ -30,6 +30,6 @@ class Translate extends Model
 
     public function historyPhrase()
     {
-        return $this->belongsTo('App\HistoryPhrase');
+        return $this->hasMany('App\HistoryPhrase');
     }
 }

@@ -381,3 +381,14 @@ function getSubTotal($cost, $code, $siteId, $time = 0)
     }
     return $subtotal;
 }
+
+function getCountOrders($siteID = null)
+{
+    if ($siteID) {
+        $count = \App\Order::where('site_id', $siteID)->count();
+        if ($count > 0) {
+            return '<span>'.$count.'</span>';
+        }
+    }
+    return '';
+}

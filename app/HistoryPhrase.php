@@ -11,6 +11,6 @@ class HistoryPhrase extends Model
 
     public function translate()
     {
-        return $this->hasMany('App\Translate');
+        return $this->belongsTo('App\Translate');
     }
 }

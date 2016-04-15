@@ -621,7 +621,7 @@ class AccountController extends Controller
 			}
 		}
 //		dd($count_words);
-		return (int)$count_words * 0.01;
+		return (int)$count_words * $this->options['word_cost'];
     }
 
     /**
@@ -1200,7 +1200,6 @@ class AccountController extends Controller
 //		    if ($save) {
 			    $ret_data[$item['id']] = $save;
 //		    }
-
 	    }
 	    $ret_data['phrasesInOrder'] = $this->getCountPhrasesInOrder();
 	    $ret_data['costOrder'] = $this->getCostOrder();
