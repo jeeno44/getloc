@@ -53,7 +53,7 @@
                     <label class="form-label">Депозит</label>
                 </div>
                 <div class="col-sm-6">
-                    {!! Form::number('deposit', 0.00, ['class' => 'form-control', 'required']) !!}
+                    {!! Form::number('deposit', null, ['class' => 'form-control', 'required']) !!}
                 </div>
             </div>
 
