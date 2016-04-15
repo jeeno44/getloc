@@ -25,12 +25,15 @@
                 <div class="phrases__item-controls">
                     <div class="nice-check">
                         <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkbox_ordering_translation" id="ordering_translation_{{$t->tid}}" @if ($t->is_ordered) checked @endif>
-                        <label for="ordering_translation_{{$t->tid}}">@if ($t->is_ordered) {{ trans('account.deselectPhraseInOrder') }} @else {{ trans('account.selectPhraseInOrder') }} @endif</label>
+                        <label for="ordering_translation_{{$t->tid}}"></label>
+                        {{--<label for="ordering_translation_{{$t->tid}}">@if ($t->is_ordered) {{ trans('account.deselectPhraseInOrder') }} @else {{ trans('account.selectPhraseInOrder') }} @endif</label>--}}
                     </div>
                     {{--<div class="nice-check">--}}
                         {{--<input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">--}}
                         {{--<label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>--}}
                     {{--</div>--}}
+                    {{ dd($t) }}
+                    <div class="historyPhrase">История перевода фразы</div>
                     @include('partials.account-menu-phrase', ['ob' => $t])
                 </div>
             </div>
@@ -55,12 +58,43 @@
                 <div class="phrases__item-controls">
                     <div class="nice-check">
                         <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkbox_ordering_translation" id="ordering_translation_{{$t->tid}}" @if ($t->is_ordered) checked @endif>
-                        <label for="ordering_translation_{{$t->tid}}">@if ($t->is_ordered) {{ trans('account.deselectPhraseInOrder') }} @else {{ trans('account.selectPhraseInOrder') }} @endif</label>
+                        <label for="ordering_translation_{{$t->tid}}"></label>
+                        {{--<label for="ordering_translation_{{$t->tid}}">@if ($t->is_ordered) {{ trans('account.deselectPhraseInOrder') }} @else {{ trans('account.selectPhraseInOrder') }} @endif</label>--}}
                     </div>
                     {{--<div class="nice-check">--}}
                         {{--<input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">--}}
                         {{--<label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>--}}
                     {{--</div>--}}
+{{--                    {{ dd($historyPhrase->groupBy('translate_id')->toArray()) }}--}}
+                    @if(isset($historyPhrase->groupBy('translate_id')->toArray()[$t->tid]) && count($historyPhrase->groupBy('translate_id')->toArray()[$t->tid])>0)
+                    <div class="historyPhrase">
+                    <table class="">
+                        <tr>
+                            <th>id</th>
+                            <th>текст перевода</th>
+                            <th>дата перевода</th>
+                        </tr>
+                        @foreach($historyPhrase->groupBy('translate_id')->toArray()[$t->tid] as $history)
+                        <tr>
+                            <td>{{ $history['id'] }}</td>
+                            <td>{{ $history['text'] }}</td>
+                            <td>{{ $history['created_at'] }}</td>
+                        </tr>
+                        @endforeach
+                    </table>
+                        История перевода фразы
+                    </div>
+                    @else
+                    <div class="historyPhrase disable">
+                    <table class="">
+                        <tr>
+                            <th>У данной фразы пока нет истории</th>
+                        </tr>
+                    </table>
+                    История перевода фразы
+                    </div>
+                    @endif
+
                     @include('partials.account-menu-phrase', ['ob' => $t])
                 </div>
             </div>
@@ -74,7 +108,7 @@
 
         <div class="pages_block_wrap">
             <input type="checkbox" data-id="{{ $t->id }}" class="pages_disable" @if($t->enabled) checked @endif>
-            <a href="/account/phrase" class="link_pages">{{ $t->url }}</a>
+            <a href="/account/phrase?url={{ urlencode($t->url) }}" class="link_pages">{{ $t->url }}</a>
         </div>
 
     @endforeach

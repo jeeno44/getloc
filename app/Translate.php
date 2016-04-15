@@ -27,4 +27,9 @@ class Translate extends Model
     {
         return $this->belongsTo('App\Site');
     }
+
+    public function historyPhrase()
+    {
+        return $this->belongsTo('App\HistoryPhrase');
+    }
 }

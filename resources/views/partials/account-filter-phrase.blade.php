@@ -25,8 +25,11 @@
     <div id="block_page_title" class="filter_page_title" style="max-height: 250px; overflow: auto;">
 {{--        {{ $pages_url = Session::get('pages_url') }}--}}
 {{--        {{ dd(Session::get('pages_url')) }}--}}
-        @if(Session::get('pages_url') && Session::get('pages_url') != '')
-            @foreach(explode(',', Session::get('pages_url')) as $page_url)
+{{--        {{ dd(request()->get('url')) }}--}}
+        @if(request()->get('url'))
+            <div class="selected_for_title_item bordered">{{ request()->get('url') }}<span class="remove_item">✕</span></div>
+        @elseif(request()->get('url') == null && ( Session::get('pages_url_'.$siteID) && Session::get('pages_url_'.$siteID) != ''))
+            @foreach(explode(',', Session::get('pages_url_'.$siteID)) as $page_url)
                 <div class="selected_for_title_item bordered">{{ $page_url }}<span class="remove_item">✕</span></div>
             @endforeach
         @endif
