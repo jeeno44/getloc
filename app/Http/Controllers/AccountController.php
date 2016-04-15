@@ -77,12 +77,17 @@ class AccountController extends Controller
 
     public function setProject($id)
     {
+	    $userId = $this->user->id;
+	    $siteModel = Site::where('id', $id)->where('user_id', $this->user->id)->first();
+//	    dd($arrData);
         // Проверка прав на сайт, TODO: команды
-        if (Site::where('id', $id)->where('user_id', $this->user->id)->first()) {
+        if ($siteModel) {
+//	        dd($siteModel);
             Session::set('projectID', $id);
-            return redirect(URL::route('main.account.overview'));
+            return redirect()->route('main.account.overview')->with('arrData', compact('id', 'siteModel', 'userId'));
         } else {
-            return redirect(URL::route('main.account.selectProject'));
+//	        dd($siteModel);
+            return redirect()->route('main.account.selectProject')->with('arrData', compact('id', 'siteModel', 'userId'));
         }
     }
 
@@ -98,9 +103,14 @@ class AccountController extends Controller
      * @access public
      */
 
-    public function projectOverview()
+    public function projectOverview(Request $request)
     {
-        $siteID = Session::get('projectID');
+//	    dd(Session::get('arrData'));
+	    if (!Session::get('arrData')) {
+		    return redirect()->route('main.account.selectProject');
+	    }
+	    $arrData = Session::get('arrData');
+        $siteID = $arrData['id'];
         $site = Site::find($siteID);
         $ccBlocks = Block::where('site_id', $siteID)->count();
         if (!$siteID || !$site || $ccBlocks == 0) {
@@ -116,10 +126,10 @@ class AccountController extends Controller
                 'langStats' => $this->getStatusLangs($siteID, $ccBlocks)
             );
             $site_settings = DB::table('sites_settings')->where('site_id', $siteID)->first();
-            return view('account.overview', compact('sites', 'stats', 'site', 'site_settings'));
+            return view('account.overview', compact('sites', 'stats', 'site', 'site_settings', 'arrData'));
         }
         $pages = $site->pages()->paginate(20);
-        return view('account.waiting', compact('sites', 'site', 'pages'));
+        return view('account.waiting', compact('sites', 'site', 'pages', 'arrData'));
     }
 
     /**
@@ -576,21 +586,17 @@ class AccountController extends Controller
 
         $filter = $this->generateStatsForPhraseFilter($siteID, $languageID);
 
-	    if ($request->is('account/pages')) {
-		    $buildQuery = Page::select('pages.*');
-	    } elseif ($request->is('account/phrase')) {
-		    $buildQuery = Translate::where('translates.site_id', $siteID)
-			    ->where('translates.language_id', $languageID)
-			    ->where('translates.enabled', 1)
-			    ->where('translates.type_translate_id', NULL)
-			    ->leftJoin('blocks', 'blocks.id', '=', 'translates.block_id')
-			    ->leftJoin('types_translates', 'types_translates.id', '=', 'translates.type_translate_id')
-			    ->orderBy('translates.id')
-			    ->select('translates.id as tid', 'blocks.enabled as enabled', 'translates.*',
-				    'types_translates.name as name_translate', DB::raw('date_format(translates.updated_at, "%h:%i") as time'),
-				    DB::raw('date_format(translates.updated_at, "%Y-%m-%d") as date'), 'blocks.text as original', 'blocks.enabled as blocks_enabled');
+	    $buildQuery = Translate::where('translates.site_id', $siteID)
+		    ->where('translates.language_id', $languageID)
+		    ->where('translates.enabled', 1)
+		    ->where('translates.type_translate_id', NULL)
+		    ->leftJoin('blocks', 'blocks.id', '=', 'translates.block_id')
+		    ->leftJoin('types_translates', 'types_translates.id', '=', 'translates.type_translate_id')
+		    ->orderBy('translates.id')
+		    ->select('translates.id as tid', 'blocks.enabled as enabled', 'translates.*',
+			    'types_translates.name as name_translate', DB::raw('date_format(translates.updated_at, "%h:%i") as time'),
+			    DB::raw('date_format(translates.updated_at, "%Y-%m-%d") as date'), 'blocks.text as original', 'blocks.enabled as blocks_enabled');
 
-	    }
 
 	    $blocks = $buildQuery->paginate(25);
 //	    dd($blocks);
@@ -1207,4 +1213,15 @@ class AccountController extends Controller
 
         echo json_encode($ret_data);
     }
+	
+	public function pagesView(Request $request)
+	{
+//		dd($request->get('site_id'));
+		$siteId = $request->get('site_id');
+		$blocks = Page::where('site_id', $request->get('site_id'))->select('pages.*')->paginate(25);
+
+		$arrData = compact('blocks', 'siteId');
+//		dd($arrData);
+		return view('account/pages', $arrData);
+	}
 }
