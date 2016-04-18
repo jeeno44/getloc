@@ -15,6 +15,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\Event;
 use App\HistoryPhrase;
 use App\Site,
     App\Page,
@@ -387,7 +388,6 @@ class AccountController extends Controller
 
         $site = Site::find($siteID);
         $langs = Language::where('id', '!=', $site->language_id)->get();
-
         return view('account.addLanguage', compact('site', 'langs'));
     }
 
@@ -418,7 +418,7 @@ class AccountController extends Controller
         }
 
         \Event::fire('site.changed', Site::find($siteID));
-
+        \Event::fire('blocks.changed', Site::find($siteID));
         return redirect()->back();
     }
 

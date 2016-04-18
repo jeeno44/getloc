@@ -1,6 +1,6 @@
 <?php
 
-if (! function_exists('checkYandexSign')) {
+if (!function_exists('checkYandexSign')) {
 
     /**
      * Проверка цифровой подписи запроса от Якассы
