@@ -164,6 +164,8 @@ setEventInContent = function()
     
     $('.save_translate').click(function(){
         
+        
+        
         var blockID = $(this).attr('object-id')
         var type    = $('#order_'+blockID).attr('data-type') 
         
@@ -180,6 +182,9 @@ setEventInContent = function()
                 $('#phrase_' + blockID).attr('class', response.block.color)
                 $('#typeTranslate_'+blockID).attr('class', response.block.icon).css('display', 'block').html(response.block.typeTranslate)
                 $('#dDatetime_'+blockID).attr('datetime', response.block.datetime).html(response.block.date)
+
+                $('#phrase_'+blockID).hide();
+                console.log($(this).closest('.phrases__item').attr('class'));
             }
         });
     })

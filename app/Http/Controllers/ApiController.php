@@ -8,6 +8,7 @@ use App\Language;
 use App\Page;
 use App\Site;
 use App\SiteSettings;
+use App\SocialAccount;
 use App\Translate;
 use Illuminate\Http\Request;
 
@@ -141,8 +142,13 @@ class ApiController extends Controller
         $text = strval($xmlObj[0]);
         $trans->text = $text;
         $trans->type_translate_id = 1;
-        $trans->save();
-        
+        $connect = $trans->save();
+
+        if ($connect) {
+            $historyPhrase = new AccountController();
+            $historyPhrase->setHistoryPhrase($trans);
+        }
+
         \Event::fire('site.changed', Site::find($trans->block->site_id));
         
         #Todo: нету больше page-id, надо что-то переделать

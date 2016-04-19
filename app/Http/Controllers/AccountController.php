@@ -364,8 +364,9 @@ class AccountController extends Controller
 
         if (!$languageID)
             $languageID = Site::find($siteID)->languages()->where('enabled', true)->orderBy('id')->first()->id;
-        
-        $stats = $this->generateStatsForPhraseFilter($siteID, $languageID);  
+
+	    $arrData = compact('siteID', 'languageID');
+        $stats = $this->generateStatsForPhraseFilter($arrData);
         
         return json_encode(array('message' => trans('account.successArhive' . $trans->enabled), 'stats' => $stats['stats']));
     }
@@ -463,38 +464,19 @@ class AccountController extends Controller
      * @access public
      */
 
-    private function generateStatsForPhraseFilter($siteID, $languageID)
+    private function generateStatsForPhraseFilter($arrData)
     {
         $filter = array();
 
         $filter['stats']['menu'] = array(1 => 0, 2 => 0, 3 => 0);
-        $filter['stats']['in_translate'] = Translate::where('translates.site_id', $siteID)
-	        ->where('translates.language_id', $languageID)
-	        ->whereNotNull('translates.type_translate_id')
-	        ->join('blocks', 'blocks.id', '=', 'translates.block_id')
-	        ->where('blocks.enabled', 1)
-	        ->count(); //Сколько переведено в этом языке
-        $filter['stats']['not_translate'] = Translate::where('translates.site_id', $siteID)
-	        ->where('translates.language_id', $languageID)
-	        ->where('translates.type_translate_id', NULL)
-	        ->join('blocks', 'blocks.id', '=', 'translates.block_id')
-	        ->where('blocks.enabled', 1)
-	        ->count(); //Не переведено в этом языке
-        $filter['stats']['publish'] = Translate::where('translates.site_id', $siteID)
-	        ->where('translates.language_id', $languageID)
-	        ->where('translates.enabled', 1)
-	        ->join('blocks', 'blocks.id', '=', 'translates.block_id')
-	        ->where('blocks.enabled', 1)
-	        ->count();
-        $filter['stats']['all'] = DB::table('translates')
-	        ->join('types_translates', 'translates.type_translate_id', '=', 'types_translates.id')
-            ->select('types_translates.id', DB::raw('count(*) as cc'))
-            ->where('translates.site_id', $siteID)
-            ->where('language_id', $languageID)
-	        ->join('blocks', 'blocks.id', '=', 'translates.block_id')
-	        ->where('blocks.enabled', 1)
-	        ->groupBy('translates.type_translate_id')
-            ->get();
+        $filter['stats']['in_translate'] = $this->getStatsInTranslate($arrData);
+
+        $filter['stats']['not_translate'] = $this->getStatsNotTranslate($arrData);
+
+        $filter['stats']['publish'] = $this->getStatsPublish($arrData);
+
+        $filter['stats']['all'] = $this->getStatsAll($arrData);
+
 
         foreach ($filter['stats']['all'] as $key => $val)
             $filter['stats']['menu'][$val->id] = $val->cc;
@@ -506,14 +488,14 @@ class AccountController extends Controller
 
         $filter['menu'] = array();
 
-        $filter['menu']['langs'] = Site::find($siteID)->languages()->where('enabled', true)->orderBy('name')->get(); //Доступные языки
+        $filter['menu']['langs'] = Site::find($arrData['siteID'])->languages()->where('enabled', true)->orderBy('name')->get(); //Доступные языки
         $filter['menu']['types'] = TypeTranslate::orderBy('id')->get();
-        $filter['menu']['active_lang'] = $languageID;
+        $filter['menu']['active_lang'] = $arrData['languageID'];
         $filter['menu']['active_type'] = Session::get('filter')['typeID'];
 
         foreach ($filter['menu']['langs'] as $lang) {
-            $ccNull = Translate::where('site_id', $siteID)->where('language_id', $lang->id)->whereNotNull('type_translate_id')->count();
-            $ccTrans = Translate::where('site_id', $siteID)->where('language_id', $lang->id)->count();
+            $ccNull = Translate::where('site_id', $arrData['siteID'])->where('language_id', $lang->id)->whereNotNull('type_translate_id')->count();
+            $ccTrans = Translate::where('site_id', $arrData['siteID'])->where('language_id', $lang->id)->count();
 
             $filter['stats']['proc'][$lang->id] = round(($ccNull / $ccTrans) * 100);
         }
@@ -521,6 +503,151 @@ class AccountController extends Controller
 
         return $filter;
     }
+
+	public function getStatsNotTranslate($arrData)
+	{
+		$buildQuery = Translate::where('translates.site_id', $arrData['siteID'])
+			->where('translates.language_id', $arrData['languageID'])
+			->where('translates.type_translate_id', NULL)
+			->join('blocks', 'blocks.id', '=', 'translates.block_id')
+			->where('blocks.enabled', 1);
+
+
+		if (isset($arrData['pagesUrl']) && count($arrData['pagesUrl']) > 0) {
+			$buildQuery->leftJoin('page_block', 'page_block.block_id', '=', 'blocks.id')
+				->leftJoin('pages', 'pages.id', '=', 'page_block.page_id')
+				->whereIn('pages.url', $arrData['pagesUrl'])
+				->where('pages.enabled', '=', 1);
+		}
+
+		if (isset($arrData['phraseInOrder'])) {
+			$buildQuery->where('translates.is_ordered', $arrData['phraseInOrder']);
+		}
+
+		if (isset($arrData['searchText'])) {
+			$buildQuery->where('blocks.text', 'LIKE', '%' . $arrData['searchText'] . '%')
+				->orWhere('translates.text', 'LIKE', '%' . $arrData['searchText'] . '%');
+		}
+
+		if (isset($arrData['minDate']) && $arrData['minDate'] > 0) {
+			$buildQuery->where('translates.updated_at', '>=', Carbon::parse($arrData['minDate'])->toDateTimeString());
+		}
+
+		if (isset($arrData['maxDate']) && $arrData['maxDate'] > 0) {
+			$buildQuery->where('translates.updated_at', '<=', Carbon::parse($arrData['maxDate'])->toDateTimeString());
+		}
+
+		return $buildQuery->count(); //Не переведено в этом языке
+	}
+
+	public function getStatsInTranslate($arrData)
+	{
+		$buildQuery = Translate::where('translates.site_id', $arrData['siteID'])
+			->where('translates.language_id', $arrData['languageID'])
+			->whereNotNull('translates.type_translate_id')
+			->join('blocks', 'blocks.id', '=', 'translates.block_id')
+			->where('blocks.enabled', 1);
+
+
+		if (isset($arrData['pagesUrl']) && count($arrData['pagesUrl']) > 0) {
+			$buildQuery->leftJoin('page_block', 'page_block.block_id', '=', 'blocks.id')
+				->leftJoin('pages', 'pages.id', '=', 'page_block.page_id')
+				->whereIn('pages.url', $arrData['pagesUrl'])
+				->where('pages.enabled', '=', 1);
+		}
+
+		if (isset($arrData['phraseInOrder'])) {
+			$buildQuery->where('translates.is_ordered', $arrData['phraseInOrder']);
+		}
+		
+		if (isset($arrData['searchText'])) {
+			$buildQuery->where('blocks.text', 'LIKE', '%' . $arrData['searchText'] . '%')
+				->orWhere('translates.text', 'LIKE', '%' . $arrData['searchText'] . '%');
+		}
+
+		if (isset($arrData['minDate']) && $arrData['minDate'] > 0) {
+			$buildQuery->where('translates.updated_at', '>=', Carbon::parse($arrData['minDate'])->toDateTimeString());
+		}
+
+		if (isset($arrData['maxDate']) && $arrData['maxDate'] > 0) {
+			$buildQuery->where('translates.updated_at', '<=', Carbon::parse($arrData['maxDate'])->toDateTimeString());
+		}
+//dd($buildQuery->count());
+		return $buildQuery->count(); //Сколько переведено в этом языке
+	}
+
+	public function getStatsPublish($arrData)
+	{
+		$buildQuery = Translate::where('translates.site_id', $arrData['siteID'])
+			->where('translates.language_id', $arrData['languageID'])
+			->where('translates.enabled', 1)
+			->join('blocks', 'blocks.id', '=', 'translates.block_id')
+			->where('blocks.enabled', 1);
+
+		if (isset($arrData['pagesUrl']) && count($arrData['pagesUrl']) > 0) {
+			$buildQuery->leftJoin('page_block', 'page_block.block_id', '=', 'blocks.id')
+			->leftJoin('pages', 'pages.id', '=', 'page_block.page_id')
+			->whereIn('pages.url', $arrData['pagesUrl'])
+				->where('pages.enabled', '=', 1);
+		}
+
+		if (isset($arrData['phraseInOrder'])) {
+			$buildQuery->where('translates.is_ordered', $arrData['phraseInOrder']);
+		}
+
+		if (isset($arrData['searchText'])) {
+			$buildQuery->where('blocks.text', 'LIKE', '%' . $arrData['searchText'] . '%')
+				->orWhere('translates.text', 'LIKE', '%' . $arrData['searchText'] . '%');
+		}
+
+		if (isset($arrData['minDate']) && $arrData['minDate'] > 0) {
+			$buildQuery->where('translates.updated_at', '>=', Carbon::parse($arrData['minDate'])->toDateTimeString());
+		}
+
+		if (isset($arrData['maxDate']) && $arrData['maxDate'] > 0) {
+			$buildQuery->where('translates.updated_at', '<=', Carbon::parse($arrData['maxDate'])->toDateTimeString());
+		}
+
+		return $buildQuery->count();
+	}
+
+	public function getStatsAll($arrData)
+	{
+		$buildQuery = DB::table('translates')
+			->join('types_translates', 'translates.type_translate_id', '=', 'types_translates.id')
+			->select('types_translates.id', DB::raw('count(*) as cc'))
+			->where('translates.site_id', $arrData['siteID'])
+			->where('language_id', $arrData['languageID'])
+			->join('blocks', 'blocks.id', '=', 'translates.block_id')
+			->where('blocks.enabled', 1);
+
+		if (isset($arrData['pagesUrl']) && count($arrData['pagesUrl']) > 0) {
+			$buildQuery->leftJoin('page_block', 'page_block.block_id', '=', 'blocks.id')
+				->leftJoin('pages', 'pages.id', '=', 'page_block.page_id')
+				->whereIn('pages.url', $arrData['pagesUrl'])
+				->where('pages.enabled', '=', 1);
+		}
+
+		if (isset($arrData['phraseInOrder'])) {
+			$buildQuery->where('translates.is_ordered', $arrData['phraseInOrder']);
+		}
+
+		if (isset($arrData['searchText'])) {
+			$buildQuery->where('blocks.text', 'LIKE', '%' . $arrData['searchText'] . '%')
+				->orWhere('translates.text', 'LIKE', '%' . $arrData['searchText'] . '%');
+		}
+
+		if (isset($arrData['minDate']) && $arrData['minDate'] > 0) {
+			$buildQuery->where('translates.updated_at', '>=', Carbon::parse($arrData['minDate'])->toDateTimeString());
+		}
+
+		if (isset($arrData['maxDate']) && $arrData['maxDate'] > 0) {
+			$buildQuery->where('translates.updated_at', '<=', Carbon::parse($arrData['maxDate'])->toDateTimeString());
+		}
+
+		return $buildQuery->groupBy('translates.type_translate_id')
+			->get();
+	}
 
     /**
      * Установка фильтра во фразах и редирект в нужный таб, на первую страницу
@@ -578,7 +705,10 @@ class AccountController extends Controller
             $languageID = Site::find($siteID)->languages()->where('enabled', true)->orderBy('id')->first()->id;
             $filterDef = 1;
         }
-	    $filter = $this->generateStatsForPhraseFilter($siteID, $languageID);
+
+	    $arrData = compact('siteID', 'languageID');
+
+	    $filter = $this->generateStatsForPhraseFilter($arrData);
 
 	    if ((int)$filter['stats']['not_translate'] === 0) {
 		    $tab = 'tab_translated';
@@ -675,8 +805,8 @@ class AccountController extends Controller
 
         if (!$languageID)
             $languageID = Site::find($siteID)->languages()->where('enabled', true)->orderBy('id')->first()->id;
-        
-        $stats = $this->generateStatsForPhraseFilter($siteID, $languageID);
+	    $arrData = compact('siteID', 'languageID');
+        $stats = $this->generateStatsForPhraseFilter($arrData);
         
         return json_encode(array('message' => trans('account.success'), 'stats' => $stats['stats']));
     }
@@ -726,13 +856,17 @@ class AccountController extends Controller
         $text = trim(strip_tags($request->get('text')));
         $id = intval($request->get('id'));
         $trans = Translate::find($id);
-
         $trans->text = $text;
         $trans->type_translate_id = $request->get('type', 2);
         $trans->updated_at = date('Y-m-d H:i:s');
-        $trans->save();
+        $connect = $trans->save();
 
-        $stats = $this->generateStatsForPhraseFilter($siteID, $languageID);
+        if ($connect) {
+            $this->setHistoryPhrase($trans);
+//            dd($trans->toArray());
+        }
+	    $arrData = compact('siteID', 'languageID');
+        $stats = $this->generateStatsForPhraseFilter($arrData);
 
         $block = Translate::where('translates.id', $id)
             ->leftJoin('blocks', 'blocks.id', '=', 'translates.block_id')
@@ -825,7 +959,9 @@ class AccountController extends Controller
 	    $arrQuery = compact('tab', 'siteID', 'languageID', 'typeID', 'pagesUrl', 'phraseInOrder', 'searchText', 'minDate', 'maxDate', 'ttt');
 
         $json = [];
-        $filter = $this->generateStatsForPhraseFilter($siteID, $languageID);
+
+	    $arrData = compact('siteID', 'languageID');
+        $filter = $this->generateStatsForPhraseFilter($arrQuery);
 
 	    $blocks = $this->buildQueryPhrase($arrQuery);
 
@@ -1064,7 +1200,11 @@ class AccountController extends Controller
         $viewType = '';//Session::get('typeViewID', 1);
 	    $pageUrl = explode(',', $request->input('name_none'));
 //	    array_push($pageUrl, $request->input('name'));
-        $filter = $this->generateStatsForPhraseFilter($request->input('site_id'), $request->input('language_id'));
+		$siteID = $request->input('site_id');
+	    $languageID = $request->input('language_id');
+
+	    $arrData = compact('siteID', 'languageID');
+        $filter = $this->generateStatsForPhraseFilter($arrData);
         $blocks = $this->buildQueryBlocks($tab, $request->input('site_id'), $request->input('language_id'), $pageUrl);
         $ret_data['html'] = (String)\View::make('account.pagesAjax', compact('blocks', 'filter', 'viewType', 'tab'))->render();
         $ret_data['data'] = $blocks;
@@ -1170,7 +1310,8 @@ class AccountController extends Controller
 			$block = $query->block;
 			$block->enabled = 0;
 			$connect = $block->save();
-			$stats = $this->generateStatsForPhraseFilter($siteId, $languageId);
+			$arrData = compact('siteID', 'languageID');
+			$stats = $this->generateStatsForPhraseFilter($arrData);
 			if ($connect) {
 				$retData['success'] = true;
 				$retData['message'] = trans('account.outputPhraseMessage_' . $block->enabled);
@@ -1274,5 +1415,16 @@ class AccountController extends Controller
 //
 //		$arrData = compact('blocks', 'siteId');
 //		return view('account/pages', $arrData);
+	}
+	
+	public function setHistoryPhrase($model)
+	{
+		$historyData = [
+			'translate_id' => $model->id,
+			'text' => $model->text,
+			'created_at' => date('Y-m-d H:i:s'),
+			'updated_at' => date('Y-m-d H:i:s'),
+		];
+		HistoryPhrase::create($historyData);
 	}
 }
