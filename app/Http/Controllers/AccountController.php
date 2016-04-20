@@ -524,10 +524,12 @@ class AccountController extends Controller
 			$buildQuery->where('translates.is_ordered', $arrData['phraseInOrder']);
 		}
 
-		if (isset($arrData['searchText'])) {
-			$buildQuery->where('blocks.text', 'LIKE', '%' . $arrData['searchText'] . '%')
-				->orWhere('translates.text', 'LIKE', '%' . $arrData['searchText'] . '%');
-		}
+        if (!empty($arrData['searchText'])) {
+            $buildQuery->where(function ($query) use ($arrData) {
+                $query->where('blocks.text', 'LIKE', '%' . $arrData['searchText'] . '%')
+                    ->orWhere('translates.text', 'LIKE', '%' . $arrData['searchText'] . '%');
+            });
+        }
 
 		if (isset($arrData['minDate']) && $arrData['minDate'] > 0) {
 			$buildQuery->where('translates.updated_at', '>=', Carbon::parse($arrData['minDate'])->toDateTimeString());
@@ -559,11 +561,13 @@ class AccountController extends Controller
 		if (isset($arrData['phraseInOrder'])) {
 			$buildQuery->where('translates.is_ordered', $arrData['phraseInOrder']);
 		}
-		
-		if (isset($arrData['searchText'])) {
-			$buildQuery->where('blocks.text', 'LIKE', '%' . $arrData['searchText'] . '%')
-				->orWhere('translates.text', 'LIKE', '%' . $arrData['searchText'] . '%');
-		}
+
+        if (!empty($arrData['searchText'])) {
+            $buildQuery->where(function ($query) use ($arrData) {
+                $query->where('blocks.text', 'LIKE', '%' . $arrData['searchText'] . '%')
+                    ->orWhere('translates.text', 'LIKE', '%' . $arrData['searchText'] . '%');
+            });
+        }
 
 		if (isset($arrData['minDate']) && $arrData['minDate'] > 0) {
 			$buildQuery->where('translates.updated_at', '>=', Carbon::parse($arrData['minDate'])->toDateTimeString());
@@ -595,10 +599,12 @@ class AccountController extends Controller
 			$buildQuery->where('translates.is_ordered', $arrData['phraseInOrder']);
 		}
 
-		if (isset($arrData['searchText'])) {
-			$buildQuery->where('blocks.text', 'LIKE', '%' . $arrData['searchText'] . '%')
-				->orWhere('translates.text', 'LIKE', '%' . $arrData['searchText'] . '%');
-		}
+        if (!empty($arrData['searchText'])) {
+            $buildQuery->where(function ($query) use ($arrData) {
+                $query->where('blocks.text', 'LIKE', '%' . $arrData['searchText'] . '%')
+                    ->orWhere('translates.text', 'LIKE', '%' . $arrData['searchText'] . '%');
+            });
+        }
 
 		if (isset($arrData['minDate']) && $arrData['minDate'] > 0) {
 			$buildQuery->where('translates.updated_at', '>=', Carbon::parse($arrData['minDate'])->toDateTimeString());
@@ -632,10 +638,12 @@ class AccountController extends Controller
 			$buildQuery->where('translates.is_ordered', $arrData['phraseInOrder']);
 		}
 
-		if (isset($arrData['searchText'])) {
-			$buildQuery->where('blocks.text', 'LIKE', '%' . $arrData['searchText'] . '%')
-				->orWhere('translates.text', 'LIKE', '%' . $arrData['searchText'] . '%');
-		}
+        if (!empty($arrData['searchText'])) {
+            $buildQuery->where(function ($query) use ($arrData) {
+                $query->where('blocks.text', 'LIKE', '%' . $arrData['searchText'] . '%')
+                    ->orWhere('translates.text', 'LIKE', '%' . $arrData['searchText'] . '%');
+            });
+        }
 
 		if (isset($arrData['minDate']) && $arrData['minDate'] > 0) {
 			$buildQuery->where('translates.updated_at', '>=', Carbon::parse($arrData['minDate'])->toDateTimeString());
