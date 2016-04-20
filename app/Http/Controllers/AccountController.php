@@ -1026,9 +1026,11 @@ class AccountController extends Controller
 		    $buildQuery->where('translates.is_ordered', $arrQuery['phraseInOrder']);
 	    }
 
-	    if (isset($arrQuery['searchText'])) {
-		    $buildQuery->where('blocks.text', 'LIKE', '%' . $arrQuery['searchText'] . '%')
-			    ->orWhere('translates.text', 'LIKE', '%' . $arrQuery['searchText'] . '%');
+	    if (!empty($arrQuery['searchText'])) {
+            $buildQuery->where(function ($query) use ($arrQuery) {
+                $query->where('blocks.text', 'LIKE', '%' . $arrQuery['searchText'] . '%')
+                    ->orWhere('translates.text', 'LIKE', '%' . $arrQuery['searchText'] . '%');
+            });
 	    }
 
 	    if (isset($arrQuery['minDate']) && $arrQuery['minDate'] > 0) {
