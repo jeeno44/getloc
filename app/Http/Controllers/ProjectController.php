@@ -47,6 +47,13 @@ class ProjectController extends Controller
         $langs = $request->get('language');
         $sourceLang = array_shift($langs);
         $targetLang = array_shift($langs);
+        $this->validate($request, [
+            'url' => 'required|url',
+            'name' => 'required',
+        ]);
+        if(empty($targetLang) || empty($sourceLang)) {
+            return redirect()->back()->withErrors('Выберите языки перевода')->withInput();
+        }
         $url = $request->get('url');
         $url = prepareUri($url);
         $site = Site::where('url', $url)->first();
@@ -63,7 +70,7 @@ class ProjectController extends Controller
             $site->languages()->attach($targetLang);
             if (!empty($langs)) {
                 foreach ($langs as $lang) {
-                    if (!$site->hasLanguage($lang)) {
+                    if (!$site->hasLanguage($lang) && !empty($lang)) {
                         $site->languages()->attach($lang);
                     }
                 }
