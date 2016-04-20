@@ -1,5 +1,4 @@
 {{--{{ $pathName }}--}}
-@if($pathName === '/account/phrase')
 
     @foreach ($blocks as $t)
         @if($t->blocks_enabled)
@@ -102,18 +101,6 @@
         @endif
     @endforeach
 
-@elseif($pathName === '/account/pages')
-
-    @foreach ($blocks as $t)
-
-        <div class="pages_block_wrap">
-            <input type="checkbox" data-id="{{ $t->id }}" class="pages_disable" @if($t->enabled) checked @endif>
-            <a href="/account/phrase?url={{ urlencode($t->url) }}" class="link_pages">{{ $t->url }}</a>
-        </div>
-
-    @endforeach
-
-@endif
 
 @if (isset($blocks))
     <div class="paginationAjax">

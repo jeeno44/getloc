@@ -142,7 +142,7 @@ eventAccount = function () {
 
     pagesDisable();
 
-    goToPage();
+    // goToPage();
 
     orderAddDel();
 
@@ -164,6 +164,8 @@ setEventInContent = function()
     
     $('.save_translate').click(function(){
         
+        
+        
         var blockID = $(this).attr('object-id')
         var type    = $('#order_'+blockID).attr('data-type') 
         
@@ -180,6 +182,9 @@ setEventInContent = function()
                 $('#phrase_' + blockID).attr('class', response.block.color)
                 $('#typeTranslate_'+blockID).attr('class', response.block.icon).css('display', 'block').html(response.block.typeTranslate)
                 $('#dDatetime_'+blockID).attr('datetime', response.block.datetime).html(response.block.date)
+
+                $('#phrase_'+blockID).hide();
+                console.log($(this).closest('.phrases__item').attr('class'));
             }
         });
     })
@@ -214,8 +219,12 @@ setEventInContent = function()
     //     console.log(123456);
     // })
     $('.paginationAjax a').click(function(e){
-        loadPhrases($(this).attr('href').split('page=')[1]);
-        e.preventDefault();
+        if (location.pathname !== '/account/pages') {
+            console.log(location.pathname === '/account/pages');
+            // loadPhrases($(this).attr('href').split('page=')[1]);
+            e.preventDefault();
+        }
+
     });
     
     $('.phrases__control').each(function () {
@@ -233,6 +242,12 @@ setEventInContent = function()
 
 
 }
+
+/**
+ |------------------------------------------------------------
+ | Отключаем/подключаем блок
+ |------------------------------------------------------------
+ */
 disableDisplayPhrase = function (obj) {
     var data = {
         translates_id: obj.closest('.phrases__item').attr('id').split('_').pop(),
@@ -442,7 +457,7 @@ hideTabNotTranslated = function () {
     if (Number(count) === 0) {
         tab_not_translated.css({display: 'none'}).removeClass('active').next().addClass('active').prev('#stNotTranslate');
         $(document).on('click', '.remove_item', removeItemPageName);
-        loadPhrases();
+        // loadPhrases();
         // $(document).on('click', '.remove_item', setEventInContent());
     }
 }
@@ -566,7 +581,8 @@ orderAddDel = function () {
 
 pagesDisable = function () {
     $('.pages_disable').on('click', function () {
-        // var url = $(this).parent().html();
+        var url = $(this).parent().html();
+        console.log(url);
         var data = {
             url: $(this).siblings('a.link_pages').text(),
             check: $(this).prop('checked') ? 1 : 0
@@ -581,26 +597,26 @@ pagesDisable = function () {
 
 /** -------------------- Start.Go to page -------------------- */
 
-    goToPage = function () {
-        $('.link_pages').on('click', function (e) {
-            e.preventDefault();
-            var data = {
-                url: $(this).text(),
-                href: $(this).attr('href'),
-                check: $(this).siblings('.pages_disable').prop('checked') ? 1 : 0
-            };
-            if (data.check) {
-                $.post('/account/locationPhrase', data, function (obj) {
-                    var obj = $.parseJSON(obj);
-                    console.log(obj);
-                    if (obj.success) {
-                        location.href = location.origin + data.href;
-                        console.log(location);
-                    }
-                })
-            }
-        });
-    }
+    // goToPage = function () {
+    //     $('.link_pages').on('click', function (e) {
+    //         e.preventDefault();
+    //         var data = {
+    //             url: $(this).text(),
+    //             href: $(this).attr('href'),
+    //             check: $(this).siblings('.pages_disable').prop('checked') ? 1 : 0
+    //         };
+    //         if (data.check) {
+    //             $.post('/account/locationPhrase', data, function (obj) {
+    //                 var obj = $.parseJSON(obj);
+    //                 console.log(obj);
+    //                 if (obj.success) {
+    //                     location.href = location.origin + data.href;
+    //                     console.log(location);
+    //                 }
+    //             })
+    //         }
+    //     });
+    // }
 
 /** -------------------- End.Go to page -------------------- */
 

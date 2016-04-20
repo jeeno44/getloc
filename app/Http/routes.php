@@ -71,7 +71,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::post('/locationPhrase', ['as' => 'main.account.locationPhrase', 'uses' => 'AccountController@setPagesSession']);
             Route::post('/orderingTranslation', ['as' => 'main.account.orderingTranslation', 'uses' => 'AccountController@setOrderingTranslation']);
 
-            Route::get('/pages', ['as' => 'main.account.pages', 'uses' => 'AccountController@phraseNotTranslatesTab']);
+            Route::get('/pages', ['as' => 'main.account.pages', 'uses' => 'AccountController@pagesView']);
 
             Route::post('/setArchive', ['as' => 'main.account.setArchive', 'uses' => 'AccountController@setArchiveTranslate']);
 
