@@ -31,9 +31,6 @@ class OrdersController extends Controller
     {
         parent::__construct();
         $site = Site::find(\Session::get('projectID'));
-        if (!$site || $site->user_id != $this->user->id) {
-            return redirect(route('main.account.selectProject'));
-        }
         $this->sites = Site::where('user_id', $this->user->id)->orderBy('url')->get();
         \View::share('sites', $this->sites);
         $this->site = $site;
@@ -48,6 +45,9 @@ class OrdersController extends Controller
     public function index($id = null)
     {
         $site = $this->site;
+        if (empty($site) || $site->user_id != $this->user->id) {
+            return redirect(route('main.account.selectProject'));
+        }
         $order = Order::where('site_id', $site->id)->where('status', 'new')->latest()->first();
         if (!$order) {
             $order = new Order([
@@ -90,13 +90,17 @@ class OrdersController extends Controller
      */
     public function make($langId = null)
     {
+        $site = $this->site;
+        if (empty($site) || $site->user_id != $this->user->id) {
+            return redirect(route('main.account.selectProject'));
+        }
         if ($langId) {
             $lang = Language::find($langId);
             if (!$lang) {
                 return redirect(route('main.account.selectProject'));
             }
             \DB::table('translates')->where('language_id', $lang->id)->where('site_id', $this->site->id)->where(function ($query) {
-                $query->whereNull('type_translate_id');
+                $query->whereNull('type_translate_id')->orWhere('type_translate_id', '!=', 3);
             })->update(['is_ordered' => 1]);
         }
         return redirect()->route('main.billing.order');
@@ -109,6 +113,10 @@ class OrdersController extends Controller
      */
     public function delLang($langId)
     {
+        $site = $this->site;
+        if (empty($site) || $site->user_id != $this->user->id) {
+            return redirect(route('main.account.selectProject'));
+        }
         $lang = Language::find($langId);
         if (!$lang) {
             return redirect(route('main.account.selectProject'));
@@ -124,6 +132,10 @@ class OrdersController extends Controller
      */
     public function prepare($orderID)
     {
+        $site = $this->site;
+        if (empty($site) || $site->user_id != $this->user->id) {
+            return redirect(route('main.account.selectProject'));
+        }
         $order = Order::find($orderID);
         if (!$order || $order->user_id != $this->user->id) {
             return redirect()->back();
@@ -131,7 +143,6 @@ class OrdersController extends Controller
         if ($order->status != 'new') {
             return redirect()->route('main.billing.order');
         }
-        $site = $this->site;
         \DB::table('order_translate')->where('order_id', $order->id)->delete();
         foreach ($site->translates()->where('is_ordered', 1)->get() as $trans) {
             $order->translates()->attach($trans->id);
@@ -151,6 +162,10 @@ class OrdersController extends Controller
     
     public function store($orderID, Request $request)
     {
+        $site = $this->site;
+        if (empty($site) || $site->user_id != $this->user->id) {
+            return redirect(route('main.account.selectProject'));
+        }
         $order = Order::find($orderID);
         if (!$order || $order->user_id != $this->user->id) {
             return redirect()->back();
@@ -158,7 +173,6 @@ class OrdersController extends Controller
         if ($order->status != 'new') {
             return redirect()->route('main.billing.order');
         }
-        $site = $this->site;
         $paymentType = PaymentType::find($request->get('payment_type_id'));
         $couponId = null;
         if ($coupon = getCouponState($request->get('coupon'), $site->id)) {
