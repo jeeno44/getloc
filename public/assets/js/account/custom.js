@@ -342,6 +342,7 @@ loadPhrases = function(page)
             stopLoader()
             $('#renderPhrases').html(phrases.html).promise().done(setEventInContent)
             // eventAccount()
+            ajaxLoadEventInit();
         }
     })
 }
@@ -478,7 +479,7 @@ orderTranslate = function () {
 
 addOrder = function (obj) {
     $('#ordering_translation_'+obj.attr('data-id')).prop('checked', true);
-    $('#ordering_translation_'+obj.attr('data-id')).next('label').text('Отменить выбор фразы в заказ');
+    // $('#ordering_translation_'+obj.attr('data-id')).next('label').text('Отменить выбор фразы в заказ');
     obj.removeClass('addOrder').addClass('delOrder').text('Убрать из заказа');
     var data_id = {}, count = 0;
     data_id[count] = {
@@ -500,7 +501,7 @@ addOrder = function (obj) {
 
 delOrder = function (obj) {
     $('#ordering_translation_'+obj.attr('data-id')).prop('checked', false);
-    $('#ordering_translation_'+obj.attr('data-id')).next('label').text('Выбрать фразу в заказ');
+    // $('#ordering_translation_'+obj.attr('data-id')).next('label').text('Выбрать фразу в заказ');
     obj.removeClass('delOrder').addClass('addOrder').text('Добавить в заказ');
     var data_id = {}, count = 0, $this = $(this);
     data_id[count] = {
@@ -547,13 +548,13 @@ checkOrderingTranslation = function () {
 }
 
 orderAddDel = function () {
-    var phrases_icm = $('.phrases__item-controls-menu');
-    phrases_icm.on('click', '.addOrder',  function (e) {
+    // var phrases_icm = $('.phrases__item-controls-menu');
+    $('.addOrder').on('click', function (e) {
         e.preventDefault();
         addOrder($(this))
     });
 
-    phrases_icm.on('click', '.delOrder',  function (e) {
+    $('.delOrder').on('click', function (e) {
         e.preventDefault();
         delOrder($(this))
     });
@@ -669,3 +670,16 @@ pagesDisable = function () {
     }
 
 /** -------------------- End.Autocomplete -------------------- */
+
+ajaxLoadEventInit = function () {
+    // var phrases_icm = $();
+    $('.phrases__item-controls-menu').on('click', '.addOrder', function (e) {
+        e.preventDefault();
+        addOrder($(this))
+    });
+
+    $('.phrases__item-controls-menu').on('click', '.delOrder', function (e) {
+        e.preventDefault();
+        delOrder($(this))
+    });
+}
