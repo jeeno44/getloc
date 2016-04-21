@@ -32,20 +32,25 @@ class ApiController extends Controller
         $response = [];
         if (empty($secret)) {
             $response['error'] = ['msg' => 'Secret key required', 'code' => 1];
+            return $this->makeResponse($response, $callback);
         }
         if (empty($uri)) {
             $response['error'] = ['msg' => 'Uri required', 'code' => 2];
+            return $this->makeResponse($response, $callback);
         }
         if (empty($lang)) {
             $response['error'] = ['msg' => 'Lang required', 'code' => 3];
+            return $this->makeResponse($response, $callback);
         }
         $site = Site::where('secret', $secret)->first();
         if (empty($site)) {
             $response['error'] = ['msg' => 'Auth failed. Invalid Secret key', 'code' => 4];
+            return $this->makeResponse($response, $callback);
         } else {
             $subscription = \App\Subscription::where('site_id', $site->id)->first();
             if (!$subscription || $subscription->deposit <= 0.00 || !$subscription->last_id) {
                 $response['error'] = ['msg' => 'No money. No honey.', 'code' => 8];
+                return $this->makeResponse($response, $callback);
             }
             $uri = prepareUri($uri);
             $page = Page::where('url', $uri)->first();
@@ -57,10 +62,12 @@ class ApiController extends Controller
                 ]);
                 $this->dispatch(new \App\Jobs\Spider($site));
                 $response['error'] = ['msg' => 'Page does not exists', 'code' => 5];
+                return $this->makeResponse($response, $callback);
             } else {
                 $lang = Language::where('short', $lang)->first();
                 if (empty($lang)) {
                     $response['error'] = ['msg' => 'Language is invalid', 'code' => 6];
+                    return $this->makeResponse($response, $callback);
                 } else {
                     \Cache::forget($secret.'_'.$page->id.'_'.$lang->id);//TODO переделать кеширование для новых условий
                     $response = \Cache::rememberForever($secret.'_'.$page->id.'_'.$lang->id, function() use ($lang, $site, $page, $subscription) {
@@ -100,6 +107,15 @@ class ApiController extends Controller
             return \Response::make($callback."(".json_encode($response).")");
         } else {
             return \Response::make(json_encode($response));
+        }
+    }
+
+    function makeResponse($data, $callback = null)
+    {
+        if (!empty($callback)) {
+            return \Response::make($callback."(".json_encode($data).")");
+        } else {
+            return \Response::make(json_encode($data));
         }
     }
 
