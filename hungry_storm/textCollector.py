@@ -225,7 +225,7 @@ for item in ps.listen():
         pages = cursor.fetchall()
 
         for page in pages:
-            pageID, siteID, url, code, level, visited, collected, created_at, updated_at = page
+            pageID, siteID, url, code, level, visited, collected, enabled, created_at, updated_at = page
             urls.append(str(url))
             urlPageID[str(url)] = pageID
 
