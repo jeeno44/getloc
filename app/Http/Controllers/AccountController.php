@@ -763,7 +763,8 @@ class AccountController extends Controller
 	*/
 	public function getCountPhrasesInOrder()
 	{
-		$translate_is_ordered =  Translate::where('is_ordered', 1)->get();
+        $siteID = Session::get('projectID');
+		$translate_is_ordered =  Translate::where('is_ordered', 1)->where('site_id', $siteID)->get();
 		return $phrasesInOrder = $translate_is_ordered->count();
     }
 

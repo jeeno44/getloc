@@ -11,7 +11,7 @@
         <div class="add-code__project">
             <ul>
                 <li>В конце тега <code>head</code> необходимо добавить:
-                    <textarea style="width: 600px; height: 60px;"><script type="text/javascript" src="http://api.{{env('APP_DOMAIN', 'getloc.ru')}}.ru/getloc.js"></script></textarea>
+                    <textarea style="width: 600px; height: 60px;"><script type="text/javascript" src="http://api.{{env('APP_DOMAIN', 'getloc.ru')}}/getloc.js"></script></textarea>
                     <a class="add-code__copy" href="#">Скопировать в буфер-обмена</a>
                 </li>
                 <li>Вставьте следующий код перед закрывающим тегом body вашего сайта

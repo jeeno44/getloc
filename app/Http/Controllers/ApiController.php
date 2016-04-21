@@ -49,7 +49,7 @@ class ApiController extends Controller
         } else {
             $subscription = \App\Subscription::where('site_id', $site->id)->first();
             if (!$subscription || $subscription->deposit <= 0.00 || !$subscription->last_id) {
-                $response['error'] = ['msg' => 'No money. No honey.', 'code' => 8];
+                $response['error'] = ['msg' => 'This project is not active subscription', 'code' => 8];
                 return $this->makeResponse($response, $callback);
             }
             $uri = prepareUri($uri);
