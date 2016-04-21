@@ -263,11 +263,13 @@ function getloc(settings)
             window.console.log('error: ' + response.error.msg + ', code: ' + response.error.code)
             document.getElementsByTagName('body')[0].style.display = 'block'
           }
-        
-        this.response = response
-        this.processTranslate()
-        
-        window.console.log('GET JSON')
+        else
+          {
+            this.response = response
+            this.processTranslate()
+
+            window.console.log('GET JSON')
+          }
     }
     
     /**
