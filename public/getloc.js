@@ -260,7 +260,7 @@ function getloc(settings)
     {
         if ( response.error )
           {
-            window.console.log('error: ' + response.error.message + ', code: ' + response.error.code)
+            window.console.log('error: ' + response.error.msg + ', code: ' + response.error.code)
             document.getElementsByTagName('body')[0].style.display = 'block'
           }
         
