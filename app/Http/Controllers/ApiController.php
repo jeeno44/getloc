@@ -93,13 +93,13 @@ class ApiController extends Controller
                         $response['available_languages'][$site->language->short] = $site->language->name;
                         return $response;
                     });
-                    if (!empty($callback)) {
-                        return \Response::make($callback."(".json_encode($response).")");
-                    } else {
-                        return \Response::make(json_encode($response));
-                    }
                 }
             }
+        }
+        if (!empty($callback)) {
+            return \Response::make($callback."(".json_encode($response).")");
+        } else {
+            return \Response::make(json_encode($response));
         }
     }
 
