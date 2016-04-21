@@ -776,7 +776,8 @@ class AccountController extends Controller
 	*/
 	public function getCostOrder()
 	{
-		$translate_is_ordered =  Translate::where('is_ordered', 1)->get();
+        $siteID = Session::get('projectID');
+		$translate_is_ordered =  Translate::where('is_ordered', 1)->where('site_id', $siteID)->get();
 		$count_words = 0;
 
 		if ($translate_is_ordered) {
