@@ -29,22 +29,23 @@ class ApiController extends Controller
     public function anyTranslate(Request $request)
     {
         extract($request->only(['secret', 'uri', 'lang', 'callback']));
+        $response = [];
         if (empty($secret)) {
-            return \Response::json(['error' => ['msg' => 'Secret key required', 'code' => 1]]);
+            $response['error'] = ['msg' => 'Secret key required', 'code' => 1];
         }
         if (empty($uri)) {
-            return \Response::json(['error' => ['msg' => 'Uri required', 'code' => 2]]);
+            $response['error'] = ['msg' => 'Uri required', 'code' => 2];
         }
         if (empty($lang)) {
-            return \Response::json(['error' => ['msg' => 'Lang required', 'code' => 3]]);
+            $response['error'] = ['msg' => 'Lang required', 'code' => 3];
         }
         $site = Site::where('secret', $secret)->first();
         if (empty($site)) {
-            return \Response::json(['error' => ['msg' => 'Auth failed. Invalid Secret key', 'code' => 4]]);
+            $response['error'] = ['msg' => 'Auth failed. Invalid Secret key', 'code' => 4];
         } else {
             $subscription = \App\Subscription::where('site_id', $site->id)->first();
             if (!$subscription || $subscription->deposit <= 0.00 || !$subscription->last_id) {
-                return \Response::json(['error' => ['msg' => 'No money. No honey.', 'code' => 8]]);
+                $response['error'] = ['msg' => 'No money. No honey.', 'code' => 8];
             }
             $uri = prepareUri($uri);
             $page = Page::where('url', $uri)->first();
@@ -55,16 +56,14 @@ class ApiController extends Controller
                     'code'          => 200,
                 ]);
                 $this->dispatch(new \App\Jobs\Spider($site));
-                return \Response::json(['error' => ['msg' => 'Page does not exists', 'code' => 5]]);
+                $response['error'] = ['msg' => 'Page does not exists', 'code' => 5];
             } else {
                 $lang = Language::where('short', $lang)->first();
                 if (empty($lang)) {
-                    return \Response::json(['error' => ['msg' => 'Language is invalid', 'code' => 6]]);
+                    $response['error'] = ['msg' => 'Language is invalid', 'code' => 6];
                 } else {
                     \Cache::forget($secret.'_'.$page->id.'_'.$lang->id);//TODO переделать кеширование для новых условий
                     $response = \Cache::rememberForever($secret.'_'.$page->id.'_'.$lang->id, function() use ($lang, $site, $page, $subscription) {
-                        $response = [];
-                        $response['errors'] = [];
                         if ($lang->id == $site->language_id) {
                             $response['results'] = $page->blocks()->lists('text', 'text')->toArray();
                         } else {
