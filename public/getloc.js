@@ -10,19 +10,19 @@ location.search
 
 if ( !getloc_off )
   {
-    var getloc_css        = 'body {visibility: hidden;}',
-        getloc_head       = document.head || document.getElementsByTagName('head')[0],
-        getloc_style      = document.createElement('style');
-    getloc_style.type     = 'text/css'
-
-    if ( getloc_style.styleSheet )
-        getloc_style.styleSheet.cssText = getloc_css;
-    else
-        getloc_style.appendChild(document.createTextNode(getloc_css));
-
-    getloc_head.appendChild(getloc_style)
-    
-    window.console.log('body -> display: none')
+//    var getloc_css        = 'body {visibility: hidden;}',
+//        getloc_head       = document.head || document.getElementsByTagName('head')[0],
+//        getloc_style      = document.createElement('style');
+//    getloc_style.type     = 'text/css'
+//
+//    if ( getloc_style.styleSheet )
+//        getloc_style.styleSheet.cssText = getloc_css;
+//    else
+//        getloc_style.appendChild(document.createTextNode(getloc_css));
+//
+//    getloc_head.appendChild(getloc_style)
+//    
+//    window.console.log('body -> display: none')
   }
 
 
