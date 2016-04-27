@@ -54,17 +54,6 @@ def translateBlock(block):
         cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
         loadSQL = []
 
-def createEmptyTranslate(block):
-    global iBlockInsert, insertSQLTrans, loadSQL, langTo
-    loadSQL.append("({id}, {language_id}, '', NOW(), NOW(), 1, 1, 0, {pub})".format(id=block[0], language_id=langID, pub=auto_publishing))
-    iBlockInsert += 1
-
-    if len(loadSQL) >= maxBlockInsert:
-        iBlockInsert = 0
-        cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
-        loadSQL = []
-
-
 #------------------------------------------------------------------------------------------------------
 # Получаем языки проекта
 #------------------------------------------------------------------------------------------------------
@@ -136,6 +125,7 @@ def load_url(url, siteID, cursor, timeout):
 def makeBlock(siteID, text, element, url):
     global countWords, countSymbols, countBlocks
 
+    text  = text.strip()
     #block = cursor.execute('SELECT `text` FROM blocks WHERE `text` = "{text}"'.format(text=MySQLdb.escape_string(text.encode('utf8'))))
 
     if text not in issetBlocks:
@@ -252,8 +242,6 @@ for item in ps.listen():
 
         count = 0
 
-        print('В один поток принял, работаю!')
-
         #------------------------------------------------------------------------------------------------------
         # Запускаем потоки и bs4
         #------------------------------------------------------------------------------------------------------
@@ -262,10 +250,10 @@ for item in ps.listen():
             try:
                 print(url)
 
+                cursor.execute('UPDATE pages SET collected = 1 WHERE url = "{url}" AND site_id = {siteid}'.format(url=MySQLdb.escape_string(url), siteid=siteID))
+
                 html = load_url(url, siteID, cursor, 10)
                 soup = BeautifulSoup(html, 'html.parser')
-
-                cursor.execute('UPDATE pages SET collected = 1 WHERE url = "{url}" AND site_id = {siteid}'.format(url=MySQLdb.escape_string(url), siteid=siteID))
 
                 #-------------------------------------------
                 # Вырезаем скрипты, ксс и комменты
@@ -315,13 +303,15 @@ for item in ps.listen():
                             for str_ in element.findAll(text=True, recursive=False):
                                 string += (str_)
 
+                            string = string.strip()    
                             if string.isdigit() != True and string: #Цифры нам нинужныыыы!
                                 block_id = makeBlock(siteID, string, element.name, url)
                                 if block_id is not False:
                                     makePageBlock(getPageID(url, siteID), block_id)
 
+                time.sleep(1)
+
                 count += 1
-                time.sleep(0.7)
                 
                 del html
 
@@ -337,9 +327,9 @@ for item in ps.listen():
             else:
                 #print '"%s" fetched in %ss' % (url,(time.time() - start))
                 pass
-                
-            if count > 0:    
-                finishStats(siteID, countWords, countSymbols, countBlocks)
+            
+        if count > 0:    
+            finishStats(siteID, countWords, countSymbols, countBlocks)
 
         #------------------------------------------------------------------------------------------------------
         # Запускаем автоперевод блоков, тоже в потоках
