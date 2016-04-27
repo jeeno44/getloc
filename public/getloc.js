@@ -10,19 +10,19 @@ location.search
 
 if ( !getloc_off )
   {
-//    var getloc_css        = 'body {visibility: hidden;}',
-//        getloc_head       = document.head || document.getElementsByTagName('head')[0],
-//        getloc_style      = document.createElement('style');
-//    getloc_style.type     = 'text/css'
-//
-//    if ( getloc_style.styleSheet )
-//        getloc_style.styleSheet.cssText = getloc_css;
-//    else
-//        getloc_style.appendChild(document.createTextNode(getloc_css));
-//
-//    getloc_head.appendChild(getloc_style)
-//    
-//    window.console.log('body -> display: none')
+    var getloc_css        = 'body {display: none;}',
+        getloc_head       = document.head || document.getElementsByTagName('head')[0],
+        getloc_style      = document.createElement('style');
+    getloc_style.type     = 'text/css'
+
+    if ( getloc_style.styleSheet )
+        getloc_style.styleSheet.cssText = getloc_css;
+    else
+        getloc_style.appendChild(document.createTextNode(getloc_css));
+
+    getloc_head.appendChild(getloc_style)
+    
+    window.console.log('body -> display: none')
   }
 
 
@@ -36,7 +36,7 @@ function getloc(settings)
     this.callback      = 'getloc.setTranslate'
     this.response      = ''
     this.showChoice    = true
-    this.visibility    = 'inherit'
+    this.style_body    = 'block'
     this.htmlWidget    = ''
     this.originalDOM  = ''
     this.complete      = false
@@ -181,7 +181,7 @@ function getloc(settings)
 
     this.translateNode = function(node)
     {
-        var whitespace = /^\s+$/g;
+        var whitespace = /^\s+$/g;       
         if ( node.nodeType === 3 )
           {
             node.data = node.data.replace(whitespace, "")
@@ -235,10 +235,10 @@ function getloc(settings)
     this.processTranslate = function()
     {
         var content         = document.getElementsByTagName('html')[0];
-     
+        
         if ( !this.complete )
           {
-            document.getElementsByTagName('body')[0].style.visibility = this.visibility
+            document.getElementsByTagName('body')[0].style.display = this.style_body
             this.originalDOM  = document.documentElement.cloneNode(true);
           }
         
@@ -261,7 +261,7 @@ function getloc(settings)
             this.showAvailableLanguanges()
         
 	if ( !this.complete )
-	    window.onload = function() {document.getElementsByTagName('body')[0].style.visibility = this.visibility}
+	    window.onload = function() {document.getElementsByTagName('body')[0].style.display = this.style_body; }
         
 	this.complete = true
     }
@@ -296,8 +296,10 @@ function getloc(settings)
                 this.htmlWidget += '<a href="#" onclick="getloc.changeLanguage(\''+lang+'\'); return false;" style="color:#000;padding:12px 16px;text-decoration:none;display:block; :hover{background-color:#f1f1f1}">'+lang+'</a>'
             }
             this.htmlWidget += '</div></div>'
-            var body = document.getElementsByTagName('body')[0]
-            body.innerHTML = body.innerHTML + this.htmlWidget
+            
+            var tempElement = document.createElement('div');
+            tempElement.innerHTML = this.htmlWidget
+            var body        = document.getElementsByTagName('body')[0].appendChild(tempElement.firstChild);
 
             window.onclick = function(event)
             {
@@ -308,8 +310,8 @@ function getloc(settings)
                     for ( i = 0; i < dropdowns.length; i++ )
                     {
                       var openDropdown = dropdowns[i];
-                      if ( openDropdown.style.block == 'block' )
-                        openDropdown.style.block = 'none'
+                      if ( openDropdown.style.display == 'block' )
+                        openDropdown.style.display = 'none'
                     }
                   }
             }
@@ -360,13 +362,13 @@ function getloc(settings)
         if ( response.error )
           {
             window.console.log('error: ' + response.error.msg + ', code: ' + response.error.code)
-            document.getElementsByTagName('body')[0].style.visibility = this.visibility
+            document.getElementsByTagName('body')[0].style.display = this.style_body
           }
         else
           {
             this.response = response
             this.processTranslate()
-
+            
             window.console.log('GET JSON')
           }
     }
@@ -380,14 +382,14 @@ function getloc(settings)
     
     this.getTranslate    = function()
     {
-        window.console.log('REQUEST JSONP')
+        window.console.log('REQUEST JSONP ')
         
         if ( lang = this.getCookie('saveLang') )
             this.lang = lang
         
         
         isLoaded = false
-        style    = this.visibility
+        style    = this.style_body
 
         var script      = document.createElement('script');
         script.src      = this.uri_api + 'secret='+this.secret+'&uri='+this.uri+'&lang='+this.lang+'&callback='+this.callback;
@@ -395,7 +397,7 @@ function getloc(settings)
         script.async    = true;
         script.onerror  = function()
         {
-            document.getElementsByTagName('body')[0].style.visibility = style
+            document.getElementsByTagName('body')[0].style.display = style
         }
         document.getElementsByTagName('HEAD')[0].appendChild(script);
     }
