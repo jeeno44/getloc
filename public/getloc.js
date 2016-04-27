@@ -184,10 +184,10 @@ function getloc(settings)
         var whitespace = /^\s+$/g;       
         if ( node.nodeType === 3 )
           {
-            node.data = node.data.replace(whitespace, "").trim()
-            if ( node.data && this.response.results[this.decodeSpecialChars(node.data)] )
+            node.data = node.data.replace(whitespace, "")
+            if ( node.data && this.response.results[this.decodeSpecialChars(node.data).trim()] )
               {
-                node.data = this.response.results[this.decodeSpecialChars(node.data)]
+                node.data = this.response.results[this.decodeSpecialChars(node.data).trim()]
               }  
           }  
     }
@@ -203,8 +203,8 @@ function getloc(settings)
         
         if ( node.nodeName == 'INPUT' )
           {
-            node.value       = node.value.replace(whitespace, "").trim() 
-            node.placeholder = node.placeholder.replace(whitespace, "").trim() 
+            node.value       = node.value.replace(whitespace, "") 
+            node.placeholder = node.placeholder.replace(whitespace, "") 
               
             if ( node.value && this.response.results[this.decodeSpecialChars(node.value)] )
                 node.value = this.response.results[this.decodeSpecialChars(node.value)]  
@@ -213,7 +213,7 @@ function getloc(settings)
           }
         else if ( node.nodeName == 'IMG' && node.alt && this.response.results[this.decodeSpecialChars(node.alt)] )  
           {
-            node.alt = node.alt.replace(whitespace, "").trim()  
+            node.alt = node.alt.replace(whitespace, "")  
             if ( node.alt )
                 node.alt = this.response.results[this.decodeSpecialChars(node.alt)]
           }
