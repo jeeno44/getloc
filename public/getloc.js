@@ -185,9 +185,9 @@ function getloc(settings)
         if ( node.nodeType === 3 )
           {
             node.data = node.data.replace(whitespace, "")
-            if ( node.data && this.response.results[this.decodeSpecialChars(node.data).trim()] )
+            if ( node.data && this.response.results[this.decodeSpecialChars(node.data)] )
               {
-                node.data = this.response.results[this.decodeSpecialChars(node.data).trim()]
+                node.data = this.response.results[this.decodeSpecialChars(node.data)]
               }  
           }  
     }

@@ -264,7 +264,7 @@ for item in ps.listen():
         #------------------------------------------------------------------------------------------------------
         # Проводим стресс тест для сайта, проактивная защита BITRIX
         #------------------------------------------------------------------------------------------------------
-        
+
         if stressTest(urls, r, json.dumps(data_)):
             continue
 
@@ -390,7 +390,11 @@ for item in ps.listen():
             results = pool.map(createEmptyTranslate, blocks)
             pool.close()
             pool.join()              
-            
+        
+        if len(loadSQL) <= maxBlockInsert:
+            iBlockInsert = 0
+            cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
+            loadSQL = []
         db.close()
         cursor.close()
 
