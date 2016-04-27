@@ -56,7 +56,7 @@ def translateBlock(block):
 
 def createEmptyTranslate(block):
     global iBlockInsert, insertSQLTrans, loadSQL, langTo
-    loadSQL.append("({id}, {language_id}, '', NOW(), NOW(), 1, 1, 0, {pub})".format(id=block[0], language_id=langID, pub=auto_publishing)
+    loadSQL.append("({id}, {language_id}, '', NOW(), NOW(), 1, 1, 0, {pub})".format(id=block[0], language_id=langID, pub=auto_publishing))
     iBlockInsert += 1
 
     if len(loadSQL) >= maxBlockInsert:
@@ -83,6 +83,27 @@ def getAllBlocks(projectID):
     cursor.execute(sql)
     for block in cursor.fetchall():
         issetBlocks.append(block[0])
+
+#------------------------------------------------------------------------------------------------------
+# Стресс тест для проекта
+#------------------------------------------------------------------------------------------------------
+
+def stressTest(urls, rpb, message):
+    urls_for_test = urls[0:50] #Берем только 50 первых урлов
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+            future_to_url = {executor.submit(load_url, url, siteID, cursor, 60): url for url in urls_for_test }
+            for future in concurrent.futures.as_completed(future_to_url):
+                url = future_to_url[future]
+                try:
+                    response = urllib2.urlopen(req, timeout=10)
+                except urllib2.HTTPError as e:
+                    if e.code == 503:
+                        p.psubscribe('textCollectorOneThread', message)
+                        print "Отправлено в один поток"
+                        return True
+                except Exception as exc:
+                    print '%r generated an exception: %s, %s' % (url, exc, sys.exc_info()[-1].tb_lineno)
+                    pass
 
 #------------------------------------------------------------------------------------------------------
 # Кол. слов в блоке
@@ -239,6 +260,13 @@ for item in ps.listen():
             urlPageID[str(url)] = pageID
 
         count = 0
+
+        #------------------------------------------------------------------------------------------------------
+        # Проводим стресс тест для сайта, проактивная защита BITRIX
+        #------------------------------------------------------------------------------------------------------
+        
+        if stressTest(urls, r, json.dumps(data_)):
+            continue
 
         #------------------------------------------------------------------------------------------------------
         # Запускаем потоки и bs4

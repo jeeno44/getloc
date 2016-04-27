@@ -54,26 +54,16 @@ def translateBlock(block):
         cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
         loadSQL = []
 
-#------------------------------------------------------------------------------------------------------
-# Стресс тест для проекта
-#------------------------------------------------------------------------------------------------------
+def createEmptyTranslate(block):
+    global iBlockInsert, insertSQLTrans, loadSQL, langTo
+    loadSQL.append("({id}, {language_id}, '', NOW(), NOW(), 1, 1, 0, {pub})".format(id=block[0], language_id=langID, pub=auto_publishing))
+    iBlockInsert += 1
 
-def stressTest(urls, rpb, message):
-    urls_for_test = urls[0:50] #Берем только 50 первых урлов
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-            future_to_url = {executor.submit(load_url, url, siteID, cursor, 60): url for url in urls_for_test }
-            for future in concurrent.futures.as_completed(future_to_url):
-                url = future_to_url[future]
-                try:
-                    response = urllib2.urlopen(req, timeout=10)
-                except urllib2.HTTPError as e:
-                    if e.code == 503:
-                        p.psubscribe('textCollectorOneThread', message)
-                        print "Отправлено в один поток"
-                        return True
-                except Exception as exc:
-                    print '%r generated an exception: %s, %s' % (url, exc, sys.exc_info()[-1].tb_lineno)
-                    pass
+    if len(loadSQL) >= maxBlockInsert:
+        iBlockInsert = 0
+        cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
+        loadSQL = []
+
 
 #------------------------------------------------------------------------------------------------------
 # Получаем языки проекта
@@ -146,7 +136,6 @@ def load_url(url, siteID, cursor, timeout):
 def makeBlock(siteID, text, element, url):
     global countWords, countSymbols, countBlocks
 
-    text  = text.strip()
     #block = cursor.execute('SELECT `text` FROM blocks WHERE `text` = "{text}"'.format(text=MySQLdb.escape_string(text.encode('utf8'))))
 
     if text not in issetBlocks:
@@ -206,7 +195,7 @@ def makePageBlock(pageID, blockID):
 #------------------------------------------------------------------------------------------------------
 
 ps = r.pubsub()
-ps.subscribe('collector')
+ps.subscribe('textCollectorOneThread')
 for item in ps.listen():
    if ( item['type'] == "message" ):
         start = time.time()
@@ -263,99 +252,91 @@ for item in ps.listen():
 
         count = 0
 
-        #------------------------------------------------------------------------------------------------------
-        # Проводим стресс тест для сайта, проактивная защита BITRIX
-        #------------------------------------------------------------------------------------------------------
-
-        if stressTest(urls, r, item['data']):
-            continue
+        print('В один поток принял, работаю!')
 
         #------------------------------------------------------------------------------------------------------
         # Запускаем потоки и bs4
         #------------------------------------------------------------------------------------------------------
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=countPools) as executor:
-            future_to_url = {executor.submit(load_url, url, siteID, cursor, 60): url for url in urls }
-            for future in concurrent.futures.as_completed(future_to_url):
-                url = future_to_url[future]
-                try:
-                    print(url)
+        for url in urls:
+            try:
+                print(url)
 
-                    cursor.execute('UPDATE pages SET collected = 1 WHERE url = "{url}" AND site_id = {siteid}'.format(url=MySQLdb.escape_string(url), siteid=siteID))
+                html = load_url(url, siteID, cursor, 10)
+                soup = BeautifulSoup(html, 'html.parser')
 
-                    html = future.result()
-                    soup = BeautifulSoup(html, 'html.parser')
+                cursor.execute('UPDATE pages SET collected = 1 WHERE url = "{url}" AND site_id = {siteid}'.format(url=MySQLdb.escape_string(url), siteid=siteID))
 
-                    #-------------------------------------------
-                    # Вырезаем скрипты, ксс и комменты
-                    #-------------------------------------------
+                #-------------------------------------------
+                # Вырезаем скрипты, ксс и комменты
+                #-------------------------------------------
 
-                    for script in soup(["script", "style"]):
-                        script.extract()
-                    
-                    comments = soup.findAll(text=lambda text:isinstance(text, Comment))
-                    [comment.extract() for comment in comments]    
+                for script in soup(["script", "style"]):
+                    script.extract()
+                
+                comments = soup.findAll(text=lambda text:isinstance(text, Comment))
+                [comment.extract() for comment in comments]    
 
-                    #-------------------------------------------
-                    # Начинаем парсить и создавать теги
-                    #-------------------------------------------
+                #-------------------------------------------
+                # Начинаем парсить и создавать теги
+                #-------------------------------------------
 
-                    for tag in tags:
-                        for element in soup.find_all(tag):
-                            string = ''
-                            if element.name == 'meta' and 'name' in element and (element['name'] == 'keywords' or element['name'] == 'description'):
-                                if element['content']:
-                                    block_id = makeBlock(siteID, element['content'], 'meta', url)
-                                    if block_id is not False:
-                                        makePageBlock(getPageID(url, siteID), block_id)
-                            elif element.name == 'title':
-                                if element.string:
-                                    block_id = makeBlock(siteID, element.string, element.name, url)
-                                    if block_id:
-                                        makePageBlock(getPageID(url, siteID), block_id)
-                            elif element.name == 'img' and element.has_attr('alt'):
-                                if element['alt'].isdigit() != True and element['alt']: 
-                                    block_id = makeBlock(siteID, element['alt'], element.name, url)
-                                    if block_id is not False:
-                                        makePageBlock(getPageID(url, siteID), block_id)
-                            elif element.name == 'input':
-                                if element.has_attr('placeholder') and element['placeholder'].isdigit() != True and element['placeholder'] and element['type'] != 'hidden':
-                                    block_id = makeBlock(siteID, element['placeholder'], element.name, url)
-                                    if block_id is not False:
-                                        makePageBlock(getPageID(url, siteID), block_id)
-                                if element.has_attr('value') and element['value'].isdigit() != True and element['value'] and element['type'] != 'hidden':
-                                    block_id = makeBlock(siteID, element['value'], element.name, url)
-                                    if block_id is not False:
-                                        makePageBlock(getPageID(url, siteID), block_id)
-                            else:
-                                if element.name == 'meta':
-                                    continue
+                for tag in tags:
+                    for element in soup.find_all(tag):
+                        string = ''
+                        if element.name == 'meta' and 'name' in element and (element['name'] == 'keywords' or element['name'] == 'description'):
+                            if element['content']:
+                                block_id = makeBlock(siteID, element['content'], 'meta', url)
+                                if block_id is not False:
+                                    makePageBlock(getPageID(url, siteID), block_id)
+                        elif element.name == 'title':
+                            if element.string:
+                                block_id = makeBlock(siteID, element.string, element.name, url)
+                                if block_id:
+                                    makePageBlock(getPageID(url, siteID), block_id)
+                        elif element.name == 'img' and element.has_attr('alt'):
+                            if element['alt'].isdigit() != True and element['alt']: 
+                                block_id = makeBlock(siteID, element['alt'], element.name, url)
+                                if block_id is not False:
+                                    makePageBlock(getPageID(url, siteID), block_id)
+                        elif element.name == 'input':
+                            if element.has_attr('placeholder') and element['placeholder'].isdigit() != True and element['placeholder'] and element['type'] != 'hidden':
+                                block_id = makeBlock(siteID, element['placeholder'], element.name, url)
+                                if block_id is not False:
+                                    makePageBlock(getPageID(url, siteID), block_id)
+                            if element.has_attr('value') and element['value'].isdigit() != True and element['value'] and element['type'] != 'hidden':
+                                block_id = makeBlock(siteID, element['value'], element.name, url)
+                                if block_id is not False:
+                                    makePageBlock(getPageID(url, siteID), block_id)
+                        else:
+                            if element.name == 'meta':
+                                continue
 
-                                for str_ in element.findAll(text=True, recursive=False):
-                                    string += (str_)
+                            for str_ in element.findAll(text=True, recursive=False):
+                                string += (str_)
 
-                                string = string.strip()    
-                                if string.isdigit() != True and string: #Цифры нам нинужныыыы!
-                                    block_id = makeBlock(siteID, string, element.name, url)
-                                    if block_id is not False:
-                                        makePageBlock(getPageID(url, siteID), block_id)
+                            if string.isdigit() != True and string: #Цифры нам нинужныыыы!
+                                block_id = makeBlock(siteID, string, element.name, url)
+                                if block_id is not False:
+                                    makePageBlock(getPageID(url, siteID), block_id)
 
-                    count += 1
-                    
-                    del html
+                count += 1
+                time.sleep(0.7)
+                
+                del html
 
-                except Exception as exc:
-                    print '%r generated an exception: %s, %s' % (url, exc, sys.exc_info()[-1].tb_lineno)
-                    pass
-                except urllib2.HTTPError as e:
-                    print(e.code)
-                    print(url)
-                except urllib2.URLError as e:
-                    print 'We failed to reach a server.'
-                    print 'Reason: ', e.reason
-                else:
-                    #print '"%s" fetched in %ss' % (url,(time.time() - start))
-                    pass
+            except Exception as exc:
+                print '%r generated an exception: %s, %s' % (url, exc, sys.exc_info()[-1].tb_lineno)
+                pass
+            except urllib2.HTTPError as e:
+                print(e.code)
+                print(url)
+            except urllib2.URLError as e:
+                print 'We failed to reach a server.'
+                print 'Reason: ', e.reason
+            else:
+                #print '"%s" fetched in %ss' % (url,(time.time() - start))
+                pass
                 
             if count > 0:    
                 finishStats(siteID, countWords, countSymbols, countBlocks)
