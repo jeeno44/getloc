@@ -30,7 +30,7 @@ function getloc(settings)
 {
     this.auto_detected = settings['auto_detected']
     this.lang          = settings['lang']
-    this.uri           = window.location.href
+    this.uri           = window.location.href.replace('#', '')
     this.secret        = settings['secret']
     this.uri_api       = 'http://api.getloc.ru/translate?'
     this.callback      = 'getloc.setTranslate'
@@ -41,7 +41,7 @@ function getloc(settings)
     this.originalDOM  = ''
     this.complete      = false
     this.source        = settings['source']
-    this.saveLang      = settings['saveLang']
+    this.saveLang      = settings['saveLang'] 
     
     /**
      * Определяем язык
@@ -184,7 +184,7 @@ function getloc(settings)
         var whitespace = /^\s+$/g;       
         if ( node.nodeType === 3 )
           {
-            node.data = node.data.replace(whitespace, "")
+            node.data = node.data.replace(whitespace, "").trim()
             if ( node.data && this.response.results[this.decodeSpecialChars(node.data)] )
               {
                 node.data = this.response.results[this.decodeSpecialChars(node.data)]
@@ -203,8 +203,8 @@ function getloc(settings)
         
         if ( node.nodeName == 'INPUT' )
           {
-            node.value       = node.value.replace(whitespace, "") 
-            node.placeholder = node.placeholder.replace(whitespace, "") 
+            node.value       = node.value.replace(whitespace, "").trim() 
+            node.placeholder = node.placeholder.replace(whitespace, "").trim() 
               
             if ( node.value && this.response.results[this.decodeSpecialChars(node.value)] )
                 node.value = this.response.results[this.decodeSpecialChars(node.value)]  
@@ -213,7 +213,7 @@ function getloc(settings)
           }
         else if ( node.nodeName == 'IMG' && node.alt && this.response.results[this.decodeSpecialChars(node.alt)] )  
           {
-            node.alt = node.alt.replace(whitespace, "")  
+            node.alt = node.alt.replace(whitespace, "").trim()  
             if ( node.alt )
                 node.alt = this.response.results[this.decodeSpecialChars(node.alt)]
           }
