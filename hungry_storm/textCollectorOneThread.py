@@ -374,13 +374,15 @@ for item in ps.listen():
             pool    = ThreadPool(1)
             for block in blocks:
                 results = pool.map(createEmptyTranslate, blocks)
-                pool.close()
-                pool.join()              
+            
+            pool.close()
+            pool.join()              
         
         if len(loadSQL) <= maxBlockInsert:
             iBlockInsert = 0
             cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
             loadSQL = []
+            
         db.close()
         cursor.close()     
                                       
