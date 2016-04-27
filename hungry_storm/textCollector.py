@@ -124,7 +124,6 @@ def load_url(url, siteID, cursor, timeout):
 def makeBlock(siteID, text, element, url):
     global countWords, countSymbols, countBlocks
 
-    text  = text.strip()
     #block = cursor.execute('SELECT `text` FROM blocks WHERE `text` = "{text}"'.format(text=MySQLdb.escape_string(text.encode('utf8'))))
 
     if text not in issetBlocks:
@@ -304,8 +303,7 @@ for item in ps.listen():
 
                                 for str_ in element.findAll(text=True, recursive=False):
                                     string += (str_)
-
-                                string = string.strip()    
+  
                                 if string.isdigit() != True and string: #Цифры нам нинужныыыы!
                                     block_id = makeBlock(siteID, string, element.name, url)
                                     if block_id is not False:
