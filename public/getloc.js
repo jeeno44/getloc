@@ -161,7 +161,7 @@ function getloc(settings)
                 else if ( node.nodeName == 'INPUT' || node.nodeName == 'IMG' || node.nodeName == 'META'  )
                     this.translateAttribute(node);  
                                
-                else if ( node.nodeName == 'A' && node.title )
+                else if ( node.nodeName == 'A' && node.title && this.response.results[this.decodeSpecialChars(node.title)] )
                     node.title = this.response.results[this.decodeSpecialChars(node.title)]
                 
                 else
