@@ -85,9 +85,9 @@ class ApiController extends Controller
                             foreach ($blocks as $block)
                             {
                                 if (!empty($block->ttext)) {
-                                    $response['results'][$block->text] = $block->ttext;
+                                    $response['results'][html_entity_decode($block->text)] = $block->ttext;
                                 } else {
-                                    $response['results'][$block->text] = $block->text;
+                                    $response['results'][html_entity_decode($block->text)] = $block->text;
                                 }
                             }
                         }
