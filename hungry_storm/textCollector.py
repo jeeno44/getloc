@@ -46,7 +46,7 @@ def getSettingsProject(projectID):
 def translateBlock(block):
     global iBlockInsert, insertSQLTrans, loadSQL, langTo
     translate = translator.translate(block[2].encode('utf-8'), lang_from=fromLang, lang_to=langTo)
-    loadSQL.append("({id}, {language_id}, '{text}', NOW(), NOW(), 1, 1, {cc}, 1)".format(id=block[0], language_id=langID, text=MySQLdb.escape_string(str(translate.encode('utf-8'))), cc=len(translate.split())))
+    loadSQL.append("({id}, {language_id}, '{text}', NOW(), NOW(), NULL, 1, {cc}, 1)".format(id=block[0], language_id=langID, text=MySQLdb.escape_string(str(translate.encode('utf-8'))), cc=len(translate.split())))
     iBlockInsert += 1
 
     if len(loadSQL) >= maxBlockInsert:
@@ -55,8 +55,8 @@ def translateBlock(block):
         loadSQL = []
 
 def createEmptyTranslate(block):
-    global iBlockInsert, insertSQLTrans, loadSQL, langTo
-    loadSQL.append("({id}, {language_id}, '', NOW(), NOW(), 1, 1, 0, {pub}, 0)".format(id=block[0], language_id=langID, pub=auto_publishing))
+    global iBlockInsert, insertSQLTrans, loadSQL, langTo, siteID
+    loadSQL.append("({id}, {language_id}, '', NOW(), NOW(), 1, {siteID}, 0, {pub}, 0)".format(id=block[0], siteID=siteID, language_id=langID, pub=auto_publishing))
     iBlockInsert += 1
 
     if len(loadSQL) >= maxBlockInsert:
@@ -232,7 +232,7 @@ for item in ps.listen():
         issetBlocks     = []
         blocksID        = {}
 
-        maxBlockInsert  = 50
+        maxBlockInsert  = 10
         iBlockInsert    = 0
         insertSQLTrans  = 'INSERT INTO translates (block_id, language_id, `text`, created_at, updated_at, type_translate_id, site_id, count_words, `enabled`, is_ordered) VALUES '
         loadSQL         = []
@@ -387,12 +387,11 @@ for item in ps.listen():
             langTo  = lang[3]
             langID  = lang[0]
             pool    = ThreadPool(1)
-            for block in blocks:
-                results = pool.map(createEmptyTranslate, blocks)
-                pool.close()
-                pool.join()              
+            results = pool.map(createEmptyTranslate, blocks)
+            pool.close()
+            pool.join()              
         
-        if len(loadSQL) <= maxBlockInsert:
+        if len(loadSQL) > 0 and len(loadSQL) <= maxBlockInsert:
             iBlockInsert = 0
             cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
             loadSQL = []
