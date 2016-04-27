@@ -10,19 +10,19 @@ location.search
 
 if ( !getloc_off )
   {
-    var css    = 'body {display: none;}',
-        head   = document.head || document.getElementsByTagName('head')[0],
-        style  = document.createElement('style');
-    style.type = 'text/css'
+    var getloc_css        = 'body {display: none;}',
+        getloc_head       = document.head || document.getElementsByTagName('head')[0],
+        getloc_style      = document.createElement('style');
+    getloc_style.type     = 'text/css'
 
-    if ( style.styleSheet )
-        style.styleSheet.cssText = css;
+    if ( getloc_style.styleSheet )
+        getloc_style.styleSheet.cssText = getloc_css;
     else
-        style.appendChild(document.createTextNode(css));
+        getloc_style.appendChild(document.createTextNode(getloc_css));
 
-    head.appendChild(style)
-
-    window.console.log('insert css')
+    getloc_head.appendChild(getloc_style)
+    
+    window.console.log('body -> display: none')
   }
 
 
@@ -32,12 +32,13 @@ function getloc(settings)
     this.lang          = settings['lang']
     this.uri           = window.location.href
     this.secret        = settings['secret']
-    this.uri_api       = 'http://api.getloc.ru/translate?'
+    this.uri_api       = 'http://api.getloc.local/translate?'
     this.callback      = 'getloc.setTranslate'
     this.response      = ''
     this.showChoice    = true
+    this.style_body    = 'block'
     this.htmlWidget    = ''
-    this.originalCont  = ''
+    this.originalDOM  = ''
     this.complete      = false
     this.source        = settings['source']
     this.saveLang      = settings['saveLang']
@@ -120,6 +121,109 @@ function getloc(settings)
         return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     }
     
+    /**
+     * 
+     * @param {type} start
+     * @param {type} output
+     * @returns {undefined}\
+     */
+    
+    this.recurseDomChildren = function(start, output)
+    {
+        var nodes;
+        
+        if ( start.childNodes )
+          {
+            nodes = start.childNodes;
+            this.loopNodeChildren(nodes, output);
+          }
+    }
+    
+    /**
+     * 
+     * @param {type} nodes
+     * @param {type} output
+     * @returns {undefined}
+     */
+    
+    this.loopNodeChildren = function(nodes, output)
+    {
+        var node;
+        
+        for ( var i=0; i<nodes.length; i++ )
+        {
+            node = nodes[i];
+            if ( output )
+              {                                  
+                if ( node.nodeName == 'SCRIPT' || node.nodeName == 'STYLE' )
+                    continue;
+                
+                else if ( node.nodeName == 'INPUT' || node.nodeName == 'IMG' || node.nodeName == 'META'  )
+                    this.translateAttribute(node);  
+                               
+                else if ( node.nodeName == 'A' && node.title )
+                    node.title = this.response.results[this.decodeSpecialChars(node.title)]
+                
+                else
+                    this.translateNode(node);
+              }
+            if ( node.childNodes )
+              {
+                this.recurseDomChildren(node, output);
+              }
+        }
+    }
+        
+    /**
+     * @param object node
+     * @returns void
+     */
+
+    this.translateNode = function(node)
+    {
+        var whitespace = /^\s+$/g;
+        if ( node.nodeType === 3 )
+          {
+            node.data = node.data.replace(whitespace, "")
+            if ( node.data && this.response.results[this.decodeSpecialChars(node.data)] )
+              {
+                node.data = this.response.results[this.decodeSpecialChars(node.data)]
+              }  
+          }  
+    }
+    
+    /**
+     * @param   object node
+     * @returns void
+     */
+    
+    this.translateAttribute = function(node)
+    {
+        var whitespace = /^\s+$/g;
+        
+        if ( node.nodeName == 'INPUT' )
+          {
+            node.value       = node.value.replace(whitespace, "") 
+            node.placeholder = node.placeholder.replace(whitespace, "") 
+              
+            if ( node.value && this.response.results[this.decodeSpecialChars(node.value)] )
+                node.value = this.response.results[this.decodeSpecialChars(node.value)]  
+            if ( node.placeholder && this.response.results[this.decodeSpecialChars(node.placeholder)] )
+                node.placeholder = this.response.results[this.decodeSpecialChars(node.placeholder)]
+          }
+        else if ( node.nodeName == 'IMG' && node.alt && this.response.results[this.decodeSpecialChars(node.alt)] )  
+          {
+            node.alt = node.alt.replace(whitespace, "")  
+            if ( node.alt )
+                node.alt = this.response.results[this.decodeSpecialChars(node.alt)]
+          }
+          
+        else if ( node.nodeName == 'META' )
+          {
+            if ( (node.name == 'description' || node.name == 'keywords') && node.content && this.response.results[this.decodeSpecialChars(node.content)] )
+                node.content = this.response.results[this.decodeSpecialChars(node.content)]
+          }
+    }
     
     /**
      * Переводим текст на странице
@@ -134,27 +238,22 @@ function getloc(settings)
      
         if ( !this.complete )
           {
-            document.getElementsByTagName('body')[0].style.display = 'block'
-            this.originalCont  = content.innerHTML;
+            document.getElementsByTagName('body')[0].style.display = this.style_body
+            this.originalDOM  = document.documentElement.cloneNode(true);
           }
         
         if ( !this.complete )
-            for ( var original in this.response.results ) {
-                console.log(original);
-                content.innerHTML = content.innerHTML.replace(new RegExp(this.decodeSpecialChars(this.regexpEscape(original)), 'g'), this.response.results[original]);
-            }
-
+          {
+            if ( this.source != this.lang )
+                this.recurseDomChildren(document.documentElement, true);       
+          }
         else
            {
-            var temp_content  = this.originalCont
-
-            for ( var original in this.response.results )
-                this.originalCont = this.originalCont.replace(new RegExp(this.decodeSpecialChars(original), 'g'), this.response.results[original]);
-
-            document.getElementsByTagName('html')[0].innerHTML = this.originalCont
-            this.originalCont = temp_content
+             evilClone = this.originalDOM.cloneNode(true)
+             this.recurseDomChildren(evilClone, true);
+             content.innerHTML = evilClone.innerHTML
            }  
-          
+         
         if ( this.htmlWidget )
             this.showChoice = true
         
@@ -162,7 +261,7 @@ function getloc(settings)
             this.showAvailableLanguanges()
         
 	if ( !this.complete )
-	    window.onload = function() {document.getElementsByTagName('body')[0].style.display = 'block'}
+	    window.onload = function() {document.getElementsByTagName('body')[0].style.display = this.style_body}
         
 	this.complete = true
     }
@@ -261,7 +360,7 @@ function getloc(settings)
         if ( response.error )
           {
             window.console.log('error: ' + response.error.msg + ', code: ' + response.error.code)
-            document.getElementsByTagName('body')[0].style.display = 'block'
+            document.getElementsByTagName('body')[0].style.display = this.style_body
           }
         else
           {
@@ -286,11 +385,18 @@ function getloc(settings)
         if ( lang = this.getCookie('saveLang') )
             this.lang = lang
         
+        
+        isLoaded = false
+        style    = this.style_body
+
         var script      = document.createElement('script');
         script.src      = this.uri_api + 'secret='+this.secret+'&uri='+this.uri+'&lang='+this.lang+'&callback='+this.callback;
         script.src     += '&nocache=' + + (new Date()).getTime();
         script.async    = true;
-        
+        script.onerror  = function()
+        {
+            document.getElementsByTagName('body')[0].style.display = style
+        }
         document.getElementsByTagName('HEAD')[0].appendChild(script);
     }
     
