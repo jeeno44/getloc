@@ -56,7 +56,7 @@ def translateBlock(block):
 
 def createEmptyTranslate(block):
     global iBlockInsert, insertSQLTrans, loadSQL, langTo, siteID
-    loadSQL.append("({id}, {language_id}, '', NOW(), NOW(), NONE, {siteID}, 0, {pub}, 0)".format(id=block[0], siteID=siteID, language_id=langID, pub=1))
+    loadSQL.append("({id}, {language_id}, '', NOW(), NOW(), NULL, {siteID}, 0, {pub}, 0)".format(id=block[0], siteID=siteID, language_id=langID, pub=1))
     iBlockInsert += 1
 
     if len(loadSQL) >= maxBlockInsert:
