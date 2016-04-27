@@ -54,15 +54,26 @@ def translateBlock(block):
         cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
         loadSQL = []
 
-def createEmptyTranslate(block):
-    global iBlockInsert, insertSQLTrans, loadSQL, langTo
-    loadSQL.append("({id}, {language_id}, '', NOW(), NOW(), 1, 1, 0, {pub})".format(id=block[0], language_id=langID, pub=auto_publishing)
-    iBlockInsert += 1
+#------------------------------------------------------------------------------------------------------
+# Стресс тест для проекта
+#------------------------------------------------------------------------------------------------------
 
-    if len(loadSQL) >= maxBlockInsert:
-        iBlockInsert = 0
-        cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
-        loadSQL = []
+def stressTest(urls, rpb, message):
+    urls_for_test = urls[0:50] #Берем только 50 первых урлов
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+            future_to_url = {executor.submit(load_url, url, siteID, cursor, 60): url for url in urls_for_test }
+            for future in concurrent.futures.as_completed(future_to_url):
+                url = future_to_url[future]
+                try:
+                    response = urllib2.urlopen(req, timeout=10)
+                except urllib2.HTTPError as e:
+                    if e.code == 503:
+                        p.psubscribe('textCollectorOneThread', message)
+                        print "Отправлено в один поток"
+                        return True
+                except Exception as exc:
+                    print '%r generated an exception: %s, %s' % (url, exc, sys.exc_info()[-1].tb_lineno)
+                    pass
 
 #------------------------------------------------------------------------------------------------------
 # Получаем языки проекта
@@ -95,17 +106,28 @@ def count_letters(word):
 # Работаем со всеми типами УРЛа
 #------------------------------------------------------------------------------------------------------
 
-def iri2uri(uri):
-    (scheme, authority, path, query, fragment) = urlparse.urlsplit(uri)
-    if fragment == '' and query == '' and path == '/':
-        path = ''
-    authority = authority.encode('idna').encode('utf8')
-    path = urllib.quote(urllib.unquote(path.encode('utf8')), safe="%/:=&?~#+!$,;'@()*[]")
-    query = urllib.quote(query.encode('utf8'), safe="%/:=&?~#+!$,;'@()*[]")
-    fragment = urllib.quote(fragment.encode('utf8'), safe="%/:=&?~#+!$,;'@()*[]")
-    uri = urlparse.urlunsplit((scheme, authority, path, query, fragment))
-    uri = uri.encode('utf8')
-    return uri
+def iri2uri(uri, encoding='utf-8'):
+    scheme, authority, path, query, frag = urlparse.urlsplit(uri)
+    scheme = scheme.encode(encoding)
+
+    if ":" in authority:
+        host, port = authority.split(":", 1)
+        authority = host.encode('idna') + ":%s" % port
+    
+    path = urllib.quote(
+      path.encode(encoding), 
+      safe="/;%[]=:$&()+,!?*@'~"
+    )
+    query = urllib.quote(
+      query.encode(encoding), 
+      safe="/;%[]=:$&()+,!?*@'~"
+    )
+    frag = urllib.quote(
+      frag.encode(encoding), 
+      safe="/;%[]=:$&()+,!?*@'~"
+    )
+
+    return urlparse.urlunsplit((scheme, authority, path, query, frag))
 
 #------------------------------------------------------------------------------------------------------
 # Загружаем страницу
@@ -133,7 +155,7 @@ def makeBlock(siteID, text, element, url):
         sql    = """INSERT INTO blocks SET site_id = {site_id}, `text` = "{text}", 
                     `type` = "{type}", count_words = {ccword}, count_symbols = {ccsymb},
                     created_at = NOW(), updated_at = NOW(), enabled = {enable}""".format(site_id=siteID, text=MySQLdb.escape_string(text.encode('utf8')), 
-                                                                                        type=MySQLdb.escape_string(element), ccword=ccword, ccsymb=ccsymb, enable=1)
+                                                                                        type=MySQLdb.escape_string(element), ccword=ccword, ccsymb=ccsymb, enable=auto_publishing)
         cursor.execute(sql)
 
         countWords      += ccword
@@ -193,7 +215,7 @@ for item in ps.listen():
         urlPageID = {}
 
         data_           = json.loads(item['data'].decode("utf-8"))
-        db              = MySQLdb.connect(host=mysql_credentials['host'], user=mysql_credentials['user'], passwd=mysql_credentials['password'], db=mysql_credentials['db'], charset=mysql_credentials['charset'], unix_socket=mysql_credentials['unix_socket'])
+        db              = MySQLdb.connect(host=mysql_credentials['host'], user=mysql_credentials['user'], passwd=mysql_credentials['password'], db=mysql_credentials['db'], charset=mysql_credentials['charset'])
         trans_client    = 'blackgremlin2'
         trans_secret    = 'SMnjwvLx0bB2u9Cn05K2vkTE1bSkX0+fsLp/23gsytU='
         
@@ -230,16 +252,23 @@ for item in ps.listen():
         # И записываем их
         #------------------------------------------------------------------------------------------------------
 
-        sql = 'SELECT * FROM pages WHERE site_id = {projectID} AND collected != 1'.format(projectID=siteID)
+        sql = 'SELECT * FROM pages WHERE site_id = {projectID} AND collected != 1 ORDER BY id DESC'.format(projectID=siteID)
         cursor.execute(sql)
         pages = cursor.fetchall()
 
         for page in pages:
-            pageID, siteID, url, code, level, visited, collected, enabled, created_at, updated_at = page
-            urls.append(str(url))
-            urlPageID[str(url)] = pageID
+            pageID, siteID, url, code, level, visited, collected, created_at, updated_at = page
+            urls.append(str(url.encode('utf8')))
+            urlPageID[str(url.encode('utf8'))] = pageID
 
         count = 0
+
+        #------------------------------------------------------------------------------------------------------
+        # Проводим стресс тест для сайта, проактивная защита BITRIX
+        #------------------------------------------------------------------------------------------------------
+
+        if stressTest(urls, r, item['data']):
+            continue
 
         #------------------------------------------------------------------------------------------------------
         # Запускаем потоки и bs4
@@ -312,6 +341,7 @@ for item in ps.listen():
                                         makePageBlock(getPageID(url, siteID), block_id)
 
                     count += 1
+                    
                     del html
 
                 except Exception as exc:
@@ -351,20 +381,8 @@ for item in ps.listen():
         #        results = pool.map(translateBlock, blocks)
         #        pool.close()
         #        pool.join()
-        
-        langs      = getLangsProject(siteID) 
-        sql        = 'SELECT * FROM blocks WHERE site_id = {projectID}'.format(projectID=siteID)
-        cursor.execute(sql)
-        blocks = cursor.fetchall()
+                                      
 
-        for lang in langs:
-            langTo  = lang[3]
-            langID  = lang[0]
-            pool    = ThreadPool(4)
-            results = pool.map(createEmptyTranslate, blocks)
-            pool.close()
-            pool.join()              
-            
         db.close()
         cursor.close()
 

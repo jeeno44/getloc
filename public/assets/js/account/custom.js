@@ -164,8 +164,6 @@ setEventInContent = function()
     
     $('.save_translate').click(function(){
         
-        
-        
         var blockID = $(this).attr('object-id')
         var type    = $('#order_'+blockID).attr('data-type') 
         
@@ -182,9 +180,9 @@ setEventInContent = function()
                 $('#phrase_' + blockID).attr('class', response.block.color)
                 $('#typeTranslate_'+blockID).attr('class', response.block.icon).css('display', 'block').html(response.block.typeTranslate)
                 $('#dDatetime_'+blockID).attr('datetime', response.block.datetime).html(response.block.date)
-
-                $('#phrase_'+blockID).hide();
-                console.log($(this).closest('.phrases__item').attr('class'));
+                
+                //$('#phrase_'+blockID).hide();
+                //console.log($(this).closest('.phrases__item').attr('class'));
             }
         });
     })
@@ -206,7 +204,7 @@ setEventInContent = function()
             cache   : false,
             success : function(res)
             {
-                $('#order_'+id).val(res.text).css('height', '50px')
+                $('#order_'+id).empty().val(res.text).css('height', '50px')
                 if ( ob.hasClass('isLinkMoreMenu') )
                   {
                     toastr.success(res.message)
@@ -220,8 +218,7 @@ setEventInContent = function()
     // })
     $('.paginationAjax a').click(function(e){
         if (location.pathname !== '/account/pages') {
-            console.log(location.pathname === '/account/pages');
-            // loadPhrases($(this).attr('href').split('page=')[1]);
+            loadPhrases($(this).attr('href').split('page=')[1]);
             e.preventDefault();
         }
 
@@ -395,10 +392,10 @@ stopLoader  = function()
 setStatusBlock = function(status)
 {
     var data = {status: status, ids: []}
-    $(".checkboxPhrase:checked").each(function(){
+    $("input[name='blocks[]']:checked").each(function(){
         data['ids'].push($(this).val());
     })
-    
+  
     $.ajax({
         url     : "/account/setStatusBlock",
         type    : 'post',
@@ -411,7 +408,11 @@ setStatusBlock = function(status)
                     $('#phrase_'+id).remove()
                 });
             
-            toastr.success(res.message)
+            if ( res.isError )
+                toastr.error(res.message)
+            else
+                toastr.success(res.message)
+            
             setNewStats(res.stats)
         }
     });

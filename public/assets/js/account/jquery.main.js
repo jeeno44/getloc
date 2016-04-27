@@ -174,7 +174,7 @@ var EditComments = function(obj) {
                     return false
                 }
             });
-
+            
             _obj.on({
                 submit: function () {
                     _obj.removeClass('active');
@@ -213,6 +213,7 @@ var EditText = function(obj) {
         _textArea = _obj.find('textarea'),
         _textAreaVal = _textArea.val(),
         _btnsWrap = _obj.find('.phrases__item-col-btns'),
+        _saveBtn = _obj.find('.save_translate'),
         _cancelBtn = _obj.find('.cancel');
 
     //private methods
@@ -227,7 +228,17 @@ var EditText = function(obj) {
 
                 }
             });
+            
+            _saveBtn.on({
+                click: function () {
+                   _obj.removeClass('active');
+                    _textArea.attr('readonly', 'readonly');
+                    _btnsWrap.slideUp(300);
 
+                    return false
+                }
+            });
+            
             _cancelBtn.on({
                 click: function () {
 

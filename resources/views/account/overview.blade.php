@@ -99,7 +99,7 @@
             <div class="translation__item">
                 <div class="translation__language">
                     <span class="translation__language-flag" style="background-image: url('/assets/img/account/icons-en.png')"></span>
-                    {{$lang['name']}}
+                    {{$lang['name']}} @if ($lang['enabled'] == 0)({{trans('account.langOff')}}) @endif
                 </div>
                 <div class="translation__info">
                     {{trans('account.inProcTranslated')}}

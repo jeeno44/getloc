@@ -1,5 +1,4 @@
 {{--{{ $pathName }}--}}
-
     @foreach ($blocks as $t)
         @if($t->blocks_enabled)
             @if ( $viewType == 2)
@@ -31,7 +30,7 @@
                         {{--<input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">--}}
                         {{--<label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>--}}
                     {{--</div>--}}
-                    {{ dd($t) }}
+                   
                     <div class="historyPhrase">История перевода фразы</div>
                     @include('partials.account-menu-phrase', ['ob' => $t])
                 </div>
@@ -65,7 +64,7 @@
                         {{--<label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>--}}
                     {{--</div>--}}
 {{--                    {{ dd($historyPhrase->groupBy('translate_id')->toArray()) }}--}}
-                    @if(isset($historyPhrase->groupBy('translate_id')->toArray()[$t->tid]) && count($historyPhrase->groupBy('translate_id')->toArray()[$t->tid])>0)
+                    @if(isset($historyPhrase[$t->tid]))
                     <div class="historyPhrase">
                     <table class="">
                         <tr>
