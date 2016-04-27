@@ -56,7 +56,7 @@ def translateBlock(block):
 
 def createEmptyTranslate(block):
     global iBlockInsert, insertSQLTrans, loadSQL, langTo
-    loadSQL.append("({id}, {language_id}, '', NOW(), NOW(), 1, 1, 0, {pub})".format(id=block[0], language_id=langID, pub=auto_publishing))
+    loadSQL.append("({id}, {language_id}, '', NOW(), NOW(), 1, 1, 0, {pub}, 0)".format(id=block[0], language_id=langID, pub=auto_publishing))
     iBlockInsert += 1
 
     if len(loadSQL) >= maxBlockInsert:
@@ -234,7 +234,7 @@ for item in ps.listen():
 
         maxBlockInsert  = 50
         iBlockInsert    = 0
-        insertSQLTrans  = 'INSERT INTO translates (block_id, language_id, `text`, created_at, updated_at, type_translate_id, site_id, count_words, `enabled`) VALUES '
+        insertSQLTrans  = 'INSERT INTO translates (block_id, language_id, `text`, created_at, updated_at, type_translate_id, site_id, count_words, `enabled`, is_ordered) VALUES '
         loadSQL         = []
         langTo          = ''
         langID          = 0
@@ -386,10 +386,11 @@ for item in ps.listen():
         for lang in langs:
             langTo  = lang[3]
             langID  = lang[0]
-            pool    = ThreadPool(4)
-            results = pool.map(createEmptyTranslate, blocks)
-            pool.close()
-            pool.join()              
+            pool    = ThreadPool(1)
+            for block in blocks:
+                results = pool.map(createEmptyTranslate, blocks)
+                pool.close()
+                pool.join()              
         
         if len(loadSQL) <= maxBlockInsert:
             iBlockInsert = 0
