@@ -18,6 +18,7 @@ import collections
 import string
 import sys
 import json
+import re
 from db_access import mysql_credentials
 
 #------------------------------------------------------------------------------------------------------
@@ -46,7 +47,7 @@ def getSettingsProject(projectID):
 def translateBlock(block):
     global iBlockInsert, insertSQLTrans, loadSQL, langTo
     translate = translator.translate(block[2].encode('utf-8'), lang_from=fromLang, lang_to=langTo)
-    loadSQL.append("({id}, {language_id}, '{text}', NOW(), NOW(), NULL, 1, {cc}, 1)".format(id=block[0], language_id=langID, text=MySQLdb.escape_string(str(translate.encode('utf-8'))), cc=len(translate.split())))
+    loadSQL.append("({id}, {language_id}, '{text}', NOW(), NOW(), 1, {siteID}, {cc}, 1, 0)".format(id=block[0], language_id=langID, siteID=siteID, text=MySQLdb.escape_string(str(translate.encode('utf-8'))), cc=len(translate.split())))
     iBlockInsert += 1
 
     if len(loadSQL) >= maxBlockInsert:
@@ -144,6 +145,8 @@ def load_url(url, siteID, cursor, timeout):
 
 def makeBlock(siteID, text, element, url):
     global countWords, countSymbols, countBlocks
+
+    text  = text.strip()
 
     #block = cursor.execute('SELECT `text` FROM blocks WHERE `text` = "{text}"'.format(text=MySQLdb.escape_string(text.encode('utf8'))))
 
@@ -330,12 +333,11 @@ for item in ps.listen():
                                     continue
 
                                 for str_ in element.findAll(text=True, recursive=False):
-                                    string += (str_)
-  
-                                if string.isdigit() != True and string: #Цифры нам нинужныыыы!
-                                    block_id = makeBlock(siteID, string, element.name, url)
-                                    if block_id is not False:
-                                        makePageBlock(getPageID(url, siteID), block_id)
+                                    string = re.sub(' +',' ', str_)
+                                    if string.isdigit() != True and string: #Цифры нам нинужныыыы!
+                                        block_id = makeBlock(siteID, string, element.name, url)
+                                        if block_id is not False:
+                                            makePageBlock(getPageID(url, siteID), block_id)
 
                     count += 1
                     del html
@@ -361,23 +363,29 @@ for item in ps.listen():
         # Если была такая настройка у проекта
         #------------------------------------------------------------------------------------------------------
 
-        #if auto_translate:
-        #    translator = Translator(trans_client, trans_secret)
-        #    langs      = getLangsProject(siteID)
-            
-        #    sql        = 'SELECT * FROM blocks WHERE site_id = {projectID}'.format(projectID=siteID)
-
-        #    cursor.execute(sql)
-        #    blocks = cursor.fetchall()
-
-        #    for lang in langs:
-        #        langTo  = lang[3]
-        #        langID  = lang[0]
-        #        pool    = ThreadPool(4)
-        #        results = pool.map(translateBlock, blocks)
-        #        pool.close()
-        #        pool.join()
         
+        translator = Translator(trans_client, trans_secret)
+        langs      = getLangsProject(siteID)
+        
+        sql        = 'SELECT * FROM blocks WHERE site_id = {projectID}'.format(projectID=siteID)
+
+        cursor.execute(sql)
+        blocks = cursor.fetchall()
+        for lang in langs:
+            langTo  = lang[3]
+            langID  = lang[0]
+            pool    = ThreadPool(4)
+            results = pool.map(translateBlock, blocks)
+            pool.close()
+            pool.join()
+
+        if len(loadSQL) > 0 and len(loadSQL) <= maxBlockInsert:
+            iBlockInsert = 0
+            cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
+            loadSQL = []
+            db.close()
+            cursor.close()
+        """
         langs      = getLangsProject(siteID) 
         sql        = 'SELECT * FROM blocks WHERE site_id = {projectID}'.format(projectID=siteID)
         cursor.execute(sql)
@@ -397,6 +405,7 @@ for item in ps.listen():
             loadSQL = []
         db.close()
         cursor.close()
+        """
 
         del soup
         del issetBlocks

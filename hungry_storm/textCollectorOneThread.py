@@ -138,6 +138,8 @@ def makeBlock(siteID, text, element, url):
 
     #block = cursor.execute('SELECT `text` FROM blocks WHERE `text` = "{text}"'.format(text=MySQLdb.escape_string(text.encode('utf8'))))
 
+    text  = text.strip()
+    
     if text not in issetBlocks:
         ccword = len(text.split())
         ccsymb = count_letters(text)
@@ -315,6 +317,8 @@ for item in ps.listen():
                             for str_ in element.findAll(text=True, recursive=False):
                                 string += (str_)
 
+                            string  = string.strip()     
+
                             if string.isdigit() != True and string: #Цифры нам нинужныыыы!
                                 block_id = makeBlock(siteID, string, element.name, url)
                                 if block_id is not False:
@@ -371,18 +375,17 @@ for item in ps.listen():
         for lang in langs:
             langTo  = lang[3]
             langID  = lang[0]
-            pool    = ThreadPool(1)
+            pool    = ThreadPool(2)
             for block in blocks:
                 results = pool.map(createEmptyTranslate, blocks)
-            
-            pool.close()
-            pool.join()              
+                            pool.close()
+                pool.join()              
         
         if len(loadSQL) <= maxBlockInsert:
             iBlockInsert = 0
             cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
             loadSQL = []
-            
+
         db.close()
         cursor.close()     
                                       

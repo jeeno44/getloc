@@ -32,7 +32,7 @@ function getloc(settings)
     this.lang          = settings['lang']
     this.uri           = window.location.href.replace('#', '')
     this.secret        = settings['secret']
-    this.uri_api       = 'http://api.getloc.ru/translate?'
+    this.uri_api       = 'http://api.getloc.local/translate?'
     this.callback      = 'getloc.setTranslate'
     this.response      = ''
     this.showChoice    = true
@@ -42,6 +42,7 @@ function getloc(settings)
     this.complete      = false
     this.source        = settings['source']
     this.saveLang      = settings['saveLang'] 
+    this.uniqDict      = {}
     
     /**
      * Определяем язык
@@ -182,15 +183,24 @@ function getloc(settings)
     this.translateNode = function(node)
     {
         var whitespace = /^\s+$/g       
-	var br	       = /<br\s*[\/]?>/gi
+
         if ( node.nodeType === 3 )
           {
-            node.data = node.data.replace(whitespace, "")
-	    node.data = node.data.replace(br, "")
-            if ( node.data && this.response.results[this.decodeSpecialChars(node.data)] )
-                node.data = this.response.results[this.decodeSpecialChars(node.data)]
-	    else if (node.data && this.response.results[node.data])
-		node.data = this.response.results[node.data]
+            node.data = node.data.replace(whitespace, '')       
+            if ( node.data )
+              {     
+                if ( !this.response.results[this.decodeSpecialChars(node.data)] )
+                  {
+                    isTrim = this.response.results[this.decodeSpecialChars(node.data.replace(/  +/g, ' ').trim())]
+                    if ( isTrim )
+                    {
+                        node.data = isTrim
+                    }
+                    
+                  }
+                else if (node.data && this.response.results[this.decodeSpecialChars(node.data)])
+                    node.data = this.response.results[this.decodeSpecialChars(node.data)]  
+              }
           }  
     }
     
@@ -247,13 +257,13 @@ function getloc(settings)
         if ( !this.complete )
           {
             if ( this.source != this.lang )
-                this.recurseDomChildren(document.documentElement, true);       
+                this.recurseDomChildren(document.documentElement, true);   
           }
         else
            {
              evilClone = this.originalDOM.cloneNode(true)
              this.recurseDomChildren(evilClone, true);
-             content.innerHTML = evilClone.innerHTML
+             content.childNodes[2].innerHTML = evilClone.childNodes[2].innerHTML
            }  
          
         if ( this.htmlWidget )
