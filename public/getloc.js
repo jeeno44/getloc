@@ -181,14 +181,16 @@ function getloc(settings)
 
     this.translateNode = function(node)
     {
-        var whitespace = /^\s+$/g;       
+        var whitespace = /^\s+$/g       
+	var br	       = /<br\s*[\/]?>/gi
         if ( node.nodeType === 3 )
           {
             node.data = node.data.replace(whitespace, "")
+	    node.data = node.data.replace(br, "")
             if ( node.data && this.response.results[this.decodeSpecialChars(node.data)] )
-              {
                 node.data = this.response.results[this.decodeSpecialChars(node.data)]
-              }  
+	    else if (node.data && this.response.results[node.data])
+		node.data = this.response.results[node.data]
           }  
     }
     
