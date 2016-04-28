@@ -437,7 +437,7 @@ class AccountController extends Controller
             if ( $lang = DB::table('site_language')->where('site_id', $siteID)->where('language_id', $langID)->get() )
                 DB::table('site_language')->where('site_id', $siteID)->where('language_id', $langID)->update(['enabled' => $lang[0]->enabled]);
             else
-                DB::table('site_language')->insert(['site_id' => $siteID, 'language_id' => $langID, 'enabled' => 1]);
+                DB::table('site_language')->insert(['site_id' => $siteID, 'language_id' => $langID, 'enabled' => 0]);
         }
 
         \Event::fire('site.changed', Site::find($siteID));
@@ -493,7 +493,6 @@ class AccountController extends Controller
     private function generateStatsForPhraseFilter($arrData)
     {
         $filter = array();
-
         $filter['stats']['menu']          = array(1 => 0, 2 => 0, 3 => 0);
         $filter['stats']['in_translate']  = $this->getStatsInTranslate($arrData);
         $filter['stats']['not_translate'] = $this->getStatsNotTranslate($arrData);
@@ -515,7 +514,6 @@ class AccountController extends Controller
         $filter['menu']['types']        = TypeTranslate::orderBy('id')->get();
         $filter['menu']['active_lang']  = $arrData['languageID'];
         $filter['menu']['active_type']  = Session::get('filter')['typeID'];
-
         foreach ( $filter['menu']['langs'] as $lang )
         {
             $ccNull  = Translate::where('site_id', $arrData['siteID'])->where('language_id', $lang->id)->whereNotNull('type_translate_id')->count();
@@ -525,7 +523,6 @@ class AccountController extends Controller
         }
         
         $filter['pages_url'] = Session::get('pages_url');
-
         return $filter;
     }
     
@@ -553,7 +550,7 @@ class AccountController extends Controller
 
         if ( !empty($arrData['phraseInOrder']) ) 
             $buildQuery->where('translates.is_ordered', $arrData['phraseInOrder']);
-		
+
         if ( !empty($arrData['searchText']) )
             $buildQuery->where(function ($query) use ($arrData)
             {
@@ -594,6 +591,9 @@ class AccountController extends Controller
 
         if ( !empty($arrData['phraseInOrder']) ) 
             $buildQuery->where('translates.is_ordered', $arrData['phraseInOrder']);
+
+        if ( !empty($arrData['typeID']) )
+            $buildQuery->where('translates.type_translate_id', $arrData['typeID']);
             
         if ( !empty($arrData['searchText']) ) 
             $buildQuery->where(function ($query) use ($arrData)
@@ -643,6 +643,9 @@ class AccountController extends Controller
                 $query->where('blocks.text', 'LIKE', '%' . $arrData['searchText'] . '%')
                       ->orWhere('translates.text', 'LIKE', '%' . $arrData['searchText'] . '%');
             });
+
+        if ( !empty($arrData['typeID']) )
+            $buildQuery->where('translates.type_translate_id', $arrData['typeID']);
         
         if ( isset($arrData['minDate']) && $arrData['minDate'] > 0 ) 
             $buildQuery->where('translates.updated_at', '>=', Carbon::parse($arrData['minDate'])->toDateTimeString());
@@ -686,7 +689,7 @@ class AccountController extends Controller
                 $query->where('blocks.text', 'LIKE', '%' . $arrData['searchText'] . '%')
                       ->orWhere('translates.text', 'LIKE', '%' . $arrData['searchText'] . '%');
             });
-        
+
         if ( isset($arrData['minDate']) && $arrData['minDate'] > 0 ) 
             $buildQuery->where('translates.updated_at', '>=', Carbon::parse($arrData['minDate'])->toDateTimeString());
         
@@ -749,17 +752,18 @@ class AccountController extends Controller
             $filterDef = 1;
         
         $arrData = compact('siteID', 'languageID');
+        if (!empty(Session::get('filter')['typeID'])) {
+            $arrData['typeID'] = Session::get('filter')['typeID'];
+        }
         $filter  = $this->generateStatsForPhraseFilter($arrData);
-
-        if ( (int)$filter['stats']['not_translate'] === 0 ) 
+        if ( (int)$filter['stats']['not_translate'] === 0 )
             $tab = 'tab_translated';
          else 
             $tab = 'tab_not_translated';
-
         $tab_name = $tab;
         $arrData  = compact('tab', 'siteID', 'languageID');
+
         $blocks   = $this->buildQueryPhrase($arrData);
-        
         $phrasesInOrder = $this->getCountPhrasesInOrder();
         $costOrder      = $this->getCostOrder();
 
@@ -1033,18 +1037,24 @@ class AccountController extends Controller
             break;
             case 'tab_translated':
                 $buildQuery->whereNotNull('translates.type_translate_id');
+                if (!empty($arrQuery['typeID']))
+                    $buildQuery->where('translates.type_translate_id', $arrQuery['typeID']);
                 break;
             case 'tab_published':
                 $buildQuery->where('translates.enabled', '=', 1);
+                if (!empty($arrQuery['typeID']))
+                    $buildQuery->where('translates.type_translate_id', $arrQuery['typeID']);
                 break;
             case 'tab_acrhive':
                 $buildQuery->where('translates.enabled', 0);
+                if (!empty($arrQuery['typeID']))
+                    $buildQuery->where('translates.type_translate_id', $arrQuery['typeID']);
             break;
         }
 
         if ( !empty($arrQuery['phraseInOrder']) ) 
             $buildQuery->where('translates.is_ordered', $arrQuery['phraseInOrder']);
-        
+
 	if ( !empty($arrQuery['searchText']) )
             $buildQuery->where(function ($query) use ($arrQuery) 
             {
