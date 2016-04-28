@@ -176,11 +176,11 @@ setEventInContent = function()
             {
                 toastr.success(response.message)
                 setNewStats(response.stats)
-                
+
                 $('#phrase_' + blockID).attr('class', response.block.color)
                 $('#typeTranslate_'+blockID).attr('class', response.block.icon).css('display', 'block').html(response.block.typeTranslate)
                 $('#dDatetime_'+blockID).attr('datetime', response.block.datetime).html(response.block.date)
-                
+                loadPhrases();
                 //$('#phrase_'+blockID).hide();
                 //console.log($(this).closest('.phrases__item').attr('class'));
             }
@@ -208,6 +208,7 @@ setEventInContent = function()
                 if ( ob.hasClass('isLinkMoreMenu') )
                   {
                     toastr.success(res.message)
+                      loadPhrases();
                   }
             }
         });
@@ -305,8 +306,8 @@ setArchive = function(id)
         success     : function(res)
         {
             toastr.success(res.message)
-            setNewStats(res.stats)
-            $('#phrase_'+id).remove();
+            //$('#phrase_'+id).remove();
+            loadPhrases();
         }
     })
 }
@@ -413,7 +414,8 @@ setStatusBlock = function(status)
             else
                 toastr.success(res.message)
             
-            setNewStats(res.stats)
+            //setNewStats(res.stats)
+            loadPhrases()
         }
     });
 }
