@@ -2496,3 +2496,15 @@ button.phrases__control-to-order{
 .history-phrase{
     display: none;
 }
+
+ul.ui-autocomplete {
+    border: 1px solid #dddddd;
+    background: #fff;
+    color: #333333;
+}
+li.ui-menu-item.ui-state-focus{
+    background: #ebf8fd;
+    color:#26bdea;
+    border: none;
+    font-weight: normal;
+}
