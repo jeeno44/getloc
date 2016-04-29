@@ -13,7 +13,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         \Event::listen('maps.done', function($site) {
-            //\Queue::push(new \App\Jobs\TextsCollector($site));
             $domain = env('APP_DOMAIN');
             if ( \DB::table('site_tate_collector')->count() == 0 )
                 \Redis::publish('collector', json_encode(['site' => $site->id, 'api' => 'api.'.$domain], JSON_UNESCAPED_UNICODE));

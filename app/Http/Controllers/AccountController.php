@@ -519,7 +519,12 @@ class AccountController extends Controller
             $ccNull  = Translate::where('site_id', $arrData['siteID'])->where('language_id', $lang->id)->whereNotNull('type_translate_id')->count();
             $ccTrans = Translate::where('site_id', $arrData['siteID'])->where('language_id', $lang->id)->count();
 
-            $filter['stats']['proc'][$lang->id] = round(($ccNull / $ccTrans) * 100);
+            if ($ccTrans > 0) {
+                $filter['stats']['proc'][$lang->id] = round(($ccNull / $ccTrans) * 100);
+            } else {
+                $filter['stats']['proc'][$lang->id]  = 0;
+            }
+
         }
         
         $filter['pages_url'] = Session::get('pages_url');
