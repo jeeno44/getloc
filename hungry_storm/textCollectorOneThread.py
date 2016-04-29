@@ -206,7 +206,7 @@ for item in ps.listen():
         urlPageID = {}
 
         data_           = json.loads(item['data'].decode("utf-8"))
-        db              = MySQLdb.connect(host=mysql_credentials['host'], user=mysql_credentials['user'], passwd=mysql_credentials['password'], db=mysql_credentials['db'], charset=mysql_credentials['charset'], , unix_socket=mysql_credentials['unix_socket'])
+        db              = MySQLdb.connect(host=mysql_credentials['host'], user=mysql_credentials['user'], passwd=mysql_credentials['password'], db=mysql_credentials['db'], charset=mysql_credentials['charset'], unix_socket=mysql_credentials['unix_socket'])
         trans_client    = 'blackgremlin2'
         trans_secret    = 'SMnjwvLx0bB2u9Cn05K2vkTE1bSkX0+fsLp/23gsytU='
         
@@ -378,7 +378,7 @@ for item in ps.listen():
             pool    = ThreadPool(2)
             for block in blocks:
                 results = pool.map(createEmptyTranslate, blocks)
-                            pool.close()
+                pool.close()
                 pool.join()              
         
         if len(loadSQL) <= maxBlockInsert:
