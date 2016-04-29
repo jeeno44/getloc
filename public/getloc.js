@@ -281,7 +281,7 @@ function getloc(settings)
                     if ( isTrim )
                       {
                         this.uniqDict[isTrim] = node.data
-                        str                   = isTrim
+                        str = isTrim
                       }
                   }
                 else if ( str && this.response.results[this.decodeSpecialChars(str)] )
@@ -301,7 +301,7 @@ function getloc(settings)
                         if ( isTrim )
                           {
                             this.tempUniqDict[isTrim]   = block
-                            str                   = isTrim
+                            str = isTrim
                           }
                       }
                     else if ( str && this.response.results[this.decodeSpecialChars(block)] )
@@ -335,8 +335,7 @@ function getloc(settings)
         
         if ( !this.complete )
           {
-            if ( this.source != this.lang )
-                this.recurseDomChildren(document.documentElement, true);   
+            this.recurseDomChildren(document.documentElement, true);   
             
             if ( this.htmlWidget )
                 this.showChoice = true
