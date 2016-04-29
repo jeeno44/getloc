@@ -365,10 +365,7 @@ for item in ps.listen():
         translator = Translator(trans_client, trans_secret)
         langs      = getLangsProject(siteID)
         
-        sql        = 'SELECT * FROM blocks WHERE site_id = {projectID}'.format(projectID=siteID)
-
-        cursor.execute(sql)
-        blocks = cursor.fetchall()
+        blocks = issetBlocks
         for lang in langs:
             langTo  = lang[3]
             langID  = lang[0]
