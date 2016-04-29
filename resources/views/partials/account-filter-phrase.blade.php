@@ -65,7 +65,6 @@
             @endforeach
         </div>
     </div>
-
-    <input type="submit" name="clearFilter" value="Очистить фильтр" />
+    <a href="{{route('main.account.clear-filter')}}">Очистить фильтр</a>
     </form>
 </div>

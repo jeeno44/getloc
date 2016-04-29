@@ -41,7 +41,7 @@
                 </div>
                 <button id="setViewTypeID_1" class="phrases__control-horizontal @if ($viewType == 1) active @endif"></button>
                 <button id="setViewTypeID_2" class="phrases__control-column @if ($viewType == 2) active @endif"></button>
-                <a href="{{route('main.billing.make-order')}}" class="btn btn_3">{{trans('account.orderTranslate')}}</a>
+                <button id="order-selected-phrases" class="phrases__control-to-order">Заказать перевод</button>
             </div>
             <div class="phrases__control">
 
@@ -83,14 +83,9 @@
 
                                 <div class="phrases__item-controls">
                                     <div class="nice-check">
-                                        <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkbox_ordering_translation" id="ordering_translation_{{$t->tid}}" @if ($t->is_ordered) checked @endif>
+                                        <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkbox_ordering_translation" id="ordering_translation_{{$t->tid}}">
                                         <label for="ordering_translation_{{$t->tid}}"></label>
-                                        {{--<label for="ordering_translation_{{$t->tid}}">@if ($t->is_ordered) {{ trans('account.deselectPhraseInOrder') }} @else {{ trans('account.selectPhraseInOrder') }} @endif</label>--}}
                                     </div>
-                                    {{--<div class="nice-check">--}}
-                                        {{--<input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">--}}
-                                        {{--<label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>--}}
-                                    {{--</div>--}}
                                     @include('partials.account-menu-phrase', ['ob' => $t])
                                 </div>
                             </div>
@@ -114,14 +109,9 @@
                                 </div>
                                 <div class="phrases__item-controls">
                                     <div class="nice-check">
-                                        <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkbox_ordering_translation" id="ordering_translation_{{$t->tid}}" @if ($t->is_ordered) checked @endif>
+                                        <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkbox_ordering_translation" id="ordering_translation_{{$t->tid}}">
                                         <label for="ordering_translation_{{$t->tid}}"></label>
-                                        {{--<label for="ordering_translation_{{$t->tid}}">@if ($t->is_ordered) {{ trans('account.deselectPhraseInOrder') }} @else {{ trans('account.selectPhraseInOrder') }} @endif</label>--}}
                                     </div>
-                                    {{--<div class="nice-check">--}}
-                                        {{--<input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkboxPhrase" id="publish_{{$t->tid}}">--}}
-                                        {{--<label for="publish_{{$t->tid}}">@if ($t->enabled){{trans('account.cancelPublishing')}}@else{{trans('account.publishing')}}@endif</label>--}}
-                                    {{--</div>--}}
                                     @include('partials.account-menu-phrase', ['ob' => $t])
                                 </div>
                             </div>
@@ -137,6 +127,11 @@
                         {!! $blocks->render() !!}
                     </div>
                     @endif
+
+                        @if($blocks->count() == 0)
+                            <div class="alert alert-info">Не найдено фраз по заданным фильтрам</div>
+                        @endif
+
                 </div>
             </div>
             

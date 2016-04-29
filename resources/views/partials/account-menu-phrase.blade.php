@@ -28,9 +28,9 @@
 
                 <li>
                     @if(!$ob->is_ordered)
-                    <a href="" data-id="{{ $ob->tid }}" class="addOrder">{{trans('account.addOrder')}}</a>
-                    @else
-                    <a href="" data-id="{{ $ob->tid }}" class="delOrder">{{trans('account.delOrder')}}</a>
+                        <a href="" data-id="{{ $ob->tid }}" class="addOrder">{{trans('account.addOrder')}}</a>
+                        @else
+                        <a href="" data-id="{{ $ob->tid }}" class="delOrder">{{trans('account.delOrder')}}</a>
                     @endif
                 </li>
             </ul>
