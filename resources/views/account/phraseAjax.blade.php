@@ -28,6 +28,7 @@
                     <div class="historyPhrase">История перевода фразы</div>
                     @include('partials.account-menu-phrase', ['ob' => $t])
                 </div>
+                <div class="history-phrase"></div>
             </div>
             @else
             <div class="phrases__item @if ($t->type_translate_id)phrases__item_mark-{{$filter['colors'][$t->type_translate_id]['block']}} @endif" id="phrase_{{$t->tid}}">
@@ -52,9 +53,9 @@
                         <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkbox_ordering_translation" id="ordering_translation_{{$t->tid}}">
                         <label for="ordering_translation_{{$t->tid}}"></label>
                     </div>
-
                     @include('partials.account-menu-phrase', ['ob' => $t])
                 </div>
+                <div class="history-phrase"></div>
             </div>
             @endif
         @endif

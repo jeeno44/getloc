@@ -102,8 +102,24 @@ $(function(){
         $(this).click(loadPhrases)
     });
 
-
 })
+
+function loadHistory() {
+    $('.show-history').on('click', function (e) {
+        var id = $(this).attr('data-id');
+        var hf = $(this).closest('.phrases__item').find('.history-phrase');
+        hf.load('/account/get-history/' + id, function () {
+            hf.slideDown();
+        });
+        e.preventDefault();
+    });
+    $(document).on('click', '.hide-history', function (e) {
+        var hf = $(this).closest('.phrases__item').find('.history-phrase');
+        hf.slideUp();
+        e.preventDefault();
+    });
+}
+
 eventAccount = function () {
 
     /**
@@ -155,6 +171,8 @@ eventAccount = function () {
     selectAllOrder();
 
     removeItemPageName()
+
+    loadHistory();
 
 }
 
@@ -358,6 +376,7 @@ loadPhrases = function(page)
             $('#renderPhrases').html(phrases.html).promise().done(setEventInContent)
             // eventAccount()
             ajaxLoadEventInit();
+            loadHistory();
         }
     })
 }

@@ -1402,4 +1402,10 @@ class AccountController extends Controller
         Session::remove('pages_url_'.$siteID);
         return redirect()->route('main.account.phrase');
     }
+
+    public function getHistory($id)
+    {
+        $history = HistoryPhrase::where('translate_id', $id)->latest()->get();
+        return view('account.history', compact('history'));
+    }
 }

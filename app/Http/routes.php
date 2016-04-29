@@ -76,6 +76,8 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
 
             Route::post('/setArchive', ['as' => 'main.account.setArchive', 'uses' => 'AccountController@setArchiveTranslate']);
 
+            Route::get('/get-history/{id}', ['as' => 'main.account.get-history', 'uses' => 'AccountController@getHistory']);
+
         });
         
     });

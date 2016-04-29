@@ -2492,3 +2492,7 @@ button.phrases__control-to-order{
     background-position: 13px center;
     padding-left: 38px;
 }
+
+.history-phrase{
+    display: none;
+}

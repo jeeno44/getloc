@@ -80,7 +80,6 @@
                                     </div>
                                     @if (empty($t->text)) <button class="phrases__item-btn-translate go_robot isLinkMoreMenu" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button> @endif
                                 </form>
-
                                 <div class="phrases__item-controls">
                                     <div class="nice-check">
                                         <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkbox_ordering_translation" id="ordering_translation_{{$t->tid}}">
@@ -88,6 +87,7 @@
                                     </div>
                                     @include('partials.account-menu-phrase', ['ob' => $t])
                                 </div>
+                                <div class="history-phrase"></div>
                             </div>
                             @else
                                 <div class="phrases__item @if ($t->type_translate_id)phrases__item_mark-{{$filter['colors'][$t->type_translate_id]['block']}} @endif" id="phrase_{{$t->tid}}">
@@ -114,6 +114,7 @@
                                     </div>
                                     @include('partials.account-menu-phrase', ['ob' => $t])
                                 </div>
+                                <div class="history-phrase"></div>
                             </div>
                             @endif
 
