@@ -55,12 +55,15 @@ class ApiController extends Controller
             $uri = prepareUri($uri);
             $page = Page::where('url', $uri)->first();
             if (!$page && strpos('_'.$uri, $site->url) > 0) {
+                $uri = urlencode($uri);
                 Page::create([
                     'url'           => $uri,
                     'site_id'       => $site->id,
                     'code'          => 200,
+                    'visited'       => 1,
                 ]);
-                $this->dispatch(new \App\Jobs\Spider($site));
+                //$this->dispatch(new \App\Jobs\Spider($site));
+                \Event::fire('maps.done', $site);
                 $response['error'] = ['msg' => 'Page does not exists', 'code' => 5];
                 return $this->makeResponse($response, $callback);
             } else {
