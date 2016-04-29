@@ -32,7 +32,7 @@ function getloc(settings)
     this.lang          = settings['lang']
     this.uri           = window.location.href.replace('#', '')
     this.secret        = settings['secret']
-    this.uri_api       = 'http://api.getloc.local/translate?'
+    this.uri_api       = 'http://api.getloc.ru/translate?'
     this.callback      = 'getloc.setTranslate'
     this.response      = ''
     this.showChoice    = true
@@ -42,7 +42,8 @@ function getloc(settings)
     this.complete      = false
     this.source        = settings['source']
     this.saveLang      = settings['saveLang'] 
-    this.uniqDict      = {}
+    this.uniqDict      = []
+    this.tempUniqDict  = []
     
     /**
      * Определяем язык
@@ -162,8 +163,8 @@ function getloc(settings)
                 else if ( node.nodeName == 'INPUT' || node.nodeName == 'IMG' || node.nodeName == 'META'  )
                     this.translateAttribute(node);  
                                
-                else if ( node.nodeName == 'A' && node.title && this.response.results[this.decodeSpecialChars(node.title)] )
-                    node.title = this.response.results[this.decodeSpecialChars(node.title)]
+                else if ( node.nodeName == 'A' && node.getAttribute('title') && this.issetString(node.getAttribute('title')) )
+                    node.setAttribute('title', this.issetString(node.getAttribute('title')))
                 
                 else
                     this.translateNode(node);
@@ -188,18 +189,45 @@ function getloc(settings)
           {
             node.data = node.data.replace(whitespace, '')       
             if ( node.data )
-              {     
-                if ( !this.response.results[this.decodeSpecialChars(node.data)] )
+              { 
+                if ( !this.complete )  
                   {
-                    isTrim = this.response.results[this.decodeSpecialChars(node.data.replace(/  +/g, ' ').trim())]
-                    if ( isTrim )
-                    {
-                        node.data = isTrim
-                    }
-                    
+                    if ( !this.response.results[this.decodeSpecialChars(node.data)] )
+                      {
+                        isTrim = this.response.results[this.decodeSpecialChars(node.data.replace(/  +/g, ' ').trim())]
+                        if ( isTrim )
+                          {
+                            this.uniqDict[isTrim]   = node.data
+                            node.data               = isTrim
+                          }
+                      }
+                    else if ( node.data && this.response.results[this.decodeSpecialChars(node.data)] )
+                      {
+                        this.uniqDict[this.response.results[this.decodeSpecialChars(node.data)]] = node.data
+                        node.data = this.response.results[this.decodeSpecialChars(node.data)]  
+                      }  
                   }
-                else if (node.data && this.response.results[this.decodeSpecialChars(node.data)])
-                    node.data = this.response.results[this.decodeSpecialChars(node.data)]  
+                else
+                  {
+                    if ( node.data && this.uniqDict[node.data] )
+                      {
+                        block = this.uniqDict[node.data]
+                        if ( !this.response.results[this.decodeSpecialChars(block)] )
+                          {
+                            isTrim = this.response.results[this.decodeSpecialChars(block.replace(/  +/g, ' ').trim())]
+                            if ( isTrim )
+                              {
+                                this.tempUniqDict[isTrim]   = block
+                                node.data                   = isTrim
+                              }
+                          }
+                        else if ( node.data && this.response.results[this.decodeSpecialChars(block)] )
+                          {
+                            this.tempUniqDict[this.response.results[this.decodeSpecialChars(block)]] = block
+                            node.data = this.response.results[this.decodeSpecialChars(block)]  
+                          }
+                      }
+                  }
               }
           }  
     }
@@ -214,27 +242,78 @@ function getloc(settings)
         var whitespace = /^\s+$/g;
         
         if ( node.nodeName == 'INPUT' )
-          {
-            node.value       = node.value.replace(whitespace, "") 
-            node.placeholder = node.placeholder.replace(whitespace, "") 
-              
-            if ( node.value && this.response.results[this.decodeSpecialChars(node.value)] )
-                node.value = this.response.results[this.decodeSpecialChars(node.value)]  
-            if ( node.placeholder && this.response.results[this.decodeSpecialChars(node.placeholder)] )
-                node.placeholder = this.response.results[this.decodeSpecialChars(node.placeholder)]
+          {              
+            if ( node.getAttribute('value') && this.issetString(node.getAttribute('value')) )
+                node.setAttribute('value', this.issetString(node.getAttribute('value')))
+            if ( node.getAttribute('placeholder') && this.issetString(node.getAttribute('placeholder')) )
+                node.setAttribute('placeholder', this.issetString(node.getAttribute('placeholder')))
           }
-        else if ( node.nodeName == 'IMG' && node.alt && this.response.results[this.decodeSpecialChars(node.alt)] )  
+        else if ( node.nodeName == 'IMG' && node.getAttribute('alt') && this.issetString(node.getAttribute('alt')) )  
           {
-            node.alt = node.alt.replace(whitespace, "")  
-            if ( node.alt )
-                node.alt = this.response.results[this.decodeSpecialChars(node.alt)]
+            node.setAttribute('alt', this.issetString(node.getAttribute('alt')))
           }
           
         else if ( node.nodeName == 'META' )
           {
-            if ( (node.name == 'description' || node.name == 'keywords') && node.content && this.response.results[this.decodeSpecialChars(node.content)] )
-                node.content = this.response.results[this.decodeSpecialChars(node.content)]
+            if ( (node.getAttribute('name') == 'description' || node.getAttribute('name') =='keywords') && this.issetString(node.getAttribute('content')) )
+                node.setAttribute('content', this.issetString(node.getAttribute('content')))
           }
+    }
+    
+    /**
+     * @param   {string} str
+     * @returns {string}
+     */
+    
+    this.issetString = function(str)
+    {
+        var whitespace = /^\s+$/g       
+
+        str = str.replace(whitespace, '')       
+        
+        if ( str )
+          { 
+            if ( !this.complete )  
+              {
+                if ( !this.response.results[this.decodeSpecialChars(str)] )
+                  {
+                    isTrim = this.response.results[this.decodeSpecialChars(str.replace(/  +/g, ' ').trim())]
+                    if ( isTrim )
+                      {
+                        this.uniqDict[isTrim] = node.data
+                        str                   = isTrim
+                      }
+                  }
+                else if ( str && this.response.results[this.decodeSpecialChars(str)] )
+                  {
+                    this.uniqDict[this.response.results[this.decodeSpecialChars(str)]] = str
+                    str = this.response.results[this.decodeSpecialChars(str)]  
+                  }  
+              }
+            else
+              {
+                if ( str && this.uniqDict[str] )
+                  {
+                    block = this.uniqDict[str]
+                    if ( !this.response.results[this.decodeSpecialChars(block)] )
+                      {
+                        isTrim = this.response.results[this.decodeSpecialChars(block.replace(/  +/g, ' ').trim())]
+                        if ( isTrim )
+                          {
+                            this.tempUniqDict[isTrim]   = block
+                            str                   = isTrim
+                          }
+                      }
+                    else if ( str && this.response.results[this.decodeSpecialChars(block)] )
+                      {
+                        this.tempUniqDict[this.response.results[this.decodeSpecialChars(block)]] = block
+                        str = this.response.results[this.decodeSpecialChars(block)]  
+                      }
+                  }
+              }
+          }
+
+        return str;
     }
     
     /**
@@ -258,19 +337,21 @@ function getloc(settings)
           {
             if ( this.source != this.lang )
                 this.recurseDomChildren(document.documentElement, true);   
+            
+            if ( this.htmlWidget )
+                this.showChoice = true
+
+            if ( this.showChoice )
+                this.showAvailableLanguanges()
           }
         else
            {
-             evilClone = this.originalDOM.cloneNode(true)
-             this.recurseDomChildren(evilClone, true);
-             content.childNodes[2].innerHTML = evilClone.childNodes[2].innerHTML
+             this.recurseDomChildren(document.documentElement, true);
+             this.uniqDict = this.tempUniqDict
+             //this.uniqDict = this.arraySwap(this.uniqDict)
            }  
          
-        if ( this.htmlWidget )
-            this.showChoice = true
         
-        if ( this.showChoice )
-            this.showAvailableLanguanges()
         
 	if ( !this.complete )
 	    window.onload = function() {document.getElementsByTagName('body')[0].style.display = this.style_body; }
@@ -278,6 +359,17 @@ function getloc(settings)
 	this.complete = true
     }
     
+    /**
+     * Swap keys and val
+     * 
+     * @param  array array
+     * @param  mixed overwriteNewValue
+     * @param  mixed keepKey
+     * @returns {Array|Boolean}
+     */
+    
+    this.arraySwap = function(array,overwriteNewValue,keepKey){if(typeof(array)=="undefined"){return false;};if(typeof(array)!="object"){array=new Array(array);};var output=new Array();if(typeof(overwriteNewValue)=="undefined"){for(var k in array){output[array[k]]=k;}}else{if(!keepKey){for(var k in array){output[array[k]]=overwriteNewValue;}}else{for(var k in array){output[k]=overwriteNewValue;}};}return output;}
+
     /**
      * Special chars in HTML
      * 

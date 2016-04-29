@@ -146,8 +146,6 @@ def load_url(url, siteID, cursor, timeout):
 def makeBlock(siteID, text, element, url):
     global countWords, countSymbols, countBlocks
 
-    text  = text.strip()
-
     #block = cursor.execute('SELECT `text` FROM blocks WHERE `text` = "{text}"'.format(text=MySQLdb.escape_string(text.encode('utf8'))))
 
     if text not in issetBlocks:
@@ -216,7 +214,7 @@ for item in ps.listen():
         urlPageID = {}
 
         data_           = json.loads(item['data'].decode("utf-8"))
-        db              = MySQLdb.connect(host=mysql_credentials['host'], user=mysql_credentials['user'], passwd=mysql_credentials['password'], db=mysql_credentials['db'], charset=mysql_credentials['charset'], unix_socket=mysql_credentials['unix_socket'])
+        db              = MySQLdb.connect(host=mysql_credentials['host'], user=mysql_credentials['user'], passwd=mysql_credentials['password'], db=mysql_credentials['db'], charset=mysql_credentials['charset'])
         trans_client    = 'blackgremlin2'
         trans_secret    = 'SMnjwvLx0bB2u9Cn05K2vkTE1bSkX0+fsLp/23gsytU='
         
@@ -225,9 +223,9 @@ for item in ps.listen():
         countWords      = 0
         countSymbols    = 0
         countBlocks     = 0
-        tags            = ['title', 'p', 'a', 'div', 'th',
+        tags            = ['meta', 'title', 'p', 'a', 'div', 'th',
                            'td', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'b', 'strong', 'li', 'pre', 'code', 'option',
-                           'label', 'span', 'button', 'meta', 'input', 'button', 'img', 'textarea', 'font']
+                           'label', 'span', 'button', 'input', 'button', 'img', 'textarea', 'font']
         siteID          = data_['site']
         auto_publishing = None
         auto_translate  = None
@@ -304,7 +302,7 @@ for item in ps.listen():
                     for tag in tags:
                         for element in soup.find_all(tag):
                             string = ''
-                            if element.name == 'meta' and 'name' in element and (element['name'] == 'keywords' or element['name'] == 'description'):
+                            if element.name == 'meta' and element.has_attr('name') and (element['name'].lower() == 'keywords' or element['name'].lower() == 'description'):
                                 if element['content']:
                                     block_id = makeBlock(siteID, element['content'], 'meta', url)
                                     if block_id is not False:
@@ -374,7 +372,7 @@ for item in ps.listen():
         for lang in langs:
             langTo  = lang[3]
             langID  = lang[0]
-            pool    = ThreadPool(4)
+            pool    = ThreadPool(2)
             results = pool.map(translateBlock, blocks)
             pool.close()
             pool.join()
