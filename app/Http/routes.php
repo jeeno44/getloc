@@ -43,6 +43,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/phrase/translated', ['as' => 'main.account.phrase2', 'uses' => 'AccountController@phraseTranslatesTab']);
             Route::get('/phrase/published', ['as' => 'main.account.phrase3', 'uses' => 'AccountController@phrasePublishingTab']);
             Route::get('/phrase/', ['as' => 'main.account.phrase', 'uses' => 'AccountController@phraseNotTranslatesTab']);
+            Route::get('/clear-filter/', ['as' => 'main.account.clear-filter', 'uses' => 'AccountController@clearFilter']);
             
             Route::get('/add-project/', ['as' => 'main.account.add-project', 'uses' => 'ProjectController@addProject']);
             Route::post('/add-project/', ['as' => 'main.account.post-add-project', 'uses' => 'ProjectController@postAddProject']);
@@ -74,6 +75,8 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/pages', ['as' => 'main.account.pages', 'uses' => 'AccountController@pagesView']);
 
             Route::post('/setArchive', ['as' => 'main.account.setArchive', 'uses' => 'AccountController@setArchiveTranslate']);
+
+            Route::get('/get-history/{id}', ['as' => 'main.account.get-history', 'uses' => 'AccountController@getHistory']);
 
         });
         

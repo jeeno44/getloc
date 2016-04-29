@@ -45,6 +45,10 @@ $(function(){
     $('#check-all-phrases').click(function(){
         setStatusBlock(1)
     })
+
+    $('#order-selected-phrases').click(function(){
+        setOrderBlock(1);
+    })
     
     $('#nopublishing').click(function(){
         setStatusBlock(2)
@@ -98,8 +102,24 @@ $(function(){
         $(this).click(loadPhrases)
     });
 
-
 })
+
+function loadHistory() {
+    $('.show-history').on('click', function (e) {
+        var id = $(this).attr('data-id');
+        var hf = $(this).closest('.phrases__item').find('.history-phrase');
+        hf.load('/account/get-history/' + id, function () {
+            hf.slideDown();
+        });
+        e.preventDefault();
+    });
+    $(document).on('click', '.hide-history', function (e) {
+        var hf = $(this).closest('.phrases__item').find('.history-phrase');
+        hf.slideUp();
+        e.preventDefault();
+    });
+}
+
 eventAccount = function () {
 
     /**
@@ -146,13 +166,13 @@ eventAccount = function () {
 
     orderAddDel();
 
-    checkOrderingTranslation();
-
     orderTranslate();
 
     selectAllOrder();
 
     removeItemPageName()
+
+    loadHistory();
 
 }
 
@@ -356,6 +376,7 @@ loadPhrases = function(page)
             $('#renderPhrases').html(phrases.html).promise().done(setEventInContent)
             // eventAccount()
             ajaxLoadEventInit();
+            loadHistory();
         }
     })
 }
@@ -416,6 +437,33 @@ setStatusBlock = function(status)
             
             //setNewStats(res.stats)
             loadPhrases()
+        }
+    });
+}
+
+setOrderBlock = function(order)
+{
+    var data_id = []; var data = {};
+    $("input[name='blocks[]']:checked").each(function(){
+        data_id.push({id: $(this).val(), check: order});
+    })
+    data['data_id'] = data_id;
+    $.ajax({
+        url     : "/account/orderingTranslation",
+        type    : 'post',
+        dataType: 'json',
+        data    : data,
+        success : function(res)
+        {
+            if ( res.isError ) {
+                toastr.error(res.message)
+            } else {
+                toastr.success(res.message)
+                $('.phrases_in_order').find('.phrasesCount').text(res.phrasesInOrder);
+                $('#phrases_in_order').find('.phrasesCount').text(res.phrasesInOrder);
+                $('#cost_order').find('.costCount').text(res.costOrder);
+                loadPhrases()
+            }
         }
     });
 }
@@ -496,13 +544,11 @@ orderTranslate = function () {
 }
 
 addOrder = function (obj) {
-    $('#ordering_translation_'+obj.attr('data-id')).prop('checked', true);
-    // $('#ordering_translation_'+obj.attr('data-id')).next('label').text('Отменить выбор фразы в заказ');
     obj.removeClass('addOrder').addClass('delOrder').text('Убрать из заказа');
     var data_id = {}, count = 0;
     data_id[count] = {
         id: obj.attr('data-id'),
-        check: $('#ordering_translation_'+obj.attr('data-id')).prop('checked') ? 1 : 0
+        check: 1
     };
     // console.log(data_id);
     var data = {
@@ -514,17 +560,16 @@ addOrder = function (obj) {
         $('.phrases_in_order').find('.phrasesCount').text(obj_data.phrasesInOrder);
         $('#phrases_in_order').find('.phrasesCount').text(obj_data.phrasesInOrder);
         $('#cost_order').find('.costCount').text(obj_data.costOrder);
+        toastr.success('Фраза добавлена в заказ')
     });
 }
 
 delOrder = function (obj) {
-    $('#ordering_translation_'+obj.attr('data-id')).prop('checked', false);
-    // $('#ordering_translation_'+obj.attr('data-id')).next('label').text('Выбрать фразу в заказ');
     obj.removeClass('delOrder').addClass('addOrder').text('Добавить в заказ');
     var data_id = {}, count = 0, $this = $(this);
     data_id[count] = {
         id: obj.attr('data-id'),
-        check: $('#ordering_translation_'+obj.attr('data-id')).prop('checked') ? 1 : 0
+        check: 0
     };
     // console.log(data_id);
     var data = {
@@ -536,6 +581,7 @@ delOrder = function (obj) {
         $('.phrases_in_order').find('.phrasesCount').text(obj_data.phrasesInOrder);
         $('#phrases_in_order').find('.phrasesCount').text(obj_data.phrasesInOrder);
         $('#cost_order').find('.costCount').text(obj_data.costOrder);
+        toastr.success('Фраза удалена из заказа')
     });
 }
 
@@ -554,16 +600,7 @@ selectAllOrder = function () {
     });
 }
 
-checkOrderingTranslation = function () {
-
-    $('.checkbox_ordering_translation').on('change', function () {
-        if ($(this).prop('checked')) {
-            $(this).next('label').text('Отменить выбор фразы в заказ');
-        } else {
-            $(this).next('label').text('Выбрать фразу в заказ');
-        }
-    });
-}
+checkOrderingTranslation = function () {}
 
 orderAddDel = function () {
     // var phrases_icm = $('.phrases__item-controls-menu');

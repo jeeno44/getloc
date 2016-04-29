@@ -3,7 +3,7 @@
         <div>
             <ul>
                 <li>
-                    <a href="#">{{trans('account.history')}}</a>
+                    <a href="#" class="show-history" data-id="{{$ob->tid}}">{{trans('account.history')}}</a>
                 </li>
                 <li>
                     <a class="go_robot isLinkMoreMenu" data-id="{{$ob->tid}}" href="javascript:void(0);">{{trans('account.useRobotTrans')}}</a>
@@ -28,9 +28,9 @@
 
                 <li>
                     @if(!$ob->is_ordered)
-                    <a href="" data-id="{{ $ob->tid }}" class="addOrder">{{trans('account.addOrder')}}</a>
-                    @else
-                    <a href="" data-id="{{ $ob->tid }}" class="delOrder">{{trans('account.delOrder')}}</a>
+                        <a href="" data-id="{{ $ob->tid }}" class="addOrder">{{trans('account.addOrder')}}</a>
+                        @else
+                        <a href="" data-id="{{ $ob->tid }}" class="delOrder">{{trans('account.delOrder')}}</a>
                     @endif
                 </li>
             </ul>

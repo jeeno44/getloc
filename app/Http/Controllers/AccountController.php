@@ -755,6 +755,10 @@ class AccountController extends Controller
         if (!empty(Session::get('filter')['typeID'])) {
             $arrData['typeID'] = Session::get('filter')['typeID'];
         }
+        $pagesUrl = !empty(Session::get('pages_url_'.$siteID)) ? explode(',', Session::get('pages_url_'.$siteID)) : [];
+        if (!empty($pagesUrl)) {
+            $arrData['pagesUrl'] = $pagesUrl;
+        }
         $filter  = $this->generateStatsForPhraseFilter($arrData);
         if ( (int)$filter['stats']['not_translate'] === 0 )
             $tab = 'tab_translated';
@@ -967,7 +971,7 @@ class AccountController extends Controller
 
         Session::set('filter', $filter);
 
-	$searchText = false;
+	    $searchText = false;
 	
         if ( $request->get('search_text') )
             $searchText = $request->get('search_text');
@@ -992,8 +996,7 @@ class AccountController extends Controller
 
         $blocks        = $this->buildQueryPhrase($arrQuery);
         $blockIds      = $blocks->lists('tid');
-        $historyPhrase = HistoryPhrase::whereIn('translate_id', $blockIds)->get()->keyBy('translate_id');
-        $data          = compact('blocks', 'filter', 'viewType', 'tab', 'pathName', 'historyPhrase');
+        $data          = compact('blocks', 'filter', 'viewType', 'tab', 'pathName');
         $json['html']  = (String)\View::make('account.phraseAjax', $data)->render();
         
         unset($filter['menu']['langs']);
@@ -1018,8 +1021,7 @@ class AccountController extends Controller
     private function buildQueryPhrase($arrQuery)
     {
         $buildQuery = Page::where('pages.site_id', $arrQuery['siteID']);
-
-        if ( isset($arrQuery['pagesUrl']) && count($arrQuery['pagesUrl']) > 0 ) 
+        if ( isset($arrQuery['pagesUrl']) && count($arrQuery['pagesUrl']) > 0 )
             $buildQuery->whereIn('pages.url', $arrQuery['pagesUrl']);
         
         $buildQuery->leftJoin('page_block', 'page_block.page_id', '=', 'pages.id')
@@ -1075,7 +1077,7 @@ class AccountController extends Controller
                    ->orderBy('pages.id')
                    ->select('pages.id as pages_id', 
                             'pages.*', 'translates.id as tid', 'blocks.enabled as blocks_enabled', 'translates.*',
-                            'translates.enabled as translates_enabled', 'types_translates.name as name_translate', 
+                            'translates.enabled as translates_enabled', 'types_translates.name as name_translate',
                             DB::raw('date_format(translates.updated_at, "%h:%i") as time'),
                             DB::raw('date_format(translates.updated_at, "%Y-%m-%d") as date'), 'blocks.text as original');
 
@@ -1317,27 +1319,31 @@ class AccountController extends Controller
      * Добавление/удаление фразы в заказ
      * 
      * @param  Request $request
-     * @return void
      * @access public
      */
     
     public function setOrderingTranslation(Request $request)
     {
         $data_id  = $request->input('data_id');
-        $ret_data = [];
-        
-        foreach ( $data_id as $item )
-        {
+        if (empty($data_id)) {
+            $ret_data['isError'] = 1;
+            $ret_data['message'] = 'Не выбрано ни одной фразы';
+            return json_encode($ret_data);
+        }
+        foreach ($data_id as $item) {
             $translates = Translate::find($item['id']);
             
             $translates->is_ordered = $item['check'];
             $save                   = $translates->save();
             $ret_data[$item['id']]  = $save;
         }
-        
         $ret_data['phrasesInOrder'] = $this->getCountPhrasesInOrder();
         $ret_data['costOrder']      = $this->getCostOrder();
-
+        $ret_data['message'] = 'Фразы добавлены в заказ';
+        if (count($data_id) == 0) {
+            $ret_data['isError'] = 1;
+            $ret_data['message'] = 'Не выбрано ни одной фразы';
+        }
         echo json_encode($ret_data);
     }
     
@@ -1381,5 +1387,25 @@ class AccountController extends Controller
         ];
         
         HistoryPhrase::create($historyData);
+    }
+
+    /**
+     * Очистка сессий фильтров
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function clearFilter()
+    {
+        $siteID = Session::get('projectID');
+        Session::remove('filter');
+        Session::remove('typeViewID');
+        Session::remove('pages_url');
+        Session::remove('pages_url_'.$siteID);
+        return redirect()->route('main.account.phrase');
+    }
+
+    public function getHistory($id)
+    {
+        $history = HistoryPhrase::where('translate_id', $id)->latest()->get();
+        return view('account.history', compact('history'));
     }
 }
