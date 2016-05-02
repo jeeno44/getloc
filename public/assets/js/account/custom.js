@@ -1,5 +1,6 @@
+var currentPageNumber = 1;
+
 $(function(){
-    
     preloadLoader('/assets/img/account/loader.gif')
 
     /*
@@ -239,6 +240,7 @@ setEventInContent = function()
     // })
     $('.paginationAjax a').click(function(e){
         if (location.pathname !== '/account/pages') {
+            currentPageNumber = $(this).attr('href').split('page=')[1];
             loadPhrases($(this).attr('href').split('page=')[1]);
             e.preventDefault();
         }
@@ -334,14 +336,14 @@ setArchive = function(id)
 
 loadPhrases = function(page)
 {
-    var page  = !page ? 0 : page,
+    var page  = !page ? 1 : page,
         view_type = $('#setViewTypeID_1').hasClass('active') ? 1 : 2,
         phrase_in_order = $('#checkboxPhraseInOrder').prop('checked') ? 1 : 0 ,
         min_date = $('.date_filter_start').val() != '' ? $('.date_filter_start').val() : 0,
         max_date = $('.date_filter_end').val() != '' ? $('.date_filter_end').val() : 0,
         data  = $('.site__aside-filter').find('input[type=radio]').serialize();
         data += '&tab='+getCurentTab()
-        data += '&page='+page
+        data += '&page='+currentPageNumber
         data += '&site_id='+$('#site-list').children('option:selected').val().substr($('#site-list').children('option:selected').val().lastIndexOf('/') + 1)
         if (getNameNone() != '') {
             data += '&name_none='+getNameNone()
