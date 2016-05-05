@@ -30,7 +30,7 @@ function getloc(settings)
 {
     this.auto_detected = settings['auto_detected']
     this.lang          = settings['lang']
-    this.uri           = window.location.href.replace('#', '')
+    this.uri           = encodeURI(window.location.href).replace('#', '')
     this.secret        = settings['secret']
     this.uri_api       = 'http://api.getloc.ru/translate?'
     this.callback      = 'getloc.setTranslate'
