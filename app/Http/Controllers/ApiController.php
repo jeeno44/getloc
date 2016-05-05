@@ -54,7 +54,7 @@ class ApiController extends Controller
             }
             $uri = prepareUri($uri);
             $page = Page::where('url', $uri)->first();
-            if (!$page && strpos('_'.$uri, $site->url) > 0) {
+            if (!$page) {
                 Page::create([
                     'url'           => $uri,
                     'site_id'       => $site->id,
