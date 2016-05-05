@@ -317,15 +317,15 @@ for item in ps.listen():
             translator = Translator(trans_client, trans_secret)
             langs      = getLangsProject(siteID)
             if blocksID:
-                for text, id in blocksID:
+                for phrase in blocksID:
                     sql = 'SELECT * FROM blocks WHERE site_id = {projectID} AND id = {id}'.format(projectID=siteID, id=id)
                     cursor.execute(sql)
                     block = cursor.fetchone()
                     for lang in langs:
                         langTo  = lang[3]
                         langID  = lang[0] 
-                        translate = translator.translate(text.encode('utf-8'), lang_from=fromLang, lang_to=langTo)
-                        loadSQL.append("({id}, {language_id}, '{text}', NOW(), NOW(), 1, {siteID}, {cc}, {pub}, 0)".format(id=id, language_id=langID, siteID=siteID, text=MySQLdb.escape_string(str(translate.encode('utf-8'))), cc=len(translate.split())), pub=auto_publishing)
+                        translate = translator.translate(phrase.encode('utf-8'), lang_from=fromLang, lang_to=langTo)
+                        loadSQL.append("({id}, {language_id}, '{text}', NOW(), NOW(), 1, {siteID}, {cc}, {pub}, 0)".format(id=blocksID[phrase], language_id=langID, siteID=siteID, text=MySQLdb.escape_string(str(translate.encode('utf-8'))), cc=len(translate.split())), pub=auto_publishing)
                         iBlockInsert += 1
 
                         if len(loadSQL) >= maxBlockInsert:
