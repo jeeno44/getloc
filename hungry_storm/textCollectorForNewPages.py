@@ -235,9 +235,9 @@ for item in ps.listen():
         pages = cursor.fetchall()
 
         for page in pages:
-            pageID, siteID, url, code, level, visited, collected, enabled, created_at, updated_at = page
-            urls.append(str(url))
-            urlPageID[str(url)] = pageID
+            pageID, siteID, uri, code, level, visited, collected, enabled, created_at, updated_at = page
+            urls.append(str(uri))
+            urlPageID[str(uri)] = pageID
 
         #------------------------------------------------------------------------------------------------------
         # Запускаем потоки и bs4
@@ -266,7 +266,6 @@ for item in ps.listen():
 
             for tag in tags:
                 for element in soup.find_all(tag):
-		    print(element.name)
                     string = ''
                     if element.name == 'meta' and element.has_attr('name') and (element['name'].lower() == 'keywords' or element['name'].lower() == 'description'):
                         if element['content']:
