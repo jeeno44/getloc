@@ -346,7 +346,7 @@ for item in ps.listen():
         del db
 
         site = data_['site']
-        api  = 'http://' + data_['api'] + '/python/collector/' + str(site)
+        api  = 'http://' + data_['api'] 
         urllib2.urlopen(api, timeout=10)
 
         print "Отработал за: %ss" % (time.time() - start)
