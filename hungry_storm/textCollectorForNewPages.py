@@ -347,6 +347,7 @@ for item in ps.listen():
 
         site = data_['site']
         api  = 'http://' + data_['api'] 
+	print(api)
         urllib2.urlopen(api, timeout=10)
 
         print "Отработал за: %ss" % (time.time() - start)
