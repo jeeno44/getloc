@@ -126,7 +126,6 @@ def makeBlock(siteID, text, element, url):
     global countWords, countSymbols, countBlocks
 
     #block = cursor.execute('SELECT `text` FROM blocks WHERE `text` = "{text}"'.format(text=MySQLdb.escape_string(text.encode('utf8'))))
-
     if text not in issetBlocks:
         ccword = len(text.split())
         ccsymb = count_letters(text)
@@ -253,6 +252,7 @@ for item in ps.listen():
 
             for tag in tags:
                 for element in soup.find_all(tag):
+		    print(element.name)
                     string = ''
                     if element.name == 'meta' and element.has_attr('name') and (element['name'].lower() == 'keywords' or element['name'].lower() == 'description'):
                         if element['content']:
