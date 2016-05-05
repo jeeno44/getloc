@@ -70,7 +70,7 @@ def createEmptyTranslate(block):
 #------------------------------------------------------------------------------------------------------
 
 def getLangsProject(projectID):
-    sql = 'select l.* from site_language sl left join languages l ON (l.id = sl.language_id) where sl.site_id = {projectID}'.format(projectID=projectID)
+    sql = 'select l.* from site_language sl left join languages l ON (l.id = sl.language_id) where sl.site_id = {projectID} AND sl.enabled = 1'.format(projectID=projectID)
     cursor.execute(sql)
     return cursor.fetchall()
 
@@ -344,5 +344,9 @@ for item in ps.listen():
         del issetBlocks
         del urls
         del db
+
+        site = data_['site']
+        api  = 'http://' + data_['api'] + '/python/collector/' + str(site)
+        urllib2.urlopen(api, timeout=10)
 
         print "Отработал за: %ss" % (time.time() - start)
