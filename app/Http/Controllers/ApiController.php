@@ -55,14 +55,20 @@ class ApiController extends Controller
             $uri = prepareUri($uri);
             $page = Page::where('url', $uri)->first();
             if (!$page) {
-                Page::create([
+                $page = new Page([
                     'url'           => $uri,
                     'site_id'       => $site->id,
                     'code'          => 200,
                     'visited'       => 1,
                 ]);
+                $page->save();
                 //$this->dispatch(new \App\Jobs\Spider($site));
-                \Redis::publish('collector-new-page', json_encode(['site' => $site->id, 'api' => 'api.'.env('APP_DOMAIN').'/python/new-page/'.$site->id, 'url' => $uri], JSON_UNESCAPED_UNICODE));
+                \Redis::publish('collector-new-page', json_encode([
+                        'site' => $site->id,
+                        'api' => 'api.'.env('APP_DOMAIN').'/python/new-page/'.$site->id,
+                        'url' => $uri,
+                        'pageID' => $page->id
+                    ], JSON_UNESCAPED_UNICODE));
                 //\Event::fire('maps.done', $site);
                 $response['error'] = ['msg' => 'Page does not exists', 'code' => 5];
                 return $this->makeResponse($response, $callback);
