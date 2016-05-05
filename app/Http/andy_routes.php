@@ -121,6 +121,12 @@ Route::group(['domain' => 'api.'.$domain], function () {
             \Event::fire('site.done', $site);
         }
     });
+    Route::get('python/new-page/{id}', function($id){
+        $site = \App\Site::find($id);
+        if ($site) {
+            \Event::fire('site.blocks-changed', $site);
+        }
+    });
 });
 
 Route::get('test', function () use ($domain) {
