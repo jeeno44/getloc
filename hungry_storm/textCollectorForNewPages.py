@@ -333,12 +333,12 @@ for item in ps.listen():
                             cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
                             loadSQL = []
 
-                    if len(loadSQL) > 0 and len(loadSQL) <= maxBlockInsert:
-                        iBlockInsert = 0
-                        cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
-                        loadSQL = []
-                        db.close()
-                        cursor.close()
+            if len(loadSQL) > 0 and len(loadSQL) <= maxBlockInsert:
+                iBlockInsert = 0
+                cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
+                loadSQL = []
+                db.close()
+                cursor.close()
         
         del soup
         del issetBlocks
