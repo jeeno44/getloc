@@ -62,7 +62,8 @@ class ApiController extends Controller
                     'visited'       => 1,
                 ]);
                 //$this->dispatch(new \App\Jobs\Spider($site));
-                \Event::fire('maps.done', $site);
+                \Redis::publish('collector', json_encode(['site' => $site->id, 'api' => 'api.'.env('APP_DOMAIN').'python/new-page/'.$site->id, 'url' => $uri], JSON_UNESCAPED_UNICODE));
+                //\Event::fire('maps.done', $site);
                 $response['error'] = ['msg' => 'Page does not exists', 'code' => 5];
                 return $this->makeResponse($response, $callback);
             } else {
