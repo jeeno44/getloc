@@ -124,9 +124,9 @@ def load_url(url, siteID, cursor, timeout):
 
 def makeBlock(siteID, text, element, url):
     global countWords, countSymbols, countBlocks
-
     #block = cursor.execute('SELECT `text` FROM blocks WHERE `text` = "{text}"'.format(text=MySQLdb.escape_string(text.encode('utf8'))))
     if text not in issetBlocks:
+        
         ccword = len(text.split())
         ccsymb = count_letters(text)
         sql    = """INSERT INTO blocks SET site_id = {site_id}, `text` = "{text}", 
@@ -145,8 +145,8 @@ def makeBlock(siteID, text, element, url):
         blocksID[text] = id
         return id
     else:
-        makePageBlock(urlPageID[str(url)], blocksID[text])
-        return False
+        cursor.execute('SELECT `id` FROM blocks WHERE `text` = "{text}" AND site_id = {projectID}'.format(text=MySQLdb.escape_string(text.encode('utf8')), projectID=siteID))
+        return cursor.fetchone()[0]
 
 #------------------------------------------------------------------------------------------------------
 # Получаем айди страницы с нужного URL'а, TODO: тоже переделать на переменную
@@ -195,7 +195,7 @@ for item in ps.listen():
         db              = MySQLdb.connect(host=mysql_credentials['host'], user=mysql_credentials['user'], passwd=mysql_credentials['password'], db=mysql_credentials['db'], charset=mysql_credentials['charset'], unix_socket=mysql_credentials['unix_socket'])
         trans_client    = 'blackgremlin2'
         trans_secret    = 'SMnjwvLx0bB2u9Cn05K2vkTE1bSkX0+fsLp/23gsytU='
-        url             = data_['url']
+        url             = str(data_['url'])
         cursor          = db.cursor()
         countPools      = 10
         countWords      = 0
@@ -224,30 +224,14 @@ for item in ps.listen():
         getSettingsProject(siteID)
         getAllBlocks(siteID)
 
-
-        #------------------------------------------------------------------------------------------------------
-        # Получаем все урлы проекта
-        # И записываем их
-        #------------------------------------------------------------------------------------------------------
-
-        sql = 'SELECT * FROM pages WHERE site_id = {projectID}'.format(projectID=siteID)
-        cursor.execute(sql)
-        pages = cursor.fetchall()
-
-        for page in pages:
-            pageID, siteID, uri, code, level, visited, collected, enabled, created_at, updated_at = page
-            urls.append(str(uri))
-            urlPageID[str(uri)] = pageID
-
         #------------------------------------------------------------------------------------------------------
         # Запускаем потоки и bs4
         #------------------------------------------------------------------------------------------------------
-
+        
         html = load_url(url, siteID, cursor, 10)
         try:
             print('new page collected', url)
 
-            cursor.execute('UPDATE pages SET collected = 1 WHERE url = "{url}" AND site_id = {siteid}'.format(url=MySQLdb.escape_string(url), siteid=siteID))
             soup = BeautifulSoup(html, 'html.parser')
 
             #-------------------------------------------
@@ -263,7 +247,7 @@ for item in ps.listen():
             #-------------------------------------------
             # Начинаем парсить и создавать теги
             #-------------------------------------------
-
+            
             for tag in tags:
                 for element in soup.find_all(tag):
                     string = ''
@@ -317,7 +301,7 @@ for item in ps.listen():
             #print '"%s" fetched in %ss' % (url,(time.time() - start))
             pass
             
-          
+        cursor.execute('UPDATE pages SET collected = 1 WHERE url = "{url}" AND site_id = {siteid}'.format(url=MySQLdb.escape_string(url), siteid=siteID))  
         finishStats(siteID, countWords, countSymbols, countBlocks)
                 
 
