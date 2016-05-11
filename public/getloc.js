@@ -45,6 +45,8 @@ function getloc(settings)
     this.uniqDict      = []
     this.tempUniqDict  = []
     this.changeHash    = settings['changeHash'] ? true : false
+    this.hash2Get      = settings['hash2Get'] ? true : false
+    this.getParam      = settings['getParam'] ? settings['getParam'] : 'getloc_lang='
     
     /**
      * Определяем язык
@@ -60,10 +62,21 @@ function getloc(settings)
         
         if ( this.changeHash && !this.complete )  
           {
-            var hash = window.location.hash.replace('#', '')
-            if ( hash.length == 2 )
+            if ( !this.hash2Get )
               {
-                this.lang = hash 
+                var hash = window.location.hash.replace('#', '')
+                if ( hash.length == 2 )
+                    this.lang = hash 
+              }
+            else
+              {
+                if ( this.uri.match(/\?.*$/) )
+                  {
+                    var lang = this.uri.match(/\?.*$/)[0].replace('?', '')
+                    if ( lang.length == 2 )
+                      this.lang = lang 
+                  }
+                
               }
           }
     }
@@ -193,7 +206,12 @@ function getloc(settings)
     
     this.setHash    = function(hash)
     {
-        window.location.hash = '#' + hash
+        if ( this.hash2Get )
+            var uri = '?' + hash
+        else
+            var uri = '#' + hash
+        
+        history.replaceState({lang: hash}, window.document.title, uri);
     }
         
     /**
@@ -517,6 +535,9 @@ function getloc(settings)
         
         isLoaded = false
         style    = this.style_body
+        
+        if ( this.hash2Get )
+            this.uri = this.uri.replace(/\?.*$/, "")
         
         var script      = document.createElement('script');
         script.src      = this.uri_api + 'secret='+this.secret+'&uri='+this.uri+'&lang='+this.lang+'&callback='+this.callback;
