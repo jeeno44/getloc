@@ -30,7 +30,7 @@ function getloc(settings)
 {
     this.auto_detected = settings['auto_detected']
     this.lang          = settings['lang']
-    this.uri           = encodeURI(window.location.href).replace('#', '')
+    this.uri           = encodeURI(window.location.href).replace(/#.*$/, "")
     this.secret        = settings['secret']
     this.uri_api       = 'http://api.getloc.ru/translate?'
     this.callback      = 'getloc.setTranslate'
@@ -44,6 +44,7 @@ function getloc(settings)
     this.saveLang      = settings['saveLang'] 
     this.uniqDict      = []
     this.tempUniqDict  = []
+    this.changeHash    = settings['changeHash'] ? true : false
     
     /**
      * Определяем язык
@@ -56,6 +57,15 @@ function getloc(settings)
     {
         if ( this.auto_detected || !this.lang )
             this.lang = window.navigator.userLanguage || window.navigator.language;
+        
+        if ( this.changeHash && !this.complete )  
+          {
+            var hash = window.location.hash.replace('#', '')
+            if ( hash.length == 2 )
+              {
+                this.lang = hash 
+              }
+          }
     }
     
     /**
@@ -174,6 +184,16 @@ function getloc(settings)
                 this.recurseDomChildren(node, output);
               }
         }
+    }
+    
+    /**
+     * @param   string hash
+     * @returns void
+     */
+    
+    this.setHash    = function(hash)
+    {
+        window.location.hash = '#' + hash
     }
         
     /**
@@ -342,12 +362,17 @@ function getloc(settings)
 
             if ( this.showChoice )
                 this.showAvailableLanguanges()
+            
+            if ( this.changeHash && (this.lang != this.source) )
+                this.setHash(this.lang)
           }
         else
            {
              this.recurseDomChildren(document.documentElement, true);
              this.uniqDict = this.tempUniqDict
-             //this.uniqDict = this.arraySwap(this.uniqDict)
+
+             if ( this.changeHash )
+                 this.setHash(this.lang)
            }  
          
         
@@ -434,7 +459,7 @@ function getloc(settings)
     {
         this.lang = lang
         this.setCookie('saveLang', lang)
-        
+
         this.detect_language()
         this.getTranslate()
         
@@ -487,13 +512,12 @@ function getloc(settings)
     {
         window.console.log('REQUEST JSONP ')
         
-        if ( lang = this.getCookie('saveLang') )
+        if ( lang = this.getCookie('saveLang') && !this.changeHash )
             this.lang = lang
-        
         
         isLoaded = false
         style    = this.style_body
-
+        
         var script      = document.createElement('script');
         script.src      = this.uri_api + 'secret='+this.secret+'&uri='+this.uri+'&lang='+this.lang+'&callback='+this.callback;
         script.src     += '&nocache=' + + (new Date()).getTime();
@@ -504,7 +528,7 @@ function getloc(settings)
         }
         document.getElementsByTagName('HEAD')[0].appendChild(script);
     }
-    
+        
     /**
      * Запускаем в работу все методы
      * 
