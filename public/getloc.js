@@ -59,7 +59,7 @@ function getloc(settings)
     {
         if ( this.auto_detected || !this.lang )
             this.lang = window.navigator.userLanguage || window.navigator.language;
-        
+
         if ( this.changeHash && !this.complete )  
           {
             if ( !this.hash2Get )
@@ -530,8 +530,9 @@ function getloc(settings)
     {
         window.console.log('REQUEST JSONP ')
         
-        if ( lang = this.getCookie('saveLang') && !this.changeHash )
-            this.lang = lang
+        if ( lang = this.getCookie('saveLang') )
+            if ( !this.changeHash )
+                this.lang = lang
         
         isLoaded = false
         style    = this.style_body
