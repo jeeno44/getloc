@@ -83,7 +83,7 @@ def scan(starting_url):
         url = urls_queue.popleft()
         try:
             g.go(url)
-            if g.response.code < 400 and g.response.headers['Content-Type'].find('text/html') != -1 and g.response.url.startswith(STARTING_URL):
+            if g.response.code < 400 and g.response.headers['Content-Type'].find('text/html') != -1 and g.response.url.startswith(starting_url):
                 #print(str(cn) + '. ' + url)
                 #cn += 1
                 print(url)
