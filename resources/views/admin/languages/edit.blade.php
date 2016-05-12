@@ -47,6 +47,14 @@
             </div>
             <div class="form-group col-sm-12 clearfix">
                 <div class="col-sm-3 right-align for-label">
+                    <label class="form-label">Стоимость слова *</label>
+                </div>
+                <div class="col-sm-6">
+                    {!! Form::text('word_cost', null, ['class' => 'form-control', 'required']) !!}
+                </div>
+            </div>
+            <div class="form-group col-sm-12 clearfix">
+                <div class="col-sm-3 right-align for-label">
                     <label class="form-label">Иконка (файл в папке icons) *</label>
                 </div>
                 <div class="col-sm-6">

@@ -38,7 +38,7 @@
                             @endif
                         </td>
                         <td>
-                            &#8381;{{number_format($item->sum, 0, '.', ' ') }}
+                            &#8381;{{number_format($item->sum, 1, '.', ' ') }}
                         </td>
                         <td>
                             {{date('d.m.Y H:i', strtotime($item->created_at))}}

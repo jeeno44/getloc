@@ -67,17 +67,17 @@ class OrdersController extends Controller
             if (!empty($currentOrder[$translate->original_name])) {
                 $currentOrder[$translate->original_name]['count_words'] += $translate->count_words;
                 $currentOrder[$translate->original_name]['count_phrases'] += 1;
-                $currentOrder[$translate->original_name]['cost'] += ($this->options['word_cost'] * $translate->count_words);
+                $currentOrder[$translate->original_name]['cost'] += ($translate->word_cost * $translate->count_words);
             } else {
                 $currentOrder[$translate->original_name]['count_words'] = $translate->count_words;
                 $currentOrder[$translate->original_name]['count_phrases'] = 1;
-                $currentOrder[$translate->original_name]['cost'] = ($this->options['word_cost'] * $translate->count_words);
+                $currentOrder[$translate->original_name]['cost'] = ($translate->word_cost * $translate->count_words);
                 $currentOrder[$translate->original_name]['lang_id'] = $translate->language_id;
             }
             $currentOrder[$translate->original_name]['texts'][] = $translate->text;
             $allWords += $translate->count_words;
             $allPhrases += 1;
-            $fullCost += ($this->options['word_cost'] * $translate->count_words);
+            $fullCost += ($translate->word_cost * $translate->count_words);
         }
         $orders = Order::where('status', '!=', 'new')->where('site_id', $site->id)->latest()->get();
         return view('orders.index', compact('translates', 'site', 'orders', 'currentOrder', 'allWords', 'allPhrases', 'fullCost', 'order'));
@@ -152,7 +152,7 @@ class OrdersController extends Controller
         foreach ($translates as $translate) {
             $allWords += $translate->count_words;
             $allPhrases += 1;
-            $fullCost += ($this->options['word_cost'] * $translate->count_words);
+            $fullCost += ($translate->word_cost * $translate->count_words);
         }
         $order->original_sum = $fullCost;
         $order->save();
@@ -221,7 +221,7 @@ class OrdersController extends Controller
             ->where('blocks.enabled', 1)
             ->where('translates.is_ordered', 1)
             ->where('translates.site_id', $site->id)
-            ->select('blocks.count_words', 'translates.language_id', 'translates.id', 'languages.original_name', 'blocks.text')
+            ->select('blocks.count_words', 'translates.language_id', 'translates.id', 'languages.original_name', 'blocks.text', 'languages.word_cost')
             ->get();
         return $translates;
     }

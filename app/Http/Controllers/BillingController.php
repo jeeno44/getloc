@@ -255,9 +255,14 @@ class BillingController extends Controller
         return view('billing.status');
     }
 
+    /**
+     * История платежей
+     * @return \Illuminate\Http\Response
+     */
     public function paymentsHistory()
     {
-
+        $payments = Payment::where('user_id', $this->user->id)->where('is_draft', 0)->with('type')->latest()->get();
+        return view('billing.payments', compact('payments'));
     }
 
     /**

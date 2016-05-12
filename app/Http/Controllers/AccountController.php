@@ -368,30 +368,24 @@ class AccountController extends Controller
     {
         $siteID = Session::get('projectID');
                 
-        if ( !$siteID )
+        if (!$siteID){
             return abort(403, 'Need select project');
-        
+        }
         $trans = Translate::find($request->get('id'));
-        
-        if ( $trans->enabled )
-          {
+        if ( $trans->enabled ) {
             $trans->enabled = 0;
             $trans->update();
-          }
-        else 
-          {
+        }
+        else {
             $trans->enabled = 1;
             $trans->update();
-          }
-        
+        }
         $languageID = Session::get('filter')['languageID'];
-
-        if (!$languageID)
+        if (!$languageID) {
             $languageID = Site::find($siteID)->languages()->where('enabled', true)->orderBy('id')->first()->id;
-
+        }
         $arrData = compact('siteID', 'languageID');
         $stats   = $this->generateStatsForPhraseFilter($arrData);
-        
         return json_encode(array('message' => trans('account.successArhive' . $trans->enabled), 'stats' => $stats['stats']));
     }
     
@@ -806,20 +800,19 @@ class AccountController extends Controller
     public function getCostOrder()
     {
         $siteID = Session::get('projectID');
-        
-        $translate_is_ordered =  Translate::where('is_ordered', 1)->where('site_id', $siteID)->get();
-        $count_words          = 0;
-
-        if ( $translate_is_ordered ) 
-          {
-            foreach ( $translate_is_ordered as $item )
-            {
-                $block_is_ordered = $item->block;
-                $count_words      = (int)$count_words + $block_is_ordered->count_words;
+        $translateInOrder =  Translate::where('is_ordered', 1)
+            ->leftJoin('languages', 'languages.id', '=', 'translates.language_id')
+            ->leftJoin('blocks', 'blocks.id', '=', 'translates.block_id')
+            ->where('translates.site_id', $siteID)
+            ->select('languages.word_cost', 'blocks.count_words')
+            ->get();
+        $cost = 0;
+        if (count($translateInOrder)) {
+            foreach ($translateInOrder as $item) {
+                $cost += $item->count_words * $item->word_cost;
             }
-          }
-
-        return (int)$count_words * $this->options['word_cost'];
+        }
+        return $cost;
     }
 
     /**

@@ -15,6 +15,7 @@
                     <th>Локализованное название</th>
                     <th>Код</th>
                     <th>Иконка</th>
+                    <th>Стоимость слова (руб.)</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -32,6 +33,9 @@
                         </td>
                         <td>
                             <img src="/icons/{{$item->icon_file}}">
+                        </td>
+                        <td>
+                            {{$item->word_cost}}
                         </td>
                         <td class="text-right">
                             <a class="btn btn-sm btn-default" type="button" data-toggle="tooltip" title="Редактировать" href="/admin/settings/languages/{{$item->id}}/edit"><i class="fa fa-pencil"></i></a>

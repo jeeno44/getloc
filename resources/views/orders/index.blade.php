@@ -101,7 +101,7 @@
                 <tr>
                     <td>{{$order->id}}</td>
                     <td>{{$order->translates()->count()}}</td>
-                    <td>&#8381;{{number_format($order->payment_sum, 0, '.', ' ') }}</td>
+                    <td>&#8381;{{number_format($order->payment_sum, 1, '.', ' ') }}</td>
                     <td>
                         {{date('d.m.Y H:i:s', strtotime($order->created_at))}}
                     </td>

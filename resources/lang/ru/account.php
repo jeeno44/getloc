@@ -89,7 +89,7 @@ return [
     'delOrder'                 => 'Убрать из заказа',
     'selectPhraseInOrder'      => 'Выбрать фразу в заказ',
     'deselectPhraseInOrder'    => 'Отменить выбор фразы в заказ',
-    'unpublished'              => 'Неопубликованные',
+    'unpublished'              => 'Архив',
     'needCheckBlock'           => 'Отметьте фразу',
 
     /*error*/
