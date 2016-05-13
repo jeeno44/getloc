@@ -20,6 +20,9 @@ class HomeController extends Controller
             }
         }
         $sites = Site::count();
+        if (\Auth::check()) {
+            return redirect()->route('main.account');
+        }
         return view('pages.main', compact('sites'));
     }
 
