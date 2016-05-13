@@ -91,6 +91,8 @@ return [
     'deselectPhraseInOrder'    => 'Отменить выбор фразы в заказ',
     'unpublished'              => 'Архив',
     'needCheckBlock'           => 'Отметьте фразу',
+    'addedToArchive'           => 'Фразы перенесены в архив',
+    'removedFromArchive'       => 'Фразы удалены из архива',
 
     /*error*/
     'errorOutputPhrase_1'      => 'Не удалось включить вывод фразы!',

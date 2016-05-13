@@ -1,4 +1,4 @@
-<div class="phrases__item-controls-right">
+<div class="phrases__item-controls-right" @if(!empty($tab) && $tab == 'tab_acrhive') style="display: none" @endif>
     <div class="phrases__item-controls-menu">
         <div>
             <ul>

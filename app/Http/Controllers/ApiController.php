@@ -88,6 +88,7 @@ class ApiController extends Controller
                                 ->where('blocks.enabled', 1)
                                 ->where('blocks.id', '<=', $subscription->last_id)
                                 ->where('translates.enabled', 1)
+                                ->where('translates.archive', 0)
                                 ->select('blocks.text', 'translates.id as tid', 'translates.text as ttext')
                                 ->orderBy(\DB::raw('LENGTH(blocks.text)'), 'DESC')
                                 ->get();

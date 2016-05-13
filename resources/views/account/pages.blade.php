@@ -12,21 +12,28 @@
 
                 <div class="tabs__content">
                     <div class="active" style="display: block;" class="phrases__tab" id="renderPhrases">
-
-                        @foreach ($blocks as $t)
-
-                            <div class="pages_block_wrap">
-                                <input type="checkbox" data-id="{{ $t->id }}" class="pages_disable" @if($t->enabled) checked @endif>
-                                <a href="/account/phrase?url={{ urlencode($t->url) }}" class="link_pages">{{ $t->url }}</a>
-                            </div>
-
+                        <table style="width: 100%">
+                        @foreach ($pages as $p)
+                            <tr>
+                                <td>{{ $p->url }}</td>
+                                <td>
+                                    @if($p->enabled)
+                                        <a href="/account/phrase?url={{ urlencode($p->url) }}" class="link_pages">Показать фразы</a>
+                                    @endif
+                                </td>
+                                <td>
+                                @if($p->enabled)
+                                    <a href="/account/pages/disable/{{$p->id}}">Отключить от перевода</a>
+                                @else
+                                    <a href="/account/pages/enable/{{$p->id}}">Подключить к переводу</a>
+                                @endif
+                                </td>
+                            </tr>
                         @endforeach
-
-                        @if (isset($blocks))
-                            <div class="paginationAjax">
-                                {!! $blocks->appends(['site_id' => request()->get('site_id')])->links() !!}
+                        </table>
+                            <div class="pagination">
+                                {!! $pages->render() !!}
                             </div>
-                        @endif
 
                     </div>
                 </div>

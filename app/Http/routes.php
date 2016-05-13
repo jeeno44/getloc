@@ -62,6 +62,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::post('/setAutoPublishing', ['as' => 'main.account.autoPub', 'uses' => 'AccountController@setAutoPublishing']);
             Route::post('/setAutoTranslate', ['as' => 'main.account.autoTrans', 'uses' => 'AccountController@setAutoTranslate']);
             Route::post('/ajaxPhraseRender', ['as' => 'main.account.ajaxphrase', 'uses' => 'AccountController@phraseAjaxRender']);
+            Route::post('/archive-block', ['as' => 'main.account.archive-block', 'uses' => 'AccountController@setToArchive']);
 
 
 //            Route::post('/ajaxRenderingBlocksPages', ['as' => 'main.account.ajaxRenderingBlocksPages', 'uses' => 'AccountController@ajaxRenderingBlocksPages']);
@@ -77,7 +78,8 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::post('/setArchive', ['as' => 'main.account.setArchive', 'uses' => 'AccountController@setArchiveTranslate']);
 
             Route::get('/get-history/{id}', ['as' => 'main.account.get-history', 'uses' => 'AccountController@getHistory']);
-
+            Route::get('/pages/disable/{id}', 'AccountController@disablePage');
+            Route::get('/pages/enable/{id}', 'AccountController@enablePage');
         });
         
     });

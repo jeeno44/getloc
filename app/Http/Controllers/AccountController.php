@@ -536,16 +536,17 @@ class AccountController extends Controller
     public function getStatsNotTranslate($arrData)
     {
         $buildQuery = Translate::where('translates.site_id', $arrData['siteID'])
-                               ->where('translates.language_id', $arrData['languageID'])
-                               ->where('translates.type_translate_id', NULL)
-                               ->join('blocks', 'blocks.id', '=', 'translates.block_id')
-                               ->where('blocks.enabled', 1);
+            ->where('translates.language_id', $arrData['languageID'])
+            ->where('translates.type_translate_id', NULL)
+            ->join('blocks', 'blocks.id', '=', 'translates.block_id')
+            ->where('translates.archive', 0)
+            ->where('blocks.enabled', 1);
 
         if ( isset($arrData['pagesUrl']) && count($arrData['pagesUrl']) > 0 )
             $buildQuery->leftJoin('page_block', 'page_block.block_id', '=', 'blocks.id')
-                       ->leftJoin('pages', 'pages.id', '=', 'page_block.page_id')
-                       ->whereIn('pages.url', $arrData['pagesUrl'])
-                       ->where('pages.enabled', '=', 1);
+                ->leftJoin('pages', 'pages.id', '=', 'page_block.page_id')
+                ->whereIn('pages.url', $arrData['pagesUrl'])
+                ->where('pages.enabled', '=', 1);
 
         if ( !empty($arrData['phraseInOrder']) ) 
             $buildQuery->where('translates.is_ordered', $arrData['phraseInOrder']);
@@ -577,16 +578,17 @@ class AccountController extends Controller
     public function getStatsInTranslate($arrData)
     {
         $buildQuery = Translate::where('translates.site_id', $arrData['siteID'])
-                               ->where('translates.language_id', $arrData['languageID'])
-                               ->whereNotNull('translates.type_translate_id')
-                               ->join('blocks', 'blocks.id', '=', 'translates.block_id')
-                               ->where('blocks.enabled', 1);
+            ->where('translates.language_id', $arrData['languageID'])
+            ->whereNotNull('translates.type_translate_id')
+            ->join('blocks', 'blocks.id', '=', 'translates.block_id')
+            ->where('translates.archive', 0)
+            ->where('blocks.enabled', 1);
 
         if ( isset($arrData['pagesUrl']) && count($arrData['pagesUrl']) > 0 ) 
             $buildQuery->leftJoin('page_block', 'page_block.block_id', '=', 'blocks.id')
-                       ->leftJoin('pages', 'pages.id', '=', 'page_block.page_id')
-                       ->whereIn('pages.url', $arrData['pagesUrl'])
-                       ->where('pages.enabled', '=', 1);      
+                ->leftJoin('pages', 'pages.id', '=', 'page_block.page_id')
+                ->whereIn('pages.url', $arrData['pagesUrl'])
+                ->where('pages.enabled', '=', 1);
 
         if ( !empty($arrData['phraseInOrder']) ) 
             $buildQuery->where('translates.is_ordered', $arrData['phraseInOrder']);
@@ -622,16 +624,17 @@ class AccountController extends Controller
     public function getStatsPublish($arrData)
     {
         $buildQuery = Translate::where('translates.site_id', $arrData['siteID'])
-                               ->where('translates.language_id', $arrData['languageID'])
-                               ->where('translates.enabled', 1)
-                               ->join('blocks', 'blocks.id', '=', 'translates.block_id')
-                               ->where('blocks.enabled', 1);
+            ->where('translates.language_id', $arrData['languageID'])
+            ->where('translates.enabled', 1)
+            ->join('blocks', 'blocks.id', '=', 'translates.block_id')
+            ->where('translates.archive', 0)
+            ->where('blocks.enabled', 1);
 
         if ( isset($arrData['pagesUrl']) && count($arrData['pagesUrl']) > 0 )
             $buildQuery->leftJoin('page_block', 'page_block.block_id', '=', 'blocks.id')
-                       ->leftJoin('pages', 'pages.id', '=', 'page_block.page_id')
-                       ->whereIn('pages.url', $arrData['pagesUrl'])
-                       ->where('pages.enabled', '=', 1);
+                ->leftJoin('pages', 'pages.id', '=', 'page_block.page_id')
+                ->whereIn('pages.url', $arrData['pagesUrl'])
+                ->where('pages.enabled', '=', 1);
 
         if ( !empty($arrData['phraseInOrder']) ) 
             $buildQuery->where('translates.is_ordered', $arrData['phraseInOrder']);
@@ -666,18 +669,19 @@ class AccountController extends Controller
     public function getStatsAll($arrData)
     {
         $buildQuery = DB::table('translates')
-                        ->join('types_translates', 'translates.type_translate_id', '=', 'types_translates.id')
-                        ->select('types_translates.id', DB::raw('count(*) as cc'))
-                        ->where('translates.site_id', $arrData['siteID'])
-                        ->where('language_id', $arrData['languageID'])
-                        ->join('blocks', 'blocks.id', '=', 'translates.block_id')
-                        ->where('blocks.enabled', 1);
+            ->join('types_translates', 'translates.type_translate_id', '=', 'types_translates.id')
+            ->select('types_translates.id', DB::raw('count(*) as cc'))
+            ->where('translates.site_id', $arrData['siteID'])
+            ->where('language_id', $arrData['languageID'])
+            ->join('blocks', 'blocks.id', '=', 'translates.block_id')
+            ->where('translates.archive', 0)
+            ->where('blocks.enabled', 1);
 
         if ( isset($arrData['pagesUrl']) && count($arrData['pagesUrl']) > 0 ) 
             $buildQuery->leftJoin('page_block', 'page_block.block_id', '=', 'blocks.id')
-                       ->leftJoin('pages', 'pages.id', '=', 'page_block.page_id')
-                       ->whereIn('pages.url', $arrData['pagesUrl'])
-                       ->where('pages.enabled', '=', 1);
+                ->leftJoin('pages', 'pages.id', '=', 'page_block.page_id')
+                ->whereIn('pages.url', $arrData['pagesUrl'])
+                ->where('pages.enabled', '=', 1);
             
         if ( !empty($arrData['phraseInOrder']) )
             $buildQuery->where('translates.is_ordered', $arrData['phraseInOrder']);
@@ -735,11 +739,10 @@ class AccountController extends Controller
         $filterDef = 0;
         $site      = Site::find($siteID);
 
-        if ( !$siteID || !$site )
-          {
+        if ( !$siteID || !$site ) {
             Session::remove('projectID');
             return redirect(URL::route('main.account.selectProject'));
-          }
+        }
 
         if ( $request->input('language_id') ) 
             $languageID = $request->input('language_id');
@@ -749,10 +752,13 @@ class AccountController extends Controller
         if ( !$languageID ) 
             $languageID = Site::find($siteID)->languages()->where('enabled', true)->orderBy('id')->first()->id;
             $filterDef = 1;
-        
+
         $arrData = compact('siteID', 'languageID');
         if (!empty(Session::get('filter')['typeID'])) {
             $arrData['typeID'] = Session::get('filter')['typeID'];
+        }
+        if ($request->has('url')) {
+            Session::set('pages_url_'.$siteID, $request->get('url'));
         }
         $pagesUrl = !empty(Session::get('pages_url_'.$siteID)) ? explode(',', Session::get('pages_url_'.$siteID)) : [];
         if (!empty($pagesUrl)) {
@@ -761,11 +767,10 @@ class AccountController extends Controller
         $filter  = $this->generateStatsForPhraseFilter($arrData);
         if ( (int)$filter['stats']['not_translate'] === 0 )
             $tab = 'tab_translated';
-         else 
+         else
             $tab = 'tab_not_translated';
         $tab_name = $tab;
-        $arrData  = compact('tab', 'siteID', 'languageID');
-
+        $arrData['tab']  = $tab;
         $blocks   = $this->buildQueryPhrase($arrData);
         $phrasesInOrder = $this->getCountPhrasesInOrder();
         $costOrder      = $this->getCostOrder();
@@ -1023,30 +1028,32 @@ class AccountController extends Controller
             $buildQuery->whereIn('pages.url', $arrQuery['pagesUrl']);
         
         $buildQuery->leftJoin('page_block', 'page_block.page_id', '=', 'pages.id')
-                   ->leftJoin('blocks', 'blocks.id', '=', 'page_block.block_id')
-                   ->where('blocks.enabled', '=', 1)
-                   ->where('translates.language_id', '=', $arrQuery['languageID'])
-                   ->leftJoin('translates', 'translates.block_id', '=', 'page_block.block_id')
-                   ->groupBy('page_block.block_id');
+            ->leftJoin('blocks', 'blocks.id', '=', 'page_block.block_id')
+            ->where('blocks.enabled', '=', 1)
+            ->where('translates.language_id', '=', $arrQuery['languageID'])
+            ->leftJoin('translates', 'translates.block_id', '=', 'page_block.block_id')
+            ->groupBy('page_block.block_id');
 
         switch ($arrQuery['tab']) 
         {
             case 'tab_not_translated':
             default:
-                $buildQuery->where('translates.type_translate_id', NULL);
+                $buildQuery->where('translates.type_translate_id', NULL)->where('translates.archive', 0);
             break;
             case 'tab_translated':
                 $buildQuery->whereNotNull('translates.type_translate_id');
                 if (!empty($arrQuery['typeID']))
                     $buildQuery->where('translates.type_translate_id', $arrQuery['typeID']);
+                $buildQuery->where('translates.archive', 0);
                 break;
             case 'tab_published':
                 $buildQuery->where('translates.enabled', '=', 1);
                 if (!empty($arrQuery['typeID']))
                     $buildQuery->where('translates.type_translate_id', $arrQuery['typeID']);
+                $buildQuery->where('translates.archive', 0);
                 break;
             case 'tab_acrhive':
-                $buildQuery->where('translates.enabled', 0);
+                $buildQuery->where('translates.archive', 1);
                 if (!empty($arrQuery['typeID']))
                     $buildQuery->where('translates.type_translate_id', $arrQuery['typeID']);
             break;
@@ -1363,8 +1370,8 @@ class AccountController extends Controller
             return redirect(URL::route('main.account.selectProject'));
           }
           
-        $blocks = $site->pages()->paginate(25);
-        return view('account/pages', compact('blocks'));
+        $pages = $site->pages()->paginate(25);
+        return view('account/pages', compact('pages'));
     }
     
     /**
@@ -1405,5 +1412,52 @@ class AccountController extends Controller
     {
         $history = HistoryPhrase::where('translate_id', $id)->latest()->get();
         return view('account.history', compact('history'));
+    }
+
+
+    public function setToArchive(Request $request)
+    {
+        $archive = $request->get('archive', 1);
+        $ids = $request->get('ids');
+        if (!empty($ids)) {
+            Translate::whereIn('id', $ids)->update(['archive' => $archive]);
+            if ($archive == 1) {
+                return json_encode(array('message' => trans('account.addedToArchive')));
+            }
+            return json_encode(array('message' => trans('account.removedFromArchive')));
+        }
+        return json_encode(array('message' => trans('account.needCheckBlock'), 'isError' => true));
+    }
+
+    public function disablePage($id)
+    {
+        $page = Page::find($id);
+        if (!$page || $page->site->user_id != $this->user->id) {
+            abort(404);
+        }
+        $page->enabled = 0;
+        $page->save();
+        foreach ($page->blocks as $block) {
+            $count = DB::table('page_block')
+                ->where('block_id', $block->id)
+                ->join('pages', 'pages.id', '=', 'page_block.page_id')
+                ->where('pages.enabled', 1)->count();
+            if ($count == 0) {
+                Translate::where('block_id', $block->id)->update(['archive' => 1]);
+            }
+        }
+        return redirect()->back();
+    }
+
+    public function enablePage($id)
+    {
+        $page = Page::find($id);
+        if (!$page || $page->site->user_id != $this->user->id) {
+            abort(404);
+        }
+        $page->enabled = 1;
+        $page->save();
+        Translate::whereIn('block_id', $page->blocks()->lists('id')->toArray())->update(['archive' => 0]);
+        return redirect()->back();
     }
 }

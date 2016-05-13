@@ -53,7 +53,7 @@
                         <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkbox_ordering_translation" id="ordering_translation_{{$t->tid}}">
                         <label for="ordering_translation_{{$t->tid}}"></label>
                     </div>
-                    @include('partials.account-menu-phrase', ['ob' => $t])
+                    @include('partials.account-menu-phrase', ['ob' => $t, 'tab' => $tab])
                 </div>
                 <div class="history-phrase"></div>
             </div>

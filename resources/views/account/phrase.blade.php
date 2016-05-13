@@ -22,6 +22,7 @@
                 <a id="tab_not_translated" @if (Request::is('account/phrase') or Request::is('account/phrase/not_translated'))class="active" @endif href="#">{{trans('account.noTranslate')}}<span id="stNotTranslate">{{$filter['stats']['not_translate']}}</span></a>
                 <a id="tab_translated" @if (Request::is('account/phrase/translated'))class="active" @endif href="#">{{trans('account.inTranslate')}}<span id="stInTranslate">{{$filter['stats']['in_translate']}}</span></a>
                 @else
+                    <a id="tab_not_translated" href="#" style="display: none">{{trans('account.noTranslate')}}<span id="stNotTranslate">{{$filter['stats']['not_translate']}}</span></a>
                     <a id="tab_translated" class="active" href="#">{{trans('account.inTranslate')}}<span id="stInTranslate">{{$filter['stats']['in_translate']}}</span></a>
                 @endif
                 <a id="tab_published" @if (Request::is('account/phrase/published'))class="active" @endif href="#">{{trans('account.inPublish')}}<span id="stPublish">{{$filter['stats']['publish']}} </span></a>
@@ -37,7 +38,8 @@
                 <div class="phrases__control-inner">
                     <button id="check-all-phrases" class="phrases__control-check"></button>
                     <button id="nopublishing" class="phrases__control-delete"></button>
-                    <button class="phrases__control-attached"></button>
+                    <button id="to-archive" class="phrases__control-attached"></button>
+                    <button id="from-archive" class="phrases__control-detached" style="display: none">Убрать из архива</button>
                 </div>
                 <button id="setViewTypeID_1" class="phrases__control-horizontal @if ($viewType == 1) active @endif"></button>
                 <button id="setViewTypeID_2" class="phrases__control-column @if ($viewType == 2) active @endif"></button>
