@@ -21,6 +21,8 @@ import json
 import re
 from db_access import mysql_credentials
 
+parseDocs = ['xls', 'xlsx', 'ppt', 'pptx', 'txt', 'odt', 'tif', 'jpeg', 'rtf', 'doc', 'docx', 'png', 'jpg', 'gif']
+
 #------------------------------------------------------------------------------------------------------
 # Настройки мускула и самого текст коллектора
 #------------------------------------------------------------------------------------------------------
@@ -45,15 +47,14 @@ def getSettingsProject(projectID):
 #------------------------------------------------------------------------------------------------------
 
 def translateBlock(block):
-    global iBlockInsert, insertSQLTrans, loadSQL, langTo
-    translate = translator.translate(block[2].encode('utf-8'), lang_from=fromLang, lang_to=langTo)
-    loadSQL.append("({id}, {language_id}, '{text}', NOW(), NOW(), 1, {siteID}, {cc}, 1, 0)".format(id=block[0], language_id=langID, siteID=siteID, text=MySQLdb.escape_string(str(translate.encode('utf-8'))), cc=len(translate.split())))
-    iBlockInsert += 1
-
-    if len(loadSQL) >= maxBlockInsert:
-        iBlockInsert = 0
-        cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
-        loadSQL = []
+    global iBlockInsert, insertSQLTrans, loadSQL, langTo, loadSQL
+    try:
+        translate = translator.translate(block[2].encode('utf-8'), lang_from=fromLang, lang_to=langTo)
+        if translate:
+            sql = "({id}, {language_id}, '{text}', NOW(), NOW(), 1, {siteID}, {cc}, 1, 0, 0)".format(id=block[0], language_id=langID, siteID=siteID, text=MySQLdb.escape_string(str(translate.encode('utf-8'))), cc=len(translate.split()))
+            loadSQL.append(insertSQLTrans + sql + ";")
+    except Exception as exc:
+        pass
 
 def createEmptyTranslate(block):
     global iBlockInsert, insertSQLTrans, loadSQL, langTo, siteID
@@ -86,16 +87,41 @@ def getAllBlocks(projectID):
         issetBlocks.append(block[0])
 
 #------------------------------------------------------------------------------------------------------
+# Парсим документы и картинки сайта, затем записываем их в отдельную таблицу
+#------------------------------------------------------------------------------------------------------
+
+def parseDocInSite(url, element):
+    global docSQL
+
+    docs = {}
+
+    if element.name == 'a' and element.has_attr('href'):
+        if element['href'].split(".")[-1] in parseDocs:
+            url = urlparse.urljoin(domain, element['href'])
+            docs = {'full_url': url.encode('utf8'), 'ftype': 'doc', 'link_text': element.getText().encode('utf8'), 'doc_type': element['href'].split(".")[-1].encode('utf8'), 'site_id': siteID}
+    elif element.name == 'img' and element.has_attr('src'):
+        if element['src'].split(".")[-1] in parseDocs:
+            url = urlparse.urljoin(domain, element['src'])
+            altString = ''
+            if element.has_attr('alt'):
+                altString = element['alt']
+            docs = {'full_url': url.encode('utf8'), 'ftype': 'image', 'link_text': altString.encode('utf8'), 'doc_type': element['src'].split(".")[-1].encode('utf8'), 'site_id': siteID}
+
+    if docs:
+        docSQL.append(docs)
+
+#------------------------------------------------------------------------------------------------------
 # Стресс тест для проекта
 #------------------------------------------------------------------------------------------------------
 
 def stressTest(urls, rpb, message):
     urls_for_test = urls[0:50] #Берем только 50 первых урлов
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-            future_to_url = {executor.submit(load_url, url, siteID, cursor, 60): url for url in urls_for_test }
+            future_to_url = {executor.submit(load_url2, url, siteID, cursor, 60): url for url in urls_for_test }
             for future in concurrent.futures.as_completed(future_to_url):
                 url = future_to_url[future]
                 try:
+                    req      = future.result()
                     response = urllib2.urlopen(req, timeout=10)
                 except urllib2.HTTPError as e:
                     if e.code == 503:
@@ -138,6 +164,9 @@ def load_url(url, siteID, cursor, timeout):
     html = response.read()
     if html:
         return html
+
+def load_url2(url, siteID, cursor, timeout):
+    return urllib2.Request(url=url)
 
 #------------------------------------------------------------------------------------------------------
 # Создаем блок и возвращаем insert_id
@@ -214,7 +243,10 @@ for item in ps.listen():
         urlPageID = {}
 
         data_           = json.loads(item['data'].decode("utf-8"))
-        db              = MySQLdb.connect(host=mysql_credentials['host'], user=mysql_credentials['user'], passwd=mysql_credentials['password'], db=mysql_credentials['db'], charset=mysql_credentials['charset'], unix_socket=mysql_credentials['unix_socket'])
+        if mysql_credentials['unix_socket']:
+            db          = MySQLdb.connect(host=mysql_credentials['host'], user=mysql_credentials['user'], passwd=mysql_credentials['password'], db=mysql_credentials['db'], charset=mysql_credentials['charset'], unix_socket=mysql_credentials['unix_socket'])
+        else:
+            db          = MySQLdb.connect(host=mysql_credentials['host'], user=mysql_credentials['user'], passwd=mysql_credentials['password'], db=mysql_credentials['db'], charset=mysql_credentials['charset'])
         trans_client    = 'blackgremlin2'
         trans_secret    = 'SMnjwvLx0bB2u9Cn05K2vkTE1bSkX0+fsLp/23gsytU='
         
@@ -233,13 +265,15 @@ for item in ps.listen():
         issetBlocks     = []
         blocksID        = {}
 
-        maxBlockInsert  = 10
+        maxBlockInsert  = 100
         iBlockInsert    = 0
-        insertSQLTrans  = 'INSERT INTO translates (block_id, language_id, `text`, created_at, updated_at, type_translate_id, site_id, count_words, `enabled`, is_ordered) VALUES '
+        insertSQLTrans  = 'INSERT INTO translates (block_id, language_id, `text`, created_at, updated_at, type_translate_id, site_id, count_words, `enabled`, is_ordered, archive) VALUES '
         loadSQL         = []
         langTo          = ''
         langID          = 0
         translator      = None
+
+        docSQL          = []
 
         db.autocommit(True)
 
@@ -262,6 +296,9 @@ for item in ps.listen():
 
         count = 0
 
+        parsed_uri = urlparse.urlparse(urls[0])
+        domain     = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
+
         #------------------------------------------------------------------------------------------------------
         # Проводим стресс тест для сайта, проактивная защита BITRIX
         #------------------------------------------------------------------------------------------------------
@@ -278,8 +315,6 @@ for item in ps.listen():
             for future in concurrent.futures.as_completed(future_to_url):
                 url = future_to_url[future]
                 try:
-                    print(url)
-
                     cursor.execute('UPDATE pages SET collected = 1 WHERE url = "{url}" AND site_id = {siteid}'.format(url=MySQLdb.escape_string(url), siteid=siteID))
 
                     html = future.result()
@@ -330,6 +365,10 @@ for item in ps.listen():
                                 if element.name == 'meta':
                                     continue
 
+                                # Сначала чекаем на файлы и картинки
+                                if element.name == 'img' or element.name == 'a':
+                                    parseDocInSite(url, element)
+
                                 for str_ in element.findAll(text=True, recursive=False):
                                     string = re.sub(' +',' ', str_)
                                     if string.isdigit() != True and string: #Цифры нам нинужныыыы!
@@ -357,11 +396,33 @@ for item in ps.listen():
                 finishStats(siteID, countWords, countSymbols, countBlocks)
 
         #------------------------------------------------------------------------------------------------------
+        # Сохраняем все картинки, файлы, документы
+        #------------------------------------------------------------------------------------------------------
+
+        if docSQL:
+            for doc in docSQL:
+                cursor.execute('SELECT * FROM docs_sites WHERE site_id = {site_id} AND full_url = "{full_url}"'.format(site_id=doc['site_id'], full_url=doc['full_url']))
+                docDB = cursor.fetchone()
+                if docDB is None:
+                    link_text = ''
+                    if doc['link_text']:
+                        link_text = MySQLdb.escape_string(str(doc['link_text']))
+
+                    sql = """
+                    INSERT INTO docs_sites (site_id, link_text, ftype, doc_type, full_url) VALUES ({site_id}, "{link_text}", "{ftype}", "{doc_type}", "{full_url}")
+                    """.format(site_id=MySQLdb.escape_string(str(doc['site_id'])), link_text=link_text, ftype=MySQLdb.escape_string(str(doc['ftype'])),
+                               doc_type=MySQLdb.escape_string(str(doc['doc_type'])), full_url=MySQLdb.escape_string(str(doc['full_url'])))
+                    cursor.execute(sql)
+                    #cursor.execute('INSERT INTO docs_sites (site_id, link_text, ftype, doc_type, full_url) VAALUES ({site_id}, "{link_text}", "{ftype}", "{doc_type}", "{full_url}")'
+                    #    .format(site_id=MySQLdb.escape_string(doc['site_id']), link_text=MySQLdb.escape_string(doc['link_text']), ftype=MySQLdb.escape_string(doc['ftype']), 
+                    #        doc_type=MySQLdb.escape_string(doc['doc_type']), full_url=MySQLdb.escape_string(doc['full_url'])))
+
+        #------------------------------------------------------------------------------------------------------
         # Запускаем автоперевод блоков, тоже в потоках
         # Если была такая настройка у проекта
         #------------------------------------------------------------------------------------------------------
 
-        
+
         translator = Translator(trans_client, trans_secret)
         langs      = getLangsProject(siteID)
         
@@ -377,12 +438,9 @@ for item in ps.listen():
             pool.close()
             pool.join()
 
-        if len(loadSQL) > 0 and len(loadSQL) <= maxBlockInsert:
-            iBlockInsert = 0
-            cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
-            loadSQL = []
-            db.close()
-            cursor.close()
+        for sql in loadSQL:
+            cursor.execute(sql)
+
         """
         langs      = getLangsProject(siteID) 
         sql        = 'SELECT * FROM blocks WHERE site_id = {projectID}'.format(projectID=siteID)
