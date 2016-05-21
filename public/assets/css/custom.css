@@ -134,3 +134,49 @@
 .header__person-list .active{
     cursor: default;
 }
+.forgot-pass {
+    width: 400px;
+    margin: 0 auto;
+    text-align: center;
+}
+.forgot-pass__success{
+    margin-bottom: 20px;
+    line-height: 24px;
+}
+.forgot-pass__success a{
+    color: #18baea;
+    text-decoration: underline;
+}
+.forgot-pass__form {
+    width: 260px;
+    margin: 0 auto;
+}
+.forgot-pass input{
+    text-align: center;
+}
+.site__form-forgot {
+    display: inline-block;
+    color: #333;
+    border-bottom: 1px solid #333;
+    line-height: 1;
+    -webkit-transition: border-bottom 0.3s ease;
+    transition: border-bottom 0.3s ease;
+}
+.site__form-forgot:hover {
+    border-bottom: 1px solid transparent;
+}
+.site__header-inner {
+    position: absolute;
+    top: 1px;
+    right: 20px;
+    text-align: right;
+}
+.site__header-inner > * {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 6px;
+}
+.site__header-inner > *:first-child {
+    margin-left: 0;
+    margin-right: 11px;
+}

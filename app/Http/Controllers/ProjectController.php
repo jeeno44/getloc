@@ -103,6 +103,7 @@ class ProjectController extends Controller
             abort(403, 'Сайт добавлен другим пользователем');
         }
         \Session::set('projectID', $site->id);
+        \Event::fire('site.start', $site); // TODO продумать проверку вставки кода
         return view('project.created', compact('site'));
     }
 
@@ -119,7 +120,7 @@ class ProjectController extends Controller
             $site->enabled = 1;
             $site->save();
             //$this->dispatch(new \App\Jobs\Spider($site));
-            \Event::fire('site.start', $site);
+            //\Event::fire('site.start', $site);
             return 'success';
         }
         return 'fail';

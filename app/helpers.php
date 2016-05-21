@@ -126,6 +126,30 @@ function sendApiQuery($getaway, $data)
     curl_close($curl);
 }
 
+function ruDate($date){
+    $timestamp = strtotime($date);
+    $d = date('d', $timestamp);
+    $y = date('Y', $timestamp);
+    $m = date('m', $timestamp);
+    $h = date('H', $timestamp);
+    $i = date('i', $timestamp);
+    switch($m) {
+        case '01': $m = 'января'; break;
+        case '02': $m = 'февраля'; break;
+        case '03': $m = 'марта'; break;
+        case '04': $m = 'апреля'; break;
+        case '05': $m = 'мая'; break;
+        case '06': $m = 'июня'; break;
+        case '07': $m = 'июля'; break;
+        case '08': $m = 'августа'; break;
+        case '09': $m = 'сентября'; break;
+        case '10': $m = 'октября'; break;
+        case '11': $m = 'ноября'; break;
+        default: $m = 'декабря';
+    }
+    return "{$d} {$m} {$y} - {$h}:{$i}";
+}
+
 /**
  * Обрезка URL
  * @param string $url

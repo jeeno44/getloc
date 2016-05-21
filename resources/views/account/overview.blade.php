@@ -61,10 +61,14 @@
             <div class="inside-content__title">
                 <h2>Тарифный план</h2>
                 @if($site->subscription)
-                    <a href="{{route('main.billing.upgrade', ['id' => $site->id])}}" class="">Изменить</a>
-                    <a href="{{route('main.billing.prolong', ['id' => $site->id])}}" class="">Продлить</a>
+                    <div class="inside-content__tune">
+                        <a href="{{route('main.billing.upgrade', ['id' => $site->id])}}" class="inside-content__tune-link">Изменить</a>
+                        <a href="{{route('main.billing.prolong', ['id' => $site->id])}}" class="inside-content__tune-link">Продлить</a>
+                    </div>
                 @else
-                    <a href="{{route('main.billing', ['id' => $site->id])}}" class="inside-content__tune">Купить</a>
+                    <div class="inside-content__tune">
+                        <a href="{{route('main.billing', ['id' => $site->id])}}" class="inside-content__tune-link">Купить</a>
+                    </div>
                 @endif
 
             </div>
@@ -93,13 +97,24 @@
         <div class="translation inside-content__wrap">
             <div class="inside-content__title">
                 <h2>{{trans('account.napLang')}}</h2>
-                <a href="{{URL::route('main.account.languages')}}" class="inside-content__tune">{{trans('account.controlLangs')}}</a>
+                <div class="inside-content__tune">
+                    <a href="{{URL::route('main.account.languages')}}" class="inside-content__tune-link">{{trans('account.controlLangs')}}</a>
+                </div>
+
             </div>
             @foreach ($stats['langStats'] as $short => $lang)
             <div class="translation__item">
-                <div class="translation__language">
-                    <span class="translation__language-flag" style="background-image: url('/assets/img/account/icons-en.png')"></span>
-                    {{$lang['name']}} @if ($lang['enabled'] == 0)({{trans('account.langOff')}}) @endif
+                <div class="translation__language translation__language_overview">
+                    <div class="translate-languages">
+                        <div class="translate-languages__item">
+                            <span class="flag" style="background-image: url(/icons/{{$site->language->icon_file}})"></span>
+                            {{$site->language->original_name}}
+                        </div>
+                        <div class="translate-languages__item">
+                            <span class="flag" style="background-image: url(/icons/{{$lang['icon']}})"></span>
+                            {{$lang['name']}}
+                        </div>
+                    </div>
                 </div>
                 <div class="translation__info">
                     {{trans('account.inProcTranslated')}}

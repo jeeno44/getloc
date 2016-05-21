@@ -73,14 +73,73 @@ class OrdersController extends Controller
                 $currentOrder[$translate->original_name]['count_phrases'] = 1;
                 $currentOrder[$translate->original_name]['cost'] = ($translate->word_cost * $translate->count_words);
                 $currentOrder[$translate->original_name]['lang_id'] = $translate->language_id;
+                $currentOrder[$translate->original_name]['icon'] = $translate->icon;
             }
             $currentOrder[$translate->original_name]['texts'][] = $translate->text;
             $allWords += $translate->count_words;
             $allPhrases += 1;
             $fullCost += ($translate->word_cost * $translate->count_words);
         }
-        $orders = Order::where('status', '!=', 'new')->where('site_id', $site->id)->latest()->get();
-        return view('orders.index', compact('translates', 'site', 'orders', 'currentOrder', 'allWords', 'allPhrases', 'fullCost', 'order'));
+        $orders = Order::whereIn('status', ['process', 'wait'])
+            ->where('site_id', $site->id)
+            ->latest()
+            ->get();
+        foreach ($orders as $key => $order) {
+            $langs = \DB::table('order_translate')
+                ->where('order_translate.order_id', $order->id)
+                ->leftJoin('translates', 'translates.id', '=', 'order_translate.translate_id')
+                ->leftJoin('languages', 'languages.id', '=', 'translates.language_id')
+                ->groupBy('languages.id')
+                ->select('languages.*')
+                ->get();
+            $data = [];
+            foreach ($langs as $index => $lang) {
+                $langs[$index]->count_words = \DB::table('order_translate')
+                    ->where('order_translate.order_id', $order->id)
+                    ->leftJoin('translates', 'translates.id', '=', 'order_translate.translate_id')
+                    ->where('translates.language_id', $lang->id)
+                    ->leftJoin('blocks', 'translates.block_id', '=', 'blocks.id')
+                    ->sum('blocks.count_words');
+                $langs[$index]->count_blocks = \DB::table('order_translate')
+                    ->where('order_translate.order_id', $order->id)
+                    ->leftJoin('translates', 'translates.id', '=', 'order_translate.translate_id')
+                    ->where('translates.language_id', $lang->id)
+                    ->count();
+                $data[] = $langs[$index];
+            }
+            $orders[$key]->langs = (object) $data;
+        }
+
+        $doneOrders = Order::where('status', 'done')
+            ->where('site_id', $site->id)
+            ->latest()
+            ->get();
+        foreach ($doneOrders as $key => $order) {
+            $langs = \DB::table('order_translate')
+                ->where('order_translate.order_id', $order->id)
+                ->leftJoin('translates', 'translates.id', '=', 'order_translate.translate_id')
+                ->leftJoin('languages', 'languages.id', '=', 'translates.language_id')
+                ->groupBy('languages.id')
+                ->select('languages.*')
+                ->get();
+            $data = [];
+            foreach ($langs as $index => $lang) {
+                $langs[$index]->count_words = \DB::table('order_translate')
+                    ->where('order_translate.order_id', $order->id)
+                    ->leftJoin('translates', 'translates.id', '=', 'order_translate.translate_id')
+                    ->where('translates.language_id', $lang->id)
+                    ->leftJoin('blocks', 'translates.block_id', '=', 'blocks.id')
+                    ->sum('blocks.count_words');
+                $langs[$index]->count_blocks = \DB::table('order_translate')
+                    ->where('order_translate.order_id', $order->id)
+                    ->leftJoin('translates', 'translates.id', '=', 'order_translate.translate_id')
+                    ->where('translates.language_id', $lang->id)
+                    ->count();
+                $data[] = $langs[$index];
+            }
+            $doneOrders[$key]->langs = (object) $data;
+        }
+        return view('orders.index', compact('translates', 'site', 'orders', 'currentOrder', 'allWords', 'allPhrases', 'fullCost', 'order', 'doneOrders'));
     }
 
     /**
@@ -221,7 +280,7 @@ class OrdersController extends Controller
             ->where('blocks.enabled', 1)
             ->where('translates.is_ordered', 1)
             ->where('translates.site_id', $site->id)
-            ->select('blocks.count_words', 'translates.language_id', 'translates.id', 'languages.original_name', 'blocks.text', 'languages.word_cost')
+            ->select('blocks.count_words', 'translates.language_id', 'translates.id', 'languages.original_name', 'blocks.text', 'languages.word_cost', 'languages.icon_file as icon')
             ->get();
         return $translates;
     }

@@ -1,7 +1,7 @@
 $(function(){
 
     $('.tabs').each(function() {
-        Tabs($(this));
+        new Tabs($(this));
     });
 
     $.each( $('.new-project__form'), function(){
@@ -9,43 +9,67 @@ $(function(){
     } );
 
     $('.phrases__item-col_translate').each(function() {
-        EditText($(this));
+        new EditText($(this));
     });
 
     $('.phrases__item-field').each(function() {
-        EditComments($(this));
+        new EditComments($(this));
     });
 
-    $('.site__aside-filter').each(function() {
-        Accordion($(this));
+    $('.phrases__item-controls-menu').each(function() {
+        new SubMenu($(this));
     });
-
-//    $('.phrases__item-controls-menu').each(function() {
-//        SubMenu($(this));
-//    });
 
     $('.menu').each(function () {
-        mobileMenu($(this));
+        new mobileMenu($(this));
     });
 
     $('.btn-lock').each(function () {
-        BtnLock($(this));
+        new BtnLock($(this));
     });
 
     $('.site__aside-slick').each(function () {
-        Slick($(this));
+        new Slick($(this));
     });
 
     $('.phrases__control').each(function () {
-        Slick($(this));
+        new Slick($(this));
     });
 
-    $(document).bind('click',function(e){
-        if ($(e.target).closest('.menu').length == 0){
-            $('.menu__icon').removeClass('close-menu');
-            $('.menu').removeClass('open-menu');
+    $( '.translate-orders' ).each( function () {
+        new TranslateOrders( $( this ) );
+    } );
+
+    $( '.info-massages' ).each( function () {
+        new DeleteNotifications( $( this ) );
+    } );
+
+    $( '.search-pages__chosen-item' ).each( function () {
+        new DeleteSearchChosenElements( $( this ) );
+    } );
+
+    $( '.account-data__change-pass' ).each( function () {
+        new AddClassApprove( $( this ) );
+    } );
+
+    $( '.site__data-field' ).each( function () {
+        new LabelFocus( $( this ) );
+    } );
+
+    $( '.accordion' ).each( function () {
+        new Accordion( $( this ) );
+    } );
+
+    $( document ).bind( 'click', function( e ) {
+        if ( $( e.target ).closest( '.menu' ).length == 0 ) {
+            $( '.menu__icon' ).removeClass( 'close-menu' );
+            $( '.menu' ).removeClass( 'open-menu' );
         }
     });
+
+    $( '.datepicker' ).each( function () {
+       $( this ).datepicker();
+    } );
 
 } );
 
@@ -285,40 +309,6 @@ var EditText = function(obj) {
         _init = function() {
             _addEvents();
             _setHeight();
-        };
-
-    //public properties
-
-    //public methods
-
-    _init();
-};
-
-var Accordion = function(obj) {
-
-    //private properties
-    var _obj = obj,
-        _btn = _obj.children( ' span ' ),
-        _content = _obj.children( ' div ' );
-
-    //private methods
-    var _addEvents = function() {
-            _btn.on({
-                click: function () {
-
-                    if (_content.is(' :visible ')) {
-                        _content.slideUp(300);
-                        _btn.removeClass( ' active ' )
-                    }else{
-                        _content.slideDown(300);
-                        _btn.addClass( ' active ' )
-                    }
-
-                }
-            });
-        },
-        _init = function() {
-            _addEvents();
         };
 
     //public properties
@@ -582,3 +572,258 @@ var FormValidation = function (obj) {
     _init();
 };
 
+var TranslateOrders = function( obj )  {
+
+    //private properties
+    var _obj = obj,
+        _delBtn = _obj.find( '.translate-orders__del' ),
+        _price = _obj.find( '.translate-orders__price span'),
+        _totalPrice = _obj.find( '.translate-orders__total-sum span'),
+        _input = _obj.find( '.translate-orders__count'),
+        _count = 0;
+
+    //private methods
+    var _addEvents = function() {
+
+            _delBtn.on( {
+                'click': function() {
+                    var curItem = $( this ),
+                        parent = curItem.parents( '.translate-orders__item' );
+
+                    parent.addClass( 'hidden' );
+
+                    setTimeout( function() {
+                        parent.remove();
+                        _setTotalPrice();
+                    }, 500 );
+
+
+                    return false;
+                }
+            } );
+        },
+        _setTotalPrice = function() {
+            _count = 0;
+            _price = _obj.find( '.translate-orders__price span');
+
+            _price.each( function() {
+                _count += parseInt( $(this).text() );
+
+            } );
+
+            _totalPrice.html( _count );
+
+            _writeTotalPriceInForm();
+        },
+        _writeTotalPriceInForm = function() {
+            _input.val( _count );
+        },
+        _init = function() {
+            _addEvents();
+            _setTotalPrice();
+        };
+
+    //public properties
+
+    //public methods
+
+    _init();
+};
+
+var DeleteNotifications = function( obj )  {
+
+    //private properties
+    var _obj = obj,
+        _items = _obj.find( '.info-massages__item' );
+
+    //private methods
+    var _addEvents = function() {
+
+            _items.on( {
+                'click': function() {
+                    var curItem = $( this );
+
+                    curItem.remove();
+
+                    return false;
+                }
+            } );
+        },
+        _init = function() {
+            _addEvents();
+        };
+
+    //public properties
+
+    //public methods
+
+    _init();
+};
+
+var DeleteSearchChosenElements = function( obj )  {
+
+    //private properties
+    var _obj = obj,
+        _btnDel = _obj.find( '.search-pages__chosen-delete' );
+
+    //private methods
+    var _addEvents = function() {
+
+            _btnDel.on( {
+                'click': function() {
+                    var curItem = $( this),
+                        parent = curItem.parent('.search-pages__chosen-item');
+
+                    parent.remove();
+
+                    return false;
+                }
+            } );
+        },
+        _init = function() {
+            _addEvents();
+        };
+
+    //public properties
+
+    //public methods
+
+    _init();
+};
+
+var AddClassApprove = function( obj )  {
+
+    //private properties
+    var _obj = obj,
+        _inputPass1 = _obj.find( '.new-pass' ),
+        _inputPass2 = _obj.find( '.repeat-pass' );
+
+    //private methods
+
+    var _addEvents = function() {
+
+            _inputPass2.on( {
+                'keyup': function() {
+
+                    if( _inputPass2.val() == _inputPass1.val() ) {
+
+                        _inputPass1.addClass( 'site__input_approve' );
+                        _inputPass2.addClass( 'site__input_approve' );
+
+                    } else {
+                        _inputPass1.removeClass( 'site__input_approve' );
+                        _inputPass2.removeClass( 'site__input_approve' );
+                    }
+
+                    return false;
+                }
+            } );
+        },
+        _init = function() {
+            _addEvents();
+        };
+
+    //public properties
+
+    //public methods
+
+    _init();
+};
+
+var LabelFocus = function( obj )  {
+
+    //private properties
+    var _obj = obj,
+        _input = _obj.find( '.site__input' ),
+        _label = _obj.find( '.site__label' );
+
+    //private methods
+
+    var _addEvents = function() {
+
+            _input.on( {
+                'focusin': function() {
+
+                    _label.addClass( 'focus' );
+
+                    return false;
+                },
+                'focusout': function() {
+
+                    _label.removeClass( 'focus' );
+
+                    return false;
+                }
+            } );
+        },
+        _init = function() {
+            _addEvents();
+        };
+
+    //public properties
+
+    //public methods
+
+    _init();
+};
+
+var Accordion = function( obj )  {
+
+    //private properties
+    var _obj = obj,
+        _btn = _obj.find( '.accordion__head' ),
+        _content = _obj.find( '.accordion__content'),
+        _scroll;
+
+    //private methods
+
+    var _addEvents = function() {
+
+            _btn.on( {
+                click: function() {
+                    var curItem = $( this ),
+                        contentNext = curItem.next();
+
+                    if( curItem.hasClass( 'active' ) ) {
+                        curItem.removeClass( 'active' );
+                        contentNext.slideUp();
+                    } else {
+                        _btn.removeClass( 'active' );
+                        _content.slideUp();
+                        curItem.addClass( 'active' );
+                        contentNext.slideDown();
+
+                        //setTimeout( function() {
+                        //    if( contentNext.hasClass( 'translate-set__content' ) ) {
+                        //        _addScroll( contentNext );
+                        //    }
+                        //},300 );
+
+
+                    }
+
+                    return false;
+                }
+            } )
+        },
+        _addScroll = function( elem ) {
+
+            _scroll = elem.niceScroll( {
+                cursorcolor:"#ebebeb",
+                cursoropacitymin: "1",
+                cursorborderradius: "5px",
+                cursorborder: "none",
+                cursorwidth: "5px"
+            } );
+
+        },
+        _init = function() {
+            _addEvents();
+        };
+
+    //public properties
+
+    //public methods
+
+    _init();
+};

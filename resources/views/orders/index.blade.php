@@ -5,123 +5,155 @@
         @include('partials.account-menu')
     </aside>
     <div class="inside-content">
-
-        <div class="tariff inside-content__wrap">
-            <div class="inside-content__title">
-                <h2>Тарифный план</h2>
-                @if($site->subscription)
-                    <a href="{{route('main.billing.upgrade', ['id' => $site->id])}}" class="">Изменить</a>
-                    <a href="{{route('main.billing.prolong', ['id' => $site->id])}}" class="">Продлить</a>
-                @else
-                    <a href="{{route('main.billing', ['id' => $site->id])}}" class="inside-content__tune">Купить</a>
-                @endif
-
-            </div>
-            @if($site->subscription)
-                <div class="tariff__info">
-                    {{$site->subscription->plan->name}} –
-                    <span class="tariff__sum">{{$site->subscription->month_cost}}</span>р/мес
-                </div>
-                <div class="tariff__period">
-                    @if($site->subscription->deposit > 0.00)
-                        <?php $diff = round($site->subscription->deposit / ($site->subscription->month_cost / 30 ))?>
-                        <p>{{Lang::choice('phrases.ostalos', $diff)}} <span class="tariff__days">
-                            {{$diff}}</span>
-                            {{Lang::choice('phrases.count_days', $diff)}} до истечения оплаченного периода
-                        </p>
-                    @else
-                        <p>Оплаченный период истек</p>
-                    @endif
-                </div>
-            @else
-                <div class="tariff__info">
-                    не подключен ни один тарифный план
-                </div>
-            @endif
-        </div>
+        <h1 class="site__title site__title_2">Мои заказы</h1>
 
         @if(!empty($currentOrder))
-            <hr>
-            <h1 class="">Текущий заказ</h1>
-            <table class="table" style="width: 100%">
-                <thead>
-                <tr>
-                    <th>Язык</th>
-                    <th>Фраз</th>
-                    <th>Слов</th>
-                    <th>Стоимость</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($currentOrder as $lang => $data)
-                    <tr>
-                        <td>{{$lang}}</td>
-                        <td>
-                            {{-- <a href="/account/phrase?language_id={{$data['lang_id']}}">{{$data['count_phrases']}}</a> --}}
-                            {{$data['count_phrases']}}
-                        </td>
-                        <td>{{$data['count_words']}}</td>
-                        <td>{{$data['cost']}} {{trans('phrases.rubles')}}</td>
-                        <td>
-                            <a href="{{route('main.billing.del-lang-order', ['lang' => $data['lang_id']])}}">X</a>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-            <p>
-                <strong>Всего фраз</strong> {{$allPhrases}}<br>
-                <strong>Всего слов</strong> {{$allWords}}<br>
-                <strong>Итого</strong> {{$fullCost}} {{trans('phrases.rubles')}}
-            </p>
-            <a href="{{route('main.billing.prepare-order', ['id' => $order->id])}}">Перейти к оплате</a>
+            <div class="translate-orders inside-content__wrap">
+                <div class="inside-content__title inside-content__title_2">
+                    <h2>Новый заказ</h2>
+                </div>
+                <div class="translate-orders__content">
+                    @foreach($currentOrder as $lang => $data)
+                        <div class="translate-orders__item site__align-items-justify">
+                            <div class="translate-orders__languages">
+                                <div class="translate-languages translate-languages_small">
+                                    <div class="translate-languages__item">
+                                        <span class="flag" style="background-image: url(/icons/{{$site->language->icon_file}})"></span>
+                                        {{$site->language->name}}
+                                    </div>
+                                    <div class="translate-languages__item">
+                                        <span class="flag" style="background-image: url(/icons/{{$data['icon']}})"></span>
+                                        {{$lang}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="translate-orders__info">
+                                <span class="translate-orders__num">{{$data['count_phrases']}}</span> фраз, <span class="translate-orders__num">{{$data['count_words']}}</span> слов
+                            </div>
+                            <div class="translate-orders__amount site__align-right">
+                                <span class="translate-orders__price"><span>{{$data['cost']}}</span> {{trans('phrases.rubles')}}</span>
+                                <a class="" href="{{route('main.billing.del-lang-order', ['lang' => $data['lang_id']])}}" style="color: #333">X</a>
+                            </div>
+                        </div>
+                    @endforeach
+                    <div class="translate-orders__item site__align-items-justify translate-orders__item_no-border translate-orders__item_total">
+                        <div class="translate-orders__status">
+                            Заказ будет выполнен в течении <span class="translate-orders__status-important">48 часов</span>
+                        </div>
+                        <div class="translate-orders__total site__align-right">
+                            Итого к оплате: <span class="translate-orders__total-sum"><span>{{$fullCost}}</span> Р</span>
+                        </div>
+                    </div>
+                    <form action="#" class="translate-orders__send site__align-right">
+                        <a href="{{route('main.billing.prepare-order', ['id' => $order->id])}}" class="btn btn_6" style="padding-top: 14px;">Перейти к оплате</a>
+                    </form>
+
+                </div>
+            </div>
         @else
-            <hr>
-            <h1 class="">Текущий заказ</h1>
-            <p>Не добавлено ни одной фразы к заказу</p>
+            <div class="translate-orders inside-content__wrap">
+                <div class="inside-content__title inside-content__title_2">
+                    <h2>Новый заказ</h2>
+                </div>
+                <div class="translate-orders__content">
+                    Не добавлено ни одной фразы к заказу<br><br>
+                </div>
+            </div>
         @endif
 
+        @if(count($orders))
+            <h2 class="site__title site__title_3">ЗАКАЗЫ В ОБРАБОТКЕ</h2>
+            <div class="translate-orders inside-content__wrap">
+                @foreach($orders as $order)
+                    <div class="inside-content__title inside-content__title_2">
+                        <h2>Заказ на перевод фраз</h2>
+                        <time class="inside-content__time" datetime="{{$order->created_at}}">{{ruDate($order->created_at)}}</time>
+                    </div>
+                    <div class="translate-orders__content">
+                        @foreach($order->langs as $lang)
+                            <div class="translate-orders__item site__align-items-justify">
+                                <div class="translate-orders__languages">
+                                    <div class="translate-languages translate-languages_small">
+                                        <div class="translate-languages__item">
+                                            <span class="flag" style="background-image: url(/icons/{{$site->language->icon_file}})"></span>
+                                            {{$site->language->name}}
+                                        </div>
+                                        <div class="translate-languages__item">
+                                            <span class="flag" style="background-image: url(/icons/{{$lang->icon_file}})"></span>
+                                            {{$lang->original_name}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="translate-orders__info">
+                                    <span class="translate-orders__num">{{$lang->count_blocks}}</span>
+                                    фраз,
+                                    <span class="translate-orders__num">{{$lang->count_words}}</span>
+                                    слов
+                                </div>
+                                <div class="translate-orders__amount site__align-right">
+                                    <span class="translate-orders__price"><span>{{$lang->count_words * $lang->word_cost}}</span> Р</span>
+                                </div>
+                            </div>
+                        @endforeach
+                        <div class="translate-orders__item site__align-items-justify translate-orders__item_no-border translate-orders__item_total">
+                            <div class="translate-orders__status">
+                                Заказ будет выполнен в течении <span class="translate-orders__status-important">48 часов</span>
+                            </div>
+                            <div class="translate-orders__total site__align-right">
+                                Итого к оплате: <span class="translate-orders__total-sum"><span>{{$order->original_sum}}</span> Р</span>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
 
-        <hr>
-        <h1 class="">История заказов</h1>
-        <table class="table" style="width: 100%">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Фраз</th>
-                <th>Стоимость</th>
-                <th>Дата</th>
-                <th>Статус</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            @forelse($orders as $order)
-                <tr>
-                    <td>{{$order->id}}</td>
-                    <td>{{$order->translates()->count()}}</td>
-                    <td>&#8381;{{number_format($order->payment_sum, 1, '.', ' ') }}</td>
-                    <td>
-                        {{date('d.m.Y H:i:s', strtotime($order->created_at))}}
-                    </td>
-                    <td>
-                        {!! getOrderStatus($order->status) !!}
-                    </td>
-                    <td>
-                        @if(file_exists(public_path('uploads/order_'.$order->id.'.xml')))
-                            {!! link_to_asset('uploads/order_'.$order->id.'.xml', 'Скачать файл') !!}
-                        @endif
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="6">История заказов пуста</td>
-                </tr>
-            @endforelse
-            </tbody>
-        </table>
-
+        @if(count($doneOrders))
+            <h2 class="site__title site__title_3">ГОТОВЫЕ ЗАКАЗЫ</h2>
+            <div class="translate-orders inside-content__wrap">
+                @foreach($doneOrders as $order)
+                    <div class="inside-content__title inside-content__title_2">
+                        <h2>Заказ на перевод фраз</h2>
+                        <time class="inside-content__time" datetime="{{$order->created_at}}">{{ruDate($order->created_at)}}</time>
+                    </div>
+                    <div class="translate-orders__content">
+                        @foreach($order->langs as $lang)
+                            <div class="translate-orders__item site__align-items-justify">
+                                <div class="translate-orders__languages">
+                                    <div class="translate-languages translate-languages_small">
+                                        <div class="translate-languages__item">
+                                            <span class="flag" style="background-image: url(/icons/{{$site->language->icon_file}})"></span>
+                                            {{$site->language->name}}
+                                        </div>
+                                        <div class="translate-languages__item">
+                                            <span class="flag" style="background-image: url(/icons/{{$lang->icon_file}})"></span>
+                                            {{$lang->original_name}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="translate-orders__info">
+                                    <span class="translate-orders__num">{{$lang->count_blocks}}</span>
+                                    фраз,
+                                    <span class="translate-orders__num">{{$lang->count_words}}</span>
+                                    слов
+                                </div>
+                                <div class="translate-orders__amount site__align-right">
+                                    <span class="translate-orders__price"><span>{{$lang->count_words * $lang->word_cost}}</span> Р</span>
+                                </div>
+                            </div>
+                        @endforeach
+                        <div class="translate-orders__item site__align-items-justify translate-orders__item_no-border translate-orders__item_total">
+                            <div class="translate-orders__status">
+                                Заказ выполнен
+                            </div>
+                            <div class="translate-orders__total site__align-right">
+                                Итого к оплате: <span class="translate-orders__total-sum"><span>{{$order->original_sum}}</span> Р</span>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
 
     </div>
 @stop

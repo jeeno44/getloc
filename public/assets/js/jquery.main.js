@@ -113,7 +113,52 @@ $(function(){
         }
     });
 
+    $( '.page__wrap' ).each( function() {
+        Active( $( this ) );
+    });
+
 } );
+
+var Active = function(obj) {
+
+    //private properties
+    var _obj = $(this),
+        _items=$('.btn_3');
+
+    //private methods
+    var _addEvents = function() {
+
+            _items.on( {
+                click: function() {
+
+                    var curElem = $( this ),
+                        curMenu= curElem.parents( '.page__row' );
+                    console.log(curMenu);
+
+                    if( curMenu.hasClass( 'page__row_active' ) ) {
+                        curMenu.removeClass('page__row_active');
+                        console.log("yes");
+                    }
+                    else{
+                        curMenu.addClass( 'page__row_active' );
+                        console.log("no");
+                    }
+                }
+            });
+
+        },
+        _init = function() {
+
+
+            _addEvents();
+        };
+
+    //public properties
+
+    //public methods
+
+    _init();
+};
 
 var FormValidation = function (obj) {
     var _obj = obj,

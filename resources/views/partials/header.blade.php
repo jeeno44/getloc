@@ -15,7 +15,7 @@
         </div>
     </header>
 @elseif (!empty($route) && $route == 'main.feature')
-    <header class="site__header">
+    <header class="site__header ">
         <div class="site__header-layout">
             <h1 class="logo anchor" data-href="#up">
                 <img src="/assets/img/logo.png" width="90" height="26" alt="getLoc">
@@ -30,7 +30,7 @@
         </div>
     </header>
 @else
-    <header class="site__header">
+    <header class="site__header site__header_not-logged">
         <div class="site__header-layout">
             <h1 class="logo anchor" data-href="#up">
                 <img src="/assets/img/logo.png" width="90" height="26" alt="getLoc">

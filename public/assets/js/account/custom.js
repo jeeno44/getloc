@@ -29,17 +29,6 @@ $(function(){
     $('.tabs__links').find('a').click(function(){
         $('.tabs__links').find('a').each(function(){ $(this).removeClass('active')})
         $(this).addClass('active')
-        if ($(this).attr('id') == 'tab_acrhive') {
-            $('#check-all-phrases').hide();
-            $('#nopublishing').hide();
-            $('#to-archive').hide();
-            $('#from-archive').show();
-        } else {
-            $('#check-all-phrases').show();
-            $('#nopublishing').show();
-            $('#to-archive').show();
-            $('#from-archive').hide();
-        }
         loadPhrases()
     })
     
@@ -54,14 +43,6 @@ $(function(){
         $(".checkboxPhrase").prop('checked', $(this).prop("checked"));
     });
     
-    $('#to-archive').click(function(){
-        setArchiveBlock(1)
-    })
-
-    $('#from-archive').click(function(){
-        setArchiveBlock(0)
-    })
-
     $('#check-all-phrases').click(function(){
         setStatusBlock(1)
     })
@@ -420,17 +401,6 @@ setNewStats = function(stats)
     });
     
     $('#cc_all').html(total_cc)
-
-    notTranslatedCount = parseInt(stats.not_translate);
-    if (notTranslatedCount > 0) {
-        $('#tab_not_translated').show();
-    } else {
-        $('#tab_not_translated').hide();
-        if ($('#tab_not_translated').hasClass('active')) {
-            $('#tab_not_translated').removeClass('active');
-            $('#tab_translated').trigger('click')
-        }
-    }
 }
 
 startLoader = function()
@@ -462,38 +432,13 @@ setStatusBlock = function(status)
                     $('#phrase_'+id).remove()
                 });
             
-            if ( res.isError ) {
+            if ( res.isError )
                 toastr.error(res.message)
-            } else {
+            else
                 toastr.success(res.message)
-                //setNewStats(res.stats)
-                loadPhrases()
-            }
-        }
-    });
-}
-
-setArchiveBlock = function(archive)
-{
-    var data = {archive: archive, ids: []}
-    $("input[name='blocks[]']:checked").each(function(){
-        data['ids'].push($(this).val());
-    })
-
-    $.ajax({
-        url     : "/account/archive-block",
-        type    : 'post',
-        dataType: 'json',
-        data    : data,
-        success : function(res)
-        {
-            if (res.isError) {
-                toastr.error(res.message)
-            }
-            else {
-                toastr.success(res.message)
-                loadPhrases()
-            }
+            
+            //setNewStats(res.stats)
+            loadPhrases()
         }
     });
 }
