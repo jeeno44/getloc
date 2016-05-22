@@ -94,7 +94,6 @@ def parseDocInSite(url, element):
     global docSQL
 
     docs = {}
-
     if element.name == 'a' and element.has_attr('href'):
         if element['href'].split(".")[-1] in parseDocs:
             url = urlparse.urljoin(domain, element['href'])
@@ -106,6 +105,8 @@ def parseDocInSite(url, element):
             if element.has_attr('alt'):
                 altString = element['alt']
             docs = {'full_url': url.encode('utf8'), 'ftype': 'image', 'link_text': altString.encode('utf8'), 'doc_type': element['src'].split(".")[-1].encode('utf8'), 'site_id': siteID}
+    else:
+        pass
 
     if docs:
         docSQL.append(docs)
@@ -363,11 +364,7 @@ for item in ps.listen():
                                         makePageBlock(getPageID(url, siteID), block_id)
                             else:
                                 if element.name == 'meta':
-                                    continue
-
-                                # Сначала чекаем на файлы и картинки
-                                if element.name == 'img' or element.name == 'a':
-                                    parseDocInSite(url, element)
+                                    continue                          
 
                                 for str_ in element.findAll(text=True, recursive=False):
                                     string = re.sub(' +',' ', str_)
@@ -375,6 +372,11 @@ for item in ps.listen():
                                         block_id = makeBlock(siteID, string, element.name, url)
                                         if block_id is not False:
                                             makePageBlock(getPageID(url, siteID), block_id)
+
+
+                            # Сначала чекаем на файлы и картинки
+                            if element.name == 'img' or element.name == 'IMG' or element.name == 'a':
+                                parseDocInSite(url, element)
 
                     count += 1
                     del html
@@ -422,7 +424,7 @@ for item in ps.listen():
         # Если была такая настройка у проекта
         #------------------------------------------------------------------------------------------------------
 
-
+        
         translator = Translator(trans_client, trans_secret)
         langs      = getLangsProject(siteID)
         
@@ -440,6 +442,7 @@ for item in ps.listen():
 
         for sql in loadSQL:
             cursor.execute(sql)
+        
 
         """
         langs      = getLangsProject(siteID) 
