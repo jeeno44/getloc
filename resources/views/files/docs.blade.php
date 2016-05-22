@@ -10,7 +10,9 @@
             <ul class="page__wrap">
                 @forelse($files as $file)
                     <li class="page__row">
-                        <a href="{{$file->full_url}}" class="pages__page" target="_blank">{{$file->link_text}} </a>
+                        <a href="{{$file->full_url}}" class="pages__page" target="_blank">
+                            @if(!empty($file->link_text)) {{$file->link_text}} @else {{$file->full_url}} @endif
+                        </a>
                     </li>
                 @empty
                     <li class="page__row">
