@@ -44,6 +44,7 @@ class BillingController extends Controller
         }
         $paymentTypes = PaymentType::lists('name', 'id')->toArray();
         $site = Site::find($siteId);
+        \Session::set('projectID', $siteId);
         if (!$site || $site->user_id != $this->user->id) {
             abort(404);
         }
@@ -56,6 +57,7 @@ class BillingController extends Controller
 
     public function prolong($siteId)
     {
+        \Session::set('projectID', $siteId);
         $site = Site::find($siteId);
         if ($site && $site->user_id == $this->user->id) {
             $user = $this->user;
@@ -77,6 +79,7 @@ class BillingController extends Controller
     public function upgrade($siteId)
     {
         $site = Site::find($siteId);
+        \Session::set('projectID', $siteId);
         if (!$site || $site->user_id != $this->user->id) {
             abort(403, 'У вас нет доступа к этому сайту');
         }
