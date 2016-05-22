@@ -107,4 +107,16 @@ class AuthController extends Controller
                 'name' => $this->getFailedLoginMessage(),
             ]);
     }
+
+    public function getLogout()
+    {
+        return $this->logout();
+    }
+
+    public function logout()
+    {
+        \Auth::guard($this->getGuard())->logout();
+        \Session::remove('projectID');
+        return redirect('/');
+    }
 }

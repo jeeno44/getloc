@@ -5,6 +5,6 @@
     <a @if (Request::is('account/phrase') or Request::is('account/phrase/*')) class="active" @endif href="{{ URL::route('main.account.phrase') }}">{{trans('account.translatePhrases')}}</a>
     <a @if (Request::is('account/images') or Request::is('account/images/*')) class="active" @endif href="/account/images">{{trans('account.images')}}</a>
     <a @if (Request::is('account/docs') or Request::is('account/docs/*')) class="active" @endif href="/account/docs">{{trans('account.docs')}}</a>
-<!--<a @if (Request::is('account/widget')) class="active" @endif href="{{ URL::route('main.account.widget') }}">{{trans('account.widget')}}</a>-->
+    <a @if (Request::is('account/widget')) class="active" @endif href="{{ URL::route('main.account.widget') }}">{{trans('account.widget')}}</a>
     <a href="{{route('main.billing.order')}}" class="aside-menu__order">{{trans('account.myOrders')}} {!!getCountOrders(Session::get('projectID'))!!}</a>
 </div>
