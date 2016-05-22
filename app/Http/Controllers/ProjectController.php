@@ -56,7 +56,7 @@ class ProjectController extends Controller
         }
         $url = $request->get('url');
         $url = prepareUri($url);
-        $site = Site::where('url', $url)->first();
+        $site = Site::where('url', $url)->whereNull('deleted_at')->first();
         if (empty($site)) {
             $site = new Site([
                 'url'               => $url,
