@@ -38,7 +38,9 @@
                                 </div>
                             @endforeach
                         </div>
-                        <a class="language__item-delete" href="#">Удалить</a>
+                        @if($site->languages()->count() > 1)
+                            <a class="language__item-delete" href="/account/language/delete/{{$site->id}}/{{$data['langID']}}">Удалить</a>
+                        @endif
                     </div>
                 @endforeach
             @endif
@@ -71,7 +73,9 @@
                                 </div>
                             @endforeach
                         </div>
-                        <a class="language__item-delete" href="#">Удалить</a>
+                        @if($site->languages()->count() > 1)
+                            <a class="language__item-delete" href="/account/language/delete/{{$site->id}}/{{$data['langID']}}">Удалить</a>
+                        @endif
                     </div>
                 @endforeach
             @endif

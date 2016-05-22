@@ -1137,11 +1137,17 @@ class AccountController extends Controller
             return redirect(URL::route('main.account.selectProject'));
         
         $siteID    = Session::get('projectID');
-        $langs     = Site::find($siteID)->languages()->orderBy('name')->get();
-        $ccBlocks  = Block::where('site_id', $siteID)->count();
-        $lineStats = $this->getLangsStats($siteID, $ccBlocks);
+        $site      = Site::find($siteID);
+        if ($site && $site->user_id == $this->user->id) {
+            $langs     = Site::find($siteID)->languages()->orderBy('name')->get();
+            $ccBlocks  = Block::where('site_id', $siteID)->count();
+            $lineStats = $this->getLangsStats($siteID, $ccBlocks);
 
-        return view('account.languages', compact('langs', 'lineStats', 'ccBlocks'));
+            return view('account.languages', compact('langs', 'lineStats', 'ccBlocks', 'site'));
+        } else {
+            Session::remove('projectID');
+            return redirect(URL::route('main.account.selectProject'));
+        }
     }
 
     /**
@@ -1364,11 +1370,10 @@ class AccountController extends Controller
     {
         $site = Site::find(Session::get('projectID'));
         
-        if ( !$site ) 
-          {
+        if ( !$site ) {
             Session::remove('projectID');
             return redirect(URL::route('main.account.selectProject'));
-          }
+        }
           
         $pages = $site->pages()->paginate(25);
         return view('account/pages', compact('pages'));

@@ -188,4 +188,15 @@ class ProjectController extends Controller
         return redirect()->back();
     }
 
+    public function deleteLanguages($siteID, $languageID)
+    {
+        $site = Site::find($siteID);
+        if (!$site || $site->user_id != $this->user->id) {
+            abort(404);
+        }
+        \DB::table('site_language')->where('site_id', $siteID)->where('language_id', $languageID)->delete();
+        \DB::table('translates')->where('site_id', $siteID)->where('language_id', $languageID)->delete();
+        return redirect()->back();
+    }
+
 }

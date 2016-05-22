@@ -80,6 +80,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/get-history/{id}', ['as' => 'main.account.get-history', 'uses' => 'AccountController@getHistory']);
             Route::get('/pages/disable/{id}', 'AccountController@disablePage');
             Route::get('/pages/enable/{id}', 'AccountController@enablePage');
+            Route::get('/language/delete/{siteID}/{languageID}', 'ProjectController@deleteLanguages');
         });
         
     });
