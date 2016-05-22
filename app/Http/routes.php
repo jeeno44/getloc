@@ -81,6 +81,8 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/pages/disable/{id}', 'AccountController@disablePage');
             Route::get('/pages/enable/{id}', 'AccountController@enablePage');
             Route::get('/language/delete/{siteID}/{languageID}', 'ProjectController@deleteLanguages');
+            Route::get('/images', 'FilesController@images');
+            Route::get('/docs', 'FilesController@docs');
         });
         
     });

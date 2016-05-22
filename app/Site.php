@@ -68,4 +68,14 @@ class Site extends Model
     {
         return $this->hasOne('App\Subscription');
     }
+
+    public function images()
+    {
+        return $this->belongsTo('App\SiteFile')->where('ftype', 'image');
+    }
+
+    public function docs()
+    {
+        return $this->belongsTo('App\SiteFile')->where('ftype', 'doc');
+    }
 }
