@@ -6,6 +6,12 @@ $(function(){
         SubMenu($(this));
     });
 
+    $('a.find-phrase__clean').click(function (e) {
+        $('.search_text').val('');
+        $('.find-phrase__go').trigger('click')
+        e.preventDefault();
+    });
+
     /*
      |------------------------------------------------------------
      | Прячем таб без перевода

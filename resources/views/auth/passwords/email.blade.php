@@ -2,7 +2,7 @@
 @section('title') Восстановление пароля @stop
 <!-- Main Content -->
 @section('content')
-    <div class="site__content">
+    <div class="site__content  site_inner" style="margin-bottom: 400px;">
         <section class="site__wrap">
             <div class="forgot-pass">
                 <h2 class="forgot-pass__title">Восстановление пароля</h2>
