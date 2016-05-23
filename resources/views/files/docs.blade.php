@@ -21,7 +21,7 @@
                 @endforelse
             </ul>
         </div>
-        <div class="pagination">
+        <div class="pagination-wrap">
             {!! $files->render() !!}
         </div>
     </div>
