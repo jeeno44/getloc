@@ -76,12 +76,14 @@
                         <input class="site__input site__input_small search-pages__input" type="search" name="search-pages-field">
                     </div>
                     <div class="search-pages__chosen">
-                        @foreach(Session::get('pages_url_'.$site->id, []) as $pageUrl)
-                            <div class="search-pages__chosen-item">
-                                <div>{{$pageUrl}}</div>
-                                <a class="search-pages__chosen-delete" href="#"></a>
-                            </div>
-                        @endforeach
+                        @if(!empty(Session::get('pages_url_'.$site->id, [])))
+                            @foreach(Session::get('pages_url_'.$site->id, []) as $pageUrl)
+                                <div class="search-pages__chosen-item">
+                                    <div>{{$pageUrl}}</div>
+                                    <a class="search-pages__chosen-delete" href="#"></a>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
             </div>
