@@ -11,6 +11,12 @@ $(function(){
         $('.find-phrase__go').trigger('click')
         e.preventDefault();
     });
+    
+    if ($('.flash-message').length == 1) {
+        className = $('.flash-message').attr('id');
+        text = $('.flash-message').text();
+        new Messages({class: className,text: text});
+    }
 
     /*
      |------------------------------------------------------------

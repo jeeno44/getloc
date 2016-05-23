@@ -13,7 +13,7 @@
                     <div class="language__item inside-content__wrap">
                         <div class="language__control">
                             <div class="translation__language">
-                                <span class="translation__language-flag" style="background-image: url('/assets/img/icons-en.png')"></span>
+                                <span class="translation__language-flag" style="background-image: url('/icons/{{$data['icon']}}')"></span>
                                 {{$lang}}
                             </div>
                             <div class="translation__info">
@@ -50,7 +50,7 @@
                     <div class="language__item inside-content__wrap language_inactive">
                         <div class="language__control">
                             <div class="translation__language">
-                                <span class="translation__language-flag" style="background-image: url('/assets/img/icons-en.png')"></span>
+                                <span class="translation__language-flag" style="background-image: url('/icons/{{$data['icon']}}')"></span>
                                 {{$lang}}
                             </div>
                             <div class="translation__info">
@@ -79,6 +79,8 @@
                     </div>
                 @endforeach
             @endif
+                <!-- <h1 class="site__subtitle">Отключенные языки</h1> -->
+
         </div>
     </div>
 
@@ -86,26 +88,24 @@
         <div class="popup__wrap">
             <div class="popup__content popup__choice">
                 <a href="#" class="popup__close">close</a>
-                <form action="#" class="selecting-language">
+                    {!! Form::open(['route' => ['main.account.post-languages', $site->id], 'class' => 'selecting-language']) !!}
                     <h2 class="site__title site__title_center">Добавление языков</h2>
                     <div class="selecting-language__items">
-                        <div class="nice-check-language">
-                            <input type="checkbox" name="check-lang1" id="check-lang1">
-                            <label for="check-lang1">
+                        @foreach($languages as $lng)
+                            <div class="nice-check-language">
+                                <input type="checkbox" name="languages[]" id="check-lang{{$lng->id}}" value="{{$lng->id}}">
+                                <label for="check-lang{{$lng->id}}">
+                                    <span class="flag" style="background-image: url('/icons/{{$lng->icon_file}}')"></span>
+                                    {{$lng->original_name}}
+                                </label>
+                            </div>
+                        @endforeach
 
-                                <!-- flag -->
-                                <span class="flag" style="background-image: url('assets/img/account/icons-ru.png')"></span>
-                                <!-- /flag -->
-
-                                Русский
-
-                            </label>
-                        </div>
                     </div>
                     <button class="btn btn_8 btn_blue" type="submit">
                         Добавить
                     </button>
-                </form>
+                {!! Form::close() !!}
             </div>
         </div>
     </div>

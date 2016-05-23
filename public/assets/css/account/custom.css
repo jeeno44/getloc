@@ -1,4 +1,4 @@
-.site__aside-menu a.active {color: #18baea;}
+.site__aside-menu a.active {color: #18baea; font-weight: normal}
 
 .magic_tabs {position: relative;}
 .magic_tabs .tabs__links-archive a.active {color: #ff644d; border-color: #ff644d; font-weight: 500;}

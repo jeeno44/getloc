@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/assets/css/account/popup.css" />
     <link rel="stylesheet" href="/assets/css/account/account.css" />
     <link rel="stylesheet" href="/assets/css/account/jquery-ui.min.css" />
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 </head>
 <body>
     <div class="site" id="up">
@@ -25,6 +26,9 @@
         </div>
         @include('partials.accountFooter')
     </div>
+    @if(Session::has('msg'))
+        <div id="{{Session::get('msg')['class']}}" class="flash-message" style="display: none">{{Session::get('msg')['text']}}</div>
+    @endif
     <script src="/assets/js/account/jquery-2.1.3.min.js"></script>
     <script src="/assets/js/account/jquery.nicescroll.min.js"></script>
     <script src="/assets/js/account/jquery-ui.min.js"></script>

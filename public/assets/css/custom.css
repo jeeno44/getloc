@@ -180,3 +180,6 @@
     margin-left: 0;
     margin-right: 11px;
 }
+.site__aside > .site__aside-menu > a.active {
+    font-weight: normal;
+}

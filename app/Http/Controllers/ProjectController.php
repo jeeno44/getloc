@@ -185,7 +185,7 @@ class ProjectController extends Controller
             }
         }
         \Event::fire('site.changed', $site);
-        return redirect()->back();
+        return redirect()->back()->with('msg', ['class' => 'info-massages__item_detected', 'text' => 'Выбранные языки успешно добавлены']);
     }
 
     public function deleteLanguages($siteID, $languageID)

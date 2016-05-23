@@ -309,6 +309,7 @@ class AccountController extends Controller
             $data['on'][$lang->name]['ccTranslates'] = $stats['ccTranslates'];
             $data['on'][$lang->name]['langID']       = $lang->id;
             $data['on'][$lang->name]['lines']        = $lines;
+            $data['on'][$lang->name]['icon']         = $lang->icon_file;
         }
 
         $langs = Site::find($siteID)->languages()->where('enabled', false)->orderBy('name')->get();
@@ -344,9 +345,10 @@ class AccountController extends Controller
                 $lines[] = $graph;
             }
 
-            $data['off'][$lang->name]['ccTranslates'] = $stats['ccTranslates'];
-            $data['off'][$lang->name]['langID'] = $lang->id;
-            $data['off'][$lang->name]['lines'] = $lines;
+            $data['off'][$lang->name]['ccTranslates']   = $stats['ccTranslates'];
+            $data['off'][$lang->name]['langID']         = $lang->id;
+            $data['off'][$lang->name]['lines']          = $lines;
+            $data['off'][$lang->name]['icon']           = $lang->icon_file;
         }
 
         return $data;
@@ -1145,8 +1147,8 @@ class AccountController extends Controller
             $langs     = Site::find($siteID)->languages()->orderBy('name')->get();
             $ccBlocks  = Block::where('site_id', $siteID)->count();
             $lineStats = $this->getLangsStats($siteID, $ccBlocks);
-
-            return view('account.languages', compact('langs', 'lineStats', 'ccBlocks', 'site'));
+            $languages = Language::where('id', '!=', $site->language_id)->whereNotIn('id', $site->languages()->lists('id')->toArray())->get();
+            return view('account.languages', compact('langs', 'lineStats', 'ccBlocks', 'site', 'languages'));
         } else {
             Session::remove('projectID');
             return redirect(URL::route('main.account.selectProject'));
