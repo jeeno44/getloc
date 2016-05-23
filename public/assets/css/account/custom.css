@@ -5,6 +5,27 @@
 
 .phrases__control button.active:after {opacity: 1;}
 
+.pagination-wrap>ul>li> span {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    width: 40px;
+    height: 38px;
+    padding: 13px 5px;
+    margin-left: -4px;
+    text-align: center;
+    color: #333333;
+}
+
+.pagination li.disabled span {
+    background: transparent;
+    cursor: default;
+}
+
+.pagination li.active span {
+    background: #e6e6e6;
+    cursor: default;
+}
 
 .historyPhrase{
     height: 30px;
@@ -34,5 +55,14 @@
 }
 .historyPhrase.disable{
     color: #999999;
+}
+
+#from-archive {
+    background: url("/assets/img/from-arch.png");
+    width: 28px;
+    background-size: contain;
+    height: 16px;
+    background-repeat: no-repeat;
+    margin-top: 11px;
 }
 

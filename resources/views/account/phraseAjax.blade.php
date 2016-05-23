@@ -9,13 +9,8 @@
                 <form class="phrases__item-col phrases__item-col_translate">
                     <textarea onkeyup="$(this).attr('data-type', 2)" id="order_{{$t->tid}}">{{$t->text}}</textarea>
                     <div class="phrases__item-col-btns">
-                        <button class="save save_translate" object-id="{{$t->tid}}" type="submit">{{trans('account.save')}}</button>
-                        <button class="cancel">{{trans('account.cancel')}}</button>
-                        @if ( $tab != 'tab_not_translated' )
-                        <div>
-                            <a class="phrases__item-btn-translate go_robot" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</a>
-                        </div>
-                        @endif
+                        <button class="save save_translate btn btn_blue btn_4" object-id="{{$t->tid}}" type="submit">{{trans('account.save')}}</button>
+                        <button class="cancel btn btn_5">{{trans('account.cancel')}}</button>
                     </div>
                     @if (empty($t->text)) <button class="phrases__item-btn-translate go_robot isLinkMoreMenu" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button> @endif
                 </form>
@@ -25,7 +20,6 @@
                         <input type="checkbox" name="blocks[]" value="{{$t->tid}}" class="checkbox_ordering_translation" id="ordering_translation_{{$t->tid}}">
                         <label for="ordering_translation_{{$t->tid}}"></label>
                     </div>
-                    <div class="historyPhrase">История перевода фразы</div>
                     @include('partials.account-menu-phrase', ['ob' => $t])
                 </div>
                 <div class="history-phrase"></div>
@@ -38,15 +32,14 @@
                 <div class="phrases__item-col phrases__item-col_block phrases__item-col_translate">
                     <textarea onkeyup="$(this).attr('data-type', 2)" id="order_{{$t->tid}}" readonly>{{$t->text}}</textarea>
                     <div class="phrases__item-col-btns">
-                        <button class="save save_translate" object-id="{{$t->tid}}" type="submit">{{trans('account.save')}}</button>
-                        <button class="cancel">{{trans('account.cancel')}}</button>
+                        <button class="save save_translate btn btn_blue btn_4" object-id="{{$t->tid}}" type="submit">{{trans('account.save')}}</button>
+                        <button class="cancel btn btn_5">{{trans('account.cancel')}}</button>
                         @if ( $tab != 'tab_not_translated' )
                         <div>
                             <a class="phrases__item-btn-translate go_robot" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</a>
                         </div>
                         @endif
                     </div>
-                    @if (empty($t->text)) <button class="phrases__item-btn-translate go_robot isLinkMoreMenu" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button> @endif
                 </div>
                 <div class="phrases__item-controls">
                     <div class="nice-check">

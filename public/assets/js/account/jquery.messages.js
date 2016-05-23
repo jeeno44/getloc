@@ -1,5 +1,5 @@
 $( function() {
-
+    /*
     new Messages( {
         class: 'info-massages__item_detected',
         text: 'Обнаружено 120 новых фраз'
@@ -18,7 +18,7 @@ $( function() {
     new Messages( {
         class: 'info-massages__item_delete',
         text: 'Ваш аккаунт был удалён!'
-    } );
+    } );*/
 
 } );
 

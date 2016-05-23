@@ -2,6 +2,9 @@ var currentPageNumber = 1;
 
 $(function(){
     preloadLoader('/assets/img/account/loader.gif')
+    $('.phrases__item-controls-menu').each(function() {
+        SubMenu($(this));
+    });
 
     /*
      |------------------------------------------------------------
@@ -31,6 +34,19 @@ $(function(){
     $('.tabs__links').find('a').click(function(){
         $('.tabs__links').find('a').each(function(){ $(this).removeClass('active')})
         $(this).addClass('active')
+        if ($(this).attr('id') == 'tab_acrhive') {
+            $('#check-all-phrases').hide();
+            $('#nopublishing').hide();
+            $('#to-archive').hide();
+            $('#order-selected-phrases').hide();
+            $('#from-archive').show();
+        } else {
+            $('#check-all-phrases').show();
+            $('#nopublishing').show();
+            $('#to-archive').show();
+            $('#order-selected-phrases').show();
+            $('#from-archive').hide();
+        }
         loadPhrases()
     })
     
@@ -47,6 +63,14 @@ $(function(){
     
     $('#check-all-phrases').click(function(){
         setStatusBlock(1)
+    })
+
+    $('#to-archive').click(function(){
+        setArchiveBlock(1)
+    })
+
+    $('#from-archive').click(function(){
+        setArchiveBlock(0)
     })
 
     $('#order-selected-phrases').click(function(e){
@@ -68,7 +92,10 @@ $(function(){
             dataType: 'text',
             cache   : false,
             success : function(res){
-                toastr.success(res)
+                new Messages( {
+                    class: 'info-massages__item_detected',
+                    text: res
+                } );
             }
         });
     })
@@ -83,7 +110,10 @@ $(function(){
             dataType: 'text',
             cache   : false,
             success : function(res){
-                toastr.success(res)
+                new Messages( {
+                    class: 'info-massages__item_detected',
+                    text: res
+                } );
             }
         });
     })
@@ -209,15 +239,16 @@ setEventInContent = function()
             data     : {text: $('#order_'+$(this).attr('object-id')).val(), id: $(this).attr('object-id'), type: parseInt(type)},
             success  : function(response)
             {
-                toastr.success(response.message)
+                new Messages( {
+                    class: 'info-massages__item_detected',
+                    text: response.message
+                } );
                 setNewStats(response.stats)
 
                 $('#phrase_' + blockID).attr('class', response.block.color)
                 $('#typeTranslate_'+blockID).attr('class', response.block.icon).css('display', 'block').html(response.block.typeTranslate)
                 $('#dDatetime_'+blockID).attr('datetime', response.block.datetime).html(response.block.date)
                 loadPhrases();
-                //$('#phrase_'+blockID).hide();
-                //console.log($(this).closest('.phrases__item').attr('class'));
             }
         });
     })
@@ -240,11 +271,13 @@ setEventInContent = function()
             success : function(res)
             {
                 $('#order_'+id).empty().val(res.text).css('height', '50px')
-                if ( ob.hasClass('isLinkMoreMenu') )
-                  {
-                    toastr.success(res.message)
+                if ( ob.hasClass('isLinkMoreMenu') ) {
+                      new Messages( {
+                          class: 'info-massages__item_detected',
+                          text: res.message
+                      } );
                       loadPhrases();
-                  }
+                }
             }
         });
     })
@@ -296,11 +329,17 @@ disableDisplayPhrase = function (obj) {
         success     : function(data)
         {
             if (data.success) {
-                toastr.success(data.message)
+                new Messages( {
+                    class: 'info-massages__item_detected',
+                    text: data.message
+                } );
                 setNewStats(data.stats)
                 obj.closest('.phrases__item').remove();
             } else {
-                toastr.error(data.message)
+                new Messages( {
+                    class: 'info-massages__item_delete',
+                    text: data.message
+                } );
             }
             console.log(data);
             // $('#phrase_'+id).remove();
@@ -341,8 +380,10 @@ setArchive = function(id)
         dataType    : 'json',
         success     : function(res)
         {
-            toastr.success(res.message)
-            //$('#phrase_'+id).remove();
+            new Messages( {
+                class: 'info-massages__item_detected',
+                text: res.message
+            } );
             loadPhrases();
         }
     })
@@ -441,6 +482,7 @@ stopLoader  = function()
 
 setStatusBlock = function(status)
 {
+    $('#check').prop('checked', false);
     var data = {status: status, ids: []}
     $("input[name='blocks[]']:checked").each(function(){
         data['ids'].push($(this).val());
@@ -458,12 +500,17 @@ setStatusBlock = function(status)
                     $('#phrase_'+id).remove()
                 });
             
-            if ( res.isError )
-                toastr.error(res.message)
-            else
-                toastr.success(res.message)
-            
-            //setNewStats(res.stats)
+            if ( res.isError ) {
+                new Messages({
+                    class: 'info-massages__item_delete',
+                    text: res.message
+                } );
+            } else {
+                new Messages( {
+                    class: 'info-massages__item_detected',
+                    text: res.message
+                });
+            }
             loadPhrases()
         }
     });
@@ -471,6 +518,7 @@ setStatusBlock = function(status)
 
 setOrderBlock = function(order)
 {
+    $('#check').prop('checked', false);
     var data_id = []; var data = {};
     $("input[name='blocks[]']:checked").each(function(){
         data_id.push({id: $(this).val(), check: order});
@@ -484,9 +532,15 @@ setOrderBlock = function(order)
         success : function(res)
         {
             if (res.isError) {
-                toastr.error(res.message)
+                new Messages( {
+                    class: 'info-massages__item_delete',
+                    text: res.message
+                });
             } else {
-                toastr.success(res.message)
+                new Messages( {
+                    class: 'info-massages__item_detected',
+                    text: res.message
+                });
                 $('.phrasesCount').text(res.phrasesInOrder);
                 $('.costCount').text(res.costOrder);
                 if (parseInt(res.phrasesInOrder) > 0) {
@@ -495,13 +549,45 @@ setOrderBlock = function(order)
                     $('.make-order').hide();
                     $('#checkboxPhraseInOrder').prop('checked', false);
                     if ($('#checkboxPhraseInOrder').prop('checked') == false) {
-                        loadPhrases();
+                        //loadPhrases();
                     }
                 }
                 if($('#checkboxPhraseInOrder').is(':checked')) {
-                    loadPhrases();
+                    //loadPhrases();
                 }
+                loadPhrases();
             }
+        }
+    });
+}
+
+setArchiveBlock = function(status)
+{
+    $('#check').prop('checked', false);
+    var data = {archive: status, ids: []}
+    $("input[name='blocks[]']:checked").each(function(){
+        data['ids'].push($(this).val());
+    })
+
+    $.ajax({
+        url     : "/account/archive-block",
+        type    : 'post',
+        dataType: 'json',
+        data    : data,
+        success : function(res)
+        {
+            if ( res.isError ) {
+                new Messages({
+                    class: 'info-massages__item_delete',
+                    text: res.message
+                } );
+            } else {
+                new Messages( {
+                    class: 'info-massages__item_detected',
+                    text: res.message
+                });
+            }
+            loadPhrases()
         }
     });
 }
@@ -525,11 +611,15 @@ setFilterShow = function(typeViewID)
 markHandTranslate = function(id, save)
 {
     $.ajax({
-        url     : "/account/markHandTranslate" + id,
+        url     : "/account/markHandTranslate/" + id,
         type    : 'post',
         success : function()
         {
-            alert('Готово')
+            loadPhrases();
+            new Messages( {
+                class: 'info-massages__item_detected',
+                text: 'Перевод помечен, как "ручной"'
+            } );
         }
     });
 }
@@ -599,10 +689,14 @@ addOrder = function (obj) {
         var obj_data = $.parseJSON(obj_data);
         $('.phrasesCount').text(obj_data.phrasesInOrder);
         $('.costCount').text(obj_data.costOrder);
-        toastr.success('Фраза добавлена в заказ');
+        new Messages( {
+            class: 'info-massages__item_detected',
+            text: 'Фраза добавлена в заказ'
+        } );
         if($('#checkboxPhraseInOrder').is(':checked')) {
-            loadPhrases();
+            //loadPhrases();
         }
+        loadPhrases();
     });
 }
 
@@ -621,19 +715,23 @@ delOrder = function (obj) {
         var obj_data = $.parseJSON(obj_data);
         $('.phrasesCount').text(obj_data.phrasesInOrder);
         $('.costCount').text(obj_data.costOrder);
-        toastr.success('Фраза удалена из заказа');
+        new Messages( {
+            class: 'info-massages__item_delete',
+            text: 'Фраза удалена из заказа'
+        } );
         if (parseInt(obj_data.phrasesInOrder) > 0) {
             $('.make-order').show();
         } else {
             $('.make-order').hide();
             $('#checkboxPhraseInOrder').prop('checked', false);
             if ($('#checkboxPhraseInOrder').prop('checked') == false) {
-                loadPhrases();
+                //loadPhrases();
             }
         }
         if($('#checkboxPhraseInOrder').is(':checked')) {
-            loadPhrases();
+            //loadPhrases();
         }
+        loadPhrases();
     });
 }
 
@@ -781,12 +879,12 @@ pagesDisable = function () {
 
 ajaxLoadEventInit = function () {
     // var phrases_icm = $();
-    $('.phrases__item-controls-menu').on('click', '.addOrder', function (e) {
+    $('.phrases__item').on('click', '.addOrder', function (e) {
         e.preventDefault();
         addOrder($(this))
     });
 
-    $('.phrases__item-controls-menu').on('click', '.delOrder', function (e) {
+    $('.phrases__item').on('click', '.delOrder', function (e) {
         e.preventDefault();
         delOrder($(this))
     });

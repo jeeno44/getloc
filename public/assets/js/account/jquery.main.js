@@ -135,7 +135,6 @@ var SubMenu = function(obj)  {
 
             _obj.on({
                 click: function () {
-
                     $('.phrases__item-controls-menu').not($(this)).removeClass('active');
                     _obj.toggleClass('active');
 

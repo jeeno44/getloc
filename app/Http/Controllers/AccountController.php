@@ -772,7 +772,7 @@ class AccountController extends Controller
         $phrasesInOrder = $this->getCountPhrasesInOrder();
         $costOrder      = $this->getCostOrder();
 
-        return view('account.phrase', compact('tab_name', 'blocks', 'filter', 'viewType', 'filterDef', 'phrasesInOrder', 'costOrder', 'siteID', 'site'));
+        return view('account.phrase', compact('tab_name', 'blocks', 'filter', 'viewType', 'filterDef', 'phrasesInOrder', 'costOrder', 'siteID', 'site', 'tab'));
     }
 
     /**

@@ -50,10 +50,10 @@
                 @endforeach
             </ul>
         </div>
-        <div class="pagination">
-            {!! $pages->render() !!}
-        </div>
-
-
+        @if(!empty($pages->render()))
+            <div class="pagination-wrap">
+                {!! $pages->render() !!}
+            </div>
+        @endif
     </div>
 @stop
