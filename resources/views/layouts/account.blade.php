@@ -6,18 +6,14 @@
     <meta name="viewport" content="width=992">
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="address=no">
-
     <title>@yield('title')</title>
-
     <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,300,500,700&subset=cyrillic' rel='stylesheet' type='text/css'>
-
     <link rel="stylesheet" href="/assets/css/account/select.css" />
     <link rel="stylesheet" href="/assets/css/account/main.css" />
     <link rel="stylesheet" href="/assets/css/account/custom.css" />
+    <link rel="stylesheet" href="/assets/css/account/popup.css" />
     <link rel="stylesheet" href="/assets/css/account/account.css" />
     <link rel="stylesheet" href="/assets/css/account/jquery-ui.min.css" />
-
-    {{--<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/ui-lightness/jquery-ui.css">--}}
 </head>
 <body>
     <div class="site" id="up">
@@ -36,9 +32,8 @@
     <script src="/assets/js/account/jquery.autocomplite.js"></script>
     <script src="/assets/js/account/jquery.popup.js"></script>
     <script src="/assets/js/account/jquery.messages.js"></script>
+    <script src="/assets/js/account/jquery.widget.js"></script>
     <script src="/assets/js/account/jquery.main.js"></script>
-    <script src="/assets/js/account/toastr.min.js"></script>
-    <link rel="stylesheet" href="/assets/css/account/toastr.min.css" />
     <script src="/assets/js/account/custom.js"></script>
     <script src="/assets/js/account/billing.js"></script>
 </body>

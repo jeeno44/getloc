@@ -102,6 +102,8 @@
                         $( '.search-pages__result' ).remove();
                         _suggestSelected = 0;
                         _addChosenItems( curText );
+                        $('.search-pages__input').val('');
+                        loadPhrases();
                     }
                 );
                 _body.on(
@@ -141,10 +143,19 @@
             },
             _ajaxRequest = function( input, n ) {
                 var path = _obj.attr( 'data-autocomplite' );
+                var exec = [];
+                if ($('.search-pages__chosen-item').length > 0) {
+                    $('.search-pages__chosen-item').each(function () {
+                        var pageUrl = $(this).find('div').text();
+                        if (pageUrl) {
+                            exec.push(pageUrl);
+                        }
+                    });
+                }
                 _request.abort();
                 _request = $.ajax( {
                     url: path,
-                    data: 'value='+ input.val(),
+                    data: 'value='+ input.val() + '&exec=' + exec,
                     dataType: 'json',
                     timeout: 20000,
                     type: "GET",
@@ -159,12 +170,9 @@
                             }
 
                         }
-
+                        $( '.search__result' ).remove();
                         if( $new_arr.length ){
-
-                            $( '.search__result' ).remove();
                             count = $new_arr.length;
-
                             var resultStr='<div class="search-pages__result">';
                             for( var i = 0; i <= count - 1; i++ ){
 

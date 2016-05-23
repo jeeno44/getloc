@@ -17,6 +17,8 @@ $(function(){
     */
     eventAccount();
 
+    setCountItems();
+
     
     $('.turnLang').click(function(){
         $.ajax({
@@ -70,6 +72,8 @@ $(function(){
             }
         });
     })
+
+
     
     $('#setAutoPublishingProject').click(function()
     {
@@ -105,6 +109,15 @@ $(function(){
     });
 
 })
+
+function setCountItems() {
+    $('#renderPhrases').on('click', '.count-items', function (e) {
+        $('.count-items').removeClass('active');
+        $(this).addClass('active');
+        e.preventDefault();
+        loadPhrases();
+    })
+}
 
 function loadHistory() {
     $('.show-history').on('click', function (e) {
@@ -239,7 +252,7 @@ setEventInContent = function()
     //     e.preventDefault()
     //     console.log(123456);
     // })
-    $('.paginationAjax a').click(function(e){
+    $('.paginationAjax>ul>li>a').click(function(e){
         if (location.pathname !== '/account/pages') {
             currentPageNumber = $(this).attr('href').split('page=')[1];
             loadPhrases($(this).attr('href').split('page=')[1]);
@@ -337,11 +350,21 @@ setArchive = function(id)
 
 loadPhrases = function(page)
 {
+    var pageUrls = [];
+    if ($('.search-pages__chosen-item').length > 0) {
+        $('.search-pages__chosen-item').each(function () {
+            var pageUrl = $(this).find('div').text();
+            if (pageUrl) {
+                pageUrls.push(pageUrl);
+            }
+        });
+    }
     var page  = !page ? 1 : page,
         view_type = $('#setViewTypeID_1').hasClass('active') ? 1 : 2,
         phrase_in_order = $('#checkboxPhraseInOrder').prop('checked') ? 1 : 0 ,
         min_date = $('.date_filter_start').val() != '' ? $('.date_filter_start').val() : 0,
         max_date = $('.date_filter_end').val() != '' ? $('.date_filter_end').val() : 0,
+        items_per_page = $('.count-items.active').attr('data-value') ? $('.count-items.active').attr('data-value'): 20,
         data  = $('.site__aside-filter').find('input[type=radio]').serialize();
         data += '&tab='+getCurentTab()
         data += '&page='+currentPageNumber
@@ -357,6 +380,8 @@ loadPhrases = function(page)
         data += '&min_date='+min_date;
         data += '&max_date='+max_date;
         data += '&pathname='+window.location.pathname;
+        data += '&items_per_page='+items_per_page;
+        data += '&pageUrls='+pageUrls,
 
 
     /*

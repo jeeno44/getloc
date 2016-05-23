@@ -1,15 +1,6 @@
 @extends('layouts.account')
 @section('title') Фразы проекта @stop
 @section('content')
-    @if(!empty($site->subscription))
-        @if($site->subscription->count_words < $site->count_words || $site->subscription->count_languages < $site->languages()->count())
-            <div class="other-tariff">
-                <h2 class="other-tariff__title">Необходим более крутой тариф</h2>
-                <p>Сейчас в вашем заказе {{$site->count_words}} слов и {{$site->languages()->count()}} язык(а). А ваш тариф рассчитан на {{$site->subscription->count_words}} слов и {{$site->subscription->count_languages}} язык(а).</p>
-                <a href="{{route('main.billing.upgrade', ['id' => $site->id])}}" class="other-tariff__change">Сменить тарифный план</a>
-            </div>
-        @endif
-    @endif
     <aside class="site__aside">
         @include('partials.account-menu')
         @if(request()->is('account/phrase'))
@@ -20,7 +11,7 @@
         <div class="phrases">
 
         <h1 class="site__title">Фразы проекта</h1>
-        <div class="magic_tabs tabs"{{-- class="tabs"--}}>
+        <div class="magic_tabs"{{-- class="tabs"--}}>
 
             <div class="tabs__links">
                 @if($filter['stats']['not_translate'] > 0)
@@ -128,10 +119,16 @@
 
                     @endforeach
 
-
-                    @if (isset($blocks))
-                    <div class="paginationAjax">
+                    @if (!empty($blocks->render()))
+                    <div class="paginationAjax pagination-wrap">
                         {!! $blocks->render() !!}
+                        <div class="pagination__count site__align-right">
+                            <span>Показать:</span>
+                            <?php $countItems = Session::get('count_items', 20)?>
+                            <a href="#" class="count-items @if($countItems == 20) active @endif" data-value="20">20</a>
+                            <a class="count-items @if($countItems == 50) active @endif" href="#" data-value="50">50</a>
+                            <a href="#" class="count-items @if($countItems == 100) active @endif" data-value="100">100</a>
+                        </div>
                     </div>
                     @endif
 

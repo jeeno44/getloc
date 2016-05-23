@@ -71,31 +71,19 @@
 
             <span class="accordion__head">Страницы</span>
             <div class="accordion__content">
-                <div class="search-pages" data-autocomplite="assets/php/autocomplete.php">
+                <div class="search-pages" data-autocomplite="/account/pages/autocomplete/{{$site->id}}">
                     <div class="search-pages__fields">
                         <input class="site__input site__input_small search-pages__input" type="search" name="search-pages-field">
-
-                        <!--&lt;!&ndash;Выпадающий список с результатом поиска-->
-
-                        <!--<div class="search-pages__result">-->
-                        <!--<a class="search-pages__result-item" href="#">translation-services/translation/technical-translation.html</a>-->
-                        <!--<a class="search-pages__result-item active" href="#">translation-services/translation/about.html</a>-->
-                        <!--<a class="search-pages__result-item" href="#">translation-services/translation/services.html</a>-->
-                        <!--</div>-->
-
-                        <!--&ndash;&gt;-->
-
                     </div>
-                    <!--/search-pages__fields-->
-
-                    <!--search-pages__chosen-->
-                    <div class="search-pages__chosen"></div>
-                    <!--/search-pages__chosen-->
-
+                    <div class="search-pages__chosen">
+                        @foreach(Session::get('pages_url_'.$site->id, []) as $pageUrl)
+                            <div class="search-pages__chosen-item">
+                                <div>{{$pageUrl}}</div>
+                                <a class="search-pages__chosen-delete" href="#"></a>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
-                <!--/search-pages-->
-
-
             </div>
 
         </div>

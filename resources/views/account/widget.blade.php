@@ -1,6 +1,15 @@
 @extends('layouts.account')
 @section('title') Виджет @stop
 @section('content')
+    @if(!empty($site->subscription))
+        @if($site->subscription->count_words < $site->count_words || $site->subscription->count_languages < $site->languages()->count())
+            <div class="other-tariff">
+                <h2 class="other-tariff__title">Необходим более крутой тариф</h2>
+                <p>Сейчас в вашем заказе {{$site->count_words}} слов и {{$site->languages()->count()}} язык(а). А ваш тариф рассчитан на {{$site->subscription->count_words}} слов и {{$site->subscription->count_languages}} язык(а).</p>
+                <a href="{{route('main.billing.upgrade', ['id' => $site->id])}}" class="other-tariff__change">Сменить тарифный план</a>
+            </div>
+        @endif
+    @endif
     <aside class="site__aside">
         @include('partials.account-menu')
     </aside>

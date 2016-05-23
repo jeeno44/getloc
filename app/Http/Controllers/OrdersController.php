@@ -57,11 +57,11 @@ class OrdersController extends Controller
             ]);
             $order->save();
         }
+        $backUpOrder = $order;
         $translates = $this->getTranslatesToOrder($site);
         if (count($translates) == 0) {
             $order->delete();
         }
-        $currentOrder = [];
         $allWords = $allPhrases = $fullCost = 0;
         foreach ($translates as $translate) {
             if (!empty($currentOrder[$translate->original_name])) {
@@ -139,6 +139,8 @@ class OrdersController extends Controller
             }
             $doneOrders[$key]->langs = (object) $data;
         }
+        $order = $backUpOrder;
+        unset($backUpOrder);
         return view('orders.index', compact('translates', 'site', 'orders', 'currentOrder', 'allWords', 'allPhrases', 'fullCost', 'order', 'doneOrders'));
     }
 

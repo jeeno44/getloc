@@ -207,7 +207,7 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 .site__content {
     position: relative;
-    z-index: 2;
+    z-index: 4;
 }
 .site__wrap{
     position: relative;

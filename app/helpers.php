@@ -440,7 +440,7 @@ function getOrderSubTotal($cost, $code, $siteId)
 function getCountOrders($siteID = null)
 {
     if ($siteID) {
-        $count = \App\Order::where('site_id', $siteID)->count();
+        $count = \App\Order::where('site_id', $siteID)->whereIn('status', ['process', 'wait'])->count();
         if ($count > 0) {
             return '<span>'.$count.'</span>';
         }

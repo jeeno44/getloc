@@ -83,6 +83,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/language/delete/{siteID}/{languageID}', 'ProjectController@deleteLanguages');
             Route::get('/images', 'FilesController@images');
             Route::get('/docs', 'FilesController@docs');
+            Route::any('/pages/autocomplete/{id}', 'AccountController@pagesAutoComplete');
         });
         
     });

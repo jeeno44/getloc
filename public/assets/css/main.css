@@ -489,6 +489,15 @@ input[type="search"]::-webkit-search-cancel-button {
 .btn_3:hover{
     background-color: #2cc2ee;
 }
+.btn_4{
+    width: 100%;
+    height: 40px;
+    padding: 9px 15px;
+    background-color: #18baea;
+    color: #fff;
+    -webkit-transition: background-color .3s ease, border-color .3s ease, color .3s ease;
+    transition: background-color .3s ease, border-color .3s ease, color .3s ease;
+}
 .btn_discount{
     display: block;
     margin: 0 auto;
@@ -1856,6 +1865,62 @@ a.social-ok{
 
 }
 /* ------------ /gallery ------------ */
+
+/*--------------forgot-pass--------------*/
+.forgot-pass {
+    width: 400px;
+    margin: 0 auto;
+    padding-top: 65px;
+    text-align: center;
+}
+.forgot-pass__title {
+    margin-bottom: 34px;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 21px;
+    text-align: center;
+}
+.forgot-pass__success{
+    margin-bottom: 20px;
+    line-height: 24px;
+}
+.forgot-pass__success a{
+    color: #18baea;
+    text-decoration: underline;
+}
+.forgot-pass__form {
+    width: 260px;
+    margin: 0 auto;
+}
+.forgot-pass__field{
+    margin: 0 0 13px;
+}
+.forgot-pass label{
+    display: block;
+    margin: 0 0 2px;
+    font-size: 12px;
+    line-height: 15px;
+    color: #b2b2b2;
+    font-weight: 300;
+}
+.forgot-pass input{
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    height: 40px;
+    padding: 0 9px !important;
+    background-color: #f5f5f5 !important;
+    border: 1px solid #f5f5f5 !important;
+    border-radius: 4px;
+    color: #333333;
+    text-align: center;
+    font-size: 14px !important;
+    line-height: 40px !important;
+    font-family: 'Fira Sans', sans-serif !important;
+    font-weight: 300 !important;
+    -webkit-appearance: none;
+}
+/*--------------/forgot-pass--------------*/
 
 /* ------------------ popup ------------------- */
 .popup {

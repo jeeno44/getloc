@@ -105,7 +105,7 @@ class AccountController extends Controller
         $siteID     = Session::get('projectID');
         $site       = Site::find($siteID);
         $ccBlocks   = Block::where('site_id', $siteID)->count();
-        
+
         if (!$siteID || !$site || $ccBlocks == 0) {
             Session::remove('projectID');
             return redirect(URL::route('main.account.selectProject'));
@@ -755,9 +755,9 @@ class AccountController extends Controller
             $arrData['typeID'] = Session::get('filter')['typeID'];
         }
         if ($request->has('url')) {
-            Session::set('pages_url_'.$siteID, $request->get('url'));
+            Session::set('pages_url_'.$siteID, [$request->get('url')]);
         }
-        $pagesUrl = !empty(Session::get('pages_url_'.$siteID)) ? explode(',', Session::get('pages_url_'.$siteID)) : [];
+        $pagesUrl = !empty(Session::get('pages_url_'.$siteID)) ? Session::get('pages_url_'.$siteID) : [];
         if (!empty($pagesUrl)) {
             $arrData['pagesUrl'] = $pagesUrl;
         }
@@ -961,11 +961,16 @@ class AccountController extends Controller
         $siteID         = $request->get('site_id');
         $viewType       = $request->get('view_type');
         $typeID         = $filter['typeID'];
-        $pagesUrl       = $request->get('name_none') != '' ? explode(',', $request->get('name_none')) : [];
+        $pagesUrl       = $request->get('pageUrls') != '' ? explode(',', $request->get('pageUrls')) : [];
         $phraseInOrder  = $request->get('phrase_in_order');
         $minDate        = $request->get('min_date');
         $maxDate        = $request->get('max_date');
         $pathName       = $request->get('pathname');
+        $itemsPerPage   = $request->get('items_per_page');
+        if (empty($itemsPerPage) || $itemsPerPage == 'undefined') {
+            $itemsPerPage = Session::get('count_items', 20);
+        }
+        Session::set('count_items', $itemsPerPage);
 
         $ttt = 2;
 
@@ -976,12 +981,12 @@ class AccountController extends Controller
         if ( $request->get('search_text') )
             $searchText = $request->get('search_text');
 	    
-        if ( $request->get('name_none') ) 
-            Session::set('pages_url_'.$siteID, $request->get('name_none'));
-        
-        if ( $request->get('name_none') === null ) 
-            Session::set('pages_url_'.$siteID, null);
-        
+        if ($pagesUrl) {
+            Session::set('pages_url_'.$siteID, $pagesUrl);
+        } else {
+            Session::remove('pages_url_'.$siteID);
+        }
+
         if ( $request->get('clearFilter') ) 
             Session::set('filter', NULL);
       
@@ -1083,7 +1088,8 @@ class AccountController extends Controller
                             DB::raw('date_format(translates.updated_at, "%h:%i") as time'),
                             DB::raw('date_format(translates.updated_at, "%Y-%m-%d") as date'), 'blocks.text as original');
 
-        return $buildQuery->paginate(25);
+        $itemsPerPage = Session::get('count_items', 20);
+        return $buildQuery->paginate($itemsPerPage);
     }
 
     /**
@@ -1461,5 +1467,21 @@ class AccountController extends Controller
         $page->save();
         Translate::whereIn('block_id', $page->blocks()->lists('id')->toArray())->update(['archive' => 0]);
         return redirect()->back();
+    }
+    
+    public function pagesAutoComplete($id, Request $request)
+    {
+        $exec = $request->get('exec');
+        if (!empty($exec)) {
+            $exec = explode(',', $exec);
+        } else {
+            $exec = [];
+        }
+        $pages = Page::where('site_id', $id)->where('url', 'like', '%'.$request->get('value').'%')->whereNotIn('url', $exec)->lists('url');
+        $ret = [];
+        foreach ($pages as $page) {
+            $ret[]['caption'] = $page;
+        }
+        return \Response::json($ret);
     }
 }

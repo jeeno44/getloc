@@ -675,7 +675,7 @@ var DeleteSearchChosenElements = function( obj )  {
                         parent = curItem.parent('.search-pages__chosen-item');
 
                     parent.remove();
-
+                    loadPhrases();
                     return false;
                 }
             } );

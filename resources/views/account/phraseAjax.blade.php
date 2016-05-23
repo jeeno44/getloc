@@ -62,9 +62,16 @@
     @endforeach
 
 
-@if (!empty($blocks))
-    <div class="paginationAjax">
-    {!! $blocks->render() !!}
+@if (!empty($blocks->render()))
+    <div class="paginationAjax pagination-wrap">
+        {!! $blocks->render() !!}
+        <div class="pagination__count site__align-right">
+            <span>Показать:</span>
+            <?php $countItems = Session::get('count_items', 20)?>
+            <a href="#" class="count-items @if($countItems == 20) active @endif" data-value="20">20</a>
+            <a class="count-items @if($countItems == 50) active @endif" href="#" data-value="50">50</a>
+            <a href="#" class="count-items @if($countItems == 100) active @endif" data-value="100">100</a>
+        </div>
     </div>
 @endif
 
