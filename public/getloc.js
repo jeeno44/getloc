@@ -238,6 +238,15 @@ function getloc(settings)
                             this.uniqDict[isTrim]   = node.data
                             node.data               = isTrim
                           }
+                        else
+                          {
+                            isTrim = this.response.results[this.decodeSpecialChars(node.data.replace(/  +/g, ' '))] 
+                            if ( isTrim )
+                              {
+                                this.uniqDict[isTrim]   = node.data
+                                node.data               = isTrim
+                              }
+                          }
                       }
                     else if ( node.data && this.response.results[this.decodeSpecialChars(node.data)] )
                       {
@@ -258,6 +267,15 @@ function getloc(settings)
                                 this.tempUniqDict[isTrim]   = block
                                 node.data                   = isTrim
                               }
+                            else
+                              {
+                                isTrim = this.response.results[this.decodeSpecialChars(block.replace(/  +/g, ' '))] 
+                                if ( isTrim )
+                                  {
+                                    this.tempUniqDict[isTrim]   = block
+                                    node.data                   = isTrim
+                                  }
+                              }  
                           }
                         else if ( node.data && this.response.results[this.decodeSpecialChars(block)] )
                           {

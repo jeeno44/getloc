@@ -114,9 +114,9 @@ class ApiController extends Controller
             }
         }
         if (!empty($callback)) {
-            return \Response::make($callback."(".json_encode($response).")");
+            return \Response::make($callback."(".str_replace('\r', '', json_encode($response)).")");
         } else {
-            return \Response::make(json_encode($response));
+            return \Response::make(str_replace('\r', '', json_encode($response)));
         }
     }
 
