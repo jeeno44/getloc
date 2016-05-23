@@ -1,0 +1,341 @@
+﻿<!DOCTYPE html> 
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=992">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="address=no">
+
+    <title>Title</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,300,500,700&subset=cyrillic' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="assets/css/account/select.css" />
+    <link rel="stylesheet" href="assets/css/account/bootstrap-colorpicker.css" />
+    <link rel="stylesheet" href="assets/css/account/main.css" />
+
+</head>
+<body>
+    <!-- site -->
+    <div class="site" id="up">
+
+        <!-- /site__header -->
+        <header class="site__header">
+
+            <!-- site__header-layout -->
+            <div class="site__header-layout">
+
+                <!-- menu -->
+                <div class="menu">
+
+                    <!-- menu__icon -->
+                    <div class="menu__icon">
+                        <span></span>
+                    </div>
+                    <!-- /menu__icon -->
+
+                    <nav class="menu__wrap">
+                        <a href="#">Наша платформа</a>
+                        <a href="#" class="active">Управление переводом</a>
+                        <a href="#">Заказ перевода</a>
+                        <a href="#">Интеграция</a>
+                        <a href="#">Планы развития</a>
+                        <a href="#">Помощь</a>
+                    </nav>
+
+                </div>
+                <!-- /header__menu -->
+
+                <!-- logo -->
+                <a href="#" class="logo">
+                    <img src="assets/img/logo.png" width="90" height="26" alt="GETLOC">
+                </a>
+                <!-- /logo -->
+
+                <!-- site-list -->
+                <div class="site-list">
+
+                    <!-- site-list__add -->
+                    <button class="site-list__add"></button>
+                    <!-- /site-list__add -->
+
+                    <select id="site-list">
+                        <option value="deezout.ru">deezout.ru</option>
+                        <option value="buro3v.ru">buro3v.ru</option>
+                        <option value="megafonmoscow.ru">megafonmoscow.ru</option>
+                        <option value="http://all.ru">Все проекты</option>
+                    </select>
+                </div>
+                <!-- /site-list -->
+
+                <!-- header__person -->
+                <div class="header__person" style="background-image: url('assets/img/iocns-ava.png');">
+
+                    <!-- header__person-list -->
+                    <ul class="header__person-list">
+                        <li><a href="#">Персональные данные</a></li>
+                        <li><a href="#">Настройка аккаунта</a></li>
+                        <li><a href="#">Настройка команды</a></li>
+                        <li><a href="#">Выйти</a></li>
+                    </ul>
+                    <!-- /header__person-list -->
+
+                </div>
+                <!-- /header__person -->
+
+                <!-- language -->
+                <div class="language">
+
+                    <!-- language__btn -->
+                    <button class="language__btn">RU</button>
+                    <!-- /language__btn -->
+
+                    <!-- language__list -->
+                    <ul class="language__list">
+                        <li><a href="#">Русский</a></li>
+                        <li><a class="active" href="#">English</a></li>
+                        <li><a href="#">Deutsch</a></li>
+                        <li><a href="#">Español</a></li>
+                    </ul>
+                    <!-- /language__list -->
+
+                </div>
+                <!-- /language -->
+
+            </div>
+            <!-- /site__header-layout -->
+
+        </header>
+        <!-- /site__header -->
+
+        <!-- site__content -->
+        <div class="site__content site_inner">
+
+            <!-- site__wrap -->
+            <div class="site__wrap">
+
+                <!--site__aside-->
+                <aside class="site__aside">
+
+                    <!--site__aside-menu-->
+                    <div class="site__aside-menu">
+
+                        <a href="#">Обзор проекта</a>
+                        <a href="#">Языки</a>
+                        <a href="#">Страницы проекта</a>
+                        <a href="#">Перевод фраз</a>
+                        <a href="#" class="active">Виджет</a>
+                        <a href="#">Настройки проекта</a>
+                        <a href="#" class="aside-menu__order">Мои заказы <span>2</span></a>
+
+                    </div>
+                    <!--/site__aside-menu-->
+
+                </aside>
+                <!--/site__aside-->
+
+                <!-- inside-content -->
+                <div class="inside-content">
+
+                    <!-- site__title -->
+                    <h1 class="site__title">Настройки виджета</h1>
+                    <!-- /site__title -->
+
+                    <!-- widget-settings -->
+                    <div class="widget-settings">
+
+                        <!-- widget-settings__controls -->
+                        <div class="widget-settings__controls">
+
+                            <input type="hidden" class="widget-classes" value="">
+
+                            <!-- widget-settings__controls-item -->
+                            <div class="widget-settings__controls-item">
+                                <span>Расположение:</span>
+                                <div class="widget-settings__controls-btns">
+                                    <a href="#" class="btn btn_12 widget-settings__controls-btn">Слева</a>
+                                    <a href="#" class="btn btn_12 widget-settings__controls-btn" data-class="right-pos">Справа</a>
+                                </div>
+                            </div>
+                            <!-- /widget-settings__controls-item -->
+
+                            <!-- widget-settings__controls-item -->
+                            <div class="widget-settings__controls-item">
+                                <span>Название:</span>
+                                <div class="widget-settings__controls-btns">
+                                    <a href="#" class="btn btn_12 widget-settings__controls-btn">Полные</a>
+                                    <a href="#" class="btn btn_12 widget-settings__controls-btn" data-class="abbreviations">Сокращения</a>
+                                </div>
+                            </div>
+                            <!-- /widget-settings__controls-item -->
+
+                            <!-- widget-settings__controls-item -->
+                            <div class="widget-settings__controls-item">
+                                <span>Тема виджета:</span>
+                                <div class="widget-settings__controls-btns">
+                                    <a href="#" class="btn btn_12 widget-settings__controls-btn" data-class="lightness">Светлая</a>
+                                    <a href="#" class="btn btn_12 widget-settings__controls-btn">Темная</a>
+                                    <a href="#" class="btn btn_12 widget-settings__controls-settings">Настроить</a>
+                                </div>
+                            </div>
+                            <!-- /widget-settings__controls-item -->
+
+                        </div>
+                        <!-- /widget-settings__controls -->
+
+                        <!-- widget-settings__view -->
+                        <div class="widget-settings__view">
+
+                            <!-- widget__menu -->
+                            <div class="widget__menu">
+
+                                <a href="#">
+                                    <span class="widget__menu-full">Русский</span>
+                                    <span class="widget__menu-abbreviations">RU</span>
+                                </a>
+                                <a href="#" class="active">
+                                    <span class="widget__menu-full">Английский</span>
+                                    <span class="widget__menu-abbreviations">EN</span>
+                                </a>
+                                <a href="#">
+                                    <span class="widget__menu-full">Французский</span>
+                                    <span class="widget__menu-abbreviations">FR</span>
+                                </a>
+
+                                <div class="widget__crafted">Create by getloc.com</div>
+
+                            </div>
+                            <!-- /widget__menu -->
+
+                        </div>
+                        <!-- /widget-settings__view -->
+
+                        <!-- widget-settings__colors -->
+                        <div class="widget-settings__colors">
+
+                            <input type="hidden" class="widget-colors" value="">
+
+                            <h2 class="site__title site__title_4">Настройки цвета</h2>
+
+                            <!-- widget-settings__colors-item -->
+                            <div class="widget-settings__colors-items">
+
+                                <!-- widget-settings__colors-item -->
+                                <div class="widget-settings__colors-item">
+                                    <span>Общий фон:</span>
+
+                                    <!-- widget-settings__colors-item -->
+                                    <div class="widget-settings__choose-color">
+                                        <span class="input-group-addon"><i></i></span>
+                                        <input type="text" value="rgba(20,20,20,0.9)" class="site__input" />
+                                    </div>
+                                    <!-- widget-settings__colors-item -->
+
+                                </div>
+                                <!-- /widget-settings__colors-item -->
+
+                                <!-- widget-settings__colors-item -->
+                                <div class="widget-settings__colors-item">
+                                    <span>Фон активного языка:</span>
+
+                                    <!-- widget-settings__colors-item -->
+                                    <div class="widget-settings__choose-color">
+                                        <span class="input-group-addon"><i></i></span>
+                                        <input type="text" value="#18baea" class="site__input" />
+                                    </div>
+                                    <!-- widget-settings__colors-item -->
+
+                                </div>
+                                <!-- /widget-settings__colors-item -->
+
+                                <!-- widget-settings__colors-item -->
+                                <div class="widget-settings__colors-item">
+                                    <span>Цвет текста:</span>
+
+                                    <!-- widget-settings__colors-item -->
+                                    <div class="widget-settings__choose-color">
+                                        <span class="input-group-addon"><i></i></span>
+                                        <input type="text" value="#ffffff" class="site__input" />
+                                    </div>
+                                    <!-- widget-settings__colors-item -->
+
+                                </div>
+                                <!-- /widget-settings__colors-item -->
+
+                                <!-- widget-settings__colors-item -->
+                                <div class="widget-settings__colors-item">
+                                    <span>Текст активного языка:</span>
+
+                                    <!-- widget-settings__colors-item -->
+                                    <div class="widget-settings__choose-color">
+                                        <span class="input-group-addon"><i></i></span>
+                                        <input type="text" value="#829201" class="site__input" />
+                                    </div>
+                                    <!-- widget-settings__colors-item -->
+
+                                </div>
+                                <!-- /widget-settings__colors-item -->
+
+                            </div>
+                            <!-- /widget-settings__colors-item -->
+
+                            <a class="btn btn_7 btn_blue" href="#">Сохранить изменения</a>
+
+                        </div>
+                        <!-- /widget-settings__colors -->
+
+                    </div>
+                    <!-- /widget-settings -->
+
+                </div>
+                <!-- /inside-content -->
+
+            </div>
+            <!-- /site__wrap -->
+
+        </div>
+        <!-- /site__content -->
+
+        <!-- /site__footer -->
+        <footer class="site__footer">
+
+            <!-- /site__footer-layout -->
+            <div class="site__footer-layout">
+
+                <!-- footer__logo -->
+                <a href="#" class="footer__logo">
+                    <img src="assets/img/account/footer-logo.png" width="90" height="26" alt="GETLOC">
+                </a>
+                <!-- /footer__logo -->
+
+                <!-- footer-menu -->
+                <div class="footer-menu">
+
+                    <a href="#">Помощь</a>
+                    <a href="#">Меню</a>
+                    <a href="#">Еще меню</a>
+
+                </div>
+                <!-- /footer-menu -->
+
+            </div>
+            <!-- /site__footer-layout -->
+
+        </footer>
+        <!-- /site__footer -->
+
+
+
+    </div>
+    <!-- /site -->
+
+    <script src="assets/js/account/jquery-2.1.3.min.js"></script>
+    <script src="assets/js/account/jquery.nicescroll.min.js"></script>
+    <script src="assets/js/account/jquery.select.js"></script>
+    <script src="assets/js/account/bootstrap-colorpicker.min.js"></script>
+    <script src="assets/js/account/jquery.widget.js"></script>
+    <script src="assets/js/account/jquery.main.js"></script>
+</body>
+</html>
+

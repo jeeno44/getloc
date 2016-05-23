@@ -106,14 +106,12 @@ class AccountController extends Controller
         $site       = Site::find($siteID);
         $ccBlocks   = Block::where('site_id', $siteID)->count();
         
-        if ( !$siteID || !$site || $ccBlocks == 0 ) 
-          {
+        if (!$siteID || !$site || $ccBlocks == 0) {
             Session::remove('projectID');
             return redirect(URL::route('main.account.selectProject'));
-          }
+        }
           
-        if ( Page::where('site_id', $siteID)->count() == Page::where('site_id', $siteID)->where('collected', 1)->count() )
-          {
+        if (Translate::where('site_id', $siteID)->count() > 0) {
             $stats = array(
                 'ccBlocks'  => Block::where('site_id', $siteID)->count(),
                 'ccPages'   => Page::where('site_id', $siteID)->count(),
@@ -121,10 +119,9 @@ class AccountController extends Controller
                 'lineGraph' => $this->lineStatistics($siteID, $ccBlocks),
                 'langStats' => $this->getStatusLangs($siteID, $ccBlocks)
             );
-            
             $site_settings = DB::table('sites_settings')->where('site_id', $siteID)->first();
             return view('account.overview', compact('sites', 'stats', 'site', 'site_settings'));
-          }
+        }
           
         $pages = $site->pages()->paginate(20);
         return view('account.waiting', compact('sites', 'site', 'pages'));
@@ -775,7 +772,7 @@ class AccountController extends Controller
         $phrasesInOrder = $this->getCountPhrasesInOrder();
         $costOrder      = $this->getCostOrder();
 
-        return view('account.phrase', compact('tab_name', 'blocks', 'filter', 'viewType', 'filterDef', 'phrasesInOrder', 'costOrder', 'siteID'));
+        return view('account.phrase', compact('tab_name', 'blocks', 'filter', 'viewType', 'filterDef', 'phrasesInOrder', 'costOrder', 'siteID', 'site'));
     }
 
     /**

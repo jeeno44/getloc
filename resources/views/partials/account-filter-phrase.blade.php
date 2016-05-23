@@ -1,70 +1,105 @@
+<div class="make-order" @if($costOrder == 0) style="display: none" @endif>
+    <h2 class="make-order__title">Заказ на перевод</h2>
+    <form action="/account/orders" method="get">
+        <div class="site__align-items-justify">
+            <div class="nice-check">
+                <input type="checkbox" id="checkboxPhraseInOrder" value="" class="checkboxPhraseInOrder">
+                <label for="checkboxPhraseInOrder">{{trans('account.phrasesInOrder')}}</label>
+            </div>
+            <span class="make-order__phrases site__align-right phrasesCount">{{ $phrasesInOrder }}</span>
+        </div>
+        <div class="make-order__total site__align-items-justify">
+            <span>{{trans('account.costOrder')}}</span>
+            <span class="make-order__total-price site__align-right costCount">{{ $costOrder }} Р</span>
+        </div>
+        <a class="btn btn_6 btn_full-width make-order-btn"  style="padding-top: 14px;"  href="/account/orders">Оформить заказ</a>
+    </form>
+</div>
+
 <div class="site__aside-slick">
     <h2 class="site__aside-title">{{trans('account.filters')}}</h2>
     <form action="{{URL::route('main.account.setFilter')}}" method="POST">
     <input type="hidden" name="view_page" value="{{$tab_name}}" />
 
-
-    <div  style="margin-bottom: 15px; text-align: center;" class="date_filter_wrap">
-        <div for="date_filter_start" style="text-align: center; margin-bottom: 5px;">Выбрать даты для фильтра</div>
-        <input type="date" style="width: 49%;" name="date_filter_start" id="date_filter_start" value="" class="date_filter_start" placeholder="от">
-        <input type="date" style="width: 49%;" name="date_filter_end" id="date_filter_end" value="" class="date_filter_end" placeholder="до">
-        <button class="button_date_filter" style="margin-top: 5px">Фильтровать</button>
-    </div>
-
-    <div class="search_text_wrap" style="margin-bottom: 10px;">
-        <input type="text" class="search_text">
-        <button class="button_search_text">поиск</button>
-    </div>
-
-
-    <div  style="margin-bottom: 15px;" class="phrases_in_order">
-        <input type="checkbox" name="checkboxPhraseInOrder" id="checkboxPhraseInOrder" value="" class="checkboxPhraseInOrder">
-        <label for="checkboxPhraseInOrder">{{trans('account.phrasesInOrder')}} <span class="phrasesCount">{{ $phrasesInOrder }}</span></label>
-    </div>
-
-    <div id="block_page_title" class="filter_page_title" style="max-height: 250px; overflow: auto;">
-{{--        {{ $pages_url = Session::get('pages_url') }}--}}
-{{--        {{ dd(Session::get('pages_url')) }}--}}
-{{--        {{ dd(request()->get('url')) }}--}}
-        @if(request()->get('url'))
-            <div class="selected_for_title_item bordered">{{ request()->get('url') }}<span class="remove_item">✕</span></div>
-        @elseif(request()->get('url') == null && ( Session::get('pages_url_'.$siteID) && Session::get('pages_url_'.$siteID) != ''))
-            @foreach(explode(',', Session::get('pages_url_'.$siteID)) as $page_url)
-                <div class="selected_for_title_item bordered">{{ $page_url }}<span class="remove_item">✕</span></div>
-            @endforeach
-        @endif
-    </div>
-    <form action="" class="site__form">
-        <fieldset>
-            <input type="text" id="search_page" name="search_page" class="bordered" style="width: 100%; height: 40px; border-radius: 5px; margin-bottom: 10px;" />
-        </fieldset>
-    </form>
-
-{{--{{ dd($filter) }}--}}
-    <div class="site__aside-filter">
-        <span>{{trans('account.langs')}}</span>
-        @foreach ($filter['menu']['langs'] as $lang)
-        <div class="nice-radio" @if ($filterDef != 1) style="display: block;" @endif>
-            <input type="radio" value="{{$lang->id}}" name="filter[languageID]" id="lang_{{$lang->id}}" @if(isset($_GET['language_id']) && $_GET['language_id'] == $lang->id) checked @else  @if ($lang->id == $filter['menu']['active_lang']) checked @endif @endif>
-            <label for="lang_{{$lang->id}}">{{$lang->name}}<span id="lang_proc_{{$lang->id}}">{{$filter['stats']['proc'][$lang->id]}}%</span></label>
-        </div>
-        @endforeach
-    </div>
-    <div class="site__aside-filter">
-        <span>{{trans('account.types_translates')}}</span>
-        <div @if ($filterDef != 1) style="display: block;" @endif>
-            <div class="nice-radio">
-                <input type="radio" value="0" name="filter[typeID]" id="typeid_0"@if (!$filter['menu']['active_type']) checked @endif>
-                <label for="typeid_0">{{trans('account.all')}}<span id="cc_all">{{$filter['stats']['all']}}</span></label>
+        <div class="site__aside-filter accordion">
+            <span class="accordion__head">{{trans('account.langs')}}</span>
+            <div class="accordion__content">
+                @foreach ($filter['menu']['langs'] as $lang)
+                    <div class="nice-radio" @if ($filterDef != 1) style="display: block;" @endif>
+                        <input type="radio" value="{{$lang->id}}" name="filter[languageID]" id="lang_{{$lang->id}}" @if(isset($_GET['language_id']) && $_GET['language_id'] == $lang->id) checked @else  @if ($lang->id == $filter['menu']['active_lang']) checked @endif @endif>
+                        <label for="lang_{{$lang->id}}"><span class="flag" style="background-image: url('/icons/{{$lang->icon_file}}')"></span>{{$lang->name}}<span id="lang_proc_{{$lang->id}}">{{$filter['stats']['proc'][$lang->id]}}%</span></label>
+                    </div>
+                @endforeach
             </div>
-            @foreach ($filter['menu']['types'] as $type )
-            <div class="nice-radio">
-                <input type="radio" value="{{$type->id}}" name="filter[typeID]" id="typeid_{{$type->id}}"@if ($type->id == $filter['menu']['active_type']) checked @endif>
-                <label for="typeid_{{$type->id}}">{{$type->name}}<span id="cc_id_{{$type->id}}" style="color: {{$filter['colors'][$type->id]['hex']}}">{{$filter['stats']['menu'][$type->id]}}</span></label>
-            </div>
-            @endforeach
         </div>
-    </div>
-    <a href="{{route('main.account.clear-filter')}}">Очистить фильтр</a>
+
+        <div class="site__aside-filter accordion">
+            <span class="accordion__head">Выбрать даты</span>
+            <div class="accordion__content">
+                <div class="choice-dates">
+                    <div>
+                        <label for="from">от</label>
+                        <input class="site__input site__input_small datepicker date_filter_start" type="text" name="date_filter_start" id="date_filter_start">
+                    </div>
+                    <div>
+                        <label for="to">до</label>
+                        <input class="site__input site__input_small datepicker date_filter_end" type="text" name="date_filter_end" id="date_filter_end">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="site__aside-filter accordion">
+            <span class="accordion__head">{{trans('account.types_translates')}}</span>
+            <div class="accordion__content">
+                <div @if ($filterDef != 1) style="display: block;" @endif>
+                    <div class="nice-radio">
+                        <input type="radio" value="0" name="filter[typeID]" id="typeid_0"@if (!$filter['menu']['active_type']) checked @endif>
+                        <label for="typeid_0">{{trans('account.all')}}<span id="cc_all">{{$filter['stats']['all']}}</span></label>
+                    </div>
+                    @foreach ($filter['menu']['types'] as $type )
+                        <div class="nice-radio">
+                            <input type="radio" value="{{$type->id}}" name="filter[typeID]" id="typeid_{{$type->id}}"@if ($type->id == $filter['menu']['active_type']) checked @endif>
+                            <label for="typeid_{{$type->id}}">{{$type->name}}<span id="cc_id_{{$type->id}}" style="color: {{$filter['colors'][$type->id]['hex']}}">{{$filter['stats']['menu'][$type->id]}}</span></label>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
+        <div class="site__aside-filter accordion">
+
+            <span class="accordion__head">Страницы</span>
+            <div class="accordion__content">
+                <div class="search-pages" data-autocomplite="assets/php/autocomplete.php">
+                    <div class="search-pages__fields">
+                        <input class="site__input site__input_small search-pages__input" type="search" name="search-pages-field">
+
+                        <!--&lt;!&ndash;Выпадающий список с результатом поиска-->
+
+                        <!--<div class="search-pages__result">-->
+                        <!--<a class="search-pages__result-item" href="#">translation-services/translation/technical-translation.html</a>-->
+                        <!--<a class="search-pages__result-item active" href="#">translation-services/translation/about.html</a>-->
+                        <!--<a class="search-pages__result-item" href="#">translation-services/translation/services.html</a>-->
+                        <!--</div>-->
+
+                        <!--&ndash;&gt;-->
+
+                    </div>
+                    <!--/search-pages__fields-->
+
+                    <!--search-pages__chosen-->
+                    <div class="search-pages__chosen"></div>
+                    <!--/search-pages__chosen-->
+
+                </div>
+                <!--/search-pages-->
+
+
+            </div>
+
+        </div>
+
+    <a href="{{route('main.account.clear-filter')}}" class="btn btn_5">Очистить фильтр</a>
     </form>
 </div>

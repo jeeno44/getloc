@@ -1,21 +1,26 @@
 @extends('layouts.account')
 @section('title') Фразы проекта @stop
-@section('content') 
-<aside class="site__aside">
-    @include('partials.account-menu')
-
-    @if(request()->is('account/phrase'))
-
-    @include('partials.account-filter-phrase')
-
+@section('content')
+    @if(!empty($site->subscription))
+        @if($site->subscription->count_words < $site->count_words || $site->subscription->count_languages < $site->languages()->count())
+            <div class="other-tariff">
+                <h2 class="other-tariff__title">Необходим более крутой тариф</h2>
+                <p>Сейчас в вашем заказе {{$site->count_words}} слов и {{$site->languages()->count()}} язык(а). А ваш тариф рассчитан на {{$site->subscription->count_words}} слов и {{$site->subscription->count_languages}} язык(а).</p>
+                <a href="{{route('main.billing.upgrade', ['id' => $site->id])}}" class="other-tariff__change">Сменить тарифный план</a>
+            </div>
+        @endif
     @endif
-</aside>
+    <aside class="site__aside">
+        @include('partials.account-menu')
+        @if(request()->is('account/phrase'))
+            @include('partials.account-filter-phrase')
+        @endif
+    </aside>
     <div class="inside-content">
         <div class="phrases">
 
         <h1 class="site__title">Фразы проекта</h1>
-        <div class="magic_tabs"{{-- class="tabs"--}}>
-
+        <div class="magic_tabs tabs"{{-- class="tabs"--}}>
 
             <div class="tabs__links">
                 @if($filter['stats']['not_translate'] > 0)
@@ -30,6 +35,7 @@
                     <a id="tab_acrhive" href="#">{{trans('account.unpublished')}}</a>
                 </div>
             </div>
+
             <div class="phrases__control">
                 <div class="nice-check">
                     <input type="checkbox" id="check" class="select_all">
@@ -43,19 +49,17 @@
                 </div>
                 <button id="setViewTypeID_1" class="phrases__control-horizontal @if ($viewType == 1) active @endif"></button>
                 <button id="setViewTypeID_2" class="phrases__control-column @if ($viewType == 2) active @endif"></button>
-                <button id="order-selected-phrases" class="phrases__control-to-order">Заказать перевод</button>
+                <a href="#" class="phrases__control-send" id="order-selected-phrases">Отправить в заказ</a>
             </div>
-            <div class="phrases__control">
 
-                <div class="phrases__control-inner">
-                    <div id="phrases_in_order"  style="min-height: 35px; line-height: 35px;"class="phrases_in_order">{{trans('account.phrasesInOrder')}} <span class="phrasesCount">{{ $phrasesInOrder }}</span></div>
-                </div>
-                <div class="phrases__control-inner">
-                    <div id="cost_order" style="min-height: 35px; line-height: 35px;" class="cost_order">{{trans('account.costOrder')}} <span class="costCount">{{ $costOrder }}</span> &#8381</div>
-                    {{--&#8381 - знак рубль--}}
-                </div>
-                {{--<a href="/orders/create?phrasesInOrder=&costOrder=" style="margin-top: 10px;" class="btn btn_3">{{trans('account.pay')}}</a>--}}
+            <div class="find-phrase">
+                <form action="#">
+                    <input class="site__input search-phrase search_text" type="search" name="search-phrase" placeholder="Найти фразу...">
+                    <button class="find-phrase__go button_search_text" type="submit"></button>
+                    <a class="find-phrase__clean" href="#"></a>
+                </form>
             </div>
+
             <div class="tabs__content">
                 <div class="active" style="display: block;" class="phrases__tab" id="renderPhrases">
 

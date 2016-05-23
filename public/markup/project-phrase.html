@@ -1,0 +1,1419 @@
+﻿<!DOCTYPE html> 
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=992">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="address=no">
+
+    <title>project-phrase</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,300,500,700&subset=cyrillic' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="assets/css/account/select.css" />
+    <link rel="stylesheet" href="assets/css/account/jquery-ui.min.css" />
+    <link rel="stylesheet" href="assets/css/account/popup.css" />
+    <link rel="stylesheet" href="assets/css/account/main.css" />
+
+</head>
+<body>
+
+    <!-- site -->
+    <div class="site" id="up">
+
+        <!-- /site__header -->
+        <header class="site__header">
+
+            <!-- site__header-layout -->
+            <div class="site__header-layout">
+
+                <!-- menu -->
+                <div class="menu">
+
+                    <!-- menu__icon -->
+                    <div class="menu__icon">
+                        <span></span>
+                    </div>
+                    <!-- /menu__icon -->
+
+                    <nav class="menu__wrap">
+                        <a href="#">Наша платформа</a>
+                        <a href="#" class="active">Управление переводом</a>
+                        <a href="#">Заказ перевода</a>
+                        <a href="#">Интеграция</a>
+                        <a href="#">Планы развития</a>
+                        <a href="#">Помощь</a>
+                    </nav>
+
+                </div>
+                <!-- /header__menu -->
+
+                <!-- logo -->
+                <a href="#" class="logo">
+                    <img src="assets/img/logo.png" width="90" height="26" alt="GETLOC">
+                </a>
+                <!-- /logo -->
+
+                <!-- site-list -->
+                <div class="site-list">
+
+                    <!-- site-list__add -->
+                    <button class="site-list__add"></button>
+                    <!-- /site-list__add -->
+
+                    <select id="site-list">
+                        <option value="deezout.ru">deezout.ru</option>
+                        <option value="buro3v.ru">buro3v.ru</option>
+                        <option value="megafonmoscow.ru">megafonmoscow.ru</option>
+                        <option value="http://all.ru">Все проекты</option>
+                    </select>
+                </div>
+                <!-- /site-list -->
+
+                <!-- header__person -->
+                <div class="header__person" style="background-image: url('assets/img/iocns-ava.png');">
+
+                    <!-- header__person-list -->
+                    <ul class="header__person-list">
+                        <li><a href="#">Персональные данные</a></li>
+                        <li><a href="#">Настройка аккаунта</a></li>
+                        <li><a href="#">Настройка команды</a></li>
+                        <li><a href="#">Выйти</a></li>
+                    </ul>
+                    <!-- /header__person-list -->
+
+                </div>
+                <!-- /header__person -->
+
+                <!-- language -->
+                <div class="language">
+
+                    <!-- language__btn -->
+                    <button class="language__btn">RU</button>
+                    <!-- /language__btn -->
+
+                    <!-- language__list -->
+                    <ul class="language__list">
+                        <li><a href="#">Русский</a></li>
+                        <li><a class="active" href="#">English</a></li>
+                        <li><a href="#">Deutsch</a></li>
+                        <li><a href="#">Español</a></li>
+                    </ul>
+                    <!-- /language__list -->
+
+                </div>
+                <!-- /language -->
+
+            </div>
+            <!-- /site__header-layout -->
+
+        </header>
+        <!-- /site__header -->
+
+        <!-- site__content -->
+        <div class="site__content site_inner">
+
+            <!-- site__wrap -->
+            <div class="site__wrap">
+
+                <!-- other-tariff -->
+                <div class="other-tariff">
+                    <h2 class="other-tariff__title">Необходим более крутой тариф</h2>
+                    <p>Сейчас в вашем заказе 12847 фраз и 3 языка. А ваш тариф рассчитан на 10000 фраз и 1 язык.</p>
+                    <a class="other-tariff__change popup__open" href="#" data-popup="unavailable">Сменить тарифный план</a>
+                </div>
+                <!-- /other-tariff -->
+
+                <!--site__aside-->
+                <aside class="site__aside">
+
+                    <!--site__aside-menu-->
+                    <div class="site__aside-menu">
+
+                        <a href="#">Обзор проекта</a>
+                        <a href="#">Языки</a>
+                        <a href="#">Страницы проекта</a>
+                        <a href="#" class="active">Перевод фраз</a>
+                        <a href="#">Виджет</a>
+                        <a href="#">Настройки проекта</a>
+                        <a href="#" class="aside-menu__order">Мои заказы <span>2</span></a>
+
+                    </div>
+                    <!--/site__aside-menu-->
+
+                    <!--make-order-->
+                    <div class="make-order">
+                        <h2 class="make-order__title">Заказ на перевод</h2>
+                        <form action="#">
+
+                            <div class="site__align-items-justify">
+
+                                <!--nice-check-->
+                                <div class="nice-check">
+                                    <input type="checkbox" name="phrases" id="phrases">
+                                    <label for="phrases">Фраз в заказе</label>
+                                </div>
+                                <!--/nice-check-->
+
+                                <!--make-order__phrases-->
+                                <span class="make-order__phrases site__align-right">1725</span>
+                                <!--/make-order__phrases-->
+
+                            </div>
+
+                            <!--make-order__total-->
+                            <div class="make-order__total site__align-items-justify">
+                                <span>Стоимость заказа</span>
+
+                                <!--make-order__total-price-->
+                                <span class="make-order__total-price site__align-right">1040 Р</span>
+                                <!--/make-order__total-price-->
+
+                            </div>
+                            <!--/make-order__total-->
+
+                            <button class="btn btn_6 btn_full-width">Оформить заказ</button>
+
+                        </form>
+                    </div>
+                    <!--/make-order-->
+
+                    <!--site__aside-slick-->
+                    <div class="site__aside-slick">
+
+                        <form action="#">
+
+                            <!--site__aside-filter-->
+                            <div class="site__aside-filter accordion">
+
+                                <span class="accordion__head">Языки</span>
+
+                                <div class="accordion__content">
+                                    <!-- nice-radio -->
+                                    <div class="nice-radio">
+                                        <input type="radio" name="language" id="english" checked>
+                                        <label for="english"><span class="flag" style="background-image: url('assets/img/account/icons-us.png')"></span>Английский<span>14%</span></label>
+                                    </div>
+                                    <!-- /nice-radio -->
+
+                                    <!-- nice-radio -->
+                                    <div class="nice-radio">
+                                        <input type="radio" name="language" id="deutch">
+                                        <label for="deutch"><span class="flag" style="background-image: url('assets/img/account/icons-ge.png')"></span>Немецкий<span>73%</span></label>
+                                    </div>
+                                    <!-- /nice-radio -->
+                                </div>
+
+                            </div>
+                            <!--/site__aside-filter-->
+
+                            <!--site__aside-filter-->
+                            <div class="site__aside-filter accordion">
+
+                                <span class="accordion__head">Выбрать даты</span>
+
+                                <div class="accordion__content">
+
+                                    <!--choice-dates-->
+                                    <div class="choice-dates">
+
+                                        <div>
+                                            <label for="from">от</label>
+                                            <input class="site__input site__input_small datepicker" type="text" name="from" id="from">
+                                        </div>
+                                        <div>
+                                            <label for="to">до</label>
+                                            <input class="site__input site__input_small datepicker" type="text" name="to" id="to">
+                                        </div>
+
+                                    </div>
+                                    <!--/choice-dates-->
+
+                                </div>
+
+                            </div>
+                            <!--/site__aside-filter-->
+
+                            <!--site__aside-filter-->
+                            <div class="site__aside-filter accordion">
+
+                                <span class="accordion__head">Типы перевода</span>
+
+                                <div class="accordion__content">
+
+                                    <!-- nice-radio -->
+                                    <div class="nice-radio">
+                                        <input type="radio" name="types" id="all" checked>
+                                        <label for="all">Все<span>1627</span></label>
+                                    </div>
+                                    <!-- /nice-radio -->
+
+                                    <!-- nice-radio -->
+                                    <div class="nice-radio">
+                                        <input type="radio" name="types" id="machine">
+                                        <label for="machine">Машинный<span style="color: #18baea;">182</span></label>
+                                    </div>
+                                    <!-- /nice-radio -->
+
+                                    <!-- nice-radio -->
+                                    <div class="nice-radio">
+                                        <input type="radio" name="types" id="hand">
+                                        <label for="hand">Ручной<span style="color: #70d579;">2715</span></label>
+                                    </div>
+                                    <!-- /nice-radio -->
+
+                                    <!-- nice-radio -->
+                                    <div class="nice-radio">
+                                        <input type="radio" name="types" id="prof">
+                                        <label for="prof">Профессиональный<span style="color: #ffa630;">876</span></label>
+                                    </div>
+                                    <!-- /nice-radio -->
+
+                                </div>
+
+                            </div>
+                            <!--/site__aside-filter-->
+
+                            <!--site__aside-filter-->
+                            <div class="site__aside-filter accordion">
+
+                                <span class="accordion__head">Страницы</span>
+
+                                <div class="accordion__content">
+
+                                    <!--search-pages-->
+                                    <div class="search-pages" data-autocomplite="assets/php/autocomplete.php">
+
+                                        <!--search-pages__fields-->
+                                        <div class="search-pages__fields">
+
+                                            <input class="site__input site__input_small search-pages__input" type="search" name="search-pages-field">
+
+                                            <!--&lt;!&ndash;Выпадающий список с результатом поиска-->
+
+                                            <!--<div class="search-pages__result">-->
+                                                <!--<a class="search-pages__result-item" href="#">translation-services/translation/technical-translation.html</a>-->
+                                                <!--<a class="search-pages__result-item active" href="#">translation-services/translation/about.html</a>-->
+                                                <!--<a class="search-pages__result-item" href="#">translation-services/translation/services.html</a>-->
+                                            <!--</div>-->
+
+                                            <!--&ndash;&gt;-->
+
+                                        </div>
+                                        <!--/search-pages__fields-->
+
+                                        <!--search-pages__chosen-->
+                                        <div class="search-pages__chosen"></div>
+                                        <!--/search-pages__chosen-->
+
+                                    </div>
+                                    <!--/search-pages-->
+
+
+                                </div>
+
+                            </div>
+                            <!--/site__aside-filter-->
+
+                        </form>
+
+                    </div>
+                    <!--/site__aside-slick-->
+
+                </aside>
+                <!--/site__aside-->
+
+                <!-- inside-content -->
+                <div class="inside-content">
+
+                    <!--phrases-->
+                    <div class="phrases">
+
+                        <!-- site__title -->
+                        <h1 class="site__title">Фразы проекта</h1>
+                        <!-- /site__title -->
+
+                        <!--tabs-->
+                        <div class="tabs">
+
+                            <!-- tabs__links -->
+                            <div class="tabs__links">
+                                <a href="#">Без перевода<span>1728</span></a>
+                                <a href="#">Переведенные<span>176</span></a>
+                                <a href="#">Опубликованные<span>1625 </span></a>
+
+                                <div class="tabs__links-archive">
+                                    <a href="#">Архив</a>
+                                </div>
+                            </div>
+                            <!-- tabs__links -->
+
+                            <!--phrases__control-->
+                            <div class="phrases__control">
+
+                                <!--nice-check-->
+                                <div class="nice-check">
+                                    <input type="checkbox" id="check">
+                                    <label for="check"></label>
+                                </div>
+                                <!--/nice-check-->
+
+                                <!--phrases__control-inner-->
+                                <div class="phrases__control-inner">
+
+                                    <!--phrases__control-check-->
+                                    <button class="phrases__control-check"></button>
+                                    <!--/phrases__control-check-->
+
+                                    <!--phrases__control-delete-->
+                                    <button class="phrases__control-delete"></button>
+                                    <!--/phrases__control-delete-->
+
+                                    <!--phrases__control-attached-->
+                                    <button class="phrases__control-attached"></button>
+                                    <!--/phrases__control-attached-->
+
+                                </div>
+                                <!--/phrases__control-inner-->
+
+                                <!--phrases__control-inner-->
+                                <div class="phrases__control-inner">
+
+                                    <!--phrases__control-horizontal-->
+                                    <button class="phrases__control-horizontal"></button>
+                                    <!--/phrases__control-horizontal-->
+
+                                    <!--phrases__control-column-->
+                                    <button class="phrases__control-column"></button>
+                                    <!--/phrases__control-column-->
+
+                                </div>
+                                <!--/phrases__control-inner-->
+
+                                <!--phrases__control-send-->
+                                <a href="#" class="phrases__control-send">Отправить в заказ</a>
+                                <!--/phrases__control-send-->
+
+                            </div>
+                            <!--/phrases__control-->
+
+                            <!--find-phrase-->
+                            <div class="find-phrase">
+                                <form action="#">
+                                    <input class="site__input search-phrase" type="search" name="search-phrase" placeholder="Найти фразу...">
+                                    <button class="find-phrase__go" type="submit"></button>
+                                    <a class="find-phrase__clean" href="#"></a>
+                                </form>
+                            </div>
+                            <!--/find-phrase-->
+
+                            <!-- tabs__content -->
+                            <div class="tabs__content">
+
+                                <!--phrases__tab-->
+                                <div class="phrases__tab">
+
+                                    <!--phrases__item-->
+                                    <div class="phrases__item phrases__item_mark-blue">
+
+                                        <!--phrases__item-col-->
+                                        <div class="phrases__item-col">
+                                            Вот и пришла идея сделать такое приложение для iPad. В AppStore оказалось
+                                            очень много приложений подобного типа.
+                                        </div>
+                                        <!--/phrases__item-col-->
+
+                                        <!--phrases__item-col-->
+                                        <form class="phrases__item-col phrases__item-col_translate">
+                                            <textarea readonly>So entstand die Idee, eine solche Anwendung für das iPad zu machen. Im Appstore hat sehr viele Anwendungen dieses Typs.</textarea>
+
+                                            <!--phrases__item-col-btns-->
+                                            <div class="phrases__item-col-btns">
+                                                <button class="btn btn_4 btn_blue save" type="submit">Сохранить</button>
+
+                                                <button class="btn btn_5 cancel">Отмена</button>
+                                            </div>
+                                            <!--/phrases__item-col-btns-->
+
+                                        </form>
+                                        <!--/phrases__item-col-->
+
+                                        <!--phrases__item-controls-->
+                                        <div class="phrases__item-controls">
+
+                                            <!--nice-check-->
+                                            <div class="nice-check nice-check_no-text">
+                                                <input type="checkbox" id="publish">
+                                                <label for="publish"></label>
+                                            </div>
+                                            <!--/nice-check-->
+
+                                            <!--translate-controls-->
+                                            <div class="translate-controls">
+
+                                                <!--translate-controls__del-->
+                                                <button class="translate-controls__but translate-controls__del">
+                                                    <span class="translate-controls__tooltip">Текст текст</span>
+                                                </button>
+                                                <!--/translate-controls__del-->
+
+                                                <!--translate-controls__comment-->
+                                                <button class="translate-controls__but translate-controls__comment">
+                                                    <span class="translate-controls__tooltip">Текст текст</span>
+                                                </button>
+                                                <!--/translate-controls__comment-->
+
+                                                <!--translate-controls__order-->
+                                                <button class="translate-controls__but translate-controls__order">
+                                                    <span class="translate-controls__tooltip">Отправить в заказ</span>
+                                                </button>
+                                                <!--/translate-controls__order-->
+
+                                            </div>
+                                            <!--/translate-controls-->
+
+                                            <!--phrases__item-controls-right-->
+                                            <div class="phrases__item-controls-right">
+
+                                                <!--phrases__item-controls-menu-->
+                                                <div class="phrases__item-controls-menu">
+
+                                                    <div>
+
+                                                        <ul>
+                                                            <li>
+                                                                <a href="#">История</a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="active" href="#">Использовать машинный перевод</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Отметить как ручной</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Добавить комментарий</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Подробнее</a>
+                                                            </li>
+                                                        </ul>
+
+                                                        <a href="#">Отправить в архив</a>
+                                                    </div>
+
+                                                </div>
+                                                <!--/phrases__item-controls-menu-->
+
+                                                <!--phrases__item-controls-type-->
+                                                <button class="phrases__item-controls-type phrases__item-controls-type_machine">
+                                                    Машинный
+                                                </button>
+                                                <!--/phrases__item-controls-type-->
+
+                                                <time datetime="2016-01-12">
+
+                                                    <span>11:27</span>
+                                                    12 января 2016
+
+                                                </time>
+
+                                            </div>
+                                            <!--/phrases__item-controls-right-->
+
+                                        </div>
+                                        <!--/phrases__item-controls-->
+
+                                    </div>
+                                    <!--/phrases__item-->
+
+                                    <!--phrases__item-->
+                                    <div class="phrases__item phrases__item_mark-green">
+
+                                        <!--phrases__item-col-->
+                                        <div class="phrases__item-col">
+                                            © 2016 Наша компания "4 друга": Ноггано, Жора...
+                                        </div>
+                                        <!--/phrases__item-col-->
+
+                                        <!--phrases__item-col-->
+                                        <form class="phrases__item-col phrases__item-col_translate">
+                                            <textarea readonly>2016 © our company "4 friend": Queue, Zhora.</textarea>
+
+                                            <!--phrases__item-col-btns-->
+                                            <div class="phrases__item-col-btns">
+                                                <button class="btn btn_4 btn_blue save" type="submit">Сохранить</button>
+
+                                                <button class="btn btn_5 cancel">Отмена</button>
+                                            </div>
+                                            <!--/phrases__item-col-btns-->
+
+                                        </form>
+                                        <!--/phrases__item-col-->
+
+                                        <!--phrases__item-controls-->
+                                        <div class="phrases__item-controls">
+
+                                            <!--nice-check-->
+                                            <div class="nice-check">
+                                                <input type="checkbox" id="publish2">
+                                                <label for="publish2"></label>
+                                            </div>
+                                            <!--/nice-check-->
+
+                                            <!--phrases__item-controls-right-->
+                                            <div class="phrases__item-controls-right">
+
+                                                <!--phrases__item-controls-menu-->
+                                                <div class="phrases__item-controls-menu">
+
+                                                    <div>
+
+                                                        <ul>
+                                                            <li>
+                                                                <a href="#">История</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Использовать машинный перевод</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Отметить как ручной</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Добавить комментарий</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Подробнее</a>
+                                                            </li>
+                                                        </ul>
+
+                                                        <a href="#">Отправить в архив</a>
+                                                    </div>
+
+                                                </div>
+                                                <!--/phrases__item-controls-menu-->
+
+                                                <!--phrases__item-controls-type-->
+                                                <button class="phrases__item-controls-type phrases__item-controls-type_handler">
+                                                    Ручной
+                                                </button>
+                                                <!--/phrases__item-controls-type-->
+
+                                                <time datetime="2016-01-12">
+
+                                                    <span>11:27</span>
+                                                    12 января 2016
+
+                                                </time>
+
+                                            </div>
+                                            <!--/phrases__item-controls-right-->
+
+                                        </div>
+                                        <!--/phrases__item-controls-->
+
+                                    </div>
+                                    <!--/phrases__item-->
+
+                                    <!--phrases__item-->
+                                    <div class="phrases__item phrases__item_mark-orange">
+
+                                        <!--phrases__item-col-->
+                                        <div class="phrases__item-col">
+                                            Тестовый проект
+                                        </div>
+                                        <!--/phrases__item-col-->
+
+                                        <!--phrases__item-col-->
+                                        <form class="phrases__item-col phrases__item-col_translate">
+                                            <textarea readonly> Test project</textarea>
+
+                                            <!--phrases__item-col-btns-->
+                                            <div class="phrases__item-col-btns">
+                                                <button class="btn btn_4 btn_blue save" type="submit">Сохранить</button>
+
+                                                <button class="btn btn_5 cancel">Отмена</button>
+                                            </div>
+                                            <!--/phrases__item-col-btns-->
+
+                                        </form>
+                                        <!--/phrases__item-col-->
+
+                                        <!--phrases__item-controls-->
+                                        <div class="phrases__item-controls">
+
+                                            <!--nice-check-->
+                                            <div class="nice-check">
+                                                <input type="checkbox" id="publish3">
+                                                <label for="publish3"></label>
+                                            </div>
+                                            <!--/nice-check-->
+
+                                            <!--phrases__item-controls-right-->
+                                            <div class="phrases__item-controls-right">
+
+                                                <!--phrases__item-controls-menu-->
+                                                <div class="phrases__item-controls-menu">
+
+                                                    <div>
+
+                                                        <ul>
+                                                            <li>
+                                                                <a href="#">История</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Использовать машинный перевод</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Отметить как ручной</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Добавить комментарий</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Подробнее</a>
+                                                            </li>
+                                                        </ul>
+
+                                                        <a href="#">Отправить в архив</a>
+                                                    </div>
+
+                                                </div>
+                                                <!--/phrases__item-controls-menu-->
+
+                                                <!--phrases__item-controls-type-->
+                                                <button class="phrases__item-controls-type phrases__item-controls-type_prof">
+                                                    Профессиональный
+                                                </button>
+                                                <!--/phrases__item-controls-type-->
+
+                                                <time datetime="2016-01-12">
+                                                    <span>11:27</span>
+                                                    12 января 2016
+                                                </time>
+
+                                            </div>
+                                            <!--/phrases__item-controls-right-->
+
+                                        </div>
+                                        <!--/phrases__item-controls-->
+
+                                    </div>
+                                    <!--/phrases__item-->
+
+                                    <!--phrases__item-->
+                                    <div class="phrases__item">
+
+                                        <!--phrases__item-col-->
+                                        <div class="phrases__item-col">
+                                            <label for="order">Закажите перевод и нотариальное заверение</label>
+                                        </div>
+                                        <!--/phrases__item-col-->
+
+                                        <!--phrases__item-col-->
+                                        <div class="phrases__item-col phrases__item-col_translate">
+
+                                            <input class="site__input site__input_small" type="text" id="order">
+
+                                            <!-- Error message
+                                            <span class="site__error-message">Error text descriprion</span>
+                                            -->
+                                            <!--phrases__item-btn-translate-->
+                                            <button class="phrases__item-btn-translate">Использовать машинный перевод</button>
+                                            <!--/phrases__item-btn-translate-->
+
+                                        </div>
+                                        <!--/phrases__item-col-->
+
+                                        <!--phrases__item-controls-->
+                                        <div class="phrases__item-controls">
+
+                                            <!--nice-check-->
+                                            <div class="nice-check">
+                                                <input type="checkbox" id="publish4">
+                                                <label for="publish4"></label>
+                                            </div>
+                                            <!--/nice-check-->
+
+                                            <!--phrases__item-controls-right-->
+                                            <div class="phrases__item-controls-right">
+
+                                                <!--phrases__item-controls-menu-->
+                                                <div class="phrases__item-controls-menu">
+
+                                                    <div>
+
+                                                        <ul>
+                                                            <li>
+                                                                <a href="#">История</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Использовать машинный перевод</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Отметить как ручной</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Добавить комментарий</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Подробнее</a>
+                                                            </li>
+                                                        </ul>
+
+                                                        <a href="#">Отправить в архив</a>
+                                                    </div>
+
+                                                </div>
+                                                <!--/phrases__item-controls-menu-->
+
+                                                <time datetime="2016-01-12">
+                                                    <span>11:27</span>
+                                                    12 января 2016
+                                                </time>
+
+                                            </div>
+                                            <!--/phrases__item-controls-right-->
+
+                                        </div>
+                                        <!--/phrases__item-controls-->
+
+                                    </div>
+                                    <!--/phrases__item-->
+
+                                    <!--phrases__item-->
+                                    <div class="phrases__item phrases__item_mark-blue">
+
+                                        <!--phrases__item-col-->
+                                        <div class="phrases__item-col">
+                                            Oт 3 часов на выполнение, находимся в центре,
+                                        </div>
+                                        <!--/phrases__item-col-->
+
+                                        <!--phrases__item-col-->
+                                        <form class="phrases__item-col phrases__item-col_translate">
+                                            <textarea readonly>from 3 hours; center of Moscow; fast delivery!</textarea>
+
+                                            <!--phrases__item-col-btns-->
+                                            <div class="phrases__item-col-btns">
+                                                <button class="btn btn_4 btn_blue save" type="submit">Сохранить</button>
+
+                                                <button class="btn btn_5 cancel">Отмена</button>
+                                            </div>
+                                            <!--/phrases__item-col-btns-->
+
+                                        </form>
+                                        <!--/phrases__item-col-->
+
+                                        <!--phrases__item-field-->
+                                        <form class="phrases__item-field">
+
+                                            <div>
+                                                <input id="field1" type="text" value="Это такая штука, которая крепится тремя болтами к другой.">
+                                                <button>close</button>
+                                            </div>
+
+                                            <!--phrases__item-col-btns-->
+                                            <div class="phrases__item-col-btns">
+                                                <button class="btn btn_4 btn_blue save" type="submit">Сохранить</button>
+                                                <button class="btn btn_5 cancel">Отмена</button>
+                                            </div>
+                                            <!--/phrases__item-col-btns-->
+
+                                        </form>
+                                        <!--/phrases__item-field-->
+
+                                        <!--phrases__item-controls-->
+                                        <div class="phrases__item-controls">
+
+                                            <!--nice-check-->
+                                            <div class="nice-check">
+                                                <input type="checkbox" id="publish5">
+                                                <label for="publish5"></label>
+                                            </div>
+                                            <!--/nice-check-->
+
+                                            <!--phrases__item-controls-right-->
+                                            <div class="phrases__item-controls-right">
+
+                                                <!--phrases__item-controls-menu-->
+                                                <div class="phrases__item-controls-menu">
+
+                                                    <div>
+
+                                                        <ul>
+                                                            <li>
+                                                                <a href="#">История</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Использовать машинный перевод</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Отметить как ручной</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Добавить комментарий</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Подробнее</a>
+                                                            </li>
+                                                        </ul>
+
+                                                        <a href="#">Отправить в архив</a>
+                                                    </div>
+
+                                                </div>
+                                                <!--/phrases__item-controls-menu-->
+
+                                                <!--phrases__item-controls-type-->
+                                                <button class="phrases__item-controls-type phrases__item-controls-type_handler">
+                                                    Ручной
+                                                </button>
+                                                <!--/phrases__item-controls-type-->
+
+                                                <time datetime="2016-01-12">
+                                                    <span>11:27</span>
+                                                    12 января 2016
+                                                </time>
+
+                                            </div>
+                                            <!--/phrases__item-controls-right-->
+
+                                        </div>
+                                        <!--/phrases__item-controls-->
+
+                                    </div>
+                                    <!--/phrases__item-->
+
+                                    <!--phrases__item-->
+                                    <div class="phrases__item phrases__item_mark-green">
+
+                                        <!--phrases__item-col-->
+                                        <div class="phrases__item-col">
+                                            Тестовый проект
+                                        </div>
+                                        <!--/phrases__item-col-->
+
+                                        <!--phrases__item-col-->
+                                        <div class="phrases__item-col phrases__item-col_translate">
+                                            <textarea readonly>Test Projects</textarea>
+
+                                            <!--phrases__item-col-btns-->
+                                            <div class="phrases__item-col-btns">
+                                                <button class="btn btn_4 btn_blue save" type="submit">Сохранить</button>
+
+                                                <button class="btn btn_5 cancel">Отмена</button>
+                                            </div>
+                                            <!--/phrases__item-col-btns-->
+                                        </div>
+                                        <!--/phrases__item-col-->
+
+                                        <!--phrases__item-controls-->
+                                        <div class="phrases__item-controls">
+
+                                            <!--nice-check-->
+                                            <div class="nice-check">
+                                                <input type="checkbox" id="publish7">
+                                                <label for="publish7"></label>
+                                            </div>
+                                            <!--/nice-check-->
+
+                                            <!--phrases__item-controls-right-->
+                                            <div class="phrases__item-controls-right">
+
+                                                <!--phrases__item-controls-menu-->
+                                                <div class="phrases__item-controls-menu">
+
+                                                    <div>
+
+                                                        <ul>
+                                                            <li>
+                                                                <a href="#">История</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Использовать машинный перевод</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Отметить как ручной</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Добавить комментарий</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Подробнее</a>
+                                                            </li>
+                                                        </ul>
+
+                                                        <a href="#">Отправить в архив</a>
+                                                    </div>
+
+                                                </div>
+                                                <!--/phrases__item-controls-menu-->
+
+                                                <!--phrases__item-controls-type-->
+                                                <button class="phrases__item-controls-type phrases__item-controls-type_handler">
+                                                    Ручной
+                                                </button>
+                                                <!--/phrases__item-controls-type-->
+
+                                                <time datetime="2016-01-12">
+                                                    <span>11:27</span>
+                                                    12 января 2016
+                                                </time>
+
+                                            </div>
+                                            <!--/phrases__item-controls-right-->
+
+                                        </div>
+                                        <!--/phrases__item-controls-->
+
+                                    </div>
+                                    <!--/phrases__item-->
+
+                                    <!--phrases__item-->
+                                    <div class="phrases__item phrases__item_mark-blue">
+
+                                        <!--phrases__item-col-->
+                                        <div class="phrases__item-col">
+                                            Служба Яндекс.Рефераты предназначена для студентов и школьников,
+                                            дизайнеров и журналистов, создателей научных заявок и отчетов — для всех,
+                                            кто относится к тексту, как к количеству знаков.
+                                        </div>
+                                        <!--/phrases__item-col-->
+
+                                        <!--phrases__item-col-->
+                                        <form class="phrases__item-col phrases__item-col_translate">
+
+                                            <textarea readonly>Service Yandex. Abstracts is intended for students, designers and journalists</textarea>
+
+                                            <!--phrases__item-col-btns-->
+                                            <div class="phrases__item-col-btns">
+                                                <button class="btn btn_4 btn_blue save" type="submit">Сохранить</button>
+
+                                                <button class="btn btn_5 cancel">Отмена</button>
+                                            </div>
+                                            <!--/phrases__item-col-btns-->
+
+                                        </form>
+                                        <!--/phrases__item-col-->
+
+                                    </div>
+                                    <!--/phrases__item-->
+
+                                    <!--phrases__item-->
+                                    <div class="phrases__item">
+
+                                        <!--phrases__item-col-->
+                                        <div class="phrases__item-col phrases__item-col_block">
+                                            Вот и пришла идея сделать такое приложение для iPad. В AppStore оказалось
+                                            очень много приложений подобного типа.
+                                        </div>
+                                        <!--/phrases__item-col-->
+
+                                        <!--phrases__item-col-->
+                                        <div class="phrases__item-col phrases__item-col_block phrases__item-col_translate">
+
+                                            <textarea readonly>So entstand die Idee, eine solche Anwendung für das iPad zu machen. Im Appstore hat sehr viele Anwendungen dieses Typs.</textarea>
+
+                                            <!--phrases__item-col-btns-->
+                                            <div class="phrases__item-col-btns">
+                                                <button class="btn btn_4 btn_blue save" type="submit">Сохранить</button>
+
+                                                <button class="btn btn_5 cancel">Отмена</button>
+                                            </div>
+                                            <!--/phrases__item-col-btns-->
+
+                                        </div>
+                                        <!--/phrases__item-col-->
+
+                                        <!--phrases__item-controls-->
+                                        <div class="phrases__item-controls">
+
+                                            <!--nice-check-->
+                                            <div class="nice-check">
+                                                <input type="checkbox" id="publish8">
+                                                <label for="publish8"></label>
+                                            </div>
+                                            <!--/nice-check-->
+
+                                            <!--phrases__item-controls-right-->
+                                            <div class="phrases__item-controls-right">
+
+                                                <!--phrases__item-controls-menu-->
+                                                <div class="phrases__item-controls-menu">
+
+                                                    <div>
+
+                                                        <ul>
+                                                            <li>
+                                                                <a href="#">История</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Использовать машинный перевод</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Отметить как ручной</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Добавить комментарий</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">Подробнее</a>
+                                                            </li>
+                                                        </ul>
+
+                                                        <a href="#">Отправить в архив</a>
+                                                    </div>
+
+                                                </div>
+                                                <!--/phrases__item-controls-menu-->
+
+                                                <time datetime="2016-01-12">
+                                                    <span>11:27</span>
+                                                    12 января 2016
+                                                </time>
+
+                                                <!--phrases__status-->
+                                                <div class="phrases__status">
+                                                    <a class="phrases__status-in phrases__status_active" href="#"><span>В заказе</span></a>
+                                                    <a class="phrases__status-out phrases__status_hidden" href="#">Убрать из заказа</a>
+                                                </div>
+                                                <!--/phrases__status-->
+
+                                            </div>
+                                            <!--/phrases__item-controls-right-->
+
+                                        </div>
+                                        <!--/phrases__item-controls-->
+
+                                    </div>
+                                    <!--/phrases__item-->
+
+                                    <!--pagination-->
+                                    <div class="pagination-wrap">
+
+                                       <!--<div class="pagination__items">-->
+                                           <!--<a class="pagination__prev disabled" href="#">prev</a>-->
+                                           <!--<a class="active" href="#">1</a>-->
+                                           <!--<a href="#">2</a>-->
+                                           <!--<a href="#">3</a>-->
+                                           <!--<a href="#">4</a>-->
+                                           <!--<a href="#">...</a>-->
+                                           <!--<a href="#">46</a>-->
+                                           <!--<a href="#">47</a>-->
+                                           <!--<a class="pagination__next" href="#">next</a>-->
+                                       <!--</div>-->
+
+
+                                        <ul class="pagination">
+                                            <li class="disabled">
+                                                <a href="#" aria-label="Previous">
+                                                    <span aria-hidden="true">«</span>
+                                                </a>
+                                            </li>
+                                            <li><a href="#">1</a></li>
+                                            <li><a href="#">2</a></li>
+                                            <li class="active"><a href="#">3 <span class="sr-only">current</span></a></li>
+                                            <li><a href="#">4</a></li>
+                                            <li><a href="#">5</a></li>
+                                            <li>
+                                                <a href="#" aria-label="Next">
+                                                    <span aria-hidden="true">»</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+
+
+                                       <div class="pagination__count site__align-right">
+                                           <span>Показать:</span>
+                                           <a href="#">20</a>
+                                           <a class="active" href="#">50</a>
+                                           <a href="#">100</a>
+                                           <a href="#">Все</a>
+                                       </div>
+                                    </div>
+                                    <!--/pagination-->
+
+                                </div>
+                                <!--/phrases__tab-->
+
+                            </div>
+                            <!-- tabs__content -->
+
+                        </div>
+                        <!--/tabs__wrap-->
+
+                    </div>
+                    <!--/phrases-->
+
+                </div>
+                <!-- /inside-content -->
+
+            </div>
+            <!-- /site__wrap -->
+
+        </div>
+        <!-- /site__content -->
+
+        <!-- /site__footer -->
+        <footer class="site__footer">
+
+            <!-- /site__footer-layout -->
+            <div class="site__footer-layout">
+
+                <!-- footer__logo -->
+                <a href="#" class="footer__logo">
+                    <img src="assets/img/account/footer-logo.png" width="90" height="26" alt="GETLOC">
+                </a>
+                <!-- /footer__logo -->
+
+                <!-- footer-menu -->
+                <div class="footer-menu">
+
+                    <a href="#">Помощь</a>
+                    <a href="#">Меню</a>
+                    <a href="#">Еще меню</a>
+
+                </div>
+                <!-- /footer-menu -->
+
+            </div>
+            <!-- /site__footer-layout -->
+
+        </footer>
+        <!-- /site__footer -->
+
+        <!-- popup -->
+        <div class="popup">
+
+            <!-- popup__wrap -->
+            <div class="popup__wrap">
+
+                <!-- popup__content -->
+                <div class="popup__content popup__tariff">
+
+                    <!-- popup__close -->
+                    <a href="#" class="popup__close">close</a>
+                    <!-- /popup__close -->
+
+                    <!-- tariff-plan -->
+                    <div class="tariff-plan">
+                        <h2 class="site__title site__title_center">Выбор тарифного плана</h2>
+
+                        <!-- tariff-plan__items -->
+                        <div class="tariff-plan__items">
+
+                            <!-- tariff-plan__item -->
+                            <div class="tariff-plan__item">
+
+                                <!-- tariff-plan__name -->
+                                <h3 class="tariff-plan__name">Старт</h3>
+                                <!-- /tariff-plan__name -->
+
+                                <!-- tariff-plan__cost -->
+                                <div class="tariff-plan__cost">
+                                    <div class="tariff-plan__cost-num">300</div>
+                                    <span>рублей/месяц</span>
+                                </div>
+                                <!-- /tariff-plan__cost -->
+
+                                <!-- tariff-plan__possibility -->
+                                <div class="tariff-plan__possibility">
+                                    <div>
+                                        <span class="tariff-plan__possibility-num">1</span> язык перевода
+                                    </div>
+                                    <div>
+                                        <span class="tariff-plan__possibility-num">10000</span> страниц
+                                    </div>
+                                </div>
+                                <!-- /tariff-plan__possibility -->
+
+                                <form action="#">
+                                    <div class="site__select1">
+                                        <select name="plan1" id="plan1">
+                                            <option value="0">3 месяца (–10%)</option>
+                                            <option value="1">6 месяца (–15%)</option>
+                                            <option value="2">9 месяца (–20%)</option>
+                                            <option value="3">12 месяца (–25%)</option>
+                                        </select>
+                                    </div>
+
+                                    <button type="submit" class="btn btn_9 btn_blue btn_full-width">Выбрать тариф</button>
+                                </form>
+
+                            </div>
+                            <!-- /tariff-plan__item -->
+
+                            <!-- tariff-plan__item -->
+                            <div class="tariff-plan__item">
+
+                                <!-- tariff-plan__name -->
+                                <h3 class="tariff-plan__name">Ясли</h3>
+                                <!-- /tariff-plan__name -->
+
+                                <!-- tariff-plan__cost -->
+                                <div class="tariff-plan__cost">
+                                    <div class="tariff-plan__cost-num">600</div>
+                                    <span>рублей/месяц</span>
+                                </div>
+                                <!-- /tariff-plan__cost -->
+
+                                <!-- tariff-plan__possibility -->
+                                <div class="tariff-plan__possibility">
+                                    <div>
+                                        <span class="tariff-plan__possibility-num">2</span> языка перевода
+                                    </div>
+                                    <div>
+                                        <span class="tariff-plan__possibility-num">25000</span> страниц
+                                    </div>
+                                </div>
+                                <!-- /tariff-plan__possibility -->
+
+                                <form action="#">
+                                    <div class="site__select1">
+                                        <select name="plan1" id="plan1">
+                                            <option value="0">3 месяца (–10%)</option>
+                                            <option value="1">6 месяца (–15%)</option>
+                                            <option value="2">9 месяца (–20%)</option>
+                                            <option value="3">12 месяца (–25%)</option>
+                                        </select>
+                                    </div>
+
+                                    <button type="submit" class="btn btn_9 btn_blue btn_full-width">Выбрать тариф</button>
+                                </form>
+
+                            </div>
+                            <!-- /tariff-plan__item -->
+
+                            <!-- tariff-plan__item -->
+                            <div class="tariff-plan__item">
+
+                                <!-- tariff-plan__name -->
+                                <h3 class="tariff-plan__name">Премиум</h3>
+                                <!-- /tariff-plan__name -->
+
+                                <!-- tariff-plan__cost -->
+                                <div class="tariff-plan__cost">
+                                    <div class="tariff-plan__cost-num">1100</div>
+                                    <span>рублей/месяц</span>
+                                </div>
+                                <!-- /tariff-plan__cost -->
+
+                                <!-- tariff-plan__possibility -->
+                                <div class="tariff-plan__possibility">
+                                    <div>
+                                        <span class="tariff-plan__possibility-num">4</span> языка перевода
+                                    </div>
+                                    <div>
+                                        <span class="tariff-plan__possibility-num">50000</span> страниц
+                                    </div>
+                                </div>
+                                <!-- /tariff-plan__possibility -->
+
+                                <form action="#">
+                                    <div class="site__select1">
+                                        <select name="plan1" id="plan1">
+                                            <option value="0">3 месяца (–10%)</option>
+                                            <option value="1">6 месяца (–15%)</option>
+                                            <option value="2">9 месяца (–20%)</option>
+                                            <option value="3">12 месяца (–25%)</option>
+                                        </select>
+                                    </div>
+
+                                    <button type="submit" class="btn btn_9 btn_blue btn_full-width">Выбрать тариф</button>
+                                </form>
+
+                            </div>
+                            <!-- /tariff-plan__item -->
+
+                            <!-- tariff-plan__item -->
+                            <div class="tariff-plan__item">
+
+                                <!-- tariff-plan__name -->
+                                <h3 class="tariff-plan__name">Профи</h3>
+                                <!-- /tariff-plan__name -->
+
+                                <!-- tariff-plan__cost -->
+                                <div class="tariff-plan__cost">
+                                    <div class="tariff-plan__cost-num">2400</div>
+                                    <span>рублей/месяц</span>
+                                </div>
+                                <!-- /tariff-plan__cost -->
+
+                                <!-- tariff-plan__possibility -->
+                                <div class="tariff-plan__possibility">
+                                    <div>
+                                        <span class="tariff-plan__possibility-num">10</span> язык перевода
+                                    </div>
+                                    <div>
+                                        <span class="tariff-plan__possibility-num">100000</span> страниц
+                                    </div>
+                                </div>
+                                <!-- /tariff-plan__possibility -->
+
+                                <form action="#">
+                                    <div class="site__select1">
+                                        <select name="plan1" id="plan1">
+                                            <option value="0">3 месяца (–10%)</option>
+                                            <option value="1">6 месяца (–15%)</option>
+                                            <option value="2">9 месяца (–20%)</option>
+                                            <option value="3">12 месяца (–25%)</option>
+                                        </select>
+                                    </div>
+
+                                    <button type="submit" class="btn btn_9 btn_blue btn_full-width">Выбрать тариф</button>
+                                </form>
+
+                            </div>
+                            <!-- /tariff-plan__item -->
+
+                        </div>
+                        <!-- /tariff-plan__items -->
+
+                        <p>Выбери тот тариф, который больше всего подходит под нужды вашего сайта.</p>
+
+                    </div>
+                    <!-- /tariff-plan -->
+
+                </div>
+                <!-- /popup__content -->
+
+                <!-- popup__content -->
+                <div class="popup__content popup__unavailable">
+
+                    <!-- service-unavailable -->
+                    <div class="service-unavailable">
+
+                        <!-- popup__close -->
+                        <a href="#" class="popup__close">close</a>
+                        <!-- /popup__close -->
+
+                        <h2 class="site__title site__title_4 site__title_center"> Данный сервис временно недоступен</h2>
+                        <p>Попробуйте зайти позже</p>
+                        <a href="#" class="btn btn_11 btn_blue">Ок</a>
+                    </div>
+                    <!-- /service-unavailable -->
+
+                </div>
+                <!-- /popup__content -->
+
+
+            </div>
+            <!-- /popup__wrap -->
+
+        </div>
+        <!-- /popup -->
+
+    </div>
+    <!-- /site -->
+
+    <script src="assets/js/account/jquery-2.1.3.min.js"></script>
+    <script src="assets/js/account/jquery.nicescroll.min.js"></script>
+    <script src="assets/js/account/jquery-ui.min.js"></script>
+    <script src="assets/js/account/jquery.select.js"></script>
+    <script src="assets/js/account/jquery.autocomplite.js"></script>
+    <script src="assets/js/account/jquery.popup.js"></script>
+    <script src="assets/js/account/jquery.messages.js"></script>
+    <script src="assets/js/account/jquery.main.js"></script>
+</body>
+</html>
