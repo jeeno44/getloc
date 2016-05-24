@@ -136,8 +136,8 @@
                 </label>
             </fieldset>
             <fieldset class="nice-check new-project__form-check">
-                <input type="checkbox" value="1" name="protected" id="new-project1">
-                <label for="new-project1">
+                <input type="checkbox" value="1" name="protected" id="new-project2">
+                <label for="new-project2">
                     Ваш сайт использует защиту (фаервол, проективная защита)?
                 </label>
             </fieldset>
