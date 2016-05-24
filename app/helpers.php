@@ -69,6 +69,7 @@ function getPageContent($url)
 function prepareUri($uri)
 {
     $uri = rtrim($uri, '/');
+    $url = strtolower($uri);
     $uri = str_replace('http://', '', $uri);
     return 'http://'.$uri;
 }
