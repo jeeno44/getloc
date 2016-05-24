@@ -125,8 +125,8 @@ def stressTest(urls, rpb, message):
                     req      = future.result()
                     response = urllib2.urlopen(req, timeout=10)
                 except urllib2.HTTPError as e:
-                    if e.code == 503:
-                        p.psubscribe('textCollectorOneThread', message)
+                    if e.code == 503 or e.code == 403:
+                        rpb.publish('textCollectorOneThread', message)
                         print "Отправлено в один поток"
                         return True
                 except Exception as exc:
@@ -161,7 +161,9 @@ def iri2uri(uri):
 #------------------------------------------------------------------------------------------------------
 
 def load_url(url, siteID, cursor, timeout):
-    response = urllib2.urlopen(iri2uri(url), timeout=timeout)
+    headers = { 'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36' }
+    req = urllib2.Request(iri2uri(url), None, headers)
+    response = urllib2.urlopen(req, timeout=timeout)
     html = response.read()
     if html:
         return html
