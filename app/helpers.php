@@ -457,3 +457,19 @@ function array_to_xml(array $arr, SimpleXMLElement $xml)
     }
     return $xml;
 }
+
+function messageAboutTariff()
+{
+    $projectID = Session::get('projectID');
+    if (!$projectID) {
+        return '';
+    }
+    $project = \App\Site::find($projectID);
+    if (!$project || empty($project->subscription)) {
+        return '';
+    }
+    if ($project->count_words > $project->subscription->count_words || $project->languages()->count() > $project->subscription->count_languages) {
+        return view('partials.tariff-message', compact('project'));
+    }
+    return '';
+}

@@ -139,7 +139,7 @@ class ProjectController extends Controller
         }
         $site->delete();
         \Session::remove('projectID');
-        return redirect()->route('main.account');
+        return redirect()->back()->with('msg', ['class' => 'info-massages__item_deleted', 'text' => 'Проект успешно удален']);
     }
 
     public function languages()
@@ -196,7 +196,7 @@ class ProjectController extends Controller
         }
         \DB::table('site_language')->where('site_id', $siteID)->where('language_id', $languageID)->delete();
         \DB::table('translates')->where('site_id', $siteID)->where('language_id', $languageID)->delete();
-        return redirect()->back();
+        return redirect()->back()->with('msg', ['class' => 'info-massages__item_deleted', 'text' => 'Язык и все переведенные фразы удалены']);
     }
 
 }

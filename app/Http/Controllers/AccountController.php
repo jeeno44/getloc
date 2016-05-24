@@ -64,6 +64,13 @@ class AccountController extends Controller
     public function selectProject()
     {
         $mySites = $this->sites;
+        foreach ($mySites as $key => $site) {
+            if (!empty($site->subscription)) {
+                $mySites[$key]->planID = $site->subscription->plan_id;
+            } else {
+                $mySites[$key]->planID = 0;
+            }
+        }
         Session::remove('projectID');
         return view('account.selectProject', compact('mySites'));
     }

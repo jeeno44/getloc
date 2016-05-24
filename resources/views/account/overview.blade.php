@@ -62,12 +62,12 @@
                 <h2>Тарифный план</h2>
                 @if($site->subscription)
                     <div class="inside-content__tune">
-                        <a href="{{route('main.billing.upgrade', ['id' => $site->id])}}" class="inside-content__tune-link">Изменить</a>
+                        <a href="#" data-popup="tt" class="inside-content__tune-link popup__open">Изменить</a>
                         <a href="{{route('main.billing.prolong', ['id' => $site->id])}}" class="inside-content__tune-link">Продлить</a>
                     </div>
                 @else
                     <div class="inside-content__tune">
-                        <a href="{{route('main.billing', ['id' => $site->id])}}" class="inside-content__tune-link">Купить</a>
+                        <a href="#" class="inside-content__tune-link popup__open" data-popup="bb">Купить</a>
                     </div>
                 @endif
 
@@ -126,6 +126,79 @@
                 </div>
             </div>
             @endforeach
+        </div>
+    </div>
+
+    <div class="popup">
+        <div class="popup__wrap">
+            <div class="popup__content popup__tariff popup__tt">
+                <a href="#" class="popup__close">close</a>
+                <div class="tariff-plan">
+                    <h2 class="site__title site__title_center">Выбор тарифного плана</h2>
+                    <div class="tariff-plan__items">
+                        @if(!empty($site->subscription->plan_id))
+                            <?php $plans = \App\Plan::where('id', '!=', $site->subscription->plan_id)->where('enabled', 1)->get()?>
+                        @else
+                            <?php $plans = \App\Plan::where('enabled', 1)->get()?>
+                        @endif
+                        @foreach($plans as $plan)
+                            <div class="tariff-plan__item">
+                                <h3 class="tariff-plan__name">{{$plan->name}}</h3>
+                                <div class="tariff-plan__cost">
+                                    <div class="tariff-plan__cost-num">{{(int)$plan->cost}}</div>
+                                    <span>рублей/месяц</span>
+                                </div>
+                                <div class="tariff-plan__possibility">
+                                    <div>
+                                        <span class="tariff-plan__possibility-num">{{$plan->count_languages}}</span> {{trans_choice('account.languages_count', $plan->count_languages)}} перевода
+                                    </div>
+                                    <div>
+                                        <span class="tariff-plan__possibility-num">{{$plan->count_words}}</span> слов
+                                    </div>
+                                </div>
+                                <form action="{{route('main.billing.upgrade-store')}}" method="post">
+                                    {!! csrf_field() !!}
+                                    <input type="hidden" name="site_id" value="{{$site->id}}">
+                                    <input type="hidden" name="plan_id" value="{{$plan->id}}">
+                                    <button type="submit" class="btn btn_9 btn_blue btn_full-width">Выбрать тариф</button>
+                                </form>
+                            </div>
+                        @endforeach
+                    </div>
+                    <p>Выбери тот тариф, который больше всего подходит под нужды вашего сайта.</p>
+                </div>
+            </div>
+            <div class="popup__content popup__tariff popup__bb">
+                <a href="#" class="popup__close">close</a>
+                <div class="tariff-plan">
+                    <h2 class="site__title site__title_center">Выбор тарифного плана</h2>
+                    <div class="tariff-plan__items">
+                        @foreach(\App\Plan::where('enabled', 1)->get() as $plan)
+                            <form action="{{route('main.billing', ['id' => $site->id])}}" class="tariff-plan__item">
+                                <h3 class="tariff-plan__name">{{$plan->name}}</h3>
+                                <div class="tariff-plan__cost">
+                                    <div class="tariff-plan__cost-num">{{(int)$plan->cost}}</div>
+                                    <span>рублей/месяц</span>
+                                </div>
+                                <div class="tariff-plan__possibility">
+                                    <div>
+                                        <span class="tariff-plan__possibility-num">{{$plan->count_languages}}</span> {{trans_choice('account.languages_count', $plan->count_languages)}} перевода
+                                    </div>
+                                    <div>
+                                        <span class="tariff-plan__possibility-num">{{$plan->count_words}}</span> слов
+                                    </div>
+                                </div>
+                                <div class="site__select1">
+                                    {!! Form::select('time', getDurations(), null) !!}
+                                </div>
+                                <input type="hidden" name="plan_id" value="{{$plan->id}}">
+                                <button type="submit" class="btn btn_9 btn_blue btn_full-width">Выбрать тариф</button>
+                            </form>
+                        @endforeach
+                    </div>
+                    <p>Выбери тот тариф, который больше всего подходит под нужды вашего сайта.</p>
+                </div>
+            </div>
         </div>
     </div>
 @stop

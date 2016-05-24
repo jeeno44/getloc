@@ -65,4 +65,10 @@
     background-repeat: no-repeat;
     margin-top: 11px;
 }
+.site__title{
+    font-weight: normal;
+}
+h1{
+    font-weight: normal;
+}
 

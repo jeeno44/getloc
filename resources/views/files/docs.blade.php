@@ -21,8 +21,10 @@
                 @endforelse
             </ul>
         </div>
-        <div class="pagination-wrap">
-            {!! $files->render() !!}
-        </div>
+        @if(!empty($files->render()))
+            <div class="pagination-wrap">
+                {!! $files->render() !!}
+            </div>
+        @endif
     </div>
 @stop

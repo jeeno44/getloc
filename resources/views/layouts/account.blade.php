@@ -21,6 +21,7 @@
        @include('partials.accountHeader')
         <div class="site__content site_inner">
             <div class="site__wrap">
+                {!! messageAboutTariff() !!}
                 @yield('content')
             </div>
         </div>

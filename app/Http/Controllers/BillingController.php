@@ -110,7 +110,7 @@ class BillingController extends Controller
         $subscription->plan_id = $plan->id;
         $subscription->save();
         \Event::fire('blocks.changed', $subscription);
-        return redirect()->route('main.account');
+        return redirect()->back()->with('msg', ['class' => 'info-massages__item_detected', 'text' => 'Тарифный план изменен']);
     }
 
     /**

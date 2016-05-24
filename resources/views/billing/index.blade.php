@@ -6,15 +6,16 @@
     </aside>
     <div class="inside-content">
         <h1 class="">Покупка тарифа</h1>
+        <div style="float: right"><a href="{{URL::previous()}}">Назад</a> </div>
         {!! Form::open(['route' => 'main.billing.prepare', 'class' => 'new-project__form']) !!}
 
         <label>Тариф *</label>
-        {!! Form::select('plan_id', $plans, null, ['class' => 'billing-inp']) !!}
+        {!! Form::select('plan_id', $plans, Request::get('plan_id'), ['class' => 'billing-inp']) !!}
         <p>или <a href="{{route('main.billing.individual', ['id' => $site->id])}}">запросить индвидидуальные условия</a> </p>
         <br>
 
         <label>Срок *</label>
-        {!! Form::select('time', getDurations(), null, ['class' => 'billing-inp']) !!}
+        {!! Form::select('time', getDurations(), Request::get('time'), ['class' => 'billing-inp']) !!}
         <br><br>
 
         <label>Способ оплаты *</label>
