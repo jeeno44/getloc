@@ -65,6 +65,7 @@ class ProjectController extends Controller
                 'secret'            => str_random(32),
                 'language_id'       => $sourceLang,
                 'enabled'           => 0,
+                'protected'         => $request->has('protected')
             ]);
             $site->save();
             $site->languages()->attach($targetLang);

@@ -135,6 +135,12 @@
                     У меня есть файл перевода (локализации) проекта
                 </label>
             </fieldset>
+            <fieldset class="nice-check new-project__form-check">
+                <input type="checkbox" value="1" name="protected" id="new-project1">
+                <label for="new-project1">
+                    Ваш сайт использует защиту (фаервол, проективная защита)?
+                </label>
+            </fieldset>
             <!-- /nice-check -->
             <!-- btn  -->
             <button class="btn btn_9 btn_blue">Создать проект</button>

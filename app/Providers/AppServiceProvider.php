@@ -14,10 +14,14 @@ class AppServiceProvider extends ServiceProvider
     {
         \Event::listen('maps.done', function($site) {
             $domain = env('APP_DOMAIN');
-            if ( \DB::table('site_tate_collector')->count() == 0 )
-                \Redis::publish('collector', json_encode(['site' => $site->id, 'api' => 'api.'.$domain], JSON_UNESCAPED_UNICODE));
-            
-            \DB::table('site_tate_collector')->insert(['siteID' => $site->id]);
+            if ($site->protected == 1) {
+                \Redis::publish('textCollectorOneThread', json_encode(['site' => $site->id, 'api' => 'api.'.$domain], JSON_UNESCAPED_UNICODE));
+            } else {
+                if ( \DB::table('site_tate_collector')->count() == 0 )
+                    \Redis::publish('collector', json_encode(['site' => $site->id, 'api' => 'api.'.$domain], JSON_UNESCAPED_UNICODE));
+
+                \DB::table('site_tate_collector')->insert(['siteID' => $site->id]);
+            }
         });
         \Event::listen('site.done', function($site) {
             //\Queue::push(new \App\Jobs\CreateEmptyTranslates($site));

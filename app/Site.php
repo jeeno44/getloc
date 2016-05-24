@@ -11,7 +11,7 @@ class Site extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['name', 'url', 'count_words', 'count_symbols', 'count_blocks', 'user_id', 'secret', 'language_id', 'enabled', 'demo'];
+    protected $fillable = ['name', 'url', 'count_words', 'count_symbols', 'count_blocks', 'user_id', 'secret', 'language_id', 'enabled', 'demo', 'protected'];
 
     public function pages()
     {
