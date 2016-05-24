@@ -18,7 +18,7 @@
                 <li>А так же, перед закрытием тега body добавляем:
                     <div>
                         <code>&lt;script type="text/javascript"&gt;
-                            getloc = new getloc({secret: '{{$site->secret}}', auto_detected: false, lang: 'ru'})
+                            getloc = new getloc({secret: '{{$site->secret}}', auto_detected: false, lang: 'ru'});
                             getloc.run()
                             &lt;/script&gt;</code>
                     </div>
