@@ -102,7 +102,7 @@ class ApiController extends Controller
                             }
                         }
                         if (empty($response['results'])) {
-                            $response['error'] = ['msg' => 'Site is processed', 'code' => 7];
+                            $response['error'] = ['msg' => 'Results is empty', 'code' => 7];
                         }
                         $response['available_languages'] = $site->languages()->where('enabled', 1)->lists('name', 'short')
                             ->take($subscription->count_languages)
