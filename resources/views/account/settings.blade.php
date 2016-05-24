@@ -1,5 +1,5 @@
 @extends('layouts.account')
-@section('title') Виджет @stop
+@section('title') Настройки @stop
 @section('content')
     <aside class="site__aside">
         @include('partials.account-menu')

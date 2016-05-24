@@ -55,7 +55,7 @@
 
                     <!-- header__person-list -->
                     <ul class="header__person-list">
-                        <li><a href="{{route('main.account')}}">Кабинет</a></li>
+                        <li><a href="{{route('main.account.personal')}}">Кабинет</a></li>
                         <li><a href="{{route('main.account.payments')}}">Платежи</a></li>
                         <li><a href="{{URL::route('logout')}}">Выйти</a></li>
                     </ul>

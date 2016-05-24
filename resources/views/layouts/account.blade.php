@@ -27,6 +27,9 @@
         </div>
         @include('partials.accountFooter')
     </div>
+    @if(count($errors) > 0)
+        <div id="info-massages__item_deleted" class="flash-message" style="display: none">{{$errors->first()}}</div>
+    @endif
     @if(Session::has('msg'))
         <div id="{{Session::get('msg')['class']}}" class="flash-message" style="display: none">{{Session::get('msg')['text']}}</div>
     @endif

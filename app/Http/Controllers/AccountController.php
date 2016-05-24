@@ -467,18 +467,17 @@ class AccountController extends Controller
      * @access public
      */
 
-    public function widget()
+    public function settings()
     {
         $siteID = Session::get('projectID');
         $site   = Site::find($siteID);
         
-        if ( !$siteID || !$site )
-          {
+        if ( !$siteID || !$site ) {
             Session::remove('projectID');
             return redirect(URL::route('main.account.selectProject'));
-          }
+        }
           
-        return view('account.widget', compact('site'));
+        return view('account.settings', compact('site'));
     }
 
     /**

@@ -37,6 +37,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             
             
             Route::get('/widget/', ['as' => 'main.account.widget', 'uses' => 'AccountController@widget']);
+            Route::get('/settings', ['as' => 'main.account.settings', 'uses' => 'AccountController@settings']);
             //Route::get('/addProject/', ['as' => 'main.account.addproject', 'uses' => 'AccountController@addProject']);
             
             Route::get('/phrase/not_translated', ['as' => 'main.account.phrase1', 'uses' => 'AccountController@phraseNotTranslatesTab']);
@@ -84,6 +85,9 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/images', 'FilesController@images');
             Route::get('/docs', 'FilesController@docs');
             Route::any('/pages/autocomplete/{id}', 'AccountController@pagesAutoComplete');
+
+            Route::get('/personal', ['as' => 'main.account.personal', 'uses' => 'PersonalController@index']);
+            Route::post('/personal', ['as' => 'main.account.personal-store', 'uses' => 'PersonalController@store']);
         });
         
     });

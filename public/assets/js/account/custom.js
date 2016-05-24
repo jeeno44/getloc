@@ -12,10 +12,12 @@ $(function(){
         e.preventDefault();
     });
     
-    if ($('.flash-message').length == 1) {
-        className = $('.flash-message').attr('id');
-        text = $('.flash-message').text();
-        new Messages({class: className,text: text});
+    if ($('.flash-message').length >= 1) {
+        $('.flash-message').each(function () {
+            className = $(this).attr('id');
+            text = $(this).text();
+            new Messages({class: className,text: text});
+        });
     }
 
     /*
