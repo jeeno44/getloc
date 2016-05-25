@@ -52,7 +52,9 @@ def translateBlock(block):
         translate = translator.translate(block[2].encode('utf-8'), lang_from=fromLang, lang_to=langTo)
         if translate:
             sql = "({id}, {language_id}, '{text}', NOW(), NOW(), 1, {siteID}, {cc}, 1, 0, 0)".format(id=block[0], language_id=langID, siteID=siteID, text=MySQLdb.escape_string(str(translate.encode('utf-8'))), cc=len(translate.split()))
-            loadSQL.append(insertSQLTrans + sql + ";")
+        else:
+            sql = "({id}, {language_id}, '', NOW(), NOW(), 1, {siteID}, NULL, 1, 0, 0)".format(id=block[0], language_id=langID, siteID=siteID)
+        loadSQL.append(insertSQLTrans + sql + ";")
     except Exception as exc:
         pass
 

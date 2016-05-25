@@ -52,19 +52,17 @@ def translateBlock(block):
         translate = translator.translate(block[2].encode('utf-8'), lang_from=fromLang, lang_to=langTo)
         if translate:
             sql = "({id}, {language_id}, '{text}', NOW(), NOW(), 1, {siteID}, {cc}, 1, 0, 0)".format(id=block[0], language_id=langID, siteID=siteID, text=MySQLdb.escape_string(str(translate.encode('utf-8'))), cc=len(translate.split()))
-            loadSQL.append(insertSQLTrans + sql + ";")
+        else:
+            sql = "({id}, {language_id}, '', NOW(), NOW(), 1, {siteID}, NULL, 1, 0, 0)".format(id=block[0], language_id=langID, siteID=siteID)
+        loadSQL.append(insertSQLTrans + sql + ";")
     except Exception as exc:
         pass
 
 def createEmptyTranslate(block):
-    global iBlockInsert, insertSQLTrans, loadSQL, langTo, siteID
-    loadSQL.append("({id}, {language_id}, '', NOW(), NOW(), NULL, {siteID}, 0, {pub}, 0)".format(id=block[0], siteID=siteID, language_id=langID, pub=1))
-    iBlockInsert += 1
-
-    if len(loadSQL) >= maxBlockInsert:
-        iBlockInsert = 0
-        cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
-        loadSQL = []
+    global iBlockInsert, insertSQLTrans, loadSQL, langTo, loadSQL
+    sql = "({id}, {language_id}, '', NOW(), NOW(), 1, {siteID}, NULL, 1, 0, 0)".format(id=block[0], language_id=langID, siteID=siteID)
+    loadSQL.append(insertSQLTrans + sql + ";")
+    
 
 #------------------------------------------------------------------------------------------------------
 # Получаем языки проекта
@@ -169,7 +167,8 @@ def load_url(url, siteID, cursor, timeout):
         return html
 
 def load_url2(url, siteID, cursor, timeout):
-    return urllib2.Request(url=url)
+    headers = { 'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36' }
+    return urllib2.Request(iri2uri(url), None, headers)
 
 #------------------------------------------------------------------------------------------------------
 # Создаем блок и возвращаем insert_id
