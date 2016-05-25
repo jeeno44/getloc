@@ -96,6 +96,7 @@ class ProjectController extends Controller
      */
     public function projectCreated($id)
     {
+        
         $site = Site::find($id);
         if (empty($site)) {
             abort(404);

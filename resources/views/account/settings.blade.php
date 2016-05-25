@@ -5,16 +5,28 @@
         @include('partials.account-menu')
     </aside>
     <div class="inside-content">
-        <h1>Как подключить виджет</h1>
-        <p>В конце тега <code>head</code> необходимо добавить:</p>
-        <textarea style="width: 600px; height: 60px;"><script type="text/javascript" src="http://api.{{env('APP_DOMAIN', 'getloc.ru')}}/getloc.js"></script></textarea>
-        <p>А так же, перед закрытием тега <code>body</code> добавляем:</p>
-        <textarea style="width: 600px; height: 60px;"><script type="text/javascript">
-getloc = new getloc({secret: '{{$site->secret}}', auto_detected: false, lang: 'ru'});
-getloc.run()
-</script>
-        </textarea>
-        <p>Тут потом напишем все параметры скрипта.</p>
-
+        <div class="account-data">
+            <h1 class="site__title">Настройки проекта</h1>
+            <form action="#" class="account-data__form">
+                <h2 class="site__title site__title_4">Интеграция в сайт</h2>
+                <div class="add-code__project">
+                    <ul>
+                        <li>В конце тега head необходимо добавить:
+                            <div>
+                                <code>&lt;script type="text/javascript" src="http://api.getloc.ru/getloc.js"&gt;&lt;/script&gt;</code>
+                            </div>
+                        </li>
+                        <li>А так же, перед закрытием тега body добавляем:
+                            <div>
+                                <code>&lt;script type="text/javascript"&gt;
+                                    getloc = new getloc({secret: '{{$site->secret}}', auto_detected: false, lang: 'ru'});
+                                    getloc.run();
+                                    &lt;/script&gt;</code>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
     </div>
 @stop
