@@ -53,7 +53,7 @@ def translateBlock(block):
         if translate:
             sql = "({id}, {language_id}, '{text}', NOW(), NOW(), 1, {siteID}, {cc}, 1, 0, 0)".format(id=block[0], language_id=langID, siteID=siteID, text=MySQLdb.escape_string(str(translate.encode('utf-8'))), cc=len(translate.split()))
         else:
-            sql = "({id}, {language_id}, '', NOW(), NOW(), 1, {siteID}, NULL, 1, 0, 0)".format(id=block[0], language_id=langID, siteID=siteID)
+            sql = "({id}, {language_id}, '', NOW(), NOW(), 1, {siteID}, 0, 1, 0, 0)".format(id=block[0], language_id=langID, siteID=siteID)
         loadSQL.append(insertSQLTrans + sql + ";")
     except Exception as exc:
         pass
