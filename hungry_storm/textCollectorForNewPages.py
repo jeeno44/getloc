@@ -362,24 +362,40 @@ for item in ps.listen():
         # Если была такая настройка у проекта
         #------------------------------------------------------------------------------------------------------
 
-        translator = Translator(trans_client, trans_secret)
-        langs      = getLangsProject(siteID)
-        
-        sql        = 'SELECT * FROM blocks WHERE site_id = {projectID}'.format(projectID=siteID)
+        if auto_translate:
+            translator = Translator(trans_client, trans_secret)
+            langs      = getLangsProject(siteID)
+            if blocksID:
+                for phrase in blocksID:
+                    sql = 'SELECT * FROM blocks WHERE site_id = {projectID} AND id = {id}'.format(projectID=siteID, id=blocksID[phrase])
+                    cursor.execute(sql)
+                    block = cursor.fetchone()
+                    for lang in langs:
+                        langTo  = lang[3]
+                        langID  = lang[0] 
+                        translate = translator.translate(text.encode('utf-8'), lang_from=fromLang, lang_to=langTo)
+                        if translate:
+                            loadSQL.append("({id}, {language_id}, '{text}', NOW(), NOW(), 1, {siteID}, {cc}, {pub}, 0, 0)".format(id=id, language_id=langID, siteID=siteID, text=MySQLdb.escape_string(str(translate.encode('utf-8'))), cc=len(translate.split())), pub=auto_publishing)
+                        else:
+                            loadSQL.append("({id}, {language_id}, '', NOW(), NOW(), 1, {siteID}, 0, {pub}, 0, 0)".format(id=id, language_id=langID, siteID=siteID, pub=auto_publishing))
+                        
+                        iBlockInsert += 1
+                        
+                        if len(loadSQL) >= maxBlockInsert:
+                            iBlockInsert = 0
+                            cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
+                            loadSQL = []
 
-        cursor.execute(sql)
-        blocks = cursor.fetchall()
-        for lang in langs:
-            langTo  = lang[3]
-            langID  = lang[0]
-            pool    = ThreadPool(2)
-            results = pool.map(translateBlock, blocks)
-            pool.close()
-            pool.join()
-
-        for sql in loadSQL:
-            cursor.execute(sql)
-        cursor.close()
+                    if len(loadSQL) > 0 and len(loadSQL) <= maxBlockInsert:
+                        iBlockInsert = 0
+                        cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
+                        loadSQL = []
+                        db.close()
+                        cursor.close()
+                        
+            for sql in loadSQL:
+                cursor.execute(sql)
+            cursor.close()
         
         del soup
         del issetBlocks
