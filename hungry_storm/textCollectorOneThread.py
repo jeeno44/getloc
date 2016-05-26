@@ -382,8 +382,8 @@ for item in ps.listen():
                 #print '"%s" fetched in %ss' % (url,(time.time() - start))
                 pass
                 
-            if count > 0:    
-                finishStats(siteID, countWords, countSymbols, countBlocks)
+        if count > 0:    
+            finishStats(siteID, countWords, countSymbols, countBlocks)
 
         #------------------------------------------------------------------------------------------------------
         # Сохраняем все картинки, файлы, документы

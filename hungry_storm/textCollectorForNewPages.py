@@ -113,7 +113,9 @@ def iri2uri(uri):
 #------------------------------------------------------------------------------------------------------
 
 def load_url(url, siteID, cursor, timeout):
-    response = urllib2.urlopen(iri2uri(url), timeout=timeout)
+    headers = { 'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36' }
+    req = urllib2.Request(iri2uri(url), None, headers)
+    response = urllib2.urlopen(req, timeout=timeout)
     html = response.read()
     if html:
         return html
@@ -344,7 +346,7 @@ for item in ps.listen():
 
         site = data_['site']
         api  = 'http://' + data_['api'] 
-	print(api)
+        print(api)
         urllib2.urlopen(api, timeout=10)
 
         print "Отработал за: %ss" % (time.time() - start)
