@@ -107,7 +107,7 @@ def scan(starting_url):
                 found_urls.remove(url)
         except:
             pass
-        #time.sleep(0.5)
+        time.sleep(0.5)
     return found_urls
 
 

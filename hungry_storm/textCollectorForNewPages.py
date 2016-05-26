@@ -180,6 +180,32 @@ def makePageBlock(pageID, blockID):
         sql    = "INSERT INTO page_block SET page_id = {pageID}, block_id = {blockID}".format(pageID=pageID, blockID=blockID)
         cursor.execute(sql)
 
+
+#------------------------------------------------------------------------------------------------------
+# Парсим документы и картинки сайта, затем записываем их в отдельную таблицу
+#------------------------------------------------------------------------------------------------------
+
+def parseDocInSite(url, element):
+    global docSQL
+
+    docs = {}
+    if element.name == 'a' and element.has_attr('href'):
+        if element['href'].split(".")[-1] in parseDocs:
+            url = urlparse.urljoin(domain, element['href'])
+            docs = {'full_url': url.encode('utf8'), 'ftype': 'doc', 'link_text': element.getText().encode('utf8'), 'doc_type': element['href'].split(".")[-1].encode('utf8'), 'site_id': siteID}
+    elif element.name == 'img' and element.has_attr('src'):
+        if element['src'].split(".")[-1] in parseDocs:
+            url = urlparse.urljoin(domain, element['src'])
+            altString = ''
+            if element.has_attr('alt'):
+                altString = element['alt']
+            docs = {'full_url': url.encode('utf8'), 'ftype': 'image', 'link_text': altString.encode('utf8'), 'doc_type': element['src'].split(".")[-1].encode('utf8'), 'site_id': siteID}
+    else:
+        pass
+
+    if docs:
+        docSQL.append(docs)
+
 #------------------------------------------------------------------------------------------------------
 # Ждем команды от редиса и начинаем потоковую обработку всех ссылок
 # По-дефелту 100 потоков
@@ -216,11 +242,12 @@ for item in ps.listen():
 
         maxBlockInsert  = 10
         iBlockInsert    = 0
-        insertSQLTrans  = 'INSERT INTO translates (block_id, language_id, `text`, created_at, updated_at, type_translate_id, site_id, count_words, `enabled`, is_ordered) VALUES '
+        insertSQLTrans  = 'INSERT INTO translates (block_id, language_id, `text`, created_at, updated_at, type_translate_id, site_id, count_words, `enabled`, is_ordered, archive) VALUES '
         loadSQL         = []
         langTo          = ''
         langID          = 0
         translator      = None
+        docSQL          = []
 
         db.autocommit(True)
 
@@ -289,6 +316,10 @@ for item in ps.listen():
                                 if block_id is not False:
                                     makePageBlock(getPageID(url, siteID), block_id)
 
+                    # Сначала чекаем на файлы и картинки
+                    if element.name == 'img' or element.name == 'IMG' or element.name == 'a':
+                        parseDocInSite(url, element)
+
             del html
 
         except Exception as exc:
@@ -306,7 +337,25 @@ for item in ps.listen():
             
         cursor.execute('UPDATE pages SET collected = 1 WHERE url = "{url}" AND site_id = {siteid}'.format(url=MySQLdb.escape_string(url), siteid=siteID))  
         finishStats(siteID, countWords, countSymbols, countBlocks)
-                
+        
+        #------------------------------------------------------------------------------------------------------
+        # Сохраняем все картинки, файлы, документы
+        #------------------------------------------------------------------------------------------------------
+
+        if docSQL:
+            for doc in docSQL:
+                cursor.execute('SELECT * FROM docs_sites WHERE site_id = {site_id} AND full_url = "{full_url}"'.format(site_id=doc['site_id'], full_url=doc['full_url']))
+                docDB = cursor.fetchone()
+                if docDB is None:
+                    link_text = ''
+                    if doc['link_text']:
+                        link_text = MySQLdb.escape_string(str(doc['link_text']))
+
+                    sql = """
+                    INSERT INTO docs_sites (site_id, link_text, ftype, doc_type, full_url) VALUES ({site_id}, "{link_text}", "{ftype}", "{doc_type}", "{full_url}")
+                    """.format(site_id=MySQLdb.escape_string(str(doc['site_id'])), link_text=link_text, ftype=MySQLdb.escape_string(str(doc['ftype'])),
+                               doc_type=MySQLdb.escape_string(str(doc['doc_type'])), full_url=MySQLdb.escape_string(str(doc['full_url'])))
+                    cursor.execute(sql)
 
         #------------------------------------------------------------------------------------------------------
         # Запускаем автоперевод блоков, тоже в потоках
