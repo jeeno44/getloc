@@ -45,15 +45,16 @@ def getSettingsProject(projectID):
 #------------------------------------------------------------------------------------------------------
 
 def translateBlock(block):
-    global iBlockInsert, insertSQLTrans, loadSQL, langTo
-    translate = translator.translate(block[2].encode('utf-8'), lang_from=fromLang, lang_to=langTo)
-    loadSQL.append("({id}, {language_id}, '{text}', NOW(), NOW(), 1, {siteID}, {cc}, 1, 0)".format(id=block[0], language_id=langID, siteID=siteID, text=MySQLdb.escape_string(str(translate.encode('utf-8'))), cc=len(translate.split())))
-    iBlockInsert += 1
-
-    if len(loadSQL) >= maxBlockInsert:
-        iBlockInsert = 0
-        cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
-        loadSQL = []
+    global iBlockInsert, insertSQLTrans, loadSQL, langTo, loadSQL
+    try:
+        translate = translator.translate(block[2].encode('utf-8'), lang_from=fromLang, lang_to=langTo)
+        if translate:
+            sql = "({id}, {language_id}, '{text}', NOW(), NOW(), 1, {siteID}, {cc}, 1, 0, 0)".format(id=block[0], language_id=langID, siteID=siteID, text=MySQLdb.escape_string(str(translate.encode('utf-8'))), cc=len(translate.split()))
+        else:
+            sql = "({id}, {language_id}, '', NOW(), NOW(), 1, {siteID}, NULL, 1, 0, 0)".format(id=block[0], language_id=langID, siteID=siteID)
+        loadSQL.append(insertSQLTrans + sql + ";")
+    except Exception as exc:
+        pass
 
 def createEmptyTranslate(block):
     global iBlockInsert, insertSQLTrans, loadSQL, langTo, siteID
@@ -312,32 +313,24 @@ for item in ps.listen():
         # Если была такая настройка у проекта
         #------------------------------------------------------------------------------------------------------
 
-        if auto_translate:
-            translator = Translator(trans_client, trans_secret)
-            langs      = getLangsProject(siteID)
-            if blocksID:
-                for phrase in blocksID:
-                    sql = 'SELECT * FROM blocks WHERE site_id = {projectID} AND id = {id}'.format(projectID=siteID, id=blocksID[phrase])
-                    cursor.execute(sql)
-                    block = cursor.fetchone()
-                    for lang in langs:
-                        langTo  = lang[3]
-                        langID  = lang[0] 
-                        translate = translator.translate(phrase.encode('utf-8'), lang_from=fromLang, lang_to=langTo)
-                        loadSQL.append("({id}, {language_id}, '{text}', NOW(), NOW(), 1, {siteID}, {cc}, {pub}, 0)".format(id=blocksID[phrase], language_id=langID, siteID=siteID, text=MySQLdb.escape_string(str(translate.encode('utf-8'))), cc=len(translate.split()), pub=auto_publishing))
-                        iBlockInsert += 1
+        translator = Translator(trans_client, trans_secret)
+        langs      = getLangsProject(siteID)
+        
+        sql        = 'SELECT * FROM blocks WHERE site_id = {projectID}'.format(projectID=siteID)
 
-                        if len(loadSQL) >= maxBlockInsert:
-                            iBlockInsert = 0
-                            cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
-                            loadSQL = []
+        cursor.execute(sql)
+        blocks = cursor.fetchall()
+        for lang in langs:
+            langTo  = lang[3]
+            langID  = lang[0]
+            pool    = ThreadPool(2)
+            results = pool.map(translateBlock, blocks)
+            pool.close()
+            pool.join()
 
-            if len(loadSQL) > 0 and len(loadSQL) <= maxBlockInsert:
-                iBlockInsert = 0
-                cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
-                loadSQL = []
-                db.close()
-                cursor.close()
+        for sql in loadSQL:
+            cursor.execute(sql)
+        cursor.close()
         
         del soup
         del issetBlocks
