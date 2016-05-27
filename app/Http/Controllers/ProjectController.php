@@ -59,7 +59,7 @@ class ProjectController extends Controller
         $site = Site::where('url', $url)->whereNull('deleted_at')->first();
         if (empty($site)) {
             $site = new Site([
-                'url'               => $url,
+                'url'               => rtrim($url, '/'),
                 'name'              => $request->get('name'),
                 'user_id'           => $this->user->id,
                 'secret'            => str_random(32),
