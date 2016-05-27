@@ -120,10 +120,10 @@
 }
 .ares-select__popup li img {
     position: absolute;
-    top: 9px;
-    left: 9px;
-    width: 22px;
-    height: 22px;
+    top: 10px;
+    left: 17px;
+    width: 17px;
+    height: 17px;
 }
 .ares-select__popup li.active {
     background: #e4e6e8;

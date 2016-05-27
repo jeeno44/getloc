@@ -76,7 +76,7 @@
     @if($ob->is_ordered == 1)
         <div class="phrases__status">
             <a class="phrases__status-in phrases__status_active" href="#"  data-id="{{ $ob->tid }}"><span>В заказе</span></a>
-            <a class="phrases__status-out phrases__status_hidden delOrder" href="#" data-id="{{ $ob->tid }}">Убрать из заказа</a>
+            <a class="phrases__status-out phrases__status_hidden delOrder" href="#" data-id="{{ $ob->tid }}"><span>Убрать из заказа</span></a>
         </div>
     @endif
 </div>

@@ -34,9 +34,9 @@
         <div id="{{Session::get('msg')['class']}}" class="flash-message" style="display: none">{{Session::get('msg')['text']}}</div>
     @endif
     <script src="/assets/js/account/jquery-2.1.3.min.js"></script>
+    <script src="/assets/js/account/jquery.select.js"></script>
     <script src="/assets/js/account/jquery.nicescroll.min.js"></script>
     <script src="/assets/js/account/jquery-ui.min.js"></script>
-    <script src="/assets/js/account/jquery.select.js"></script>
     <script src="/assets/js/account/jquery.autocomplite.js"></script>
     <script src="/assets/js/account/jquery.popup.js"></script>
     <script src="/assets/js/account/jquery.messages.js"></script>

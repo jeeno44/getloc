@@ -112,12 +112,15 @@
     line-height: 14px;
 
 }
+.site-list .ares-select__popup li:last-child{
+    border-top: 1px solid #e6e6e6
+}
 .ares-select__popup li img {
     position: absolute;
-    top: 5px;
-    left: 9px;
-    width: 22px;
-    height: 22px;
+    top: 7px;
+    left: 18px;
+    width: 17px;
+    height: 17px;
 }
 .ares-select__popup li:hover {
     background: #ebf8fd;

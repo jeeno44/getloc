@@ -11,11 +11,9 @@
 
         <!-- footer-menu -->
         <div class="footer-menu">
-
-            <a href="#">Помощь</a>
-            <a href="#">Меню</a>
-            <a href="#">Еще меню</a>
-
+	        <a href="{{URL::route('main.account.selectProject')}}">Все проекты</a>
+			<a href="{{route('main.account.personal')}}">Мой профиль</a>
+            <a href="{{route('main.account.payments')}}">Мои платежи</a>
         </div>
         <!-- /footer-menu -->
 

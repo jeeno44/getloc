@@ -44,7 +44,7 @@
                     {!! Form::close() !!}
                 </div>
                 <div class="enroll__thanks">
-                    <span class="enroll__thanks-title"></span>
+                    <span class="enroll__thanks-title">{{trans('phrases.thanks_for_request')}}</span>
                     <p>{{trans('phrases.we_assure_you')}}</p>
                 </div>
             </div>
@@ -133,7 +133,7 @@
             <div class="work">
                 <h2 class="site__title">{{trans('phrases.how_it_works')}}</h2>
                 <div class="work__introduction">
-                    <p>{{trans('phrases.we_max_easy')}}</p>
+                    <p>{!!trans('phrases.we_max_easy')!!}</p>
                 </div>
                 <ul class="work__map">
                     <li>

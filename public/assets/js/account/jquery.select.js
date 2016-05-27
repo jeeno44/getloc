@@ -21,7 +21,7 @@ var AresSelect2 = function( params ){
     this.selects = params.selects;
     this.optionType = params.optionType || 0;
     this.showType = params.showType || 1;
-    this.visible = params.visible || 5;
+    this.visible = params.visible || 8;
 
     this.init();
 };

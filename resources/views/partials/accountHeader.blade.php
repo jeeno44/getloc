@@ -4,6 +4,7 @@
             <!-- site__header-layout -->
             <div class="site__header-layout">
 
+{{--
                 <!-- menu -->
                 <div class="menu">
 
@@ -24,7 +25,7 @@
 
                 </div>
                 <!-- /header__menu -->
-
+--}}
                 <!-- logo -->
                 <a href="{{route('main.account')}}" class="logo">
                     <img src="/assets/img/account/logo.png" width="90" height="26" alt="GETLOC">
@@ -45,7 +46,7 @@
                         @foreach ( $sites as $site )
                         <option @if (\Session::get('projectID') == $site->id) selected="selected" @endif value="{{URL::route('main.account.setProject', $site->id)}}">{{$site->name}}</option>
                         @endforeach
-                        <option @if (\Session::get('projectID') == "") selected="selected" @endif value="{{URL::route('main.account.selectProject')}}">Все проекты</option>
+                        <option class="all_projects" @if (\Session::get('projectID') == "") selected="selected" @endif value="{{URL::route('main.account.selectProject')}}">Все проекты</option>
                     </select>
                 </div>
                 <!-- /site-list -->
@@ -55,8 +56,8 @@
 
                     <!-- header__person-list -->
                     <ul class="header__person-list">
-                        <li><a href="{{route('main.account.personal')}}">Кабинет</a></li>
-                        <li><a href="{{route('main.account.payments')}}">Платежи</a></li>
+                        <li><a href="{{route('main.account.personal')}}">Мой профиль</a></li>
+                        <li><a href="{{route('main.account.payments')}}">Мои платежи</a></li>
                         <li><a href="{{URL::route('logout')}}">Выйти</a></li>
                     </ul>
                     <!-- /header__person-list -->

@@ -28,17 +28,17 @@
                                 </div>
                             </div>
                             <div class="translate-orders__info">
-                                <span class="translate-orders__num">{{$data['count_phrases']}}</span> фраз, <span class="translate-orders__num">{{$data['count_words']}}</span> слов
+                                <span class="translate-orders__num"><b>{{$data['count_phrases']}}</b></span> фраз, <span class="translate-orders__num"><b>{{$data['count_words']}}</b></span> слов
                             </div>
                             <div class="translate-orders__amount site__align-right">
-                                <span class="translate-orders__price"><span>{{$data['cost']}}</span> {{trans('phrases.rubles')}}</span>
-                                <a class="" href="{{route('main.billing.del-lang-order', ['lang' => $data['lang_id']])}}" style="color: #333">X</a>
+                                <span class="translate-orders__price"><span>{{$data['cost']}}</span> {{trans('phrases.rubles')}}</span>&nbsp;
+                                <a class="translate-orders__del" href="{{route('main.billing.del-lang-order', ['lang' => $data['lang_id']])}}"></a>
                             </div>
                         </div>
                     @endforeach
                     <div class="translate-orders__item site__align-items-justify translate-orders__item_no-border translate-orders__item_total">
                         <div class="translate-orders__status">
-                            Заказ будет выполнен в течении <span class="translate-orders__status-important">48 часов</span>
+                            Заказ будет выполнен в течении <span class="translate-orders__status-important"><b>48</b> часов</span>
                         </div>
                         <div class="translate-orders__total site__align-right">
                             Итого к оплате: <span class="translate-orders__total-sum"><span>{{$fullCost}}</span> Р</span>

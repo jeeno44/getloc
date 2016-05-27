@@ -39,8 +39,7 @@
         <div class="project inside-content__wrap">
             <div class="inside-content__title">
                 <h2>
-                    Проект –
-                    <span class="inside-content__name">{{$site->name}}</span>
+                    <b>{{$site->name}}</b> – {{$site->url}}
                 </h2>
                 {{--
                 <a href="#" class="inside-content__tune">{{trans('account.settings')}}</a>
@@ -75,13 +74,13 @@
             @if($site->subscription)
             <div class="tariff__info">
                 {{$site->subscription->plan->name}} –
-                <span class="tariff__sum">{{$site->subscription->month_cost}}</span>р/мес
+                <span class="tariff__sum">{{$site->subscription->month_cost}}</span> р/мес
             </div>
             <div class="tariff__period">
                 @if($site->subscription->deposit > 0.00)
                     <?php $diff = round($site->subscription->deposit / ($site->subscription->month_cost / 30 ))?>
-                    <p>{{Lang::choice('phrases.ostalos', $diff)}} <span class="tariff__days">
-                            {{$diff}}</span>
+                    <p>{{Lang::choice('phrases.ostalos', $diff)}} <b><span class="tariff__days">
+                            {{$diff}}</span></b>
                         {{Lang::choice('phrases.count_days', $diff)}} до истечения оплаченного периода
                     </p>
                 @else
@@ -90,7 +89,7 @@
             </div>
             @else
                 <div class="tariff__info">
-                    не подключен ни один тарифный план
+                    Не подключен ни один тарифный план
                 </div>
             @endif
         </div>
@@ -118,7 +117,7 @@
                 </div>
                 <div class="translation__info">
                     {{trans('account.inProcTranslated')}}
-                    <span class="translation__num">{{$lang['cc']}} / {{$lang['ccb']}}</span>
+                    <b><span class="translation__num">{{$lang['cc']}} / {{$lang['ccb']}}</span></b>
                     {{Lang::choice('account.phrases', $lang['cc'])}}
                 </div>
                 <div class="translation__status @if ($lang['per'] == 100)status-done @endif">

@@ -486,7 +486,7 @@ setNewStats = function(stats)
 
 startLoader = function()
 {
-    $('#renderPhrases').empty().html('<div style="text-align: center;"><img src="/assets/img/account/loader.gif" /></div>')
+    $('#renderPhrases').empty().html('<div class="preloader"><img src="/assets/img/account/loader.svg" /></div>')
 }
 
 stopLoader  = function()

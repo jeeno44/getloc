@@ -17,9 +17,9 @@
 @elseif (!empty($route) && $route == 'main.feature')
     <header class="site__header ">
         <div class="site__header-layout">
-            <h1 class="logo anchor" data-href="#up">
+            <a href="{{route('main')}}" class="logo">
                 <img src="/assets/img/logo.png" width="90" height="26" alt="getLoc">
-            </h1>
+            </a>
             <div class="site__header-inner">
                 <nav class="header__menu">
                     <a href="{{route('main.feature')}}" class="active">{{trans('phrases.capabilities')}}</a>
@@ -32,9 +32,9 @@
 @else
     <header class="site__header site__header_not-logged">
         <div class="site__header-layout">
-            <h1 class="logo anchor" data-href="#up">
+            <a href="{{route('main')}}" class="logo">
                 <img src="/assets/img/logo.png" width="90" height="26" alt="getLoc">
-            </h1>
+            </a>
             <div class="site__header-inner">
                 <nav class="header__menu">
                     <a href="{{route('main.feature')}}">{{trans('phrases.capabilities')}}</a>

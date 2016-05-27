@@ -103,7 +103,7 @@ input[type="search"]::-webkit-search-cancel-button {
     min-width: 952px;
     overflow: hidden;
     font: 300 14px 'Fira Sans', sans-serif;
-    color: #333;
+    color: #000000;
     z-index: 1;
 }
 .site:before,
@@ -144,7 +144,7 @@ input[type="search"]::-webkit-search-cancel-button {
     margin: 0 0 25px;
     font-size: 14px;
     line-height: 18px;
-    color: #b2b2b2;
+    color: #666666;
     text-transform: uppercase;
 }
 .site__title_4{
@@ -215,6 +215,9 @@ input[type="search"]::-webkit-search-cancel-button {
     margin: 0 auto;
     text-align: justify;
 }
+.site__wrap label{
+    text-align: left;
+}
 .site__wrap:after{
     content: '';
     display: inline-block;
@@ -234,7 +237,7 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 .site__footer-layout {
     position: relative;
-    width: 951px;
+    width: 952px;
     height: 80px;
     padding: 0 20px;
     margin: 0 auto;
@@ -300,7 +303,7 @@ input[type="search"]::-webkit-search-cancel-button {
     display: block;
     margin-bottom: 12px;
     font-size: 14px;
-    color: #333333;
+    color: #000;
 }
 .site__aside-menu a:hover,
 .site__aside-menu a.active{
@@ -339,7 +342,7 @@ input[type="search"]::-webkit-search-cancel-button {
     margin-bottom: 11px;
     padding-left: 11px;
     padding-top: 10px;
-    color: #b2b2b2;
+    color: #666666;
     font-size: 17px;
     font-weight: 300;
 }
@@ -354,7 +357,7 @@ input[type="search"]::-webkit-search-cancel-button {
     position: relative;
     padding: 12px 15px 12px 0;
     font-size: 14px;
-    color: #b2b2b2;
+    color: #666666;
     cursor: pointer;
 }
 .site__aside-filter > span:hover {
@@ -392,7 +395,7 @@ input[type="search"]::-webkit-search-cancel-button {
     width: 30px;
     text-align: right;
     font-size: 12px;
-    color: #b2b2b2;
+    color: #666666;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
@@ -545,7 +548,7 @@ input[type=search].site__input.search-phrase{
     margin: 0 0 2px;
     font-size: 12px;
     line-height: 15px;
-    color: #b2b2b2;
+    color: #666666;
     font-weight: 300;
 }
 .site__label.focus {
@@ -637,7 +640,8 @@ input[type=search].site__input.search-phrase{
 .logo {
     position: absolute;
     top: 4px;
-    left: 66px;
+    left: 20px;
+    /*left: 66px;*/
 }
 .header-fix .logo{
     cursor: pointer;
@@ -760,7 +764,8 @@ input[type=search].site__input.search-phrase{
 .header__person{
     position: absolute;
     top: 0;
-    right: 62px;
+    right: 20px;
+    /*right: 62px;*/
     width: 32px;
     height: 32px;
     border-radius: 5px;
@@ -924,9 +929,11 @@ input[type=search].site__input.search-phrase{
 .site-list{
     position: absolute;
     top: 0;
-    right: 104px;
+    right: 75px;    
+    /*right: 104px;*/
 }
 .site-list__add{
+	float: left;
     position: relative;
     width: 32px;
     height: 32px;
@@ -934,6 +941,7 @@ input[type=search].site__input.search-phrase{
     border: none;
     background-color: #3a86a0;
     border-radius: 5px;
+    margin-right: 5px;
 }
 .site-list__add:hover{
     background-color: #18baea;
@@ -960,7 +968,7 @@ input[type=search].site__input.search-phrase{
 }
 .site-list .ares-select{
     height: 32px;
-    width: 180px;
+    width: 225px;
     font-size: 14px;
     line-height: 18px;
     background-color: #565c65;
@@ -1185,7 +1193,8 @@ input[type=search].site__input.search-phrase{
     border-bottom: 1px solid #e6e6e6;
     font-size: 17px;
     font-weight: 400;
-    color: #b2b2b2;
+    color: #666666;
+    background-color: #f9f9f9;
 }
 .inside-content__title_2 {
     padding: 14px 16px;
@@ -1225,7 +1234,7 @@ input[type=search].site__input.search-phrase{
 }
 .inside-content__time {
     margin: 0 0 0 7px;
-    color: #b2b2b2;
+    color: #666666;
     font-size: 12px;
     line-height: 15px;
 }
@@ -1243,7 +1252,7 @@ input[type=search].site__input.search-phrase{
     padding-left: 17px;
     font-size: 12px;
     line-height: 19px;
-    color: #b2b2b2;
+    color: #666666;
     text-align: left;
 }
 .tariff__period a{
@@ -1405,7 +1414,7 @@ div.statistic__line-04{
     border-bottom: 2px solid transparent;
     font-size: 15px;
     letter-spacing: -0.7px;
-    color: #b2b2b2;
+    color: #666666;
 }
 .tabs__links-archive a:hover,
 .tabs__links-archive a:active {
@@ -1432,7 +1441,7 @@ div.statistic__line-04{
     overflow: hidden;
 }
 .project__status{
-    color: #b2b2b2;
+    color: #666666;
     font-size: 12px;
     font-weight: 300;
     white-space: nowrap;
@@ -1525,7 +1534,7 @@ div.statistic__line-04{
     width: 31%;
     padding-left: 17px;
     font-weight: 300;
-    color: #b2b2b2;
+    color: #666666;
     font-size: 12px;
 }
 .translation__num{
@@ -1591,7 +1600,7 @@ div.statistic__line-04{
     display: block;
     font-size: 12px;
     line-height: 18px;
-    color: #b2b2b2;
+    color: #666666;
 }
 .language__links a:hover{
     color: #18baea;
@@ -1619,7 +1628,7 @@ div.statistic__line-04{
     right: 15px;
     font-size: 12px;
     line-height: 12px;
-    color: #b2b2b2;
+    color: #666666;
 }
 .language__item-delete:hover {
     color: #18baea;
@@ -1819,12 +1828,16 @@ a.social-ok{
     text-align: left;
 }
 .nice-check-language .flag {
+	float: left;
     position: absolute;
     top: 50%;
     left: 12px;
     margin: 0;
+    height: 17px;
+    width: 17px;
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
+    border: 1px solid #cccccc;
 }
 .nice-check-language input[type=checkbox] {
     position: absolute;
@@ -1890,7 +1903,6 @@ a.social-ok{
 .phrases .tabs__links > a {
     display: inline-block;
     font-size: 15px;
-    letter-spacing: -0.7px;
     padding: 0 0 4px;
     margin-right: 41px;
     margin-bottom: -1px;
@@ -1938,7 +1950,7 @@ a.social-ok{
     background-image: url("../../img/account/controls_sprite1.png");
     background-repeat: no-repeat;
     background-color: transparent;
-    background-size: 92px 31px;
+    background-size: 92px 32px;
     -webkit-transform: translateY(-50%) translateX(-50%);
     transform: translateY(-50%) translateX(-50%);
 }
@@ -2325,7 +2337,7 @@ a.social-ok{
     top: 9px;
     padding: 3px 10px 3px 23px;
     margin: 0 0 0 14px;
-    border: 1px solid #ccc;
+    border: 1px solid #e6e6e6;
     border-radius: 3px;
     background: transparent;
     font-size: 11px;
@@ -2405,7 +2417,6 @@ a.social-ok{
     border: 1px solid transparent;
     font-size: 12px;
     line-height: 12px;
-    letter-spacing: -0.5px;
 }
 .phrases__status-in span {
     display: inline-block;
@@ -2413,6 +2424,10 @@ a.social-ok{
     padding-left: 15px;
     background: url("../../img/account/in-order.png") no-repeat left center;
     background-size: 11px 9px;
+    font-size: 11px;
+}
+.phrases__status-out span {
+	font-size: 11px;
 }
 .phrases__status-in {
     color: #fff;
@@ -2653,7 +2668,7 @@ a.social-ok{
     top: 2px;
     right: 57px;
     font-size: 14px;
-    color: #b2b2b2;
+    color: #666666;
     text-decoration: underline;
 }
 .new-project__skip:hover{
@@ -2971,7 +2986,7 @@ a.social-ok{
     padding-left: 16px;
     font-size: 12px;
     line-height: 15px;
-    color: #b2b2b2;
+    color: #666666;
 }
 .translate-orders__info span {
     color: #333333;
@@ -2992,7 +3007,7 @@ a.social-ok{
     width: 50%;
     font-size: 12px;
     line-height: 15px;
-    color: #b2b2b2;
+    color: #666666;
 }
 .translate-orders__status-important {
     color: #333333;
@@ -3001,7 +3016,7 @@ a.social-ok{
     width: 50%;
     font-size: 12px;
     line-height: 15px;
-    color: #b2b2b2;
+    color: #666666;
 }
 .translate-orders__total-sum {
     color: #333333;
@@ -3060,7 +3075,7 @@ a.social-ok{
     margin: 0 0 20px;
     font-size: 14px;
     line-height: 18px;
-    color: #b2b2b2;
+    color: #666666;
     font-weight: 300;
 }
 .make-order__phrases {
@@ -3068,7 +3083,7 @@ a.social-ok{
     padding-top: 4px;
     font-size: 12px;
     line-height: 15px;
-    color: #b2b2b2;
+    color: #666666;
 }
 /*-------------/make-order------------*/
 
@@ -3076,13 +3091,14 @@ a.social-ok{
 .flag {
     display: inline-block;
     vertical-align: middle;
-    width: 15px;
-    height: 15px;
+    width: 17px;
+    height: 17px;
     margin-right: 3px;
     border-radius: 50px;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: 15px;
+    background-size: 17px;
+    margin-top: -3px;
 }
 .flag_rus {
     background-image: url('../../img/account/icons-ru.png');
@@ -3281,7 +3297,7 @@ a.social-ok{
     border-radius: 4px;
     font-size: 14px;
     line-height: 14px;
-    color: #b2b2b2;
+    color: #666666;
 }
 .pagination-wrap a,
 .pagination-wrap span {
@@ -3607,7 +3623,7 @@ a.pages__page:hover{
 .page__row_title .page__words,
 .page__row_title .page__on-off{
     padding: 10px 0 13px;
-    color: #b2b2b2;
+    color: #666666;
     font-weight: 100;
     font-size: 12px;
 }
@@ -3627,10 +3643,10 @@ a.pages__page:hover{
     background: url("../../img/icons-cogwheel.png");
 }
 .page__row_active .pages__page{
-    color: #b2b2b2;
+    color: #666666;
 }
 .page__row_in-progress .page__words{
-    color: #b2b2b2;
+    color: #666666;
     padding: 10px 0 10px;
 }
 .page__row_active .btn_3{
@@ -3843,6 +3859,7 @@ a.pages__page:hover{
     width: 100%;
     padding: 15px 15px 14px;
     border-bottom: 1px solid #e6e6e6;
+    background-color: #f9f9f9;
 }
 .project-list__title-name{
     color: #000;
@@ -3861,7 +3878,7 @@ a.project-list__control-delete{
     height: 85px;
     padding: 29px 0 32px 4px;
     border-right: 1px solid #e6e6e6;
-    color: #b2b2b2;
+    color: #666666;
     font-size: 12px;
     white-space: nowrap;
     overflow: hidden;
@@ -3887,7 +3904,7 @@ a.project-list__control-delete{
     line-height: 20px;
 }
 .project-list__rate span{
-    color: #b2b2b2;
+    color: #666666;
 }
 .project-list__rate a{
     color: #18baea;
@@ -3952,7 +3969,7 @@ a.project-list__control-delete{
     margin-bottom: 10px;
 }
 #your-site-address{
-    color: #b2b2b2;
+    color: #666666;
 }
 /*-------------/account-data------------*/
 
@@ -4116,7 +4133,7 @@ a.project-list__control-delete{
     right: 12px;
     font-size: 12px;
     line-height: 14px;
-    color: #b2b2b2;
+    color: #666666;
 }
 .translate-set__phrases span {
     color: #333;

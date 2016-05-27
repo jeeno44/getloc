@@ -54,7 +54,7 @@ $(function(){
         }
     });
 
-    $('.logo').on({
+    $('h1.logo').on({
         'click':function(){
             if ($(window).scrollTop() < 1){
                 return false
@@ -677,6 +677,7 @@ Popup.prototype = {
                     parentDropdown.removeClass("open");
                     linkDropdown.attr("aria-expanded", "false");
                     self.core.show( curItem.attr( 'data-popup' ) );
+                    $('.popup_opened').find('#email').focus();
                     self.btnClose = self.popup.find(".popup__close");
                     $('.popup_opened').find('#order-popup__type').val( curItem.attr( 'data-type' ) );
                     return false;
