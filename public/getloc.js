@@ -397,7 +397,10 @@ function getloc(settings)
                 this.showChoice = true
 
             if ( this.showChoice )
-                this.showAvailableLanguanges()
+              {
+                this.setCSS(this.response.settings.style)  
+                this.showAvailableLanguanges()  
+              }
             
             if ( this.changeHash && (this.lang != this.source) )
                 this.setHash(this.lang)
@@ -454,34 +457,60 @@ function getloc(settings)
     {
         if ( this.showChoice )
           {
-            this.htmlWidget = '<div style="position:fixed;left: 5%;bottom: 0;display:inline-block;" class="dropdown"><button onclick="getloc.openMenu()" style="background-color:#4CAF50;color:#fff;padding:16px;font-size:16px;border:none;cursor:pointer;} :hover:focus {background-color:#3e8e41}" id="showLang" class="dropbtn">'+this.lang+'</button><div id="myDropdown" class="dropdown-content" style="display:none;position:relative;background-color:#f9f9f9;min-width:160px;box-shadow:0 8px 16px 0 rgba(0,0,0,0.2)">'
+            var currentLang = ''
+            if ( this.response.settings.titles == 1 )
+                currentLang = this.response.available_languages[this.lang]
+            else
+                currentLang = this.lang
+            
+            this.htmlWidget = '<a onclick="getloc.openMenu()" id="getloc_widget" class="getloc_dropbtn '+this.response.settings.class+'">'+currentLang+'</a>'
+            this.htmlWidget += '<div style="display: none;" id="getloc_widget__menu" class="getloc_widget__menu '+this.response.settings.class+'">'
+
             for ( var lang in this.response.available_languages )
             {
-                this.htmlWidget += '<a href="#" onclick="getloc.changeLanguage(\''+lang+'\'); return false;" style="color:#000;padding:12px 16px;text-decoration:none;display:block; :hover{background-color:#f1f1f1}">'+lang+'</a>'
+                this.htmlWidget += '<a href="#" onclick="getloc.changeLanguage(\''+lang+'\'); return false;">'
+                this.htmlWidget += '<span class="getloc_widget__menu-full">'+this.response.available_languages[lang]+'</span>'
+                this.htmlWidget += '<span class="getloc_widget__menu-abbreviations">'+lang+'</span>'
+                this.htmlWidget += '</a>'
             }
-            this.htmlWidget += '</div></div>'
-            
-            var tempElement = document.createElement('div');
+            this.htmlWidget += '<div class="getloc_widget__crafted">Create by getloc.com</div></div>'
+            var tempElement  = document.createElement('div');
             tempElement.innerHTML = this.htmlWidget
-            var body        = document.getElementsByTagName('body')[0].appendChild(tempElement.firstChild);
+
+            var body        = document.getElementsByTagName('body')[0].appendChild(tempElement);
 
             window.onclick = function(event)
             {
-                if ( !event.target.matches('.dropbtn') )
+                if ( !event.target.matches('.getloc_dropbtn') )
                   {
-                    var dropdowns = document.getElementsByClassName("dropdown-content");
-                    var i;
-                    for ( i = 0; i < dropdowns.length; i++ )
-                    {
-                      var openDropdown = dropdowns[i];
-                      if ( openDropdown.style.display == 'block' )
-                        openDropdown.style.display = 'none'
-                    }
+                    var dropdowns = document.getElementById("getloc_widget__menu");
+
+                      if ( dropdowns.style.display == 'block' )
+                        dropdowns.style.display = 'none'
                   }
             }
           }
 
         this.showChoice = false;
+    }
+    
+    /**
+     * Получаем перевод через JSONP протокол
+     * 
+     * @param     string css
+     * @returns   void
+     */    
+    
+    this.setCSS = function(css)
+    {
+        style = document.createElement('style');
+        style.type = 'text/css';
+        if ( style.styleSheet ) 
+            style.styleSheet.cssText = css;
+        else
+            style.appendChild(document.createTextNode(css));
+        
+        document.getElementsByTagName('head')[0].appendChild(style)
     }
     
     /**
@@ -499,7 +528,13 @@ function getloc(settings)
         this.detect_language()
         this.getTranslate()
         
-        document.getElementById('showLang').innerHTML = lang;
+        var showLang = ''
+        if ( this.response.settings.titles == 1 )
+            showLang = this.response.available_languages[this.lang]
+        else
+            showLang = this.lang
+        
+        document.getElementById('getloc_widget').innerHTML = showLang;
     }
     
     /**
@@ -511,7 +546,7 @@ function getloc(settings)
     
     this.openMenu = function()
     {
-        document.getElementById("myDropdown").style.display = 'block';
+        document.getElementById("getloc_widget__menu").style.display = 'block';
     }
     
     /**

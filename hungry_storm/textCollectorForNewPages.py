@@ -21,6 +21,8 @@ import json
 import re
 from db_access import mysql_credentials
 
+parseDocs = ['xls', 'xlsx', 'ppt', 'pptx', 'txt', 'odt', 'tif', 'jpeg', 'rtf', 'doc', 'docx', 'png', 'jpg', 'gif']
+
 #------------------------------------------------------------------------------------------------------
 # Настройки мускула и самого текст коллектора
 #------------------------------------------------------------------------------------------------------
@@ -149,7 +151,9 @@ def makeBlock(siteID, text, element, url):
         return id
     else:
         cursor.execute('SELECT `id` FROM blocks WHERE `text` = "{text}" AND site_id = {projectID}'.format(text=MySQLdb.escape_string(text.encode('utf8')), projectID=siteID))
-        return cursor.fetchone()[0]
+        block_id = cursor.fetchone()[0]
+        print(block_id)
+        return block_id
 
 #------------------------------------------------------------------------------------------------------
 # Получаем айди страницы с нужного URL'а, TODO: тоже переделать на переменную
@@ -248,6 +252,7 @@ for item in ps.listen():
         langID          = 0
         translator      = None
         docSQL          = []
+
 
         db.autocommit(True)
 
@@ -373,7 +378,7 @@ for item in ps.listen():
                     for lang in langs:
                         langTo  = lang[3]
                         langID  = lang[0] 
-                        translate = translator.translate(text.encode('utf-8'), lang_from=fromLang, lang_to=langTo)
+                        translate = translator.translate(phrase.encode('utf-8'), lang_from=fromLang, lang_to=langTo)
                         if translate:
                             loadSQL.append("({id}, {language_id}, '{text}', NOW(), NOW(), 1, {siteID}, {cc}, {pub}, 0, 0)".format(id=id, language_id=langID, siteID=siteID, text=MySQLdb.escape_string(str(translate.encode('utf-8'))), cc=len(translate.split())), pub=auto_publishing)
                         else:

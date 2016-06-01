@@ -39,9 +39,13 @@ var Widget = function( obj ) {
                     if( curItem.hasClass( 'opened' ) ) {
                         curItem.removeClass( 'opened' );
                         _colors.slideUp();
+                        _inputHiddenClasses.attr('value', _inputHiddenClasses.attr('value').replace( 'custom', '' ))
                     } else {
+                        _inputHiddenClasses.addClass( 'custom' );
                         curItem.addClass( 'opened' );
                         _colors.slideDown();
+                        attr = _inputHiddenClasses.attr('value')
+                        _inputHiddenClasses.attr('value', attr + ' custom')
                     }
 
                     return false;

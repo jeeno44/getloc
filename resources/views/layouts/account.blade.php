@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/assets/css/account/popup.css" />
     <link rel="stylesheet" href="/assets/css/account/account.css" />
     <link rel="stylesheet" href="/assets/css/account/jquery-ui.min.css" />
+    <link rel="stylesheet" href="/assets/css/account/bootstrap-colorpicker.css" />
     <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 </head>
 <body>
@@ -42,6 +43,7 @@
     <script src="/assets/js/account/jquery.messages.js"></script>
     <script src="/assets/js/account/jquery.widget.js"></script>
     <script src="/assets/js/account/jquery.main.js"></script>
+    <script src="/assets/js/account/bootstrap-colorpicker.min.js"></script>
     <script src="/assets/js/account/custom.js"></script>
     <script src="/assets/js/account/billing.js"></script>
 </body>

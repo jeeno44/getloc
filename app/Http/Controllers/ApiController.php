@@ -104,6 +104,28 @@ class ApiController extends Controller
                         if (empty($response['results'])) {
                             $response['error'] = ['msg' => 'Results is empty', 'code' => 7];
                         }
+                        else #Андрюха, что так тут сложно все то
+                        {
+                            $widget = \App\Widget::where('site_id', $site->id)->first();
+                            $class          = '';
+        
+                            if ( $widget->location == 'right' )
+                                $class .= 'right-pos';
+
+                            if ( $widget->titles == 0 )
+                                $class .= ' abbreviations';
+
+                            if ( $widget->theme == 'white' )
+                                $class .= ' lightness';
+                            elseif ( $widget->theme == 'custom' )
+                                $class .= ' custom';
+                            
+                            $response['settings'] = array(
+                                'class'             => $class,
+                                'titles'            => $widget->titles,
+                                'style'             => (string) view('api.cssWidget', compact('widget'))
+                            );
+                        }
                         $response['available_languages'] = $site->languages()->where('enabled', 1)->lists('name', 'short')
                             ->take($subscription->count_languages)
                             ->toArray();

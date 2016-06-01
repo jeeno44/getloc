@@ -1492,4 +1492,83 @@ class AccountController extends Controller
         }
         return \Response::json($ret);
     }
+    
+    /**
+     * Настройки виджета
+     * 
+     * @param  void
+     * @return string
+     * @access public
+     */
+    
+    public function widget()
+    {
+        if ( !Session::get('projectID') ) 
+            return redirect(URL::route('main.account.selectProject'));
+        
+        $siteID         = Session::get('projectID');
+        $widget_data    = \App\Widget::where('site_id', $siteID)->first();
+        $class          = '';
+        
+        if ( $widget_data->location == 'right' )
+            $class .= 'right-pos';
+        
+        if ( $widget_data->titles == 0 )
+            $class .= ' abbreviations';
+        
+        if ( $widget_data->theme == 'white' )
+            $class .= ' lightness';
+        elseif ( $widget_data->theme == 'custom' )
+            $class .= ' custom';
+        
+        return view('account.widget', compact('class', 'widget_data'));
+    }
+    
+    /**
+     * Сохраняем виджет
+     * 
+     * @param  Request $request
+     * @return void
+     * @access public
+     */
+    
+    public function widgetPost(Request $request)
+    {
+        $default_colors['background']        = 'rgba(20,20,20,0.9)';
+        $default_colors['background_active'] = '#18baea';
+        $default_colors['color']             = '#ffffff';
+        $default_colors['color_active']      = '#829201';
+        
+        if ( !Session::get('projectID') ) 
+            return redirect(URL::route('main.account.selectProject'));
+        
+        $siteID   = Session::get('projectID');
+        $settings = explode(' ', $request->get('settings'));
+        $widget   = \App\Widget::where('site_id', $siteID)->first();
+        
+        if ( in_array('right-pos', $settings) )
+            $widget->location = 'right';
+        else
+            $widget->location = 'left';
+        
+        if ( in_array('abbreviations', $settings) )
+            $widget->titles = 0;
+        else
+            $widget->titles = 1;
+        
+        if ( in_array('lightness', $settings) )
+            $widget->theme = 'white';
+        elseif ( in_array('custom', $settings) )
+            $widget->theme = 'custom';
+        else
+            $widget->theme = 'dark';
+        
+        $widget->background         = $request->get('background');
+        $widget->background_active  = $request->get('background_active');
+        $widget->color              = $request->get('color');
+        $widget->color_active       = $request->get('color_active');
+        
+        $widget->update();
+        return redirect()->back();
+    }
 }

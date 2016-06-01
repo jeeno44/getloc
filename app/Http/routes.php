@@ -53,6 +53,9 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             
             Route::post('/phrase/setFilter', ['as' => 'main.account.setFilter', 'uses' => 'AccountController@setFilterPharse']);
             
+            Route::get('/widget/', ['as' => 'main.account.widget', 'uses' => 'AccountController@widget']);
+            Route::post('/widget/', ['as' => 'main.account.widgetPost', 'uses' => 'AccountController@widgetPost']);
+            
             /* ajax */
             Route::post('/robot/{id}', ['as' => 'api.robot', 'uses' => 'ApiController@anyBing']);
             Route::post('/getTextFromRobot/{id}', ['as' => 'api.robot', 'uses' => 'ApiController@maybeTranslateFromBing']);

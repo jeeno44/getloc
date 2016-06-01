@@ -81,6 +81,11 @@ class ProjectController extends Controller
                 'auto_publishing'   => $request->has('auto_publishing'),
                 'auto_translate'    => /*$request->has('auto_translate')*/ 0
             ]);
+            
+            \DB::table('widgets')->insert([
+                'site_id' => $site->id
+            ]);
+            
         } else {
             return redirect()->back()->withErrors('Сайт с таким адресом уже существует в системе')->withInput();
         }
