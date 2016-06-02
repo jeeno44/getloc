@@ -2,7 +2,7 @@
     position: fixed;
     bottom: 0;
     left: 27px;
-    width: 115px;
+    width: {{$widget->titles == 1 ? '115px' : '40px'}};
     text-align: center;
     color: {{$widget->theme == 'custom' ? $widget->color_active : '#80868f'}};
     font-size: 10px;
