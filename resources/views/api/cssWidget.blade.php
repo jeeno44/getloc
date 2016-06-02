@@ -11,7 +11,7 @@
     color: #fff;
     font-size: 14px;
     line-height: 14px;
-    background: {{$widget->theme == 'custom' ? $widget->background_active : '#80868f'}} {{-- Активный бг --}}
+    background: {{$widget->theme == 'custom' ? $widget->background_active : '#80868f'}}; {{-- Активный бг --}}
     border: none;
     cursor: pointer;
 }
