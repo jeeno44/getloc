@@ -48,7 +48,7 @@
                         <span class="widget__menu-full">Французский</span>
                         <span class="widget__menu-abbreviations">FR</span>
                     </a>
-                    <div class="widget__crafted">Create by getloc.com</div>
+                    <div class="widget__crafted">Uses get-loc.com</div>
                 </div>
             </div>
             <div class="widget-settings__colors" @if ($widget_data->theme == 'custom') style="display: block;" @endif>

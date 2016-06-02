@@ -473,7 +473,7 @@ function getloc(settings)
                 this.htmlWidget += '<span class="getloc_widget__menu-abbreviations">'+lang+'</span>'
                 this.htmlWidget += '</a>'
             }
-            this.htmlWidget += '<div class="getloc_widget__crafted">Create by getloc.com</div></div>'
+            this.htmlWidget += '<div class="getloc_widget__crafted">Uses get-loc.com</div></div>'
             var tempElement  = document.createElement('div');
             tempElement.innerHTML = this.htmlWidget
 

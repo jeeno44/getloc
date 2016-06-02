@@ -26,6 +26,8 @@
     border: 1px solid #e6e6e6;
 }
 
+#getloc_wiget.abbreviations {width: 40px;}
+
 .getloc_widget__menu {
     position: fixed;
     bottom: 0;
