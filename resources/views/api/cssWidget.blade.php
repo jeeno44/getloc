@@ -1,6 +1,6 @@
 #getloc_widget {
     position: fixed;
-    bottom: 3px;
+    bottom: 0;
     left: 27px;
     width: 115px;
     text-align: center;
@@ -28,7 +28,7 @@
 
 .getloc_widget__menu {
     position: fixed;
-    bottom: 3px;
+    bottom: 0;
     left: 27px;
     width: 115px;
     background: {{$widget->theme == 'custom' ? $widget->background : '#2f353f'}};

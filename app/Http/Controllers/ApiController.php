@@ -126,10 +126,10 @@ class ApiController extends Controller
                                 'style'             => (string) view('api.cssWidget', compact('widget'))
                             );
                         }
-                        $response['available_languages'] = $site->languages()->where('enabled', 1)->lists('name', 'short')
+                        $response['available_languages'] = $site->languages()->where('enabled', 1)->lists('original_name', 'short')
                             ->take($subscription->count_languages)
                             ->toArray();
-                        $response['available_languages'][$site->language->short] = $site->language->name;
+                        $response['available_languages'][$site->language->short] = $site->language->original_name;
                         return $response;
                     });
                 }
