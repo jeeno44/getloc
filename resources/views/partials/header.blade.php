@@ -7,7 +7,9 @@
             <div class="site__header-inner">
                 <nav class="header__menu">
                     <a href="{{route('main.feature')}}">{{trans('phrases.capabilities')}}</a>
+                    {{--
                     <a href="{{route('scan.main')}}">{{trans('phrases.analytics')}}</a>
+                --}}
                 </nav>
                 @include('partials.login')
             </div>
@@ -23,7 +25,9 @@
             <div class="site__header-inner">
                 <nav class="header__menu">
                     <a href="{{route('main.feature')}}" class="active">{{trans('phrases.capabilities')}}</a>
+                    {{--
                     <a href="{{route('scan.main')}}">{{trans('phrases.analytics')}}</a>
+                --}}
                 </nav>
                 @include('partials.login')
             </div>
@@ -38,7 +42,9 @@
             <div class="site__header-inner">
                 <nav class="header__menu">
                     <a href="{{route('main.feature')}}">{{trans('phrases.capabilities')}}</a>
+                    {{--
                     <a href="{{route('scan.main')}}" class="active">{{trans('phrases.analytics')}}</a>
+                --}}
                 </nav>
                 @include('partials.login')
             </div>

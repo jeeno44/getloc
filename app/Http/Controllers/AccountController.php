@@ -89,6 +89,8 @@ class AccountController extends Controller
         if ( Site::where('id', $id)->where('user_id', $this->user->id)->first() )
           {
             Session::set('projectID', $id);
+            Session::remove('filter');
+            
             return redirect()->route('main.account.overview');        
           } 
         else 
@@ -740,7 +742,7 @@ class AccountController extends Controller
     public function phraseNotTranslatesTab(Request $request)
     {
         $siteID    = Session::get('projectID');
-        $viewType  = Session::get('typeViewID', 1);
+        $viewType  = Session::get('typeViewID', 2);
         $filterDef = 0;
         $site      = Site::find($siteID);
 
@@ -897,7 +899,7 @@ class AccountController extends Controller
             return redirect(URL::route('main.account.selectProject'));
 
         $siteID     = Session::get('projectID');
-        $viewType   = Session::get('typeViewID', 1);
+        $viewType   = Session::get('typeViewID', 2);
         $filterDef  = 0;
         $languageID = Session::get('filter')['languageID'];
 
@@ -984,7 +986,7 @@ class AccountController extends Controller
 
         Session::set('filter', $filter);
 
-	    $searchText = false;
+        $searchText = false;
 	
         if ( $request->get('search_text') )
             $searchText = $request->get('search_text');
@@ -1173,7 +1175,7 @@ class AccountController extends Controller
     {
         $ret_data  = [];
         $tab       = $request->input('tab');
-        $viewType  = Session::get('typeViewID', 1);
+        $viewType  = Session::get('typeViewID', 2);
         $name_none = explode(',', $request->input('name_none'));
         $blocks    = $this->buildQueryTitle($request->input('site_id'), $request->input('name'), $name_none);
 

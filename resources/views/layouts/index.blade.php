@@ -39,9 +39,10 @@
                 <dl>
                     <dt><a href="{{route('main.feature')}}" class="active"><span>{{trans('phrases.capabilities')}}</span></a></dt>
                 </dl>
+                {{--
                 <dl>
                     <dt><a href="{{route('scan.main')}}"><span>{{trans('phrases.analytics')}}</span></a></dt>
-                </dl>
+                </dl>--}}
             </div>
             <div class="social">
                 <a href="https://vk.com/getloc" class="social-vk" target="_blank"></a>

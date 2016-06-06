@@ -80,3 +80,28 @@ h1{
 	top: 40%;
 	margin: 0px 0px 0px 90px;
 }
+
+.phrases__item-btn-translate1 {
+    position: relative;
+    padding: 0;
+    background: none;
+    border: none;
+    font-size: 12px;
+    line-height: 12px;
+    text-decoration: underline;
+    color: #cccccc;
+    font-family: 'Fira Sans', sans-serif;
+    font-weight: 300;
+}
+.phrases__item-btn-translate1:hover{
+    text-decoration: none;
+}
+.phrases__item-controls {
+    height: 39px;
+    padding: 11px 0 0 12px;
+    border-top: 1px solid #e6e6e6;
+}
+
+.find-phrase__clean {z-index: 10000;}
+.item-btn-phrase {float: left;}
+.phrases__item-btn-translate {cursor: pointer; display: block; float: right; margin-top: 7px;}

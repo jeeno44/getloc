@@ -173,6 +173,7 @@
                         </div>
                     </li>
                 </ul>
+                <a class="btn btn_1 popup__open" data-popup="registry" href="#"><span>Зарегистроваться</span></a>
                 <div class="next-step"></div>
             </div>
             <div class="people">

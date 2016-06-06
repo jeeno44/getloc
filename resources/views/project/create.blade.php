@@ -122,23 +122,23 @@
                             </select>
                         </div>
                         <!-- /discount__language-wrapper -->
-                        <a href="#" class="discount__languadge-add">Добавить направление перевода</a>
+                        <a href="#" class="discount__languadge-add">Добавить язык перевода</a>
                     </div>
                     <!-- /discount__selects-language -->
                 </div>
                 <!-- /site__data-field -->
             </fieldset>
-            <!-- nice-check -->
+            <!-- nice-check 
             <fieldset class="nice-check new-project__form-check">
                 <input type="checkbox" value="1" name="project__check" id="new-project1">
                 <label for="new-project1">
                     У меня есть файл перевода (локализации) проекта
                 </label>
-            </fieldset>
+            </fieldset>-->
             <fieldset class="nice-check new-project__form-check">
                 <input type="checkbox" value="1" name="protected" id="new-project2">
                 <label for="new-project2">
-                    Ваш сайт использует защиту (фаервол, проективная защита)?
+                    Мой сайт использует защиту (фаервол, проактивная защита)?
                 </label>
             </fieldset>
             <!-- /nice-check -->

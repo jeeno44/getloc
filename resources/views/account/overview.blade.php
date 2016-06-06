@@ -15,6 +15,10 @@
                     <span>{{$stats['ccBlocks']}}</span>
                     {{Lang::choice('account.phrases', $stats['ccBlocks'])}}
                 </li>
+                <li>
+                    <span>{{$site['count_words']}}</span>
+                    {{trans('account.words')}}
+                </li>
             </ul>
             <div class="tabs">
                 <div class="statistic__tabs tabs__content">
@@ -47,13 +51,13 @@
             </div>
             <div class="project__item">
                 <div id="setAutoTranslateProject" class="btn-lock @if ($site_settings->auto_translate == 1) btn-lock_on @endif"></div>
-                <span class="project__topic">Автоматический перевод</span>
-                <span class="project__status">Перевод новых страниц будет осуществляться автоматически</span>
+                <span class="project__topic">Автоматический машинный перевод</span>
+                <span class="project__status">Новые страницы переводятся автоматически</span>
             </div>
             <div class="project__item">
                 <div id="setAutoPublishingProject" class="btn-lock @if ($site_settings->auto_publishing == 1) btn-lock_on @endif"></div>
                 <span class="project__topic">Автопубликация</span>
-                <span class="project__status">Новые переведенные фразы сразу публикуются</span>
+                <span class="project__status">Новые переведенные блоки сразу публикуются</span>
             </div>
         </div>
         <div class="tariff inside-content__wrap">
@@ -74,7 +78,7 @@
             @if($site->subscription)
             <div class="tariff__info">
                 {{$site->subscription->plan->name}} –
-                <span class="tariff__sum">{{$site->subscription->month_cost}}</span> р/мес
+                <span class="tariff__sum">{{number_format($site->subscription->month_cost, 0, ' ', ' ')}}</span> р/мес
             </div>
             <div class="tariff__period">
                 @if($site->subscription->deposit > 0.00)

@@ -6,13 +6,18 @@
                 <div class="phrases__item-col">
                     <label for="order_{{$t->tid}}">{!! $t->original !!}</label>
                 </div>
-                <form class="phrases__item-col phrases__item-col_translate">
+                <form class="phrases__item-col phrases__item-col_translate @if (!$t->type_translate_id) active @endif">
                     <textarea onkeyup="$(this).attr('data-type', 2)" id="order_{{$t->tid}}">{{$t->text}}</textarea>
-                    <div class="phrases__item-col-btns">
+                    <div class="phrases__item-col-btns"  @if(!$t->type_translate_id) style="display: block;" @endif>
                         <button class="save save_translate btn btn_blue btn_4" object-id="{{$t->tid}}" type="submit">{{trans('account.save')}}</button>
                         <button class="cancel btn btn_5">{{trans('account.cancel')}}</button>
+                        @if ( $tab != 'tab_not_translated')
+                        <div>
+                            <button class="phrases__item-btn-translate1 go_robot isLinkMoreMenu" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button>
+                        </div>
+                        @endif
                     </div>
-                    @if (empty($t->text)) <button class="phrases__item-btn-translate go_robot isLinkMoreMenu" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button> @endif
+                    @if (empty($t->text) or !$t->type_translate_id) <button class="phrases__item-btn-translate1 go_robot isLinkMoreMenu" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</button> @endif
                 </form>
 
                 <div class="phrases__item-controls">
@@ -29,15 +34,13 @@
                 <div class="phrases__item-col phrases__item-col_block">
                     <label for="order_{{$t->tid}}">{!! $t->original !!}</label>
                 </div>
-                <div class="phrases__item-col phrases__item-col_block phrases__item-col_translate">
-                    <textarea onkeyup="$(this).attr('data-type', 2)" id="order_{{$t->tid}}" readonly>{{$t->text}}</textarea>
-                    <div class="phrases__item-col-btns">
+                <div class="phrases__item-col phrases__item-col_block phrases__item-col_translate  @if (!$t->type_translate_id) active @endif">
+                    <textarea onkeyup="$(this).attr('data-type', 2)" id="order_{{$t->tid}}" @if($t->type_translate_id) readonly @endif>{{$t->text}}</textarea>
+                    <div class="phrases__item-col-btns" @if(!$t->type_translate_id) style="display: block;" @endif>
                         <button class="save save_translate btn btn_blue btn_4" object-id="{{$t->tid}}" type="submit">{{trans('account.save')}}</button>
                         <button class="cancel btn btn_5">{{trans('account.cancel')}}</button>
-                        @if ( $tab != 'tab_not_translated' )
-                        <div>
-                            <a class="phrases__item-btn-translate go_robot" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</a>
-                        </div>
+                        @if ( $tab != 'tab_not_translated' or !$t->type_translate_id )
+                        <a class="phrases__item-btn-translate go_robot" data-id="{{$t->tid}}">{{trans('account.useRobotTrans')}}</a>
                         @endif
                     </div>
                 </div>
