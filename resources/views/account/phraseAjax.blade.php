@@ -62,7 +62,7 @@
     <div class="paginationAjax pagination-wrap">
         {!! $blocks->render() !!}
         <div class="pagination__count site__align-right">
-            <span>Показать:</span>
+            <span>{{trans('account.t_phrase_show_me')}}:</span>
             <?php $countItems = Session::get('count_items', 20)?>
             <a href="#" class="count-items @if($countItems == 20) active @endif" data-value="20">20</a>
             <a class="count-items @if($countItems == 50) active @endif" href="#" data-value="50">50</a>
@@ -72,5 +72,5 @@
 @endif
 
 @if($blocks->count() == 0)
-    <div class="alert alert-info">Не найдено фраз по заданным фильтрам</div>
+    <div class="alert alert-info">{{trans('account.t_phrase_not_find_phrases')}}</div>
 @endif

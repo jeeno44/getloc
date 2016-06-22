@@ -1,5 +1,5 @@
 @extends('layouts.account')
-@section('title') Фразы проекта @stop
+@section('title') {{trans('account.t_phrase_title')}} @stop
 @section('content')
     <aside class="site__aside">
         @include('partials.account-menu')
@@ -10,7 +10,7 @@
     <div class="inside-content">
         <div class="phrases">
 
-        <h1 class="site__title">Фразы проекта</h1>
+        <h1 class="site__title">{{trans('account.t_phrase_title')}}</h1>
         <div class="magic_tabs"{{-- class="tabs"--}}>
 
             <div class="tabs__links">
@@ -40,12 +40,12 @@
                 </div>
                 <button id="setViewTypeID_2" class="phrases__control-column @if ($viewType == 2) active @endif"></button>
                 <button id="setViewTypeID_1" class="phrases__control-horizontal @if ($viewType == 1) active @endif"></button>
-                <a href="#" class="phrases__control-send" id="order-selected-phrases">Отправить в заказ</a>
+                <a href="#" class="phrases__control-send" id="order-selected-phrases">{{trans('account.t_phrase_send_order')}}</a>
             </div>
 
             <div class="find-phrase">
                 <form action="#">
-                    <input class="site__input search-phrase search_text" type="search" name="search-phrase" placeholder="Найти фразу...">
+                    <input class="site__input search-phrase search_text" type="search" name="search-phrase" placeholder="{{trans('account.t_phrase_find_phrase')}}">
                     <button class="find-phrase__go button_search_text" type="submit"></button>
                     <a class="find-phrase__clean" href="#"></a>
                 </form>

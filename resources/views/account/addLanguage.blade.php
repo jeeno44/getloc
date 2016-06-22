@@ -1,5 +1,5 @@
 @extends('layouts.account')
-@section('title') Добавить язык @stop
+@section('title') {{trans('account.t_add_language')}} @stop
 @section('content')
     <aside class="site__aside">
         @include('partials.account-menu')
@@ -13,7 +13,7 @@
             </label>&nbsp;&nbsp;
         @endforeach
         <hr>
-        <input type="submit" class="btn btn-success" value="Сохранить">
+        <input type="submit" class="btn btn-success" value="{{trans('account.save')}}">
         {!! Form::close() !!}
     </div>
 @stop

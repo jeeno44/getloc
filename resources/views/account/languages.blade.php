@@ -1,5 +1,5 @@
 @extends('layouts.account')
-@section('title') Языки проекта @stop
+@section('title') {{trans('account.t_lang_title')}} @stop
 @section('content')
     <aside class="site__aside">
         @include('partials.account-menu')
@@ -39,7 +39,7 @@
                             @endforeach
                         </div>
                         @if($site->languages()->count() > 1)
-                            <a class="language__item-delete popup__open" href="#" data-popup="del{{$data['langID']}}">Удалить</a>
+                            <a class="language__item-delete popup__open" href="#" data-popup="del{{$data['langID']}}">{{trans('account.t_lang_delete')}}</a>
                         @endif
                     </div>
                 @endforeach
@@ -73,7 +73,7 @@
                             @endforeach
                         </div>
                         @if($site->languages()->count() > 1)
-                            <a class="language__item-delete popup__open" href="#" data-popup="del{{$data['langID']}}">Удалить</a>
+                            <a class="language__item-delete popup__open" href="#" data-popup="del{{$data['langID']}}">{{trans('account.t_lang_delete')}}</a>
                         @endif
                     </div>
                 @endforeach
@@ -88,7 +88,7 @@
             <div class="popup__content popup__choice">
                 <a href="#" class="popup__close">close</a>
                     {!! Form::open(['route' => ['main.account.post-languages', $site->id], 'class' => 'selecting-language']) !!}
-                    <h2 class="site__title site__title_center">Добавление языков</h2>
+                    <h2 class="site__title site__title_center">{{trans('account.t_lang_add_lang')}}</h2>
                     <div class="selecting-language__items">
                         @foreach($languages as $lng)
                             <div class="nice-check-language">
@@ -102,7 +102,7 @@
 
                     </div>
                     <button class="btn btn_8 btn_blue" type="submit">
-                        Добавить
+                        {{trans('account.t_lang_add')}}
                     </button>
                 {!! Form::close() !!}
             </div>
@@ -110,9 +110,9 @@
                 @foreach ($lineStats['on'] as $lang => $data)
                     <div class="popup__content popup__unavailable popup__del{{$data['langID']}}">
                         <a href="#" class="popup__close">close</a>
-                        <h2 class="site__title site__title_center">Удаления языка {{$lang}}</h2>
+                        <h2 class="site__title site__title_center">{{trans('account.t_lang_remove')}} {{$lang}}</h2>
                         <div style="text-align:center">
-                            <a class="btn btn_8 btn_blue" href="/account/language/delete/{{$site->id}}/{{$data['langID']}}">Удалить</a>
+                            <a class="btn btn_8 btn_blue" href="/account/language/delete/{{$site->id}}/{{$data['langID']}}">{{trans('account.t_lang_delete')}}</a>
                         </div>
                     </div>
                 @endforeach
@@ -121,9 +121,9 @@
                 @foreach ($lineStats['off'] as $lang => $data)
                     <div class="popup__content popup__unavailable popup__del{{$data['langID']}}">
                         <a href="#" class="popup__close">close</a>
-                        <h2 class="site__title site__title_center">Удаления языка {{$lang}}</h2>
+                        <h2 class="site__title site__title_center">{{trans('account.t_lang_remove')}} {{$lang}}</h2>
                         <div style="text-align:center">
-                            <a class="btn btn_8 btn_blue" href="/account/language/delete/{{$site->id}}/{{$data['langID']}}">Удалить</a>
+                            <a class="btn btn_8 btn_blue" href="/account/language/delete/{{$site->id}}/{{$data['langID']}}">{{trans('account.t_lang_delete')}}</a>
                         </div>
                     </div>
                 @endforeach

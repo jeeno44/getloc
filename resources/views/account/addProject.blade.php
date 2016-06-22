@@ -1,8 +1,8 @@
 @extends('layouts.account')
-@section('title') Добавить проект @stop
+@section('title') {{trans('account.t_add_project')}} @stop
 @section('content') 
     <!-- site__title title_project -->
-            <h1 class="site__title title_project">Создайте проект</h1>
+            <h1 class="site__title title_project">{{trans('account.t_create_project')}}</h1>
             <!-- site__title title_project -->
 
             <!-- new-project -->
