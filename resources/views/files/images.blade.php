@@ -1,12 +1,12 @@
 @extends('layouts.account')
-@section('title') Изображения проекта @stop
+@section('title') {{trans('account.t_image_title')}} @stop
 @section('content')
     <aside class="site__aside">
         @include('partials.account-menu')
     </aside>
     <div class="inside-content">
         <div class="pages">
-            <h2 class="site__title">Изображения проекта</h2>
+            <h2 class="site__title">{{trans('account.t_image_title')}}</h2>
             <ul class="page__wrap">
                 @forelse ($files as $file)
                     <li class="page__row">
@@ -14,7 +14,7 @@
                     </li>
                 @empty
                     <li class="page__row">
-                        Изображения на сайте не найдены
+                        {{trans('account.t_image_empty_find')}}
                     </li>
                 @endforelse
             </ul>

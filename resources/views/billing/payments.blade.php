@@ -1,5 +1,5 @@
 @extends('layouts.account')
-@section('title') История платежей @stop
+@section('title') {{trans('account.t_history_pay_title')}} @stop
 @section('content')
     <aside class="site__aside">
         @include('partials.account-menu')
@@ -10,11 +10,11 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Назначение</th>
-                        <th>Сумма</th>
-                        <th>Дата</th>
-                        <th>Тип</th>
-                        <th>Статус</th>
+                        <th>{{trans('account.t_history_pay_naznachenie')}}</th>
+                        <th>{{trans('account.t_history_pay_summa')}}</th>
+                        <th>{{trans('account.t_history_pay_date')}}</th>
+                        <th>{{trans('account.t_history_pay_type')}}</th>
+                        <th>{{trans('account.t_history_pay_status')}}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -22,12 +22,12 @@
                         <tr>
                             <td>
                                 @if ($item->relation == 'App\Order')
-                                    Заказ перевода № {{$item->outer_id}}
+                                    {{trans('account.t_history_pay_text_order')}} {{$item->outer_id}}
                                 @else
                                     @if(!empty($item->subscription->plan->name) && !empty($item->subscription->site->name))
-                                        Подписка на тарифный план {{$item->subscription->plan->name}} для проекта {{$item->subscription->site->name}}
+                                        {{trans('account.t_history_pay_text1')}} {{$item->subscription->plan->name}} {{trans('account.t_history_pay_for_project')}} {{$item->subscription->site->name}}
                                     @else
-                                        Оплата подписки (проект или подписка удалены)
+                                        {{trans('account.t_history_pay_text2')}}
                                     @endif
 
                                 @endif

@@ -1,8 +1,8 @@
-<p>Стоимость подписки по тарифу: {{$baseCost}} {{trans('phrases.rubles')}}</p>
+<p>{{trans('account.t_subtotal_text1')}} {{$baseCost}} {{trans('phrases.rubles')}}</p>
 @if($couponShow)
-    <p>Скидка по купону {{$couponShow}}</p>
+    <p>{{trans('account.t_subtotal_text2')}} {{$couponShow}}</p>
 @endif
 @if($timeDiscount)
-    <p>Скидка при оплате за {{getDurationsByKey($time)}} ({{$timeDiscount}})%: {{$timeDiscountSum}} {{trans('phrases.rubles')}}</p>
+    <p>{{trans('account.t_subtotal_text3')}} {{getDurationsByKey($time)}} ({{$timeDiscount}})%: {{$timeDiscountSum}} {{trans('phrases.rubles')}}</p>
 @endif
-<p><strong>Итого к оплате: {{$subtotal}} {{trans('phrases.rubles')}}</strong></p>
+<p><strong>{{trans('account.t_subtotal_total')}} {{$subtotal}} {{trans('phrases.rubles')}}</strong></p>

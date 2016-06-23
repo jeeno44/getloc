@@ -26,7 +26,7 @@
                         height="130">
 
                         <a href="{{route('main')}}">
-                            <img src="{{asset('assets/img/logo-mail.png')}}" width="110" height="28" alt="getLock">
+                            <img src="{{asset('assets/img/logo-mail.png')}}" width="110" height="28" alt="getLoc">
                         </a>
 
                     </td>

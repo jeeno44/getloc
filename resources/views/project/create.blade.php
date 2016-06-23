@@ -1,7 +1,7 @@
 @extends('layouts.account')
-@section('title') Добавить проект @stop
+@section('title') {{trans('account.t_create_project_title')}} @stop
 @section('content')
-<h1 class="site__title">Создание нового проекта</h1>
+<h1 class="site__title">{{trans('account.t_create_project_header')}}</h1>
 
 <div class="new-project">
     <!-- new-project
@@ -13,12 +13,12 @@
         <div class="new-project__pic" style="background-image: url(/assets/img/account/create-pic.png)"></div>
         <!-- new-project__list -->
         <ul class="new-project__list">
-            <li>Автоматическое составление карты сайта</li>
-            <li>Определение количества слов и текста для перевода</li>
-            <li>Переводите сами или используйте машинный перевод</li>
-            <li>Закажите профессиональный перевод</li>
-            <li>Перевод в 1 клик</li>
-            <li>Более 20 поддерживаемых языков и многое другое</li>
+            <li>{{trans('account.t_create_project_opt_1')}}</li>
+            <li>{{trans('account.t_create_project_opt_2')}}</li>
+            <li>{{trans('account.t_create_project_opt_3')}}</li>
+            <li>{{trans('account.t_create_project_opt_4')}}</li>
+            <li>{{trans('account.t_create_project_opt_5')}}</li>
+            <li>{{trans('account.t_create_project_opt_6')}}</li>
         </ul>
         <!-- /new-project__list -->
     </div>
@@ -33,30 +33,30 @@
         <form class="site__form" method="post" action="{{route('main.account.post-add-project')}}" novalidate>
             <fieldset>
                 <div class="site__data-field">
-                    <label class="site__label" for="name-project">Название проекта</label>
+                    <label class="site__label" for="name-project">{{trans('account.t_create_project_name_project')}}</label>
                     <input type="text" class="site__input" name="name" id="name-project" required>
                 </div>
                 <div class="new-project__question">
                     <span></span>
                     <div class="new-project__question-text">
-                        В случае если вы имеете файл локализации. Мы применим инструменты перевода только к загруженным файлам локализации. Ознакомьтесь с
-                        <a class="new-project__question-link" href="#">поддерживаемыми форматами</a>
-                        файлов локализаций.
+                        {{trans('account.t_create_project_but1')}} 
+                        <a class="new-project__question-link" href="#">{{trans('account.t_create_project_but2')}}</a> 
+                        {{trans('account.t_create_project_but3')}}
                     </div>
                 </div>
             </fieldset>
 
             <fieldset>
                 <div class="site__data-field">
-                    <label class="site__label" for="link-project">Ссылка на проект</label>
+                    <label class="site__label" for="link-project">{{trans('account.t_create_project_link_project')}}</label>
                     <input type="text" class="site__input" name="url" id="link-project" required>
                 </div>
                 <div class="new-project__question">
                     <span></span>
                     <div class="new-project__question-text">
-                        В случае если вы имеете файл локализации. Мы применим инструменты перевода только к загруженным файлам локализации. Ознакомьтесь с
-                        <a class="new-project__question-link" href="#">поддерживаемыми форматами</a>
-                        файлов локализаций.
+                        {{trans('account.t_create_project_but1')}} 
+                        <a class="new-project__question-link" href="#">{{trans('account.t_create_project_but2')}}</a>
+                        {{trans('account.t_create_project_but3')}}
                     </div>
 
                 </div>
@@ -64,17 +64,17 @@
             <fieldset class="discount__language">
                 <!-- site__data-field -->
                 <div class="site__data-field">
-                    <label class="site__label">Основной язык проекта</label>
+                    <label class="site__label">{{trans('account.t_create_project_general_lang')}}</label>
                     <!-- new-project__question -->
                     <div class="new-project__question">
                         <span></span>
                         <!-- new-project__question-text -->
                         <div class="new-project__question-text">
-                            В случае если вы имеете файл локализации. Мы применим инструменты перевода только к загруженным файлам локализации. Ознакомьтесь с
+                            {{trans('account.t_create_project_but1')}} 
                             <!-- new-project__question-link -->
-                            <a class="new-project__question-link" href="#">поддерживаемыми форматами</a>
+                            <a class="new-project__question-link" href="#">{{trans('account.t_create_project_but2')}}</a> 
                             <!-- /new-project__question-link -->
-                            файлов локализаций.
+                            {{trans('account.t_create_project_but3')}}
                         </div>
                         <!-- /new-project__question-text -->
                     </div>
@@ -85,7 +85,7 @@
                         <!-- discount__language-wrapper -->
                         <div class="discount__language-wrapper">
                             <select name="language[]" id="lang_1">
-                                <option value="0">Выберите язык</option>
+                                <option value="0">{{trans('account.t_create_project_select_lang')}}</option>
                             </select>
                         </div>
                         <!-- /discount__language-wrapper -->
@@ -98,17 +98,17 @@
             <fieldset class="discount__language">
                 <!-- site__data-field -->
                 <div class="site__data-field">
-                    <label class="site__label">Перевести проект на язык</label>
+                    <label class="site__label">{{trans('account.t_create_project_translate_in_lang')}}</label>
                     <!-- new-project__question -->
                     <div class="new-project__question">
                         <span></span>
                         <!-- new-project__question-text -->
                         <div class="new-project__question-text">
-                            В случае если вы имеете файл локализации. Мы применим инструменты перевода только к загруженным файлам локализации. Ознакомьтесь с
+                            {{trans('account.t_create_project_but1')}}
                             <!-- new-project__question-link -->
-                            <a class="new-project__question-link" href="#">поддерживаемыми форматами</a>
+                            <a class="new-project__question-link" href="#">{{trans('account.t_create_project_but2')}}</a>
                             <!-- /new-project__question-link -->
-                            файлов локализаций.
+                            {{trans('account.t_create_project_but3')}}
                         </div>
                         <!-- /new-project__question-text -->
                     </div>
@@ -118,11 +118,11 @@
                         <!-- discount__language-wrapper -->
                         <div class="discount__language-wrapper">
                             <select name="language[]" id="lang_3">
-                                <option value="0">Выберите язык</option>
+                                <option value="0">{{trans('account.t_create_project_select_lang')}}</option>
                             </select>
                         </div>
                         <!-- /discount__language-wrapper -->
-                        <a href="#" class="discount__languadge-add">Добавить язык перевода</a>
+                        <a href="#" class="discount__languadge-add">{{trans('account.t_create_project_add_lang_trans')}}</a>
                     </div>
                     <!-- /discount__selects-language -->
                 </div>
@@ -138,12 +138,12 @@
             <fieldset class="nice-check new-project__form-check">
                 <input type="checkbox" value="1" name="protected" id="new-project2">
                 <label for="new-project2">
-                    Мой сайт использует защиту (фаервол, проактивная защита)?
+                    {{trans('account.t_create_project_firewall')}}
                 </label>
             </fieldset>
             <!-- /nice-check -->
             <!-- btn  -->
-            <button class="btn btn_9 btn_blue">Создать проект</button>
+            <button class="btn btn_9 btn_blue">{{trans('account.t_create_project_create')}}</button>
             <!-- /btn  -->
         </form>
     </div>
