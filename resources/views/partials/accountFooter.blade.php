@@ -11,9 +11,9 @@
 
         <!-- footer-menu -->
         <div class="footer-menu">
-	        <a href="{{URL::route('main.account.selectProject')}}">Все проекты</a>
-			<a href="{{route('main.account.personal')}}">Мой профиль</a>
-            <a href="{{route('main.account.payments')}}">Мои платежи</a>
+	        <a href="{{URL::route('main.account.selectProject')}}">{{trans('account.t_all_projects')}}</a>
+			<a href="{{route('main.account.personal')}}">{{trans('account.t_my_profile')}}</a>
+            <a href="{{route('main.account.payments')}}">{{trans('account.t_my_pays')}}</a>
         </div>
         <!-- /footer-menu -->
 

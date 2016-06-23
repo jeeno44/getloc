@@ -1,5 +1,5 @@
 <div class="make-order" @if($costOrder == 0) style="display: none" @endif>
-    <h2 class="make-order__title">Заказ на перевод</h2>
+    <h2 class="make-order__title">{{trans('account.t_3akaz_perevod')}}</h2>
     <form action="/account/orders" method="get">
         <div class="site__align-items-justify">
             <div class="nice-check">
@@ -12,7 +12,7 @@
             <span>{{trans('account.costOrder')}}</span>
             <span class="make-order__total-price site__align-right costCount">{{ $costOrder }} Р</span>
         </div>
-        <a class="btn btn_6 btn_full-width make-order-btn"  style="padding-top: 14px;"  href="/account/orders">Оформить заказ</a>
+        <a class="btn btn_6 btn_full-width make-order-btn"  style="padding-top: 14px;"  href="/account/orders">{{trans('account.t_oformit_3akaz')}}</a>
     </form>
 </div>
 
@@ -34,15 +34,15 @@
         </div>
 
         <div class="site__aside-filter accordion">
-            <span class="accordion__head">Выбрать даты</span>
+            <span class="accordion__head">{{trans('account.t_select_date')}}</span>
             <div class="accordion__content">
                 <div class="choice-dates">
                     <div>
-                        <label for="from">от</label>
+                        <label for="from">{{trans('account.t_ot')}}</label>
                         <input class="site__input site__input_small datepicker date_filter_start" type="text" name="date_filter_start" id="date_filter_start">
                     </div>
                     <div>
-                        <label for="to">до</label>
+                        <label for="to">{{trans('account.t_do')}}</label>
                         <input class="site__input site__input_small datepicker date_filter_end" type="text" name="date_filter_end" id="date_filter_end">
                     </div>
                 </div>
@@ -69,7 +69,7 @@
 
         <div class="site__aside-filter accordion">
 
-            <span class="accordion__head">Страницы</span>
+            <span class="accordion__head">{{trans('account.t_filter_pages')}}</span>
             <div class="accordion__content">
                 <div class="search-pages" data-autocomplite="/account/pages/autocomplete/{{$site->id}}">
                     <div class="search-pages__fields">
@@ -90,6 +90,6 @@
 
         </div>
 
-    <a href="{{route('main.account.clear-filter')}}" class="btn btn_5">Очистить фильтр</a>
+    <a href="{{route('main.account.clear-filter')}}" class="btn btn_5">{{trans('account.t_clear_filter')}}</a>
     </form>
 </div>

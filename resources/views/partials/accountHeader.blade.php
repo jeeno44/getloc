@@ -46,7 +46,7 @@
                         @foreach ( $sites as $site )
                         <option @if (\Session::get('projectID') == $site->id) selected="selected" @endif value="{{URL::route('main.account.setProject', $site->id)}}">{{$site->name}}</option>
                         @endforeach
-                        <option class="all_projects" @if (\Session::get('projectID') == "") selected="selected" @endif value="{{URL::route('main.account.selectProject')}}">Все проекты</option>
+                        <option class="all_projects" @if (\Session::get('projectID') == "") selected="selected" @endif value="{{URL::route('main.account.selectProject')}}">{{trans('account.t_all_projects')}}</option>
                     </select>
                 </div>
                 <!-- /site-list -->
@@ -56,9 +56,9 @@
 
                     <!-- header__person-list -->
                     <ul class="header__person-list">
-                        <li><a href="{{route('main.account.personal')}}">Мой профиль</a></li>
-                        <li><a href="{{route('main.account.payments')}}">Мои платежи</a></li>
-                        <li><a href="{{URL::route('logout')}}">Выйти</a></li>
+                        <li><a href="{{route('main.account.personal')}}">{{trans('account.t_my_profile')}}</a></li>
+                        <li><a href="{{route('main.account.payments')}}">{{trans('account.t_my_pays')}}</a></li>
+                        <li><a href="{{URL::route('logout')}}">{{trans('account.t_exit')}}</a></li>
                     </ul>
                     <!-- /header__person-list -->
 
