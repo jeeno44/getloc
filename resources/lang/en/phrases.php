@@ -47,6 +47,7 @@ return [
   "culture" => "Culture",
   "business" => "Business",
   "technologies" => "Technology",
+  "login" => 'Log in',
   "marketing" => "Marketing",
   "science" => "Science",
   "how_it_works" => "How does it work?",
