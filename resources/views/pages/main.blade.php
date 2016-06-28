@@ -173,7 +173,7 @@
                         </div>
                     </li>
                 </ul>
-                <a class="btn btn_1 popup__open" data-popup="registry" href="#"><span>Зарегистроваться</span></a>
+                <a class="btn btn_1 popup__open" data-popup="registry" href="#"><span>{{trans('account.t_main_reg')}}</span></a>
                 <div class="next-step"></div>
             </div>
             <div class="people">
@@ -213,52 +213,52 @@
         <div class="discount" id="discount">
             <div class="site__wrap">
                 <div class="discount__layout">
-                    <h2 class="site__title">Получите <span>скидку</span> на локализацию вашего сайта</h2>
+                    <h2 class="site__title">{{trans('account.t_main_get')}} <span>{{trans('account.t_main_skidka')}}</span> {{trans('account.t_main_localize')}}</h2>
                     <div class="discount__introduction">
-                        <p>Заполните форму и когда проект запуститься, у вас будет возможность пользоваться услугами сервиса со скидкой.</p>
+                        <p>{{trans('account.t_main_form')}}</p>
                     </div>
                     <div class="discount__form">
                         {!! Form::open(['route' => 'main.get-demo', 'novalidate']) !!}
                             <fieldset>
-                                <label for="discount__email">Ваша эл. почта *</label>
+                                <label for="discount__email">{{trans('account.t_login_email')}}</label>
                                 <input type="email" id="discount__email"  placeholder="yourmail@gmai" required/>
                             </fieldset>
                             <fieldset>
-                                <label for="discount__name">Имя, фамилия</label>
+                                <label for="discount__name">{{trans('account.t_main_fio')}}</label>
                                 <input type="text" id="discount__name"/>
                             </fieldset>
                             <fieldset>
-                                <label for="discount__address">Адрес вашего сайта *</label>
+                                <label for="discount__address">{{trans('account.t_main_site_link')}}</label>
                                 <input type="text" id="discount__address" placeholder="http://yoursite.ru" required/>
                             </fieldset>
                             <fieldset>
-                                <label for="discount__phone">Номер телефона</label>
+                                <label for="discount__phone">{{trans('account.t_main_phone')}}</label>
                                 <input type="tel" id="discount__phone"/>
                             </fieldset>
                             <fieldset class="discount__language">
-                                <label>Язык перевода *</label>
+                                <label>{{trans('account.t_index_lang_translate')}}</label>
                                 <div class="discount__selects-language" data-language='{{getLanguagesJson()}}'>
                                     <div class="discount__language-wrapper">
                                         <select name="lang_1" id="lang_1" required>
-                                            <option value="0">Выберите язык</option>
+                                            <option value="0">{{trans('account.t_create_project_select_lang')}}</option>
                                         </select>
-                                        <a href="#" class="discount__languadge-add">Добавить язык перевода</a>
+                                        <a href="#" class="discount__languadge-add">{{trans('account.t_create_project_add_lang_trans')}}</a>
                                     </div>
                                 </div>
                             </fieldset>
                             <button class="btn btn_discount">
-                                <span>Получить скидку</span>
+                                <span>{{trans('account.t_main_take_skidka')}}</span>
                             </button>
                         {!! Form::close() !!}
                     </div>
                 </div>
                 <div class="discount__thanks">
                     <img src="/assets/img/img-thanks.png" alt="img"/>
-                    <h2 class="discount__thanks-title">Спасибо большое за вашу заявку</h2>
-                    <p>Мы добавили ваш сайт на просчёт текста. Мы можете посмотреть сколько там страниц, символов, слов и т.д.</p>
-                    <p>Мы также выслали вам письмо ссылкой на статистику по вашему сайту.</p>
+                    <h2 class="discount__thanks-title">{{trans('account.t_main_thx')}}</h2>
+                    <p>{{trans('account.t_main_thx_text1')}}</p>
+                    <p>{{trans('account.t_main_thx_text2')}}</p>
                     <a href="{{route('scan.main')}}" class="btn btn_2">
-                        <span>Посмотреть статистику</span>
+                        <span>{{trans('account.t_main_stat')}}</span>
                     </a>
                 </div>
             </div>

@@ -26,7 +26,7 @@
                         height="55">
 
                         <a href="{{route('main')}}">
-                            <img src="{{asset('assets/img/logo-mail.png')}}" width="110" height="28" alt="getLock">
+                            <img src="{{asset('assets/img/logo-mail.png')}}" width="110" height="28" alt="getLoc">
                         </a>
 
                     </td>
@@ -36,7 +36,7 @@
                 <!--content-->
                 <tr>
                     <td style="height: 200px; vertical-align: middle; text-align: center;" height="200">
-                        <img src="{{asset('assets/img/head-pic.jpg')}}" width="600" height="200" alt="getLock">
+                        <img src="{{asset('assets/img/head-pic.jpg')}}" width="600" height="200" alt="getLoc">
                     </td>
                 </tr>
                 <tr>
@@ -48,16 +48,16 @@
                             <tr>
                                 <td style="width: 20px;" width="20"></td>
                                 <td style="width: 560px;" width="560">
-                                    <h2 style="text-align: center; font-size: 24px; color: #333;">Привет!</h2>
+                                    <h2 style="text-align: center; font-size: 24px; color: #333;">{{trans('account.t_email_call_me_hello')}}</h2>
                                     <p style="text-align: left; font-size: 14px; line-height: 22px; color: #333; padding-top: 20px;">
-                                        Спасибо за проявленный интерес к нашему сервису локализации и переводов. Мы будем держать вас в курсе важных новостей и оповестим вас о запуске сервиса в первую очередь.
+                                        {{trans('account.t_email_call_me_text1')}}
                                     </p>		
                                     <p style="text-align: left; font-size: 14px; line-height: 22px; color: #333; padding-top: 20px;">
-                                        Попробуйте также наш <a href="{{route('scan.main')}}">инструмент аналитики</a> , для того, чтобы определить объемы текстов для перевода на вашем сайте.
+                                        {{trans('account.t_email_call_me_try')}} <a href="{{route('scan.main')}}">{{trans('account.t_email_call_me_analy')}}</a> , {{trans('account.t_email_call_me_text2')}}
                                     </p>
                                     <p style="text-align: left; font-size: 14px; line-height: 22px; color: #333; padding-top: 20px;">
                                         -<br />
-                                        Команда getLoc
+                                        {{trans('account.t_email_call_me_dream_team')}}
                                     </p>
                                 </td>
                                 <td style="width: 20px;" width="20"></td>
@@ -197,11 +197,11 @@
                                     <table cellpadding="0" cellspacing="0" width="100%" style="text-align: center">
                                         <tr>
                                             <td width="300" style="width: 300px; text-align: center; font-size: 11px; line-height: 22px; color: #fff;">
-                                                &copy;2016 getLoc. Все права защищены.
+                                                &copy;{{trans('account.t_email_call_me_copyright')}}
                                             </td>
 
                                             <td width="300" style="width: 300px; text-align: center; font-size: 11px; line-height: 22px;">
-	                                            <a style=" text-decoration: none; color: #a6bcc9;" href="#">Отписать от рассылки</a>
+	                                            <a style=" text-decoration: none; color: #a6bcc9;" href="#">{{trans('account.t_email_call_me_otpiska')}}</a>
                                                 {{--<a style=" text-decoration: none; color: #a6bcc9;" href="#">Обновить профиль подписчика</a>--}}
                                             </td>
                                         </tr>

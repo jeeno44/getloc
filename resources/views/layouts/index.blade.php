@@ -9,14 +9,14 @@
     <title>@yield('title')</title>
     <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
     <meta itemprop="name" content="getLoc - get Localization">
-    <meta itemprop="description" content="Идеальное решение для быстрого перевода и локализации веб-сайта на любые языки">
+    <meta itemprop="description" content="{{trans('account.t_index_desc')}}">
     <meta itemprop="image" content="http://get-loc.ru/assets/img/share.png">
 
     <meta property="og:site_name" content="getLoc - get Localization" />
     <link rel="image_src" href="http://get-loc.ru/assets/img/share.png" />
     <meta property="og:image" content="http://get-loc.ru/assets/img/share.png" />
     <meta property="og:title" content="getLoc - get Localization" />
-    <meta property="og:description" content="Идеальное решение для быстрого перевода и локализации веб-сайта на любые языки" />
+    <meta property="og:description" content="{{trans('account.t_index_desc')}}" />
     <meta property="og:url" content="http://get-loc.ru/" />
     
     <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,300,500,700&subset=cyrillic' rel='stylesheet' type='text/css'>
@@ -63,20 +63,20 @@
             <div class="popup__inner">
                 <form action="{{route('login.post')}}" class="site__form" novalidate method="post">
                     {!! csrf_field() !!}
-                    <span class="site__form-title">Вход</span>
+                    <span class="site__form-title">{{trans('account.t_login_title')}}</span>
                     <fieldset>
-                        <label for="email">Ваша эл. почта *</label>
+                        <label for="email">{{trans('account.t_login_email')}}</label>
                         <input type="email" id="email" required name="email">
                     </fieldset>
                     <fieldset>
-                        <label for="password">Пароль</label>
+                        <label for="password">{{trans('account.t_login_pass')}}</label>
                         <input type="password" id="password" required name="password">
                     </fieldset>
-                    <button type="submit" class="btn btn_enroll">Войти</button>
-                    <a href="{{route('password.reset.form')}}" class="site__form-forgot">Забыли пароль?</a>
+                    <button type="submit" class="btn btn_enroll">{{trans('account.t_login_enter')}}</button>
+                    <a href="{{route('password.reset.form')}}" class="site__form-forgot">{{trans('account.t_login_forget_pass')}}</a>
                 </form>
                 <div class="popup__social">
-                    Вы можете зайти через соцсети
+                    {{trans('account.t_login_social')}}
                     <div class="social-2">
                         <a href="{{route('facebook.redirect')}}" class="social-2__fb">facebook</a>
                         <a href="{{route('twitter.redirect')}}" class="social-2__tw">twitter</a>
@@ -85,8 +85,8 @@
                 </div>
             </div>
             <div class="popup__footer">
-                Нет учётной записи?
-                <a href="#" class="popup__open" data-popup="registry">Зарегистрироваться</a>
+                {{trans('account.t_index_no_user')}}
+                <a href="#" class="popup__open" data-popup="registry">{{trans('account.t_index_reg')}}</a>
             </div>
         </div>
         <div class="popup__content popup__content_check popup__registry">
@@ -99,23 +99,23 @@
             <div class="popup__inner">
                 <form action="{{route('register.post')}}" class="site__form" novalidate method="post">
                     {!! csrf_field() !!}
-                    <span class="site__form-title">Регистрация</span>
+                    <span class="site__form-title">{{trans('account.t_registr_title')}}</span>
                     <fieldset>
-                        <label for="name">Ваше имя</label>
+                        <label for="name">{{trans('account.t_personal_you_name')}}</label>
                         <input type="text" id="name" required name="name">
                     </fieldset>
                     <fieldset>
-                        <label for="email2">Ваша эл. почта *</label>
+                        <label for="email2">{{trans('account.t_login_email')}}</label>
                         <input type="email" id="email2" required name="email">
                     </fieldset>
                     <fieldset>
-                        <label for="password2">Пароль</label>
+                        <label for="password2">{{trans('account.t_login_pass')}}</label>
                         <input type="password" id="password2" required name="password">
                     </fieldset>
-                    <button type="submit" class="btn btn_enroll">Попробовать бесплатно</button>
+                    <button type="submit" class="btn btn_enroll">{{trans('account.t_index_try_free')}}</button>
                 </form>
                 <div class="popup__social">
-                    Вы можете зарегистрироваться через соцсети
+                    {{trans('account.t_index_social')}}
                     <div class="social-2">
                         <a href="{{route('facebook.redirect')}}" class="social-2__fb">facebook</a>
                         <a href="{{route('twitter.redirect')}}" class="social-2__tw">twitter</a>
@@ -124,8 +124,8 @@
                 </div>
             </div>
             <div class="popup__footer">
-                Уже регистрированы?
-                <a href="#" class="popup__open" data-popup="login">Войти</a>
+                {{trans('account.t_index_isset_login')}}
+                <a href="#" class="popup__open" data-popup="login">{{trans('account.t_login_enter')}}</a>
             </div>
         </div>
         <div class="popup__content popup__order">
@@ -155,13 +155,13 @@
                                     <input type="tel" id="discount__phone"/>
                                 </fieldset>
                                 <fieldset class="discount__language">
-                                    <label>Язык перевода *</label>
+                                    <label>{{trans('account.t_index_lang_translate')}}</label>
                                     <div class="discount__selects-language" data-language='{{getLanguagesJson()}}'>
                                         <div class="discount__language-wrapper">
                                             <select name="lang_1" id="lang_1" required>
-                                                <option value="0">Выберите язык</option>
+                                                <option value="0">{{trans('account.t_create_project_select_lang')}}</option>
                                             </select>
-                                            <a href="#" class="discount__languadge-add">Добавить язык перевода</a>
+                                            <a href="#" class="discount__languadge-add">{{trans('account.t_create_project_add_lang_trans')}}</a>
                                         </div>
                                     </div>
                                 </fieldset>

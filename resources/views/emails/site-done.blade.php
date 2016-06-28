@@ -48,15 +48,15 @@
                             <tr>
                                 <td style="width: 20px;" width="20"></td>
                                 <td style="width: 560px;" width="560">
-                                    <h2 style="text-align: center; font-size: 24px; color: #333; margin-bottom: 12px;">Привет!</h2>
+                                    <h2 style="text-align: center; font-size: 24px; color: #333; margin-bottom: 12px;">{{trans('account.t_email_call_me_hello')}}</h2>
                                     <p style="text-align: left; font-size: 14px; line-height: 22px; color: #333;">
-                                        Мы провели предварительный анализ вашего проекта и обнаружили следующее:
-                                        На сайте найдено собрано {{$site->pages()->count()}} страниц, {{$site->count_blocks}} фраз, {{$site->count_words}} слов, {{$site->count_symbols}} симоволов.
-                                        Данная аналитика поможет вам оценить объем текстов для перевода на вашем сайте.
-                                        Детально ознакомиться со страницами, фразами и словами вы можете на странице аналитики вашего проекта: <a href="{{route('scan.site', ['id' => $site->id])}}">ссылка на аналитику проекта</a>.
-                                        Анализ проектов других наших пользователей можно посмотреть на странице <a href="{{route('scan.main')}}">инструмент аналитики</a>.
+                                        {{trans('account.t_email_site_done_text1')}}
+                                        {{trans('account.t_email_site_done_text2')}} {{$site->pages()->count()}} {{trans('account.t_email_site_done_text3')}}, {{$site->count_blocks}} {{trans('account.t_email_site_done_text4')}}, {{$site->count_words}} {{trans('account.t_email_site_done_text5')}}, {{$site->count_symbols}} {{trans('account.t_email_site_done_text6')}}.
+                                        {{trans('account.t_email_site_done_text7')}}
+                                        {{trans('account.t_email_site_done_text8')}} <a href="{{route('scan.site', ['id' => $site->id])}}">{{trans('account.t_email_site_done_text9')}}</a>.
+                                        {{trans('account.t_email_site_done_text10')}} <a href="{{route('scan.main')}}">{{trans('account.t_email_call_me_analy')}}</a>.
                                         -
-                                        getLoc - локализация, перевод и не только
+                                        {{trans('account.t_email_site_done_text11')}}
                                     </p>
                                 </td>
                                 <td style="width: 20px;" width="20"></td>
@@ -73,7 +73,7 @@
                             <tr>
                                 <td style="width: 20px;" width="20"></td>
                                 <td style="width: 560px;" width="560">
-                                    <h3 style="text-align: center; font-size: 24px; color: #333; margin-bottom: 13px;">Мы собрали самое лучшее</h3>
+                                    <h3 style="text-align: center; font-size: 24px; color: #333; margin-bottom: 13px;">{{trans('account.t_email_get_demo_text9')}}</h3>
                                     <table cellpadding="0" cellspacing="0" width="100%">
                                         <tr style="height: 128px; text-align: center; vertical-align: middle;">
                                             <td width="200" height="128"  style="height: 128px; width: 200px;">
@@ -106,11 +106,11 @@
                                 <td style="width: 20px;" width="20"></td>
                                 <td style="width: 560px;" width="560">
                                     <p style="font-size: 14px; line-height: 22px; color: #333;">
-                                        Напоминаем вам про рестарт оффера Airbnb в нашей партнёрской
-                                        сети. Уже за первые три недели работы оффера мы показали
-                                        фантастические результаты по конверсии и прибыльности.
-                                        Мы добавили новые баннеры (доступны в ваших личных кабинетах).
-                                        <a style="color: #18baea;" href="#">Подробнее</a> об оффере на страницах нашего блога.
+                                        {{trans('account.t_email_get_demo_text10')}}
+                                        {{trans('account.t_email_get_demo_text11')}}
+                                        {{trans('account.t_email_get_demo_text12')}}
+                                        {{trans('account.t_email_get_demo_text13')}}
+                                        <a style="color: #18baea;" href="#">{{trans('account.more')}}</a> {{trans('account.t_email_get_demo_text14')}}
                                     </p>
                                 </td>
                                 <td style="width: 20px;" width="20"></td>
@@ -124,11 +124,11 @@
                                 <td style="width: 20px;" width="20"></td>
                                 <td style="width: 560px;" width="560">
                                     <p style="font-size: 14px; line-height: 22px; color: #333;">
-                                        Мы добавили в поисковые формы и White Label возможность включить
-                                        отображение окна с отелями от нашего рекламодателя Clicktripz.
-                                        Оплата идет за каждый уникальный клик в графу «Рекламный доход»,
-                                        у некоторых партнёров доход увеличился на 50%. Хотите так же? Не
-                                        забывайте включать галочку «Показывать отели» в настройках форм.
+                                        {{trans('account.t_email_get_demo_text15')}}
+                                        {{trans('account.t_email_get_demo_text16')}}
+                                        {{trans('account.t_email_get_demo_text17')}}
+                                        {{trans('account.t_email_get_demo_text18')}}
+                                        {{trans('account.t_email_get_demo_text19')}}
                                     </p>
                                 </td>
                                 <td style="width: 20px;" width="20"></td>
@@ -142,9 +142,9 @@
                                 <td style="width: 20px;" width="20"></td>
                                 <td style="width: 560px;" width="560">
                                     <p style="font-size: 14px; line-height: 22px; color: #333;">
-                                        На White Label это активируется автоматически. Это всплывающее
-                                        окно не влияет на конверсию и позиции в поисковиках. Мы и сами
-                                        используем его на главных страницах Aviasales и hotellook.
+                                        {{trans('account.t_email_get_demo_text20')}}
+                                        {{trans('account.t_email_get_demo_text21')}}
+                                        {{trans('account.t_email_get_demo_text22')}}
                                     </p>
                                 </td>
                                 <td style="width: 20px;" width="20"></td>
@@ -173,7 +173,7 @@
                                         </tr>
                                         <tr>
                                             <td style="text-align: center; font-size: 11px; line-height: 22px; color: #fff;">
-                                                © 2016 GetLoc. Все права защищены.
+                                                © {{trans('account.t_email_get_demo_copyright')}}
                                             </td>
                                         </tr>
                                         <tr>
@@ -189,11 +189,11 @@
                                     <table cellpadding="0" cellspacing="0" width="100%" style="text-align: center">
                                         <tr>
                                             <td width="300" style="width: 300px; text-align: center; font-size: 11px; line-height: 22px;">
-                                                <a style=" text-decoration: none; color: #a6bcc9;" href="#">Отписать от рассылки</a>
+                                                <a style=" text-decoration: none; color: #a6bcc9;" href="#">{{trans('account.t_email_call_me_otpiska')}}</a>
                                             </td>
 
                                             <td width="300" style="width: 300px; text-align: center; font-size: 11px; line-height: 22px;">
-                                                <a style=" text-decoration: none; color: #a6bcc9;" href="#">Обновить профиль подписчика</a>
+                                                <a style=" text-decoration: none; color: #a6bcc9;" href="#">{{trans('account.t_email_get_demo_update_profile')}}</a>
                                             </td>
                                         </tr>
                                     </table>

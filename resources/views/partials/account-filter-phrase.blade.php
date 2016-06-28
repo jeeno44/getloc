@@ -10,7 +10,7 @@
         </div>
         <div class="make-order__total site__align-items-justify">
             <span>{{trans('account.costOrder')}}</span>
-            <span class="make-order__total-price site__align-right costCount">{{ $costOrder }} Р</span>
+            <span class="make-order__total-price site__align-right costCount">{{ $costOrder }} {{trans('account.t_order_rubl')}}</span>
         </div>
         <a class="btn btn_6 btn_full-width make-order-btn"  style="padding-top: 14px;"  href="/account/orders">{{trans('account.t_oformit_3akaz')}}</a>
     </form>

@@ -9,14 +9,14 @@
     <title>@yield('title')</title>
     <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
     <meta itemprop="name" content="getLoc - get Localization">
-    <meta itemprop="description" content="Идеальное решение для быстрого перевода и локализации веб-сайта на любые языки">
+    <meta itemprop="description" content="{{trans('account.t_index_desc')}}">
     <meta itemprop="image" content="http://get-loc.ru/assets/img/share.png">
 
     <meta property="og:site_name" content="getLoc - get Localization" />
     <link rel="image_src" href="http://get-loc.ru/assets/img/share.png" />
     <meta property="og:image" content="http://get-loc.ru/assets/img/share.png" />
     <meta property="og:title" content="getLoc - get Localization" />
-    <meta property="og:description" content="Идеальное решение для быстрого перевода и локализации веб-сайта на любые языки" />
+    <meta property="og:description" content="{{trans('account.t_index_desc')}}" />
     <meta property="og:url" content="http://get-loc.ru/" />
     
     <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,300,500,700&subset=cyrillic' rel='stylesheet' type='text/css'>
