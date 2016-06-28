@@ -421,10 +421,6 @@ return [
     't_partners_phone' => 'Телефон',
     't_partners_email' => 'E-mail',
     't_partners_part' => 'Стать партнером',
-    't_partners_' => '',
-    't_partners_' => '',
-    't_partners_' => '',
-    't_partners_' => '',
     /* error */
     'errorOutputPhrase_1' => 'Не удалось включить вывод фразы!',
     'errorOutputPhrase_0' => 'Не удалось отключить вывод фразы!',
