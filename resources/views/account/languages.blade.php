@@ -24,7 +24,7 @@
                             <div data-langid='{{$data['langID']}}' class="control__btn-lock btn-lock btn-lock_on turnLang"></div>
                         </div>
                         <div class="language__links" data-langid='{{$data['langID']}}'>
-                            <a href="/account/phrase" class="search_language">{{trans('account.showTranslate')}}</a>
+                            <a href="{{route('main.account.phrase')}}" class="search_language">{{trans('account.showTranslate')}}</a>
                             <a href="{{route('main.billing.make-order', ['id' => $data['langID']])}}" class="order_translation">{{trans('account.orderTrans')}}</a>
                             {{--
                                 <a href="#" class="download_file">{{trans('account.downloadFile')}}</a>
@@ -112,7 +112,7 @@
                         <a href="#" class="popup__close">close</a>
                         <h2 class="site__title site__title_center">{{trans('account.t_lang_remove')}} {{$lang}}</h2>
                         <div style="text-align:center">
-                            <a class="btn btn_8 btn_blue" href="/account/language/delete/{{$site->id}}/{{$data['langID']}}">{{trans('account.t_lang_delete')}}</a>
+                            <a class="btn btn_8 btn_blue" href="{{route('main.lang.del', [$site->id, $data['langID']])}}">{{trans('account.t_lang_delete')}}</a>
                         </div>
                     </div>
                 @endforeach
@@ -123,7 +123,7 @@
                         <a href="#" class="popup__close">close</a>
                         <h2 class="site__title site__title_center">{{trans('account.t_lang_remove')}} {{$lang}}</h2>
                         <div style="text-align:center">
-                            <a class="btn btn_8 btn_blue" href="/account/language/delete/{{$site->id}}/{{$data['langID']}}">{{trans('account.t_lang_delete')}}</a>
+                            <a class="btn btn_8 btn_blue" href="{{route('main.lang.del', [$site->id, $data['langID']])}}">{{trans('account.t_lang_delete')}}</a>
                         </div>
                     </div>
                 @endforeach

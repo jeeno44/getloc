@@ -24,11 +24,23 @@ class Language
     public function handle($request, Closure $next)
     {
         $locale = $request->segment(1);
+        
         if (array_key_exists($locale, $this->app->config->get('app.locales'))) {
             $this->app->setLocale($locale);
+            \Session::set('locale', $locale);  
         } else {
-            $this->app->setLocale($this->app->config->get('app.fallback_locale'));
+            if ( !\Session::has('locale') )
+                $this->app->setLocale($this->app->config->get('app.fallback_locale'));
         }
+        
+        if ( $this->request->ajax() )
+          {
+            if ( \Session::has('locale') )
+              {
+                $this->app->setLocale(\Session::get('locale'));
+              }
+          }
+        
         return $next($request);
     }
 }

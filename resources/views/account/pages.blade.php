@@ -25,9 +25,9 @@
                 @foreach ($pages as $p)
                     <li class="page__row @if ($p->enabled == 0) page__row_active @elseif($p->collected == 0) page__row_in-progress @endif">
                         @if($p->enabled)
-                            <a href="/account/phrase?url={{ urlencode($p->url) }}" class="pages__page">{{ $p->url }}</a>
+                            <a href="{{route('main.account.phrase')}}?url={{ urlencode($p->url) }}" class="pages__page">{{ $p->url }}</a>
                         @else
-                            <a href="/account/phrase?url={{ urlencode($p->url) }}" class="pages__page disabled" disabled="disabled">{{ $p->url }}</a>
+                            <a href="{{route('main.account.phrase')}}?url={{ urlencode($p->url) }}" class="pages__page disabled" disabled="disabled">{{ $p->url }}</a>
                         @endif
                         <div class="page__status">
                             @if($p->collected == 1)

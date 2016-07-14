@@ -3,7 +3,7 @@
 @section('content')
     <div class="project-list__topic">
         <h2 class="site__title site__title_2">{{trans('account.t_sproject_my_projects')}}</h2>
-        <a href="/account/add-project" class="project-list__add">{{trans('account.t_sproject_add_new')}}</a>
+        <a href="{{route('main.account.add-project')}}" class="project-list__add">{{trans('account.t_sproject_add_new')}}</a>
     </div>
     @foreach($mySites as $site)
         <div class="project-list__item">

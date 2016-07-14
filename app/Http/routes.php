@@ -18,6 +18,11 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
      * Base site routes
      */
     Route::group(['domain' => $domain], function () {
+        
+  
+
+        
+     
         Route::get('/', ['as' => 'main', 'uses' => 'HomeController@index']);
         Route::get('/feature', ['as' => 'main.feature', 'uses' => 'HomeController@feature']);
         Route::any('/call-me', ['as' => 'main.call-me', 'uses' => 'HomeController@callMe']);
@@ -84,9 +89,9 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/get-history/{id}', ['as' => 'main.account.get-history', 'uses' => 'AccountController@getHistory']);
             Route::get('/pages/disable/{id}', 'AccountController@disablePage');
             Route::get('/pages/enable/{id}', 'AccountController@enablePage');
-            Route::get('/language/delete/{siteID}/{languageID}', 'ProjectController@deleteLanguages');
-            Route::get('/images', 'FilesController@images');
-            Route::get('/docs', 'FilesController@docs');
+            Route::get('/language/delete/{siteID}/{languageID}', ['as' => 'main.lang.del', 'uses' => 'ProjectController@deleteLanguages']);
+            Route::get('/images', ['as' => 'main.account.images', 'uses' => 'FilesController@images']);
+            Route::get('/docs', ['as' => 'main.account.docs', 'uses' => 'FilesController@docs']);
             Route::any('/pages/autocomplete/{id}', 'AccountController@pagesAutoComplete');
 
             Route::get('/personal', ['as' => 'main.account.personal', 'uses' => 'PersonalController@index']);
