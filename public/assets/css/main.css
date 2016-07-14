@@ -138,6 +138,7 @@ input[type="search"]::-webkit-search-cancel-button {
     -webkit-transform: translateY(-65px);
     transition: transform .3s ease;
     -webkit-transition: -webkit-transform .3s ease;
+    z-index: 3;
 }
 .site__header_2{
     background: #434954;
@@ -696,7 +697,7 @@ input[type="search"]::-webkit-search-cancel-button {
     opacity: 0;
     transition: visibility .3s ease, opacity .3s ease;
     -webkit-transition: visibility .3s ease, opacity .3s ease;
-    z-index: 3;
+    z-index: 3000;
 }
 .language__list:before{
     content: '';

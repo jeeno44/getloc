@@ -64,26 +64,16 @@
 
                 </div>
                 <!-- /header__person -->
-
-                {{--
+                
+               
                 <div class="language">
-
-                    <!-- language__btn -->
-                    <button class="language__btn">RU</button>
-                    <!-- /language__btn -->
-
-                    <!-- language__list -->
+                    <button class="language__btn">{{strtoupper($locale)}}</button>
                     <ul class="language__list">
-                        <li><a href="#">Русский</a></li>
-                        <li><a class="active" href="#">English</a></li>
-                        <li><a href="#">Deutsch</a></li>
-                        <li><a href="#">Español</a></li>
+                        <li><a href="/ru">Русский</a></li>
+                        <li><a href="/en">English</a></li>
                     </ul>
-                    <!-- /language__list -->
-
                 </div>
-                <!-- /language -->
-                --}}
+               
 
             </div>
             <!-- /site__header-layout -->

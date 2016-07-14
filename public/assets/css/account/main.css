@@ -764,8 +764,8 @@ input[type=search].site__input.search-phrase{
 .header__person{
     position: absolute;
     top: 0;
-    right: 20px;
-    /*right: 62px;*/
+    /*right: 20px;*/    
+    right: 62px;
     width: 32px;
     height: 32px;
     border-radius: 5px;
@@ -929,8 +929,8 @@ input[type=search].site__input.search-phrase{
 .site-list{
     position: absolute;
     top: 0;
-    right: 75px;    
-    /*right: 104px;*/
+    /* right: 75px; */   
+    right: 104px;
 }
 .site-list__add{
 	float: left;

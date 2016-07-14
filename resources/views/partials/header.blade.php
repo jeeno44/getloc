@@ -12,6 +12,13 @@
                 --}}
                 </nav>
                 @include('partials.login')
+                <div class="language">
+                    <button class="language__btn">{{strtoupper($locale)}}</button>
+                    <ul class="language__list">
+                        <li><a href="/ru">Русский</a></li>
+                        <li><a href="/en">English</a></li>
+                    </ul>
+                </div>
             </div>
 
         </div>
@@ -30,6 +37,13 @@
                 --}}
                 </nav>
                 @include('partials.login')
+                <div class="language">
+                    <button class="language__btn">{{strtoupper($locale)}}</button>
+                    <ul class="language__list">
+                        <li><a href="/ru">Русский</a></li>
+                        <li><a href="/en">English</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </header>
@@ -47,6 +61,13 @@
                 --}}
                 </nav>
                 @include('partials.login')
+                <div class="language">
+                    <button class="language__btn">{{strtoupper($locale)}}</button>
+                    <ul class="language__list">
+                        <li><a href="/ru">Русский</a></li>
+                        <li><a href="/en">English</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </header>
