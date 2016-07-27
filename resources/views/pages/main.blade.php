@@ -182,7 +182,7 @@
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="people__img" style="background: url('/assets/pic/review_1.jpg')"></div>
-                            <span class="people__info"><strong>{{trans('phrases.review_1_person')}}</strong> / 36 {{trans('phrases.years_old')}}</span>
+                            <span class="people__info"><strong>{{trans('phrases.review_1_person')}}</strong></span>
                             <span class="people__post">{{trans('phrases.review_1_post')}}</span>
                             <div class="people__content">
                                 <p>{!!trans('phrases.review_1_text')!!}</p>
@@ -198,7 +198,7 @@
                         </div>
                         <div class="swiper-slide">
                             <div class="people__img" style="background: url('/assets/pic/review_3.jpg')"></div>
-                            <span class="people__info"><strong>{{trans('phrases.review_3_person')}}</strong> / 35 {{trans('phrases.years_old')}}</span>
+                            <span class="people__info"><strong>{{trans('phrases.review_3_person')}}</strong></span>
                             <span class="people__post">{{trans('phrases.review_3_post')}}</span>
                             <div class="people__content">
                                 <p>{!!trans('phrases.review_3_text')!!}</p>
@@ -247,7 +247,7 @@
                                 </div>
                             </fieldset>
                             <button class="btn btn_discount">
-                                <span>{{trans('account.t_main_take_skidka')}}</span>
+                                <span>{{trans('phrases.get_discount')}}</span>
                             </button>
                         {!! Form::close() !!}
                     </div>

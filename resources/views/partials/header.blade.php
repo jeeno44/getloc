@@ -7,9 +7,9 @@
             <div class="site__header-inner">
                 <nav class="header__menu">
                     <a href="{{route('main.feature')}}">{{trans('phrases.capabilities')}}</a>
-                    {{--
+                    @if (\Auth::check() && \App\User::find(\Auth::user()->id)->hasRole('show_stat') )
                     <a href="{{route('scan.main')}}">{{trans('phrases.analytics')}}</a>
-                --}}
+                    @endif
                 </nav>
                 @include('partials.login')
                 <div class="language">
@@ -32,9 +32,9 @@
             <div class="site__header-inner">
                 <nav class="header__menu">
                     <a href="{{route('main.feature')}}" class="active">{{trans('phrases.capabilities')}}</a>
-                    {{--
+                    @if (\Auth::check() && \App\User::find(\Auth::user()->id)->hasRole('show_stat') )
                     <a href="{{route('scan.main')}}">{{trans('phrases.analytics')}}</a>
-                --}}
+                    @endif
                 </nav>
                 @include('partials.login')
                 <div class="language">
@@ -56,9 +56,9 @@
             <div class="site__header-inner">
                 <nav class="header__menu">
                     <a href="{{route('main.feature')}}">{{trans('phrases.capabilities')}}</a>
-                    {{--
-                    <a href="{{route('scan.main')}}" class="active">{{trans('phrases.analytics')}}</a>
-                --}}
+                    @if (\Auth::check() && \App\User::find(\Auth::user()->id)->hasRole('show_stat') )
+                    <a href="{{route('scan.main')}}">{{trans('phrases.analytics')}}</a> 
+                    @endif
                 </nav>
                 @include('partials.login')
                 <div class="language">

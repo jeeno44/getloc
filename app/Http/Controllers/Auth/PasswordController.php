@@ -30,6 +30,7 @@ class PasswordController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+        \View::share('locale', \App::getLocale());
     }
 
     protected function getEmailSubject()

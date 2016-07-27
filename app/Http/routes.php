@@ -6,12 +6,14 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
     /**
      * Scan routes
      */
-    Route::group(['domain' => 'scan.'.$domain], function () {
+    Route::group(['domain' => 'scan.'.$domain, 'middleware' => 'scan'], function () {
         Route::get('/', ['as' => 'scan.main', 'uses' => 'ScanController@index']);
         Route::get('/site/{id}', ['as' => 'scan.site', 'uses' => 'ScanController@site']);
         Route::get('/page/{id}', ['as' => 'scan.page', 'uses' => 'ScanController@page']);
         Route::post('/site', ['as' => 'scan.site.post', 'uses' => 'ScanController@postSite']);
         Route::any('/sites', ['as' => 'scan.sites', 'uses' => 'ScanController@anySites']);
+        Route::get('login', ['as' => 'scan.login.form', 'uses' => 'Auth\AuthController@showLoginForm']);
+//        Route::post('login', ['as' => 'scan.login.post', 'uses' => 'Auth\AuthController@login']);
     });
 
     /**

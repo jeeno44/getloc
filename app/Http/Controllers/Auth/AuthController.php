@@ -49,6 +49,7 @@ class AuthController extends Controller
     {
         $this->middleware('guest', ['except' => 'logout']);
         $this->redirectTo = route('main.account.selectProject');
+        \View::share('locale', \App::getLocale());
     }
 
     /**

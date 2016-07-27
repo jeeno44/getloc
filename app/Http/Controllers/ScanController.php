@@ -12,6 +12,18 @@ use App\Http\Controllers\Controller;
 
 class ScanController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+        
+        if ( \Auth::check() && !\App\User::find(\Auth::user()->id)->hasRole('show_stat') )
+          {
+       
+            \Redirect::route('main')->send();
+            exit;
+          }
+    }
+    
     public function index(Request $request)
     {
         $newSite = \Session::get('site');

@@ -25,6 +25,9 @@ class Language
     {
         $locale = $request->segment(1);
         
+        if ( $locale == 'login' )
+            $this->app->setLocale($this->app->config->get('app.fallback_locale'));
+        
         if (array_key_exists($locale, $this->app->config->get('app.locales'))) {
             $this->app->setLocale($locale);
             \Session::set('locale', $locale);  
