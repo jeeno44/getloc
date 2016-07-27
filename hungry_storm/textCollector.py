@@ -123,7 +123,7 @@ def stressTest(urls, rpb, message):
                     req      = future.result()
                     response = urllib2.urlopen(req, timeout=10)
                 except urllib2.HTTPError as e:
-                    if e.code == 503 or e.code == 403:
+                    if e.code == 503 or e.code == 403 or e.code == 500:
                         rpb.publish('textCollectorOneThread', message)
                         print "Отправлено в один поток"
                         return True
