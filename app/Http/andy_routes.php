@@ -130,8 +130,7 @@ Route::group(['domain' => 'api.'.$domain], function () {
 });
 
 Route::get('test', function () use ($domain) {
-    $order = \App\Order::first();
-    
+    \Redis::publish('telebot', json_encode(['msg' => 'Бла бла бла'], JSON_UNESCAPED_UNICODE));
 });
 
 Route::get('rescan-errors/{id}', function($id) {

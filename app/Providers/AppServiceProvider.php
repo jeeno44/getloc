@@ -14,17 +14,21 @@ class AppServiceProvider extends ServiceProvider
     {
         \Event::listen('maps.done', function($site) {
             $domain = env('APP_DOMAIN');
+            \Redis::publish('telebot', json_encode(['msg' => $site->url.': паук отработал'], JSON_UNESCAPED_UNICODE));
             if ($site->protected == 1) {
                 \Redis::publish('textCollectorOneThread', json_encode(['site' => $site->id, 'api' => 'api.'.$domain], JSON_UNESCAPED_UNICODE));
+                \Redis::publish('telebot', json_encode(['msg' => $site->url.': запустился медленный коля'], JSON_UNESCAPED_UNICODE));
             } else {
-                if ( \DB::table('site_tate_collector')->count() == 0 )
+                if ( \DB::table('site_tate_collector')->count() == 0 ) {
                     \Redis::publish('collector', json_encode(['site' => $site->id, 'api' => 'api.'.$domain], JSON_UNESCAPED_UNICODE));
-
+                    \Redis::publish('telebot', json_encode(['msg' => $site->url.': запустился шустрый коля'], JSON_UNESCAPED_UNICODE));
+                }
                 \DB::table('site_tate_collector')->insert(['siteID' => $site->id]);
             }
         });
         \Event::listen('site.done', function($site) {
             //\Queue::push(new \App\Jobs\CreateEmptyTranslates($site));
+            \Redis::publish('telebot', json_encode(['msg' => $site->url.': просчет закончен'], JSON_UNESCAPED_UNICODE));
             \Mail::send('emails.site-done', compact('site'), function($m) use ($site) {
                 $m->to($site->user->email)->subject('Мы проанализировали ваш проект "'.$site->url.'"');
             });
@@ -36,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
         \Event::listen('site.start', function($site){
             $domain = env('APP_DOMAIN');
             \Redis::publish('spider', json_encode(['site' => $site->id, 'api' => 'api.'.$domain], JSON_UNESCAPED_UNICODE));
+            \Redis::publish('telebot', json_encode(['msg' => $site->url.': запустился паук'], JSON_UNESCAPED_UNICODE));
         });
         \Event::listen('order.payed', function ($order) {
             $translates = \DB::table('translates')
