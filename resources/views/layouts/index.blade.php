@@ -30,7 +30,7 @@
 <div class="site" id="up">
     @include('partials.header')
     @yield('content')
-    <footer class="site__footer">
+    <footer class="site__footer" @if(strpos(url('/'), 'scan')) style="bottom: 0" @endif>
         <div class="site__footer-layout">
             <div class="footer__logo">
                 <img src="/assets/img/logo.png" width="90" height="26" alt="getLoc">

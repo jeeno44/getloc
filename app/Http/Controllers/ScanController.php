@@ -28,15 +28,15 @@ class ScanController extends Controller
     {
         $newSite = \Session::get('site');
         if (!empty($request->get('search'))) {
-            $sites = Site::latest()->where('name', 'like', '%'.$request->get('search').'%')->where('enabled', 1)->paginate(20);
+            $sites = Site::latest()->where('user_id', \Auth::user()->id)->where('name', 'like', '%'.$request->get('search').'%')->where('enabled', 1)->paginate(20);
         } else {
-            $sites = Site::latest()->where('enabled', 1)->paginate(20);
+            $sites = Site::latest()->where('user_id', \Auth::user()->id)->where('enabled', 1)->paginate(20);
         }
         $countSites = Site::count();
         $countPages = Page::count();
         $countBlocks = Block::count();
         \Session::remove('site');
-        $allSites = Site::all()->pluck('name')->toJson();
+        $allSites = Site::where('user_id', \Auth::user()->id)->pluck('name')->toJson();
         return view('pages.sites', compact('sites', 'countSites', 'countPages', 'countBlocks', 'newSite', 'allSites'));
     }
 
