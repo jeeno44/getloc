@@ -16,12 +16,12 @@ class ScanController extends Controller
     {
         parent::__construct();
         
-        if ( \Auth::check() && !\App\User::find(\Auth::user()->id)->hasRole('show_stat') )
-          {
-       
-            \Redirect::route('main')->send();
-            exit;
-          }
+//        if ( \Auth::check() && !\App\User::find(\Auth::user()->id)->hasRole('show_stat') )
+//          {
+//
+//            \Redirect::route('main')->send();
+//            exit;
+//          }
     }
     
     public function index(Request $request)

@@ -14,17 +14,16 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::any('/sites', ['as' => 'scan.sites', 'uses' => 'ScanController@anySites']);
         Route::get('login', ['as' => 'scan.login.form', 'uses' => 'Auth\AuthController@showLoginForm']);
 //        Route::post('login', ['as' => 'scan.login.post', 'uses' => 'Auth\AuthController@login']);
+        Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@logout']);
+        Route::get('register', ['as' => 'scan.register.form', 'uses' => 'Auth\AuthController@showRegistrationForm']);
+        Route::post('register', ['as' => 'scan.register.post', 'uses' => 'Auth\AuthController@register']);
+
     });
 
     /**
      * Base site routes
      */
     Route::group(['domain' => $domain], function () {
-        
-  
-
-        
-     
         Route::get('/', ['as' => 'main', 'uses' => 'HomeController@index']);
         Route::get('/feature', ['as' => 'main.feature', 'uses' => 'HomeController@feature']);
         Route::any('/call-me', ['as' => 'main.call-me', 'uses' => 'HomeController@callMe']);
@@ -37,32 +36,32 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/languages', ['as' => 'main.account.languages', 'uses' => 'AccountController@projectLanguages']);
             Route::get('/projects', ['as' => 'main.account.selectProject', 'uses' => 'AccountController@selectProject']);
             Route::get('/setProjects/{id}', ['as' => 'main.account.setProject', 'uses' => 'AccountController@setProject']);
-            
+
             Route::post('/switchingLanguage', ['as' => 'main.account.switchLang', 'uses' => 'AccountController@turnLang']);
             #Route::get('/addLanguage/', ['as' => 'main.account.addlang', 'uses' => 'AccountController@addLanguage']);
             #Route::post('/addLanguage/', ['as' => 'main.account.postaddlang', 'uses' => 'AccountController@postAddLanguage']);
-            
-            
+
+
             Route::get('/widget/', ['as' => 'main.account.widget', 'uses' => 'AccountController@widget']);
             Route::get('/settings', ['as' => 'main.account.settings', 'uses' => 'AccountController@settings']);
             //Route::get('/addProject/', ['as' => 'main.account.addproject', 'uses' => 'AccountController@addProject']);
-            
+
             Route::get('/phrase/not_translated', ['as' => 'main.account.phrase1', 'uses' => 'AccountController@phraseNotTranslatesTab']);
             Route::get('/phrase/translated', ['as' => 'main.account.phrase2', 'uses' => 'AccountController@phraseTranslatesTab']);
             Route::get('/phrase/published', ['as' => 'main.account.phrase3', 'uses' => 'AccountController@phrasePublishingTab']);
             Route::get('/phrase/', ['as' => 'main.account.phrase', 'uses' => 'AccountController@phraseNotTranslatesTab']);
             Route::get('/clear-filter/', ['as' => 'main.account.clear-filter', 'uses' => 'AccountController@clearFilter']);
-            
+
             Route::get('/add-project/', ['as' => 'main.account.add-project', 'uses' => 'ProjectController@addProject']);
             Route::post('/add-project/', ['as' => 'main.account.post-add-project', 'uses' => 'ProjectController@postAddProject']);
             Route::get('/add_language/', ['as' => 'main.account.addlanguages', 'uses' => 'ProjectController@languages']);
             Route::post('/languages/{id}', ['as' => 'main.account.post-languages', 'uses' => 'ProjectController@postLanguages']);
-            
+
             Route::post('/phrase/setFilter', ['as' => 'main.account.setFilter', 'uses' => 'AccountController@setFilterPharse']);
-            
+
             Route::get('/widget/', ['as' => 'main.account.widget', 'uses' => 'AccountController@widget']);
             Route::post('/widget/', ['as' => 'main.account.widgetPost', 'uses' => 'AccountController@widgetPost']);
-            
+
             /* ajax */
             Route::post('/robot/{id}', ['as' => 'api.robot', 'uses' => 'ApiController@anyBing']);
             Route::post('/getTextFromRobot/{id}', ['as' => 'api.robot', 'uses' => 'ApiController@maybeTranslateFromBing']);
@@ -99,7 +98,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/personal', ['as' => 'main.account.personal', 'uses' => 'PersonalController@index']);
             Route::post('/personal', ['as' => 'main.account.personal-store', 'uses' => 'PersonalController@store']);
         });
-        
+
     });
 
 });

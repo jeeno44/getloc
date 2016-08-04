@@ -5,9 +5,11 @@
 @section('content')
 
     <div class="site__content site_inner">
-
         <!-- site__wrap -->
         <div class="site__wrap">
+            @if(count($sites)>=3)
+                <div class="warn_panel">{{trans('phrases.limit_warning')}}</div>
+            @endif
 
             <!-- site__title -->
             <h1 class="site__title">{{trans('phrases.analytics')}}</h1>
@@ -64,7 +66,11 @@
             <div class="site__panel">
 
                 <!-- btn -->
+                @if(count($sites) >= 3)
+                <a class="btn btn_add_disabled">
+                @else
                 <a class="btn btn_add popup__open" data-popup="order">
+                @endif
                     <span>{{trans('phrases.add_your_site')}}</span>
                 </a>
                 <!-- /btn -->

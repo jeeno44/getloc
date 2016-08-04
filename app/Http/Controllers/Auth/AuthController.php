@@ -31,6 +31,17 @@ class AuthController extends Controller
      */
     protected $redirectTo = '/';
 
+    protected function authenticated(User $user)
+    {
+        if (\Auth::check()) {
+            $user = \Auth::user();
+
+            if ($user->hasRole('show_stat')) {
+                return redirect(route('scan.main'));
+            }
+        }
+    }
+
     protected function sendFailedLoginResponse(Request $request)
     {
         return redirect()->route('login.form')
@@ -48,7 +59,17 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'logout']);
-        $this->redirectTo = route('main.account.selectProject');
+//        if (\Auth::check()) {
+//            $user = \Auth::user();
+//
+//            if ($user->hasRole('show_stat')) {
+//                return $this->redirectTo = route('scan.main');
+//            }
+//        }
+//        $this->redirectTo = route('main.account.selectProject');
+        if ($this->user) {
+            \Log::info(var_dump($this->user));
+        }
         \View::share('locale', \App::getLocale());
     }
 
@@ -74,11 +95,16 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+        if(!empty($data['role'])) {
+            $role = \App\Role::find($data['role']);
+            $user->assignRole($role);
+        }
+        return $user;
     }
 
     public function adminForm()

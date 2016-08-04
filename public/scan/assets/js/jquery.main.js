@@ -190,25 +190,13 @@ var FormValidation = function (obj) {
                         }
 
                         if (_obj.hasClass('discount__form')) {
-
-                            var selectsVal = [];
-
-                            $.each( $('.discount__selects-language select'), function(i){
-                                selectsVal[i] = this.value;
-                            } );
-
                             $.ajax({
                                 url: _action,
                                 dataType: 'html',
                                 timeout: 20000,
                                 type: "GET",
                                 data: {
-                                    discount: 'true',
-                                    name: $('#discount__name').val(),
-                                    email: $('#discount__email').val(),
-                                    phone: $('#discount__phone').val(),
                                     site: $('#discount__address').val(),
-                                    language: selectsVal
                                 },
                                 success: function () {
                                     $('.discount__layout').addClass('success');

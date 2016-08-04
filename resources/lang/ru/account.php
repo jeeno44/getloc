@@ -372,7 +372,7 @@ return [
     't_index_reg'                        => 'Зарегистрироваться',
     't_index_try_free'                   => 'Попробовать бесплатно',
     't_index_social'                     => 'Вы можете зарегистрироваться через соцсети',
-    't_index_isset_login'                => 'Уже регистрированы?',
+    't_index_isset_login'                => 'Уже зарегистрированы?',
     't_index_lang_translate'             => 'Язык перевода *',
     't_main_reg'                         => 'Зарегистроваться',
     't_main_get'                         => 'Получите',

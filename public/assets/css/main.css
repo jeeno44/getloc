@@ -166,14 +166,14 @@ input[type="search"]::-webkit-search-cancel-button {
     left: 0;
     right: 0;
     bottom: 0;
-    height: 300px;
-    padding-top: 61px;
+    height: 100px;
+    padding-top: 81px;
     background-color: #434954;
 }
 .site__footer-layout {
     position: relative;
     width: 992px;
-    height: 300px;
+    height: 100px;
     padding: 0 20px;
     margin: 0 auto;
 }
@@ -1262,7 +1262,7 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 .discount__layout fieldset{
     display: inline-block;
-    width: 228px;
+    width: 480px;
     margin-bottom: 14px;
     text-align: center;
 }
@@ -1414,7 +1414,7 @@ fieldset.discount__language{
 .social{
     position: absolute;
     right: 18px;
-    top: -6px;
+    top: -18px;
 }
 .social a{
     display: inline-block;
@@ -2405,3 +2405,28 @@ a.social-ok{
 }
 /*-------------/program------------*/
 
+.warn_panel{
+    /*height: 100px;*/
+    width: 100%;
+    /*line-height: 46px;*/
+    padding: 20px 43px 20px 39px;
+    color: #465863;
+    font-weight: 500;
+    background-color: #fed400;
+    vertical-align: top;
+    transition: background-color .3s ease;
+    -webkit-transition: background-color .3s ease;
+    margin-bottom: 44px;
+    text-align: center;
+}
+.btn_add_disabled{
+    height: 46px;
+    line-height: 46px;
+    padding: 0 43px 0 39px;
+    color: #465863;
+    font-weight: 500;
+    background-color: #868893;
+    vertical-align: top;
+    transition: background-color .3s ease;
+    -webkit-transition: background-color .3s ease;
+}

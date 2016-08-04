@@ -21,7 +21,8 @@ class Scan
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                if ( $request->route()->getAction()['as'] != 'scan.login.form' )
+                if ( !($request->route()->getAction()['as'] == 'scan.login.form' ||
+                    $request->route()->getAction()['as'] == 'scan.register.form'))
                     return redirect()->guest('login');
             }
         }

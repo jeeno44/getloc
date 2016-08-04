@@ -34,6 +34,14 @@ class User extends Authenticatable
         return in_array($check, array_pluck($this->roles->toArray(), 'name'));
     }
 
+    public function assignRole($role) {
+        $this->roles()->attach($role);
+    }
+
+    public function sites() {
+        return $this->hasMany('App\Site');
+    }
+
     public function subscription()
     {
         return $this->hasOne('App\Subscription');
