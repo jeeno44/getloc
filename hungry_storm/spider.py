@@ -3,15 +3,21 @@ import json
 import collections
 from grab import Grab
 import time
-import pymysql
+import MySQLdb
 import urllib.request
 from db_access import mysql_credentials
+import sys
+
+from pprint import pprint
 
 start = time.time()
 r = redis.Redis()
 ps = r.pubsub()
 ps.subscribe('spider')
 STOP_WORDS = ['mailto', 'redirect_to', 'youtube.com', 'uploads', 'upload', '(', '#', 'share', 'facebook.com', '.pdf', '..', '.ppt', '.jpg', 'redirect', 'tel:', '.doc', '.docx', '.eps', '.cdr']
+
+def bot_error(message):
+    r.publish('telebot', json.dumps({'msg': message}))
 
 def prep(href):
     href = href.strip('/')
@@ -112,46 +118,50 @@ def scan(starting_url):
 
 
 for item in ps.listen():
-   if (item['type'] == "message"):
-       try:
-           data = json.loads(item['data'].decode("utf-8"))
-           print('start')
-           site = data['site']
-           api  = 'http://' + data['api'] + '/python/map-done/' + str(site)
-           if mysql_credentials['unix_socket']:
-               connection      = pymysql.connect(
-                   host        = mysql_credentials['host'],
-                   user        = mysql_credentials['user'],
-                   password    = mysql_credentials['password'],
-                   db          = mysql_credentials['db'],
-                   charset     = mysql_credentials['charset'],
-                   unix_socket = mysql_credentials['unix_socket'],
-               )
-           else:
-               connection      = pymysql.connect(
-                   host        = mysql_credentials['host'],
-                   user        = mysql_credentials['user'],
-                   password    = mysql_credentials['password'],
-                   db          = mysql_credentials['db'],
-                   charset     = mysql_credentials['charset'],
-               )
-           try:
-               with connection.cursor() as cursor:
-                   sql = "SELECT `url`, `secret` FROM `sites` WHERE `id` = %s"
-                   cursor.execute(sql, site)
-                   url = cursor.fetchone()
-                   if url[0]:
-                       urls = scan(url[0])
-                       for page in urls:
-                           sql = "SELECT `url` FROM `pages` WHERE `url` = %s"
-                           res = cursor.execute(sql, page)
-                           if not res:
-                               sql = "INSERT INTO `pages` (`site_id`, `url`, `code`, `visited`, `level`, `collected`) VALUES (%s, %s, 200 ,1, 1, 0)"
-                               cursor.execute(sql, (site, page))
-                               connection.commit()
+    if (item['type'] == "message"):
+        try:
+            data = json.loads(item['data'].decode("utf-8"))
+            print('start')
+            site = data['site']
+            api  = 'http://' + data['api'] + '/python/map-done/' + str(site)
+            try:
+                connection      = MySQLdb.connect(
+                    host        = mysql_credentials['host'],
+                    user        = mysql_credentials['user'],
+                    passwd      = mysql_credentials['password'],
+                    db          = mysql_credentials['db'],
+                    charset     = mysql_credentials['charset']
+                )
+            except Exception as e:
+                bot_error("!!! ПАУК !!! - Error %d: %s" % (e.args[0], e.args[1]))
+                sys.stderr.write("!!! ПАУК !!! - Error %d: %s" % (e.args[0], e.args[1]))
+            else:
+                try:
+                    with connection.cursor() as cursor:
+                        sql = "SELECT `url`, `secret` FROM `sites` WHERE `id` = %s"
+                        cursor.execute(sql, site)
+                        url = cursor.fetchone()
+                        pprint(url)
+                        if url[0]:
+                            urls = scan(url[0])
+                            for page in urls:
+                                sql = "SELECT `url` FROM `pages` WHERE `url` = %s"
+                                res = cursor.execute(sql, page)
+                                if not res:
+                                    sql = "INSERT INTO `pages` (`site_id`, `url`, `code`, `visited`, `level`, `collected`) VALUES (%s, %s, 200 ,1, 1, 0)"
+                                    cursor.execute(sql, (site, page))
+                                    connection.commit()
+                except Exception as e:
+                    bot_error("!!! ПАУК !!! - Error %d: %s" % (e.args[0], e.args[1]))
+                    sys.stderr.write("!!! ПАУК !!! - Error %d: %s" % (e.args[0], e.args[1]))
+                    pass
 
-           finally:
-               connection.close()
-           urllib.request.urlopen(api)
-       except:
-           pass
+                finally:
+                    connection.close()
+                    urllib.request.urlopen(api)
+
+        except Exception as e:
+            bot_error("!!! ПАУК !!! - Error %d: %s" % (e.args[0], e.args[1]))
+            sys.stderr.write("!!! ПАУК !!! - Error %d: %s" % (e.args[0], e.args[1]))
+            pass
+            
