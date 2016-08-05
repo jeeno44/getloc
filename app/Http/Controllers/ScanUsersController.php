@@ -40,6 +40,9 @@ class ScanUsersController extends AdminController
     {
         $user = User::findOrfail($id);
         $data = $request->all();
+        if (empty($data['is_contragent'])) {
+            $data['is_contragent'] = false;
+        }
         $user->update($data);
         $detail = \App\UserDetail::where('user_id', $this->user->id)->first();
         if (!$detail) {

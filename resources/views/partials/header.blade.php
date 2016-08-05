@@ -20,7 +20,6 @@
                     </ul>
                 </div>
             </div>
-
         </div>
     </header>
 @elseif (!empty($route) && $route == 'main.feature')
@@ -50,9 +49,16 @@
 @else
     <header class="site__header site__header_not-logged">
         <div class="site__header-layout">
-            <a href="{{route('main')}}" class="logo">
-                <img src="/assets/img/logo.png" width="90" height="26" alt="getLoc">
-            </a>
+            @if(strpos(url('/'), 'scan'))
+                <a href="{{route('scan.main')}}" class="logo">
+                    <img src="/assets/img/logo.png" width="90" height="26" alt="getLoc">
+                </a>
+            @else
+                <a href="{{route('main')}}" class="logo">
+                    <img src="/assets/img/logo.png" width="90" height="26" alt="getLoc">
+                </a>
+            @endif
+
             <div class="site__header-inner">
                 <nav class="header__menu">
                     @if(strpos(url('/'), 'scan'))

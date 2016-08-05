@@ -18,8 +18,7 @@
                 <!-- site__title -->
                 <h1 class="site__title">{{beautyUrl($site->url)}}</h1>
                 <!-- /site__title -->
-
-                <span class="projects__done">{{trans('phrases.site_done')}}</span>
+                <a href="/export/{{$site->id}}" class="btn btn_discount">Cкачать</a>
 
             </div>
             <!-- /site__panel -->
@@ -28,14 +27,14 @@
             <ul class="statistic statistic_col-4">
                 <li>
                     <!-- statistic__num -->
-                    <span class="statistic__num">{{$site->pages()->count()}}</span>
+                    <span class="statistic__num">{{number_format($site->pages()->count(), 0, '.', ' ')}}</span>
                     <!-- /statistic__num -->
                     <span>{{trans('phrases.pages')}}</span>
                 </li>
                 <li>
 
                     <!-- statistic__num -->
-                    <span class="statistic__num">{{$site->count_blocks}}</span>
+                    <span class="statistic__num">{{number_format($site->count_blocks, 0, '.', ' ')}}</span>
                     <!-- /statistic__num -->
 
                     <span>{{trans('phrases.blocks')}}</span>
@@ -43,7 +42,7 @@
                 <li>
 
                     <!-- statistic__num -->
-                    <span class="statistic__num">{{$site->count_words}}</span>
+                    <span class="statistic__num">{{number_format($site->count_words, 0, '.', ' ')}}</span>
                     <!-- /statistic__num -->
 
                     <span>{{trans('phrases.words')}}</span>
@@ -51,7 +50,7 @@
                 <li>
 
                     <!-- statistic__num -->
-                    <span class="statistic__num">{{$site->count_symbols}}</span>
+                    <span class="statistic__num">{{number_format($site->count_symbols, 0, '.', ' ')}}</span>
                     <!-- /statistic__num -->
 
                     <span>{{trans('phrases.symbols')}}</span>
@@ -93,13 +92,13 @@
                             @endif
                         </td>
                         <td>
-                            {{$page->count_blocks}}
+                            {{number_format($page->count_blocks, 0, '.', ' ')}}
                         </td>
                         <td>
-                            {{$page->count_words}}
+                            {{number_format($page->count_words, 0, '.', ' ')}}
                         </td>
                         <td>
-                            {{$page->count_symbs}}
+                            {{number_format($page->count_symbs, 0, '.', ' ')}}
                         </td>
                     </tr>
                 @endforeach

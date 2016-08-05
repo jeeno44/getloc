@@ -29,13 +29,15 @@ class ScanController extends Controller
     {
         $newSite = \Session::get('site');
         if (!empty($request->get('search'))) {
+            $siteIds = Site::latest()->where('user_id', \Auth::user()->id)->where('name', 'like', '%'.$request->get('search').'%')->where('enabled', 1)->lists('id')->toArray();
             $sites = Site::latest()->where('user_id', \Auth::user()->id)->where('name', 'like', '%'.$request->get('search').'%')->where('enabled', 1)->paginate(20);
         } else {
             $sites = Site::latest()->where('user_id', \Auth::user()->id)->where('enabled', 1)->paginate(20);
+            $siteIds = Site::latest()->where('user_id', \Auth::user()->id)->where('enabled', 1)->lists('id')->toArray();
         }
-        $countSites = Site::count();
-        $countPages = Page::count();
-        $countBlocks = Block::count();
+        $countSites = Site::where('user_id', \Auth::user()->id)->count();
+        $countPages = Page::whereIn('site_id', $siteIds)->count();
+        $countBlocks = 123;
         \Session::remove('site');
         $allSites = Site::where('user_id', \Auth::user()->id)->pluck('name')->toJson();
         $details = UserDetail::where('user_id', \Auth::user()->id)->first();
@@ -135,7 +137,7 @@ class ScanController extends Controller
         }
         $exp .= "\n\t\t</body>\n\t</tmx>";
         header("Content-type: text/xml");
-        header("Content-Disposition: attachment; filename=экспорт {$site->name}.xml");
+        header("Content-Disposition: attachment; filename={$site->name}-export.xml");
         echo $exp;
     }
 }

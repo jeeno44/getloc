@@ -7,9 +7,7 @@
     <div class="site__content site_inner">
         <!-- site__wrap -->
         <div class="site__wrap">
-            @if(count($sites) >= Auth::user()->max_sites)
-                <div class="warn_panel">{{trans('phrases.limit_warning')}}</div>
-            @endif
+            <div class="warn_panel">{{trans('phrases.limit_warning')}}</div>
 
             <!-- site__title -->
             <h1 class="site__title">{{trans('phrases.analytics')}}</h1>
@@ -42,7 +40,7 @@
                     <!-- /statistic__title -->
 
                     <!-- statistic__num -->
-                    <span class="statistic__num">{{$countPages}}</span>
+                    <span class="statistic__num">{{number_format($countPages, 0, '.', ' ')}}</span>
                     <!-- /statistic__num -->
 
                     <span>{{trans('phrases.pages')}}</span>
@@ -54,7 +52,7 @@
                     <!-- /statistic__title -->
 
                     <!-- statistic__num -->
-                    <span class="statistic__num">{{$countBlocks}}</span>
+                    <span class="statistic__num">{{number_format($countBlocks, 0, '.', ' ')}}</span>
                     <!-- /statistic__num -->
 
                     <span>{{trans('phrases.blocks')}}</span>
@@ -65,22 +63,14 @@
             <!-- site__panel -->
             <div class="site__panel">
 
-                <!-- btn -->
-                @if(count($sites) >= Auth::user()->max_sites)
-                    @if(!$details)
-                        <a class="btn btn_add_disabled"><span>{{trans('phrases.add_your_site')}}</span></a>
-                        <a class="btn btn_add" href="/contragent">Регистрация как контрагент</a>
-                    @else
-                        <a class="btn btn_add popup__open" data-popup="order">
-                            <span>{{trans('phrases.add_your_site')}}</span>
-                        </a>
-                    @endif
+                @if(!\Auth::user()->is_contragent && \Auth::user()->max_sites < \Auth::user()->sites()->count())
+                    <a class="btn btn_add_disabled"><span>{{trans('phrases.add_your_site')}}</span></a>
+                    <a class="btn btn_add" href="/contragent">Регистрация как контрагент</a>
                 @else
-                <a class="btn btn_add popup__open" data-popup="order">
-                    <span>{{trans('phrases.add_your_site')}}</span>
-                </a>
+                    <a class="btn btn_add popup__open" data-popup="order">
+                        <span>{{trans('phrases.add_your_site')}}</span>
+                    </a>
                 @endif
-                <!-- /btn -->
 
                 <!-- search -->
                 <div class="search">
@@ -106,7 +96,7 @@
                     <td>{{ucfirst(trans('phrases.blocks'))}}</td>
                     <td>{{ucfirst(trans('phrases.words'))}}</td>
                     <td>{{ucfirst(trans('phrases.symbols'))}}</td>
-                    <td>экспорт</td>
+                    <td>Экспорт</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -125,7 +115,7 @@
                             <td class="projects__status">
                                 <span class="projects__picking">
                                     {{trans('phrases.building_structure')}}
-                                    ({{$site->pages()->where('visited', 1)->count()}} / {{$site->pages()->count()}})
+                                    ({{number_format($site->pages()->where('visited', 1)->count(), 0, '.', ' ')}} / {{number_format($site->pages()->count(), 0, '.', ' ')}})
                                 </span>
 
                             </td>
@@ -134,7 +124,7 @@
                             <td class="projects__status">
                                 <span class="projects__picking">
                                     {{trans('phrases.collect_text')}}
-                                    ({{$site->pages()->where('collected', 1)->count()}} / {{$site->pages()->count()}})
+                                    ({{number_format($site->pages()->where('collected', 1)->count(), 0, '.', ' ')}} / {{number_format($site->pages()->count(), 0, '.', ' ')}})
                                 </span>
                             </td>
                         @else
@@ -144,9 +134,9 @@
                             </td>
                         @endif
                         <td>{{$site->pages()->count()}}</td>
-                        <td>{{$site->count_blocks}}</td>
-                        <td>{{$site->count_words}}</td>
-                        <td>{{$site->count_symbols}}</td>
+                        <td>{{number_format($site->count_blocks, 0, '.', ' ')}}</td>
+                        <td>{{number_format($site->count_words, 0, '.', ' ')}}</td>
+                        <td>{{number_format($site->count_symbols, 0, '.', ' ')}}</td>
                         <td>
                             @if($site->count_words)<a href="/export/{{$site->id}}">скачать</a>@endif
                         </td>

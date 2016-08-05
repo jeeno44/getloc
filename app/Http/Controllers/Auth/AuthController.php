@@ -137,6 +137,11 @@ class AuthController extends Controller
 
     public function getLogout()
     {
+        if (strpos(\URL::previos(), 'scan')) {
+            \Auth::guard($this->getGuard())->logout();
+            \Session::remove('projectID');
+            return redirect()->route('scan.main');
+        }
         return $this->logout();
     }
 
@@ -144,6 +149,9 @@ class AuthController extends Controller
     {
         \Auth::guard($this->getGuard())->logout();
         \Session::remove('projectID');
+        if (strpos(\URL::previous(), 'scan')) {
+            return redirect()->route('scan.main');
+        }
         return redirect('/');
     }
 }

@@ -41,6 +41,14 @@
                     {!! Form::number('max_sites', $user->max_sites, ['class' => 'form-control']) !!}
                 </div>
             </div>
+            <div class="form-group col-sm-12 clearfix">
+                <div class="col-sm-3 right-align for-label">
+                    <label class="form-label">Контрагент?</label>
+                </div>
+                <div class="col-sm-6">
+                    {!! Form::checkbox('is_contragent', $user->is_contragent) !!}
+                </div>
+            </div>
             <div class="block-header">
                 <h3 class="block-title">Реквизиты</h3>
             </div>
@@ -87,6 +95,7 @@
                 {!! Form::text('company_principal_post', $detail->company_principal_post, ['class' => 'form-control']) !!}
             </div>
     </div>
+
     <div class="block-header">
         <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-check"></i> Сохранить</button>
     </div>

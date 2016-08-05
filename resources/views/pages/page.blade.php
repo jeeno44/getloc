@@ -28,14 +28,14 @@
             <ul class="statistic statistic_col-4">
                 <li>
                     <!-- statistic__num -->
-                    <span class="statistic__num">{{$page->site->pages()->count()}}</span>
+                    <span class="statistic__num">{{number_format($page->site->pages()->count(), 0, '.', ' ')}}</span>
                     <!-- /statistic__num -->
                     <span>{{trans('phrases.pages')}}</span>
                 </li>
                 <li>
 
                     <!-- statistic__num -->
-                    <span class="statistic__num">{{$page->site->count_blocks}}</span>
+                    <span class="statistic__num">{{number_format($page->site->count_blocks, 0, '.', ' ')}}</span>
                     <!-- /statistic__num -->
 
                     <span>{{trans('phrases.blocks')}}</span>
@@ -43,7 +43,7 @@
                 <li>
 
                     <!-- statistic__num -->
-                    <span class="statistic__num">{{$page->site->count_words}}</span>
+                    <span class="statistic__num">{{number_format($page->site->count_words, 0, '.', ' ')}}</span>
                     <!-- /statistic__num -->
 
                     <span>{{trans('phrases.words')}}</span>
@@ -51,7 +51,7 @@
                 <li>
 
                     <!-- statistic__num -->
-                    <span class="statistic__num">{{$page->site->count_symbols}}</span>
+                    <span class="statistic__num">{{number_format($page->site->count_symbols, 0, '.', ' ')}}</span>
                     <!-- /statistic__num -->
 
                     <span>{{trans('phrases.symbols')}}</span>
