@@ -18,7 +18,7 @@
                 <!-- site__title -->
                 <h1 class="site__title">{{beautyUrl($site->url)}}</h1>
                 <!-- /site__title -->
-                <a href="/export/{{$site->id}}" class="btn btn_discount">Cкачать</a>
+                <a href="/export/{{$site->id}}" class="btn btn_discount">Экспорт в TMX</a>
 
             </div>
             <!-- /site__panel -->

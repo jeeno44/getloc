@@ -142,4 +142,15 @@ class ScanController extends Controller
         header("Content-Disposition: attachment; filename={$site->name}-export.xml");
         echo $exp;
     }
+
+    public function delete($id)
+    {
+        $site = Site::find($id);
+        if (empty($site) || $site->user_id != $this->user->id) {
+            abort(404);
+        }
+        \DB::table('sites')->where('id', $id)->delete();
+        \Session::remove('projectID');
+        return redirect()->back()->with('msg', ['class' => 'info-massages__item_deleted', 'text' => 'Проект успешно удален']);
+    }
 }

@@ -68,12 +68,8 @@
                     <a class="btn btn_add" href="/contragent">Регистрация как контрагент</a>
                 @else
                     @if(Auth::user()->sites()->count() > Auth::user()->max_sites)
-                        <a class="btn btn_add_disabled"><span>{{trans('phrases.add_your_site')}}</span></a>
-                        <a class="btn btn_add" href="/contragent">Регистрация как контрагент</a>
                     @else
-                        <a class="btn btn_add popup__open" data-popup="order">
-                            <span>{{trans('phrases.add_your_site')}}</span>
-                        </a>
+
                     @endif
 
                 @endif
@@ -144,7 +140,8 @@
                         <td>{{number_format($site->count_words, 0, '.', ' ')}}</td>
                         <td>{{number_format($site->count_symbols, 0, '.', ' ')}}</td>
                         <td>
-                            @if($site->count_words)<a href="/export/{{$site->id}}">скачать</a>@endif
+                            @if($site->count_words)<a href="/export/{{$site->id}}">Скачать</a>&nbsp;&nbsp;&nbsp;@endif
+                            <a href="/delete/{{$site->id}}">Удалить</a>
                         </td>
                     </tr>
                 @endforeach

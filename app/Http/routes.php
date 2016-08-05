@@ -25,6 +25,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::resource('users', 'ScanUsersController');
         });
         Route::get('/profile', ['as' => 'scan.account.personal', 'uses' => 'PersonalController@index']);
+        Route::get('/delete/{id}', 'ScanController@delete');
         Route::post('/profile', ['as' => 'scan.account.personal-store', 'uses' => 'PersonalController@store']);
     });
 
