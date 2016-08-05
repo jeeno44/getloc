@@ -7,7 +7,7 @@
     <div class="site__content site_inner">
         <!-- site__wrap -->
         <div class="site__wrap">
-            <div class="warn_panel">{{trans('phrases.limit_warning')}}</div>
+            <div class="warn_panel">В демо-режиме доступны {{Auth::user()->max_sites}} просчета. Для дальнейшей работы заполните форму регистрации контрагента. Стоимость 99 рублей за просчет</div>
 
             <!-- site__title -->
             <h1 class="site__title">{{trans('phrases.analytics')}}</h1>
