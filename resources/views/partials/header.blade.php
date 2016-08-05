@@ -55,9 +55,12 @@
             </a>
             <div class="site__header-inner">
                 <nav class="header__menu">
-                    <a href="{{route('main.feature')}}">{{trans('phrases.capabilities')}}</a>
-                    @if (\Auth::check() && \App\User::find(\Auth::user()->id)->hasRole('show_stat') )
-                    <a href="{{route('scan.main')}}">{{trans('phrases.analytics')}}</a> 
+                    @if(strpos(url('/'), 'scan'))
+                    @else
+                        <a href="{{route('main.feature')}}">{{trans('phrases.capabilities')}}</a>
+                        @if (\Auth::check() && \App\User::find(\Auth::user()->id)->hasRole('show_stat') )
+                            <a href="{{route('scan.main')}}">{{trans('phrases.analytics')}}</a>
+                        @endif
                     @endif
                 </nav>
                 @include('partials.login')

@@ -48,9 +48,6 @@
     padding: 0 20px;
     margin: 0 auto;
 }
-.site:after {
-    height: 166px;
-}
 .header__person{
     position: absolute;
     top: 0;

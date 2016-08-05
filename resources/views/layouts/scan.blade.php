@@ -32,32 +32,7 @@
     @include('partials.header')
 
     @yield('content')
-    <!-- /site__footer -->
-    <footer class="site__footer">
-        <!-- /site__footer-layout -->
-        <div class="site__footer-layout">
-            <!-- footer__logo -->
-            <div class="footer__logo">
-                <img src="/assets/img/logo.png" width="90" height="26" alt="getLoc">
-            </div>
-            <!-- footer-menu -->
-			 <div class="footer-menu">
-				<dl>
-					<dt><a href="{{route('main.feature')}}" class="active"><span>{{trans('phrases.capabilities')}}</span></a></dt>
-				</dl>
-				<dl>
-					<dt><a href="{{route('scan.main')}}"><span>{{trans('phrases.analytics')}}</span></a></dt>
-				</dl>
-			 </div>
-			 <!-- /footer-menu -->
-            <div class="social">
-                <a href="https://vk.com/getloc" class="social-vk" target="_blank"></a>
-                <a href="https://www.facebook.com/getlocru/" class="social-fb" target="_blank"></a>
-            </div>
-        </div>
-        <!-- /site__footer-layout -->
-    </footer>
-    <!-- /site__footer -->
+
 </div>
 <!-- /site -->
 
@@ -87,53 +62,13 @@
 
                         <!-- discount__form -->
                         <div class="discount__form popup_form">
-                            {!! Form::open(['route' => 'main.get-demo']) !!}
-
-                                <fieldset>
-                                    <label for="popup__email">{{trans('phrases.your_email')}}</label>
-                                    <input type="email" id="popup__email"  placeholder="yourmail@site.com" required/>
-                                </fieldset>
-
-                                <fieldset>
-                                    <label for="popup__name">{{trans('phrases.name_last_name')}}</label>
-                                    <input type="text" id="popup__name"/>
-                                </fieldset>
+                            {!! Form::open(['route' => 'scan.get-demo']) !!}
 
                                 <fieldset>
                                     <label for="popup__address">{{trans('phrases.site_address')}}</label>
                                     <input type="text" id="popup__address" placeholder="http://yoursite.com" required/>
                                 </fieldset>
 
-                                <fieldset>
-                                    <label for="popup__phone">{{trans('phrases.phone_number')}}</label>
-                                    <input type="tel" id="popup__phone"/>
-                                </fieldset>
-
-                                <fieldset class="discount__language">
-
-                                    <!-- options__selects-wrap -->
-                                    <div class="discount__selects-language" data-language='{
-                                        "languages": [
-                                            {
-                                                "id": 1,
-                                                "name": "Английский",
-                                                "src": "img/icons-en.png"
-                                            },
-                                            {
-                                                "id": 2,
-                                                "name": "Русский",
-                                                "src": "img/icons-en.png"
-                                            },
-                                            {
-                                                "id": 3,
-                                                "name": "Украинский",
-                                                "src": "img/icons-ua.png"
-                                            }
-                                        ]
-                                        }'>
-                                    </div>
-                                    <!-- /discount__selects-language -->
-                                </fieldset>
                                 <!-- btn -->
                                 <button class="btn btn_discount">
                                     <span>{{trans('phrases.add_your_site')}}</span>

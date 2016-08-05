@@ -7,7 +7,7 @@
     <div class="site__content site_inner">
         <!-- site__wrap -->
         <div class="site__wrap">
-            @if(count($sites)>=3)
+            @if(count($sites) >= Auth::user()->max_sites)
                 <div class="warn_panel">{{trans('phrases.limit_warning')}}</div>
             @endif
 
@@ -66,13 +66,20 @@
             <div class="site__panel">
 
                 <!-- btn -->
-                @if(count($sites) >= 3)
-                <a class="btn btn_add_disabled">
+                @if(count($sites) >= Auth::user()->max_sites)
+                    @if(!$details)
+                        <a class="btn btn_add_disabled"><span>{{trans('phrases.add_your_site')}}</span></a>
+                        <a class="btn btn_add" href="/contragent">Регистрация как контрагент</a>
+                    @else
+                        <a class="btn btn_add popup__open" data-popup="order">
+                            <span>{{trans('phrases.add_your_site')}}</span>
+                        </a>
+                    @endif
                 @else
                 <a class="btn btn_add popup__open" data-popup="order">
-                @endif
                     <span>{{trans('phrases.add_your_site')}}</span>
                 </a>
+                @endif
                 <!-- /btn -->
 
                 <!-- search -->
@@ -99,6 +106,7 @@
                     <td>{{ucfirst(trans('phrases.blocks'))}}</td>
                     <td>{{ucfirst(trans('phrases.words'))}}</td>
                     <td>{{ucfirst(trans('phrases.symbols'))}}</td>
+                    <td>экспорт</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -139,6 +147,9 @@
                         <td>{{$site->count_blocks}}</td>
                         <td>{{$site->count_words}}</td>
                         <td>{{$site->count_symbols}}</td>
+                        <td>
+                            @if($site->count_words)<a href="/export/{{$site->id}}">скачать</a>@endif
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

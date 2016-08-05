@@ -31,7 +31,7 @@ class AuthController extends Controller
      */
     protected $redirectTo = '/';
 
-    protected function authenticated(User $user)
+    /*protected function authenticated(User $user)
     {
         if (\Auth::check()) {
             $user = \Auth::user();
@@ -40,7 +40,7 @@ class AuthController extends Controller
                 return redirect(route('scan.main'));
             }
         }
-    }
+    }*/
 
     protected function sendFailedLoginResponse(Request $request)
     {

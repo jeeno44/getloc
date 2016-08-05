@@ -31,26 +31,29 @@
     @include('partials.header')
     @yield('content')
     {{--@if(count($sites) >= 3) {{count($sites)}} @endif--}}
-    <footer class="site__footer" @if(strpos(url('/'), 'scan')) style="bottom: 0" @endif>
-        <div class="site__footer-layout">
-            <div class="footer__logo">
-                <img src="/assets/img/logo.png" width="90" height="26" alt="getLoc">
-            </div>
-            <div class="footer-menu">
-                <dl>
-                    <dt><a href="{{route('main.feature')}}" class="active"><span>{{trans('phrases.capabilities')}}</span></a></dt>
-                </dl>
-                {{--
-                <dl>
-                    <dt><a href="{{route('scan.main')}}"><span>{{trans('phrases.analytics')}}</span></a></dt>
-                </dl>--}}
-            </div>
-            {{--<div class="social">--}}
+    @if(\Request::route()->getName() != 'scan.login.form')
+        <footer class="site__footer" @if(strpos(url('/'), 'scan')) style="bottom: 0" @endif>
+            <div class="site__footer-layout">
+                <div class="footer__logo">
+                    <img src="/assets/img/logo.png" width="90" height="26" alt="getLoc">
+                </div>
+                <div class="footer-menu">
+                    <dl>
+                        <dt><a href="{{route('main.feature')}}" class="active"><span>{{trans('phrases.capabilities')}}</span></a></dt>
+                    </dl>
+                    {{--
+                    <dl>
+                        <dt><a href="{{route('scan.main')}}"><span>{{trans('phrases.analytics')}}</span></a></dt>
+                    </dl>--}}
+                </div>
+                {{--<div class="social">--}}
                 {{--<a href="https://vk.com/getloc" class="social-vk" target="_blank"></a>--}}
                 {{--<a href="https://www.facebook.com/getlocru/" class="social-fb" target="_blank"></a>--}}
-            {{--</div>--}}
-        </div>
-    </footer>
+                {{--</div>--}}
+            </div>
+        </footer>
+    @endif
+
 </div>
 <div class="popup">
     <div class="popup__wrap">
@@ -137,36 +140,13 @@
                         <div class="popup__introduction">
                             <p>{!!trans('phrases.get_discount_form_header')!!}</p>
                         </div>
-                        <div class="discount__form popup_form">
-                            {!! Form::open(['route' => 'main.get-demo', 'novalidate']) !!}
-                                {{--<fieldset>--}}
-                                    {{--<label for="popup__email">{{trans('phrases.your_email')}}</label>--}}
-                                    {{--<input type="email" id="discount__email"  placeholder="yourmail@site.com" required/>--}}
-                                {{--</fieldset>--}}
-                                {{--<fieldset>--}}
-                                    {{--<label for="popup__name">{{trans('phrases.name_last_name')}}</label>--}}
-                                    {{--<input type="text" id="discount__name"/>--}}
-                                {{--</fieldset>--}}
+                        <div class="discount__form-2 popup_form">
+                            {!! Form::open(['route' => 'scan.get-demo', 'novalidate']) !!}
                                 <fieldset>
                                     <label for="popup__address">{{trans('phrases.site_address')}}</label>
-                                    <input type="text" id="discount__address" placeholder="http://yoursite.com" required/>
+                                    <input type="url" id="discount__address" name="url" placeholder="http://yoursite.com" required/>
                                 </fieldset>
-                            <input type="hidden" id="discount__uid" value="{{ \Auth::user()->id }}">
-                                {{--<fieldset>--}}
-                                    {{--<label for="popup__phone">{{trans('phrases.phone_number')}}</label>--}}
-                                    {{--<input type="tel" id="discount__phone"/>--}}
-                                {{--</fieldset>--}}
-                                {{--<fieldset class="discount__language">--}}
-                                    {{--<label>{{trans('account.t_index_lang_translate')}}</label>--}}
-                                    {{--<div class="discount__selects-language" data-language='{{getLanguagesJson()}}'>--}}
-                                        {{--<div class="discount__language-wrapper">--}}
-                                            {{--<select name="lang_1" id="lang_1" required>--}}
-                                                {{--<option value="0">{{trans('account.t_create_project_select_lang')}}</option>--}}
-                                            {{--</select>--}}
-                                            {{--<a href="#" class="discount__languadge-add">{{trans('account.t_create_project_add_lang_trans')}}</a>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</fieldset>--}}
+                                <input type="hidden" id="discount__uid" value="">
                                 <button class="btn btn_discount">
                                     <span>{{trans('phrases.add_your_site')}}</span>
                                 </button>

@@ -24,6 +24,7 @@
         <br><br>{{trans('account.t_index_no_user')}} <a href="{{route('scan.register.form')}}">{{trans('account.t_index_reg')}}</a>
 
     </form>
+    @if(!strpos(url('/'), 'scan'))
     <div class="popup__social"  style="text-align:center; margin: 0 auto; width: 400px;">
         {{trans('account.t_login_social')}}
         <div class="social-2">
@@ -32,5 +33,6 @@
             <a href="{{route('google.redirect')}}" class="social-2__google">google</a>
         </div>
     </div>
+    @endif
 
 @endsection

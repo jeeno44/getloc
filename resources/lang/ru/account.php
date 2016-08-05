@@ -426,5 +426,7 @@ return [
     'errorOutputPhrase_0'                => 'Не удалось отключить вывод фразы!',
     'images'                             => 'Изображения',
     'docs'                               => 'Документы',
-    'languages_count'                    => 'язык|языка|языков'
+    'languages_count'                    => 'язык|языка|языков',
+    'contragent_data'                    => 'Данные контрагента',
+    'save_data'                          => 'Сохранить'
 ];

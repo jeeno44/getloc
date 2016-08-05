@@ -17,7 +17,10 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@logout']);
         Route::get('register', ['as' => 'scan.register.form', 'uses' => 'Auth\AuthController@showRegistrationForm']);
         Route::post('register', ['as' => 'scan.register.post', 'uses' => 'Auth\AuthController@register']);
-
+        Route::any('/get-demo', ['as' => 'scan.get-demo', 'uses' => 'ScanController@getDemo']);
+        Route::get('contragent', 'ScanController@contragent');
+        Route::post('/details-form', ['as' => 'scan.billing.details-store', 'uses' => 'ScanController@detailsStore']);
+        Route::get('/export/{id}', 'ScanController@export');
     });
 
     /**
