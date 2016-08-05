@@ -21,6 +21,9 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::get('contragent', 'ScanController@contragent');
         Route::post('/details-form', ['as' => 'scan.billing.details-store', 'uses' => 'ScanController@detailsStore']);
         Route::get('/export/{id}', 'ScanController@export');
+        Route::group(['middleware' => ['admin']], function () {
+            Route::resource('users', 'ScanUsersController');
+        });
     });
 
     /**

@@ -58,9 +58,12 @@
                 <!-- END Side Header -->
 
                 <!-- Side Content -->
-                <div class="side-content">
-                    {!! widget('AdminLeftMenu') !!}
-                </div>
+                @if(!strpos(url('/'), 'scan'))
+                    <div class="side-content">
+                        {!! widget('AdminLeftMenu') !!}
+                    </div>
+                @endif
+
                 <!-- END Side Content -->
             </div>
             <!-- Sidebar Content -->
