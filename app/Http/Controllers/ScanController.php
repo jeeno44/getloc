@@ -37,7 +37,7 @@ class ScanController extends Controller
         }
         $countSites = Site::where('user_id', \Auth::user()->id)->count();
         $countPages = Page::whereIn('site_id', $siteIds)->count();
-        $countBlocks = 123;
+        $countBlocks = Block::whereIn('site_id', $siteIds)->count();
         \Session::remove('site');
         $allSites = Site::where('user_id', \Auth::user()->id)->pluck('name')->toJson();
         $details = UserDetail::where('user_id', \Auth::user()->id)->first();
