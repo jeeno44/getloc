@@ -131,7 +131,7 @@ class ScanController extends Controller
         }
         $exp = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<tmx version=\"1.4\">\n\t<header creationtool=\"getLoc.ru\" creationtoolversion=\"1.2\" segtype=\"sentence\" o-tmf=\"ATM\" adminlang=\"en-US\" srclang=\"ru-RU\" datatype=\"plaintext\" />\n\t\t<body>";
         foreach ($site->blocks as $block) {
-            $exp .= "\n\t\t\t<tu>\n\t\t\t\t<tuv xml:lang=\"ru-RU\">\n\t\t\t\t\t<seg>\n".htmlspecialchars(trim($block->text))."\n\t\t\t\t\t</seg>\n\t\t\t\t</tuv>\n\t\t\t</tu>";
+            $exp .= "\n\t\t\t<tu>\n\t\t\t\t<tuv xml:lang=\"ru-RU\">\n\t\t\t\t\t<seg>\n\t\t\t\t\t\t".htmlspecialchars(trim($block->text))."\n\t\t\t\t\t</seg>\n\t\t\t\t</tuv>\n\t\t\t</tu>";
         }
         $exp .= "\n\t\t</body>\n\t</tmx>";
         header("Content-type: text/xml");
