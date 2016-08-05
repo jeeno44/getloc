@@ -63,13 +63,19 @@
             <!-- site__panel -->
             <div class="site__panel">
 
-                @if(!\Auth::user()->is_contragent && \Auth::user()->max_sites < \Auth::user()->sites()->count())
+                @if(!\Auth::user()->is_contragent)
                     <a class="btn btn_add_disabled"><span>{{trans('phrases.add_your_site')}}</span></a>
                     <a class="btn btn_add" href="/contragent">Регистрация как контрагент</a>
                 @else
-                    <a class="btn btn_add popup__open" data-popup="order">
-                        <span>{{trans('phrases.add_your_site')}}</span>
-                    </a>
+                    @if(Auth::user()->sites()->count() > Auth::user()->max_sites)
+                        <a class="btn btn_add_disabled"><span>{{trans('phrases.add_your_site')}}</span></a>
+                        <a class="btn btn_add" href="/contragent">Регистрация как контрагент</a>
+                    @else
+                        <a class="btn btn_add popup__open" data-popup="order">
+                            <span>{{trans('phrases.add_your_site')}}</span>
+                        </a>
+                    @endif
+
                 @endif
 
                 <!-- search -->
