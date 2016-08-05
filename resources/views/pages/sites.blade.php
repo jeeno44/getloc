@@ -63,15 +63,17 @@
             <!-- site__panel -->
             <div class="site__panel">
 
-                @if(!\Auth::user()->is_contragent)
+                @if(!\Auth::user()->is_contragent && Auth::user()->sites()->count() > Auth::user()->max_sites)
                     <a class="btn btn_add_disabled"><span>{{trans('phrases.add_your_site')}}</span></a>
                     <a class="btn btn_add" href="/contragent">Регистрация как контрагент</a>
                 @else
                     @if(Auth::user()->sites()->count() > Auth::user()->max_sites)
+                        <a class="btn btn_add" href="/contragent">Регистрация как контрагент</a>
                     @else
-
+                        <a class="btn btn_add popup__open" data-popup="order">
+                            <span>{{trans('phrases.add_your_site')}}</span>
+                        </a>
                     @endif
-
                 @endif
 
                 <!-- search -->
