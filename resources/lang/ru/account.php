@@ -191,6 +191,7 @@ return [
     't_clear_filter'                     => 'Очистить фильтр',
     't_all_projects'                     => 'Все проекты',
     't_my_profile'                       => 'Мой профиль',
+    't_contra'                           => 'Анкета контрагента',
     't_my_pays'                          => 'Мои платежи',
     't_exit'                             => 'Выйти',
     't_v_zakaze'                         => 'В заказе',

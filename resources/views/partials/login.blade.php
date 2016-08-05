@@ -3,7 +3,8 @@
         @if(\App\UserDetail::where('user_id', Auth::user()->id)->count() > 0)
             <div class="header__person" style="background-image: url('/assets/img/account/iocns-ava.png'); right: 50px">
                 <ul class="header__person-list">
-                    <li><a href="/contragent">{{trans('account.t_my_profile')}}</a></li>
+                    <li><a href="/profile">{{trans('account.t_my_profile')}}</a></li>
+                    <li><a href="/contragent">{{trans('account.t_contra')}}</a></li>
                     <li><a href="{{URL::route('logout')}}">{{trans('account.t_exit')}}</a></li>
                 </ul>
             </div>

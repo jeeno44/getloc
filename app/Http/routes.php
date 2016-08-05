@@ -24,6 +24,8 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::group(['middleware' => ['admin']], function () {
             Route::resource('users', 'ScanUsersController');
         });
+        Route::get('/profile', ['as' => 'scan.account.personal', 'uses' => 'PersonalController@index']);
+        Route::post('/profile', ['as' => 'scan.account.personal-store', 'uses' => 'PersonalController@store']);
     });
 
     /**

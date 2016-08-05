@@ -38,6 +38,9 @@ class PersonalController extends Controller
             unset($data['password']);
         }
         \Auth::user()->update($data);
+        if (strpos(\URL::previous(), 'scan')) {
+            return redirect()->route('scan.account.personal')->with('msg', ['class' => 'info-massages__item_detected', 'text' => 'Личные данные сохранены']);
+        }
         return redirect()->back()->with('msg', ['class' => 'info-massages__item_detected', 'text' => 'Личные данные сохранены']);
     }
 }
