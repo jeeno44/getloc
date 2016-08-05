@@ -6,7 +6,16 @@
 
 @section('title') {{trans('account.t_personal_title')}} @stop
 @section('content')
-
+    @if(!strpos(url('/'), 'scan'))
+        <aside class="site__aside">
+            <div class="site__aside-menu">
+                <a class="active" href="">{{trans('account.t_personal')}}</a>
+                <a class="site__aside-menu-isolated" href="{{URL::route('logout')}}">{{trans('account.t_exit')}}</a>
+            </div>
+        </aside>
+    @else
+        @extends('layouts.scan')
+    @endif
     <div class="inside-content">
         <div class="account-data">
             <h1 class="site__title">{{trans('account.t_personal')}}</h1>
