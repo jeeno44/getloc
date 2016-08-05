@@ -29,17 +29,15 @@
         {{--<a href="{{route('password.reset.form')}}" class="site__form-forgot">{{trans('account.t_login_forget_pass')}}</a>--}}
         {{trans('account.t_index_isset_login')}} <a href="{{route('scan.login.form')}}">{{trans('account.t_login_enter')}}</a>
     </form>
-    <div class="popup__social"  style="text-align:center; margin: 0 auto; width: 400px;">
-        {{trans('account.t_login_social')}}
-        <div class="social-2">
-            <a href="{{route('facebook.redirect')}}" class="social-2__fb">facebook</a>
-            <a href="{{route('twitter.redirect')}}" class="social-2__tw">twitter</a>
-            <a href="{{route('google.redirect')}}" class="social-2__google">google</a>
+    @if(!strpos(url('/'), 'scan'))
+        <div class="popup__social"  style="text-align:center; margin: 0 auto; width: 400px;">
+            {{trans('account.t_login_social')}}
+            <div class="social-2">
+                <a href="{{route('facebook.redirect')}}" class="social-2__fb">facebook</a>
+                <a href="{{route('twitter.redirect')}}" class="social-2__tw">twitter</a>
+                <a href="{{route('google.redirect')}}" class="social-2__google">google</a>
+            </div>
         </div>
-    </div>
-    <div class="popup__social"   style="text-align:center; margin: 0 auto; width: 400px;">
-        {{trans('account.t_index_isset_login')}}
-        <a href="#" class="popup__open" data-popup="login">{{trans('account.t_login_enter')}}</a>
-    </div>
+    @endif
 
 @endsection
