@@ -122,7 +122,7 @@ class ScanController extends Controller
         $detail->fill($data);
         $detail->save();
         \Mail::send('emails.details-store', ['detail' => $detail], function ($m) {
-            $m->to([])->subject('Изменены данные контрагента!');
+            $m->to(['vchevela@gmail.com', 'a@lezhnin.me'])->subject('Изменены данные контрагента!');
         });
         return redirect()->back()->with(['status' => 'Сохранено']);
     }
