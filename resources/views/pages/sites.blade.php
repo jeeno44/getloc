@@ -100,7 +100,7 @@
                     <td>{{ucfirst(trans('phrases.blocks'))}}</td>
                     <td>{{ucfirst(trans('phrases.words'))}}</td>
                     <td>{{ucfirst(trans('phrases.symbols'))}}</td>
-                    <td>Экспорт</td>
+                    <td>Экспорт в TMX</td>
                 </tr>
                 </thead>
                 <tbody>
