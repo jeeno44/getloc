@@ -20,7 +20,7 @@ class ScanUsersController extends AdminController
     {
         \Session::set('usersPrevUrl', \URL::full());
         $userWithRoles = \DB::table('role_user')->where('role_id', 3)->pluck('user_id', 'user_id');
-        $items = User::latest()->whereNotIn('id', $userWithRoles)->paginate(20);
+        $items = User::latest()->whereIn('id', $userWithRoles)->paginate(20);
         return view('scan.users.index', compact('items'));
     }
 
