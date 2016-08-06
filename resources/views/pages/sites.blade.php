@@ -10,7 +10,7 @@
 	        @if (!\Auth::user()->is_contragent)
 		        <div class="warn_panel">
 	                <h2 class="warn_panel__title">Вы работаете в демо-режиме</h2>
-	                <p>В демо-режиме доступны еще <b>{{Auth::user()->max_sites}}</b> просчета. </p>
+	                <p>В демо-режиме доступны еще <b>{{Auth::user()->max_sites}}</b> {{trans_choice('phrases.count_sites_available', Auth::user()->max_sites)}}. </p>
 	                <p>
 		                Для дальнейшей работы необходимо заполнить форму регистрации контрагента. <br />
 		                Стоимость каждого расчета статистики составляет 99 рублей, оплачивается единым счетом в конце месяца.
@@ -161,8 +161,8 @@
                         <td class="text_right">{{number_format($site->count_words, 0, '.', ' ')}}</td>
                         <td class="text_right">{{number_format($site->count_symbols, 0, '.', ' ')}}</td>
                         <td>
-                            @if($site->count_words)<a href="/export/{{$site->id}}">TMX</a>&nbsp;&nbsp;&nbsp;@endif
-                            <a href="/delete/{{$site->id}}">Удалить</a>
+                            @if($site->count_words) <a href="/export/{{$site->id}}">TMX</a>&nbsp;&nbsp;&nbsp;@endif
+                            @if($site->count_words)<a href="/delete/{{$site->id}}">Удалить</a>@endif
                         </td>
                     </tr>
                 @endforeach

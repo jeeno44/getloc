@@ -31,7 +31,7 @@
     @include('partials.header')
     @yield('content')
     {{--@if(count($sites) >= 3) {{count($sites)}} @endif--}}
-    @if(\Request::route()->getName() != 'scan.login.form')
+    @if(!strpos(url('/'), 'scan'))
         <footer class="site__footer" @if(strpos(url('/'), 'scan')) style="bottom: 0" @endif>
             <div class="site__footer-layout">
                 <div class="footer__logo">
