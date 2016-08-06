@@ -178,14 +178,14 @@ input[type="search"]::-webkit-search-cancel-button {
     margin: 0 auto;
 }
 .site__introduction{
-    margin: 0 257px 51px;
+    margin: 0 200px 51px;
     line-height: 24px;
     text-align: center;
 }
 .site__panel{
     height: 46px;
     margin-bottom: 49px;
-    padding: 0 31px;
+    /*padding: 0 31px;*/
     text-align: justify;
 }
 .site__panel:after{
@@ -1276,7 +1276,8 @@ input[type="search"]::-webkit-search-cancel-button {
 }
 .discount__layout label{
     display: block;
-    width: 228px;
+    /*width: 228px;*/
+    width: 100%;
     margin-bottom: 2px;
     color: #65828f;
     transition: color .3s ease;
@@ -1547,9 +1548,9 @@ a.social-ok{
     display: block;
 }
 .statistic__num{
-    font-size: 70px;
+    font-size: 60px;
     font-weight: 200;
-    line-height: 72px;
+    line-height: 65px;
 }
 .statistic__title{
     font-size: 14px;
@@ -1559,7 +1560,9 @@ a.social-ok{
     width: 24.5%;
 }
 .statistic_col-4 .statistic__num{
-    font-size: 50px;
+    font-size: 35px;
+    line-height: 38px;
+    margin-bottom: 10px;
 }
 /* --------------- /statistic --------------- */
 
@@ -2413,20 +2416,7 @@ a.social-ok{
 }
 /*-------------/program------------*/
 
-.warn_panel{
-    /*height: 100px;*/
-    width: 100%;
-    /*line-height: 46px;*/
-    padding: 20px 43px 20px 39px;
-    color: #465863;
-    font-weight: 500;
-    background-color: #fed400;
-    vertical-align: top;
-    transition: background-color .3s ease;
-    -webkit-transition: background-color .3s ease;
-    margin-bottom: 44px;
-    text-align: center;
-}
+
 .btn_add_disabled{
     height: 46px;
     line-height: 46px;
@@ -2438,3 +2428,61 @@ a.social-ok{
     transition: background-color .3s ease;
     -webkit-transition: background-color .3s ease;
 }
+
+
+.btn_blue {
+    background-color: #18baea;
+    color: #fff;
+    -webkit-transition: background-color .3s ease, border-color .3s ease, color .3s ease;
+    transition: background-color .3s ease, border-color .3s ease, color .3s ease;
+}
+
+/*-------------warn_panel------------*/
+.warn_panel {
+    border: 1px solid #e6e6e6;
+    padding: 21px 20px 24px 121px;
+    margin: 0 0 40px;
+    background: url("../img/account/important.png") no-repeat 26px center #f7f7f7;
+    background-size: 64px 58px;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 15px;
+}
+.warn_panel p {
+    margin: 0 0 6px;
+}
+.warn_panel__title {
+    font-size: 14px;
+    line-height: 18px;
+    margin: 0 0 5px;
+    font-weight: 500;
+}
+.warn_panel__change {
+    color: #18b9e9;
+    text-decoration: underline;
+}
+.warn_panel__change:hover {
+    text-decoration: none;
+}
+/*-------------/other-tariff------------*/
+
+
+/* FIXES */
+.text_right { 
+	text-align: right;
+}
+.header__person_scan {
+	background: url('/assets/img/account/iocns-ava.png'); 
+	background-position: 10px center !important;
+	padding: 0px 15px 0px 35px;
+	line-height: 32px;
+	right: 50px !important;
+	width: auto !important;
+	color: #ffffff;
+}
+.header__person_scan span {
+	float: left;
+	height: 32px;
+	line-height: 32px;
+}
+/* /FIXES */

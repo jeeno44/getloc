@@ -137,9 +137,11 @@
                 <div class="order-popup__content">
                     <div class="discount__layout">
                         <h2 class="site__title">{{trans('phrases.add_site')}}</h2>
+                        {{--
                         <div class="popup__introduction">
                             <p>{!!trans('phrases.get_discount_form_header')!!}</p>
                         </div>
+                        --}}
                         <div class="discount__form-2 popup_form">
                             {!! Form::open(['route' => 'scan.get-demo', 'novalidate']) !!}
                                 <fieldset>

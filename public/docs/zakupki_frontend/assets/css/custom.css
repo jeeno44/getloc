@@ -1,0 +1,139 @@
+body {
+	font-size: 14px;
+}
+.context-menu i {
+	margin-right: 5px;
+}
+#main-menu .title {
+	line-height: 18px;
+}
+#content {
+	padding: 94px 30px 0px;
+}
+#content.content_lowers {
+	padding-top: 12px;
+}
+#filter {
+	padding-top: 64px;
+}
+#lot_create {
+	position: relative;
+	margin-bottom: 30px;
+}
+#lot_create .form-group {
+	padding: 10px 0px;
+}
+#lot_create .form-group-in {
+	padding: 0px;
+}
+#lot_create .form-group-in .control-label {
+	font-size: 13px;
+}
+#lot_create .control-label {
+	text-align: left;
+}
+#lot_create #lot_save {
+	z-index: 1000;
+	position: fixed;
+	bottom: 50px;
+	right: 36px;
+}
+#lot_create .tab-pane {
+	padding-bottom: 20px;
+}
+
+.custom-modal .modal-header{
+	background: #3F51B5;
+	color: #ffffff;
+
+}
+.custom-modal .modal-header button {
+	color: #ffffff;
+	opacity: 1;
+}
+.custom-modal .modal-header h4 {
+	font-size: 16px;
+	font-weight: normal;
+}
+
+#lots {
+	position: relative;
+	margin-bottom: 30px;
+}
+#lots #lot_create {
+	z-index: 1000;
+	position: fixed;
+	bottom: 50px;
+	right: 36px;
+}
+#lots .table-head {
+	padding-bottom: 10px;
+}
+#lots .card-head {
+	padding: 16px 0px;
+	line-height: 36px;
+}
+#lots .card-head header {
+	line-height: 23px;
+	padding: 6px 12px;
+}
+#lots .card-head header a {
+	cursor: pointer;
+	text-decoration: none;
+}
+#lots .card-head header .lower-desc {
+	float: left;
+	width: 100%;
+	clear: left;
+	font-size: 14px;
+	margin-top: 20px;
+}
+#lots .card-body {
+	padding: 0px;
+}
+#lots .list-group {
+	margin-bottom: 0px;
+}
+#lots .list-group-item {
+	display: block;
+	padding: 20px 12px;
+	list-style-type: none;
+	line-height: 18px;
+}
+
+#lots .lot-name {
+	font-size: 15px;
+}
+#lots .lot-desc {
+	float: left;
+	font-size: 12px;
+	margin-top: 20px;
+	width: 100%;
+	text-transform: uppercase;
+}
+#lots .lot-td-1, #lots .lot-td-2, #lots .lot-td-3, #lots .lot-td-4 {
+	float: left;
+	position: relative;
+    min-height: 1px;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+#lots .lot-td-1 {
+	width: 47%;
+}
+#lots .lot-td-2 {
+	width: 12%;
+}
+#lots .lot-td-3 {
+	width: 5%;
+}
+
+#filter .card-body {
+	padding: 12px 78px;
+}
+#filter .form-group {
+	margin-bottom: 0px;
+}
+
+
+

@@ -73,6 +73,11 @@ class ApiController extends Controller
                 $response['error'] = ['msg' => 'Page does not exists', 'code' => 5];
                 return $this->makeResponse($response, $callback);
             } else {
+		if (!$page->enabled) {
+                    $response['error'] = ['msg' => 'Page turned off', 'code' => 9];
+                    return $this->makeResponse($response, $callback);
+                }
+
                 $lang = Language::where('short', $lang)->first();
                 if (empty($lang)) {
                     $response['error'] = ['msg' => 'Language is invalid', 'code' => 6];

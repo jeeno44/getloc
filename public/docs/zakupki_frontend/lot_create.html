@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Material Admin - Blank page</title>
+
+		<!-- BEGIN META -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="keywords" content="your,keywords">
+		<meta name="description" content="Short explanation about this website">
+		<!-- END META -->
+
+		<!-- BEGIN STYLESHEETS -->
+		<link href='http://fonts.googleapis.com/css?family=Roboto:300italic,400italic,300,400,500,700,900' rel='stylesheet' type='text/css'/>
+		<link type="text/css" rel="stylesheet" href="./assets/css/theme/bootstrap.css?1422792965" />
+		<link type="text/css" rel="stylesheet" href="./assets/css/theme/materialadmin.css?1425466319" />
+		<link type="text/css" rel="stylesheet" href="./assets/css/custom.css" />
+		<link type="text/css" rel="stylesheet" href="./assets/css/theme/font-awesome.min.css?1422529194" />
+		<link type="text/css" rel="stylesheet" href="./assets/css/theme/material-design-iconic-font.min.css?1421434286" />
+		<link type="text/css" rel="stylesheet" href="./assets/css/theme/libs/select2/select2.css?1422823373" />
+		<link type="text/css" rel="stylesheet" href="./assets/css/theme/libs/bootstrap-datepicker/datepicker3.css" />
+		<!-- END STYLESHEETS -->
+
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="./assets/js/libs/utils/html5shiv.js?1403934957"></script>
+		<script type="text/javascript" src="./assets/js/libs/utils/respond.min.js?1403934956"></script>
+		<![endif]-->
+	</head>
+	<body class="menubar-hoverable header-fixed">
+
+		<!-- BEGIN HEADER-->
+		<header id="header" >
+			<div class="headerbar">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="headerbar-left">
+					<ul class="header-nav header-nav-options">
+						<li class="header-nav-pin">
+							<a class="btn btn-icon-toggle menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+								<i class="fa fa-bars"></i>
+							</a>
+						</li>
+						<li class="header-nav-brand">
+							<div class="brand-holder">
+								Планирование - Создать лот
+							</div>
+						</li>
+					</ul>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="headerbar-right">
+					<ul class="header-nav header-nav-options">
+						<li>
+							<!-- Search form -->
+							<form class="navbar-search" role="search">
+								<div class="form-group">
+									<input type="text" class="form-control" name="headerSearch" placeholder="Поиск по лотам">
+								</div>
+								<button type="submit" class="btn btn-icon-toggle ink-reaction"><i class="fa fa-search"></i></button>
+							</form>
+						</li>
+						
+					</ul><!--end .header-nav-options -->
+					<ul class="header-nav header-nav-profile">
+						<li class="dropdown">
+							<a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown">
+								<img src="./assets/img/icon-profile.png" alt="" />
+								<span class="profile-info">
+									Иванов Василий
+									<small>ДУПиКП</small>
+								</span>
+							</a>
+							<ul class="context-menu dropdown-menu animation-dock">
+								<!--<li class="dropdown-header">Config</li>-->
+								<li><a href="./html/pages/profile.html"><i class="fa fa-fw fa-user text-default"></i> Мой профиль</a></li>
+								<li class="divider"></li>
+								<!--<li><a href="./html/pages/locked.html"><i class="fa fa-fw fa-lock"></i> Lock</a></li>-->
+								<li><a href="./html/pages/login.html"><i class="fa fa-fw fa-power-off text-primary"></i> Выйти из системы</a></li>
+							</ul><!--end .dropdown-menu -->
+						</li><!--end .dropdown -->
+					</ul><!--end .header-nav-profile -->
+					<!--
+					<ul class="header-nav header-nav-toggle">
+						<li>
+							<a class="btn btn-icon-toggle btn-default" href="#offcanvas-search" data-toggle="offcanvas" data-backdrop="false">
+								<i class="fa fa-ellipsis-v"></i>
+							</a>
+						</li>
+					</ul>
+					-->
+				</div><!--end #header-navbar-collapse -->
+			</div>
+		</header>
+		<!-- END HEADER-->
+
+		<!-- BEGIN BASE-->
+		<div id="base">
+
+			<!-- BEGIN OFFCANVAS LEFT -->
+			<div class="offcanvas">
+			</div><!--end .offcanvas-->
+			<!-- END OFFCANVAS LEFT -->
+
+			<!-- BEGIN CONTENT-->
+			<div id="content">
+				<section>
+					<div class="section-body">
+					
+
+<div id="lot_create" class="col-md-12">
+	<form class="form-horizontal" role="form">
+		<button type="button" id="lot_save" class="btn btn-lg ink-reaction btn-floating-action btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i></button>
+		<div class="card">
+			<div class="card-head">
+				<ul class="nav nav-tabs nav-justified" data-toggle="tabs">
+					<li class="active"><a href="#common">Общее</a></li>
+					<li><a href="#foundation">Основание</a></li>
+					<li><a href="#goal">Цели и задачи</a></li>
+					<li><a href="#nmck">НМЦК</a></li>
+					<li><a href="#condition">Условия закупки</a></li>
+				</ul>
+			</div><!--end .card-head -->
+			<div class="card-body tab-content">
+				<div class="tab-pane active" id="common">
+					<div class="form-group">
+						<label for="regular13" class="col-md-2 control-label">Наименование лота</label>
+						<div class="col-md-10">
+							<textarea name="textarea13" id="textarea13" class="form-control" rows="1"></textarea>
+							<p class="help-block">Обязательно для заполнения</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="placeholder13" class="col-md-2 control-label">Номер (шифр) лота</label>
+						<div class="col-md-4">
+							<input type="text" class="form-control" id="placeholder13">
+							<p class="help-block">Обязательно для заполнения</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">Идентификационный код закупки</label>
+						<div class="col-md-4">
+							<input type="text" class="form-control" id="regular13" placeholder="Заполняется автоматически" disabled>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="help13" class="col-md-2 control-label">ОКВЭД2</label>
+						<div class="col-md-10">
+							<select class="form-control select2-okved" data-placeholder="Выберите один или несколько кодов" multiple>
+								<option value="AK">Alaska</option>
+								<option value="HI">Hawaii</option>
+								<option value="CA">California</option>
+								<option value="NV">Nevada</option>
+								<option value="OR">Oregon</option>
+								<option value="WA">Washington</option>
+								<option value="AZ">Arizona</option>
+								<option value="CO">Colorado</option>
+								<option value="ID">Idaho</option>
+								<option value="MT">Montana</option><option value="NE">Nebraska</option>
+								<option value="NM">New Mexico</option>
+								<option value="ND">North Dakota</option>
+								<option value="UT">Utah</option>
+								<option value="WY">Wyoming</option>
+								<option value="AL">Alabama</option>
+								<option value="AR">Arkansas</option>
+								<option value="IL">Illinois</option>
+								<option value="IA">Iowa</option>
+								<option value="KS">Kansas</option>
+								<option value="KY">Kentucky</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="help13" class="col-md-2 control-label">ОКПД2</label>
+						<div class="col-md-10">
+							<select class="form-control select2-okpd" data-placeholder="Выберите один или несколько кодов" multiple>
+								<option value="AK">Alaska</option>
+								<option value="HI">Hawaii</option>
+								<option value="CA">California</option>
+								<option value="NV">Nevada</option>
+								<option value="OR">Oregon</option>
+								<option value="WA">Washington</option>
+								<option value="AZ">Arizona</option>
+								<option value="CO">Colorado</option>
+								<option value="ID">Idaho</option>
+								<option value="MT">Montana</option><option value="NE">Nebraska</option>
+								<option value="NM">New Mexico</option>
+								<option value="ND">North Dakota</option>
+								<option value="UT">Utah</option>
+								<option value="WY">Wyoming</option>
+								<option value="AL">Alabama</option>
+								<option value="AR">Arkansas</option>
+								<option value="IL">Illinois</option>
+								<option value="IA">Iowa</option>
+								<option value="KS">Kansas</option>
+								<option value="KY">Kentucky</option>
+							</select>
+							<p class="help-block">Обязательно для заполнения</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="help13" class="col-md-2 control-label">Единица измерения (код ОКЕИ)</label>
+						<div class="col-md-4">
+							<select class="form-control select2-units" data-placeholder="Выберите единицу измерения">
+								<option value=""></option>
+								<option value="AK">Alaska</option>
+								<option value="HI">Hawaii</option>
+								<option value="CA">California</option>
+								<option value="NV">Nevada</option>
+								<option value="OR">Oregon</option>
+								<option value="WA">Washington</option>
+								<option value="AZ">Arizona</option>
+								<option value="CO">Colorado</option>
+								<option value="ID">Idaho</option>
+								<option value="MT">Montana</option><option value="NE">Nebraska</option>
+								<option value="NM">New Mexico</option>
+								<option value="ND">North Dakota</option>
+								<option value="UT">Utah</option>
+								<option value="WY">Wyoming</option>
+								<option value="AL">Alabama</option>
+								<option value="AR">Arkansas</option>
+								<option value="IL">Illinois</option>
+								<option value="IA">Iowa</option>
+								<option value="KS">Kansas</option>
+								<option value="KY">Kentucky</option>
+							</select>
+						</div>
+						<label class="col-md-2 col-md-offset-1 control-label">Количество (объем)</label>
+						<div class="col-md-3">
+							<input type="text" class="form-control" id="regular13">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="help13" class="col-md-2 control-label">Направление расходов</label>
+						<div class="col-md-4">
+							<select id="select2" name="select2" class="form-control">
+								<option value="">Выберите значение</option>
+								<option value="1">НИОКР (НИР)</option>
+								<option value="2">Прочие нужды</option>
+							</select>
+							<p class="help-block">Обязательно для заполнения</p>
+						</div>
+						
+					</div>
+				</div>
+				<div class="tab-pane" id="foundation">2
+				</div>
+				<div class="tab-pane" id="goal">
+					<div class="form-group">
+						<label for="regular13" class="col-md-3 control-label">Цели</label>
+						<div class="col-md-9">
+							<textarea name="textarea13" id="textarea13" class="form-control" rows="1"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="placeholder13" class="col-md-3 control-label">Задачи</label>
+						<div class="col-md-9">
+							<textarea name="textarea13" id="textarea13" class="form-control" rows="1"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="placeholder13" class="col-md-3 control-label">Обоснование актуальности исполнения лота</label>
+						<div class="col-md-9">
+							<textarea name="textarea13" id="textarea13" class="form-control" rows="1"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="placeholder13" class="col-md-3 control-label">Область практического использования и применения результатов выполнения лота</label>
+						<div class="col-md-9">
+							<textarea name="textarea13" id="textarea13" class="form-control" rows="1"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="regular13" class="col-md-3 control-label">Ожидаемые результаты</label>
+						<div class="col-md-9">
+							<textarea name="textarea13" id="textarea13" class="form-control" rows="1"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="placeholder13" class="col-md-3 control-label">Обоснования соответствия объекта закупки целям закупки</label>
+						<div class="col-md-9">
+							<textarea name="textarea13" id="textarea13" class="form-control" rows="1"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="placeholder13" class="col-md-3 control-label">Соответствие требованиям статьи 19 'Нормирование в сфере закупок' 44-ФЗ <a data-toggle="modal" data-target="#fz44-modal"><i class="glyphicon glyphicon-info-sign"></i></a></label>
+						<div class="col-md-9">
+							<textarea name="textarea13" id="textarea13" class="form-control" rows="1"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="placeholder13" class="col-md-3 control-label">Сроки проведения закупки</label>
+						<div class="col-md-6">
+							<div class="input-daterange input-group" id="date-range">
+								<span class="input-group-addon">с</span>
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								<div class="input-group-content">
+									<input type="text" class="form-control" name="start" />
+									<p class="help-block">Обязательно</p>
+								</div>
+								<span class="input-group-addon">по</span>
+								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+								<div class="input-group-content">
+									<input type="text" class="form-control" name="end" />
+									<div class="form-control-line"></div>
+									<p class="help-block">Обязательно</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="placeholder13" class="col-md-3 control-label">Дополнительная информация в соответствии с п.7, ч.2, ст.17 'Планы закупок' 44-ФЗ <a data-toggle="modal" data-target="#add-modal"><i class="glyphicon glyphicon-info-sign"></i></a></label>
+						<div class="col-md-9">
+							<textarea name="textarea13" id="textarea13" class="form-control" rows="1"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="placeholder13" class="col-md-3 control-label">Минимально необходимые требования, предъявляемые к предмету контракта</label>
+						<div class="col-md-9">
+							<textarea name="textarea13" id="textarea13" class="form-control" rows="1"></textarea>
+						</div>
+					</div>
+
+
+							<!-- BEGIN LARGE TEXT MODAL MARKUP -->
+					<div class="modal fade bs-example-modal-lg custom-modal" id="fz44-modal" tabindex="-1" role="dialog" aria-labelledby="textModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title" id="textModalLabel">Федеральный закон от 05.04.2013 N 44-ФЗ (ред. от 30.12.2015) "О контрактной системе в сфере закупок товаров, работ, услуг для обеспечения государственных и муниципальных нужд"</h4>
+								</div>
+								<div class="modal-body" style="text-align:justify">
+							        <p>Статья 19. Нормирование в сфере закупок</p><br />
+							        <p>1. Под нормированием в сфере закупок понимается установление требований к закупаемым заказчиком товарам, работам, услугам (в том числе предельной цены товаров, работ, услуг) и (или) нормативных затрат на обеспечение функций государственных органов, органов управления государственными внебюджетными фондами, муниципальных органов (включая соответственно территориальные органы и подведомственные казенные учреждения).</span></p>
+							        <p>(в ред. Федерального закона от 31.12.2014 N 498-ФЗ)</p>
+							        <p>2. Для целей настоящей статьи под требованиями к закупаемым заказчиком товарам, работам, услугам понимаются требования к количеству, потребительским свойствам (в том числе характеристикам качества) и иным характеристикам товаров, работ, услуг, позволяющие обеспечить государственные и муниципальные нужды, но не приводящие к закупкам товаров, работ, услуг, которые имеют избыточные потребительские свойства или являются предметами роскоши в соответствии с законодательством Российской Федерации.</span></p>
+							        <p>(в</span> ред. Федерального закона от 31.12.2014 N 498-ФЗ)</p>
+									<p>3. Правительство Российской Федерации устанавливает общие правила нормирования в сфере закупок для обеспечения государственных и муниципальных нужд, в том числе:</p>
+							        <p>1) общие требования к порядку разработки и принятия правовых актов о нормировании в сфере закупок, содержанию указанных актов и обеспечению их исполнения;</p>
+							        <p>2) общие правила определения требований к закупаемым заказчиками отдельным видам товаров, работ, услуг (в том числе предельные цены товаров, работ, услуг) и нормативных затрат на обеспечение функций государственных органов, органов управления государственными внебюджетными фондами, муниципальных органов (включая соответственно территориальные органы и подведомственные казенные учреждения).</p>
+							        <p>(п. 2 в ред. Федерального закона от 31.12.2014 N 498-ФЗ)</p>
+									<p>4. Правительство Российской Федерации, высшие исполнительные органы государственной власти субъектов Российской Федерации, местные администрации в соответствии с общими правилами нормирования, предусмотренными частью 3 настоящей статьи, устанавливают правила нормирования в сфере закупок товаров, работ, услуг для обеспечения соответственно федеральных нужд, нужд субъектов Российской Федерации и муниципальных нужд (далее - правила нормирования), в том числе:</span></p>
+							        <p>1) требования к порядку разработки и принятия правовых актов о нормировании в сфере закупок, содержанию указанных актов и обеспечению их исполнения;</p>
+							        <p>2) правила определения требований к закупаемым государственными органами, органами управления государственными внебюджетными фондами, муниципальными органами, соответственно их территориальными органами и подведомственными указанным органам казенными учреждениями и бюджетными учреждениями отдельным видам товаров, работ, услуг (в том числе предельные цены товаров, работ, услуг) и нормативных затрат на обеспечение функций государственных органов, органов управления государственными внебюджетными фондами, муниципальных органов (включая соответственно территориальные органы</span> и подведомственные казенные учреждения).</p>
+							        <p>(п. 2 в ред. Федерального закона от 31.12.2014 N 498-ФЗ)</p>
+							        <p>5. Государственные органы, органы управления государственными внебюджетными фондами, муниципальные органы на основании правил нормирования, установленных в соответствии с частью 4 настоящей статьи, утверждают требования к закупаемым ими, их территориальными органами (подразделениями) и подведомственными указанным органам казенными учреждениями и бюджетными учреждениями отдельным видам товаров, работ, услуг (в том числе предельные цены товаров, работ, услуг) и (или) нормативные затраты на обеспечение функций указанных</span> органов и подведомственных им казенных учреждений.</p>
+							        <p>(в ред. Федеральных законов от 04.06.2014 N 140-ФЗ, от 31.12.2014 N 498-ФЗ)</p>
+							        <p>6. Правила нормирования, требования к отдельным видам товаров, работ, услуг (в том числе предельные цены товаров, работ, услуг) и (или) нормативные затраты на обеспечение функций государственных органов, органов управления государственными внебюджетными фондами, муниципальных органов (включая соответственно территориальные органы и подведомственные казенные учреждения) подлежат размещению в единой информационной системе.</p>
+							        <p>(в ред. Федерального закона от 31.12.2014 N 498-ФЗ)</p>
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
+					<div class="modal fade bs-example-modal-lg custom-modal" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="textModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title" id="textModalLabel">Федеральный закон от 05.04.2013 N 44-ФЗ (ред. от 30.12.2015) "О контрактной системе в сфере закупок товаров, работ, услуг для обеспечения государственных и муниципальных нужд"</h4>
+								</div>
+								<div class="modal-body" style="text-align:justify">
+							        <p>План закупок формируется государственным или муниципальным заказчиком в соответствии с требованиями настоящей статьи в процессе составления и рассмотрения проектов бюджетов бюджетной системы Российской Федерации с учётом положений бюджетного законодательства Российской Федерации и утверждается в течение десяти рабочих дней после доведения до государственного или муниципального заказчика объема прав в денежном выражении на принятие и (или) исполнение обязательств в соответствии с бюджетным законодательством Российской Федерации.</p>
+							        
+								</div>
+							</div><!-- /.modal-content -->
+						</div><!-- /.modal-dialog -->
+					</div><!-- /.modal -->
+				</div>
+				<div class="tab-pane" id="nmck">
+					<div class="form-group">
+						<label for="regular13" class="col-md-3 control-label">Плановое финансирование</label>
+						<div class="col-md-3 form-group form-group-in">
+							<label for="regular13" class="col-md-5 control-label">1-й год руб.</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="placeholder13">
+							</div>
+						</div>
+						<div class="col-md-3 form-group form-group-in">
+							<label for="regular13" class="col-md-5 control-label">2-й год руб.</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="placeholder13">
+							</div>
+						</div>
+						<div class="col-md-3 form-group form-group-in">
+							<label for="regular13" class="col-md-5 control-label">3-й год руб.</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="placeholder13">
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label"></label>
+						<div class="col-md-3 form-group form-group-in">
+							<label for="regular13" class="col-md-5 control-label">Размер аванса, %</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="placeholder13">
+							</div>
+						</div>
+						<div class="col-md-3 form-group form-group-in">
+							<label for="regular13" class="col-md-5 control-label">Размер аванса, всего (тыс.руб)</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="placeholder13" value="0" readonly>
+							</div>
+						</div>
+						<div class="col-md-3 form-group form-group-in">
+							<label for="regular13" class="col-md-5 control-label">Плановое финанси-рование, всего (тыс.руб)</label>
+							<div class="col-md-6">
+								<input type="text" class="form-control" id="placeholder13" value="0" readonly>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="help13" class="col-md-2 control-label">Метод определения и обоснования НМЦК</label>
+						<div class="col-md-10">
+							<select id="select2" name="select2" class="form-control">
+								<option value="">Выберите значение</option>
+								<option value="1">Метод сопоставимых рыночных цен</option>
+								<option value="2">Затратный метод</option>
+								<option value="1">Нормативный метод</option>
+								<option value="2">Тарифный метод</option>
+								<option value="1">Проектно-сметный метод</option>
+								<option value="2">Другой метод</option>
+							</select>
+							<p class="help-block">Обязательно для заполнения</p>
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-head">
+							<header>Обоснование стоимости лота</header>
+							<div class="tools">
+								<div class="btn-group">
+									<a class="btn btn-icon-toggle btn-collapse"><i class="fa fa-angle-down"></i></a>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="form-group">
+							    <label for="exampleInputFile" class="col-md-3 control-label">Документ-обоснование стоимости</label>
+							    <input type="file" id="exampleInputFile">
+							</div>
+							<div class="form-group">
+								<label for="placeholder13" class="col-md-3 control-label">Комментарий к документу</label>
+								<div class="col-md-9">
+									<input type="text" class="form-control" id="placeholder13">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="placeholder13" class="col-md-3 control-label">Обоснование дополнительных требований к участникам закупки (подрядчика, исполнителя)</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control" id="placeholder13">
+						</div>
+					</div>
+
+					
+				</div>
+				<div class="tab-pane" id="condition">5
+				</div>
+			</div><!--end .card-body -->
+		</div>
+	</form>
+</div>
+
+					</div>
+				</section>
+			</div><!--end #content-->
+			<!-- END CONTENT -->
+
+			<!-- BEGIN MENUBAR-->
+			<div id="menubar" class="menubar-inverse animate">
+				<div class="menubar-fixed-panel">
+					<div>
+						<a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+							<i class="fa fa-bars"></i>
+						</a>
+					</div>
+				</div>
+				<div class="menubar-scroll-panel">
+
+					<!-- BEGIN MAIN MENU -->
+					<ul id="main-menu" class="gui-controls">
+						<li>
+							<a href="./lots.html" >
+								<div class="gui-icon"><i class="glyphicon glyphicon-th-list"></i></div>
+								<span class="title">Мои лоты</span>
+							</a>
+						</li>
+						
+						<li>
+							<a href="./lot_create.html" >
+								<div class="gui-icon"><i class="glyphicon glyphicon-plus-sign"></i></div>
+								<span class="title">Создать лот</span>
+							</a>
+						</li>
+					</ul><!--end .main-menu -->
+					<!-- END MAIN MENU -->
+
+					<div class="menubar-foot-panel">
+						<small class="no-linebreak hidden-folded">
+							Министерство образования и <br />науки Российской Федерации
+						</small>
+					</div>
+				</div><!--end .menubar-scroll-panel-->
+			</div><!--end #menubar-->
+			<!-- END MENUBAR -->
+
+			
+
+		</div><!--end #base-->
+		<!-- END BASE -->
+
+		<!-- BEGIN JAVASCRIPT -->
+		<script src="./assets/js/libs/jquery/jquery-1.11.2.min.js"></script>
+		<script src="./assets/js/libs/jquery/jquery-migrate-1.2.1.min.js"></script>
+		<script src="./assets/js/libs/bootstrap/bootstrap.min.js"></script>
+		<script src="./assets/js/libs/select2/select2.min.js"></script>
+		<script src="./assets/js/libs/spin.js/spin.min.js"></script>
+		<script src="./assets/js/libs/autosize/jquery.autosize.min.js"></script>
+		<script src="./assets/js/libs/nanoscroller/jquery.nanoscroller.min.js"></script>
+		<script src="./assets/js/libs/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+		<script src="./assets/js/core/source/App.js"></script>
+		<script src="./assets/js/core/source/AppNavigation.js"></script>
+		<script src="./assets/js/core/source/AppOffcanvas.js"></script>
+		<script src="./assets/js/core/source/AppCard.js"></script>
+		<script src="./assets/js/core/source/AppForm.js"></script>
+		<script src="./assets/js/core/source/AppNavSearch.js"></script>
+		<script src="./assets/js/core/source/AppVendor.js"></script>
+		<script src="./assets/js/custom.js"></script>
+
+
+		<!-- END JAVASCRIPT -->
+
+	</body>
+</html>

@@ -2,9 +2,9 @@
 
 @section('title')
     @if($user->hasRole('partner'))
-        Редакирование парнера "{{$user->name}}"
+        Редактирование партнера "{{$user->name}}"
     @else
-        Редакирование пользователя "{{$user->name}}"
+        Редактирование пользователя "{{$user->name}}"
     @endif
 
 @stop
@@ -46,7 +46,7 @@
                     <label class="form-label">Контрагент?</label>
                 </div>
                 <div class="col-sm-6">
-                    {!! Form::checkbox('is_contragent', $user->is_contragent) !!}
+                    {!! Form::checkbox('is_contragent', !$user->is_contragent) !!}
                 </div>
             </div>
             <div class="block-header">

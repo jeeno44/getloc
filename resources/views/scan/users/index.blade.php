@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 
 @section('title')
-    Контрагенты&nbsp;&nbsp;
+    Контрагенты
 @stop
 
 @section('content')
@@ -14,6 +14,7 @@
                     <th>Имя</th>
                     <th>Просчетов</th>
                     <th>Макс. демо сайтов</th>
+                    <th>Контрагент?</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -31,6 +32,11 @@
                         </td>
                         <td>
                             {{$item->max_sites}}
+                        </td>
+                        <td>
+	                        @if ($item->is_contragent) 
+	                        	Да
+	                        @endif
                         </td>
                         <td class="text-right">
                             <a class="btn btn-sm btn-default" type="button" data-toggle="tooltip" title="Редактировать" href="/users/{{$item->id}}/edit"><i class="fa fa-pencil"></i></a>

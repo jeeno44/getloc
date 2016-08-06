@@ -42,6 +42,7 @@ class ScanUsersController extends AdminController
         $data = $request->all();
         if (empty($data['is_contragent'])) {
             $data['is_contragent'] = false;
+            //dd($data['is_contragent']);
         }
         $user->update($data);
         $detail = \App\UserDetail::where('user_id', $this->user->id)->first();

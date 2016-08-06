@@ -2,9 +2,9 @@
 
 @section('title')
     @if($user->hasRole('partner'))
-        Редакирование парнера "{{$user->name}}"
+        Редактирование парнера "{{$user->name}}"
     @else
-        Редакирование пользователя "{{$user->name}}"
+        Редактирование пользователя "{{$user->name}}"
     @endif
 
 @stop

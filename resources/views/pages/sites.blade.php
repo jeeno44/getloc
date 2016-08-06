@@ -7,8 +7,17 @@
     <div class="site__content site_inner">
         <!-- site__wrap -->
         <div class="site__wrap">
-            <div class="warn_panel">В демо-режиме доступны {{Auth::user()->max_sites}} просчета. Для дальнейшей работы заполните форму регистрации контрагента. Стоимость 99 рублей за просчет</div>
-
+	        @if (!\Auth::user()->is_contragent)
+		        <div class="warn_panel">
+	                <h2 class="warn_panel__title">Вы работаете в демо-режиме</h2>
+	                <p>В демо-режиме доступны еще <b>{{Auth::user()->max_sites}}</b> просчета. </p>
+	                <p>
+		                Для дальнейшей работы необходимо заполнить форму регистрации контрагента. <br />
+		                Стоимость каждого расчета статистики составляет 99 рублей, оплачивается единым счетом в конце месяца.
+		            </p>
+	                <a class="warn_panel__change" href="/contragent">Заполнить форму регистрации контрагента</a>
+	            </div>
+            @endif
             <!-- site__title -->
             <h1 class="site__title">{{trans('phrases.analytics')}}</h1>
             <!-- /site__title -->
@@ -62,7 +71,7 @@
 
             <!-- site__panel -->
             <div class="site__panel">
-
+				{{--
                 @if(!\Auth::user()->is_contragent && Auth::user()->sites()->count() > Auth::user()->max_sites)
                     <a class="btn btn_add_disabled"><span>{{trans('phrases.add_your_site')}}</span></a>
                     <a class="btn btn_add" href="/contragent">Регистрация как контрагент</a>
@@ -75,6 +84,16 @@
                         </a>
                     @endif
                 @endif
+                --}}
+                @if(\Auth::user()->is_contragent || Auth::user()->sites()->count() < Auth::user()->max_sites)
+                    <a class="btn btn_add popup__open" data-popup="order">
+		                <span>{{trans('phrases.add_your_site')}}</span>
+		            </a>
+		        @endif
+                {{-- @if (!\Auth::user()->is_contragent)
+                	<a class="btn btn_7 btn_blue" href="/contragent">Регистрация как контрагент</a>              
+                @endif
+                --}}
 
                 <!-- search -->
                 <div class="search">
@@ -100,7 +119,7 @@
                     <td>{{ucfirst(trans('phrases.blocks'))}}</td>
                     <td>{{ucfirst(trans('phrases.words'))}}</td>
                     <td>{{ucfirst(trans('phrases.symbols'))}}</td>
-                    <td>Экспорт в TMX</td>
+                    <td>Экспорт</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -137,12 +156,12 @@
                                 <span class="projects__done">{{trans('phrases.site_done')}}</span>
                             </td>
                         @endif
-                        <td>{{$site->pages()->count()}}</td>
-                        <td>{{number_format($site->count_blocks, 0, '.', ' ')}}</td>
-                        <td>{{number_format($site->count_words, 0, '.', ' ')}}</td>
-                        <td>{{number_format($site->count_symbols, 0, '.', ' ')}}</td>
+                        <td class="text_right">{{number_format($site->pages()->count(), 0, '.', ' ')}}</td>
+                        <td class="text_right">{{number_format($site->count_blocks, 0, '.', ' ')}}</td>
+                        <td class="text_right">{{number_format($site->count_words, 0, '.', ' ')}}</td>
+                        <td class="text_right">{{number_format($site->count_symbols, 0, '.', ' ')}}</td>
                         <td>
-                            @if($site->count_words)<a href="/export/{{$site->id}}">Скачать</a>&nbsp;&nbsp;&nbsp;@endif
+                            @if($site->count_words)<a href="/export/{{$site->id}}">TMX</a>&nbsp;&nbsp;&nbsp;@endif
                             <a href="/delete/{{$site->id}}">Удалить</a>
                         </td>
                     </tr>

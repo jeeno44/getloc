@@ -91,13 +91,13 @@
                                 <span class="label label-danger pull-right">{{trans('phrases.server_error')}} {{$page->code}}</span>
                             @endif
                         </td>
-                        <td>
+                        <td class="text_right">
                             {{number_format($page->count_blocks, 0, '.', ' ')}}
                         </td>
-                        <td>
+                        <td class="text_right">
                             {{number_format($page->count_words, 0, '.', ' ')}}
                         </td>
-                        <td>
+                        <td class="text_right">
                             {{number_format($page->count_symbs, 0, '.', ' ')}}
                         </td>
                     </tr>

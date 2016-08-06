@@ -1,7 +1,8 @@
 @if (Auth::check())
     @if(strpos(url('/'), 'scan'))
         @if(\App\UserDetail::where('user_id', Auth::user()->id)->count() > 0)
-            <div class="header__person" style="background-image: url('/assets/img/account/iocns-ava.png'); right: 50px">
+            <div class="header__person header__person_scan">
+	            <span>{{\Auth::user()->email}}</span>
                 <ul class="header__person-list">
                     <li><a href="/profile">{{trans('account.t_my_profile')}}</a></li>
                     <li><a href="/contragent">{{trans('account.t_contra')}}</a></li>
