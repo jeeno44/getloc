@@ -19,8 +19,9 @@
     <meta property="og:description" content="{{trans('account.t_index_desc')}}" />
     <meta property="og:url" content="http://get-loc.ru/" />
     
-    <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,300,500,700&subset=cyrillic' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/assets/css/swiper.min.css" />
+    {{--<link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,300,500,700&subset=cyrillic' rel='stylesheet' type='text/css'>--}}
+    
+	<link rel="stylesheet" href="/assets/css/swiper.min.css" />
     <link rel="stylesheet" href="/assets/css/select.css" />
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/custom.css" />

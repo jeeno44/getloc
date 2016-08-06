@@ -29,7 +29,8 @@
 .projects thead th {
     height: 46px;
     border-bottom: 2px solid #e3e6e8;
-    font-weight: 700;
+    font-weight: normal;
+    font-family: 'fira_sansbold', sans-serif !important;
 }
 .site__footer {
     z-index: 1;
@@ -179,4 +180,5 @@
 }
 .site__aside > .site__aside-menu > a.active {
     font-weight: normal;
+    font-family: 'fira_sansregular', sans-serif !important;
 }

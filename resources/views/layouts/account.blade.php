@@ -7,7 +7,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="address=no">
     <title>@yield('title')</title>
-    <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,300,500,700&subset=cyrillic' rel='stylesheet' type='text/css'>
+    {{-- <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,300,500,700&subset=cyrillic' rel='stylesheet' type='text/css'> --}}
     <link rel="stylesheet" href="/assets/css/account/select.css" />
     <link rel="stylesheet" href="/assets/css/account/main.css" />
     <link rel="stylesheet" href="/assets/css/account/custom.css" />
