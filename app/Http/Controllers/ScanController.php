@@ -146,7 +146,6 @@ class ScanController extends Controller
     public function delete($id)
     {
         $site = Site::find($id);
-        dd($site);
         if (empty($site) || $site->user_id != $this->user->id) {
             abort(404);
         }

@@ -182,3 +182,18 @@
     font-weight: normal;
     font-family: 'fira_sansregular', sans-serif !important;
 }
+.popup__unavailable {
+    width: auto;
+    padding: 40px 44px 31px;
+    position: relative;
+    text-align: left;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 4px;
+}
+.btn_8 {
+    width: 204px;
+    height: 40px;
+    padding: 9px 30px;
+    text-align: center;
+}

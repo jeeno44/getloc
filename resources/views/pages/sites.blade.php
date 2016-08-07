@@ -163,8 +163,7 @@
                         <td>
                             @if($site->count_words) <a href="/export/{{$site->id}}">TMX</a>&nbsp;&nbsp;&nbsp;@endif
                             @if($site->count_words)
-                                <!--<a class="project-list__control-delet popup__open" href="#" data-popup="del{{$site->id}}">{{trans('account.t_sproject_remove')}}</a> -->
-                                <a class="project-list__control-delet" href="/delete/{{$site->id}}">{{trans('account.t_sproject_remove')}}</a>
+                                <a class="project-list__control-delet popup__open" href="#" data-popup="del{{$site->id}}">{{trans('account.t_sproject_remove')}}
                             @endif
                         </td>
                     </tr>
@@ -186,21 +185,6 @@
             <!-- /paginator -->
 
         </div>
-        <!-- /site__wrap -->
-        <div class="popup">
-            <div class="popup__wrap">
-                @foreach($sites as $site)
-                    <div class="popup__content popup__unavailable popup__del{{$site->id}}">
-                        <a href="#" class="popup__close">close</a>
-                        <h2 class="site__title site__title_center">{{trans('account.t_sproject_remove_project')}} {{$site->name}}</h2>
-                        <div style="text-align:center">
-                            <a class="btn btn_8 btn_blue" href="/delete/{{$site->id}}">{{trans('account.t_sproject_remove')}}</a>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-
     </div>
 
 @stop
