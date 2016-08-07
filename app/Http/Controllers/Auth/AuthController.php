@@ -29,7 +29,7 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/account/projects';
 
     /*protected function authenticated(User $user)
     {
@@ -58,15 +58,14 @@ class AuthController extends Controller
      */
     public function __construct()
     {
+        //parent::__construct();
         $this->middleware('guest', ['except' => 'logout']);
-//        if (\Auth::check()) {
-//            $user = \Auth::user();
-//
-//            if ($user->hasRole('show_stat')) {
-//                return $this->redirectTo = route('scan.main');
-//            }
-//        }
-//        $this->redirectTo = route('main.account.selectProject');
+
+        if (strpos(\URL::previous(), 'scan')) {
+            $this->redirectTo = route('scan.main');
+        } else {
+            $this->redirectTo = route('main.account.selectProject');
+        }
         if ($this->user) {
             \Log::info(var_dump($this->user));
         }
@@ -153,5 +152,25 @@ class AuthController extends Controller
             return redirect()->route('scan.main');
         }
         return redirect('/');
+    }
+
+    public function login(Request $request)
+    {
+        $this->validateLogin($request);
+        $throttles = $this->isUsingThrottlesLoginsTrait();
+
+        if ($throttles && $lockedOut = $this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
+        $credentials = $this->getCredentials($request);
+
+        if (\Auth::guard($this->getGuard())->attempt($credentials, $request->has('remember'))) {
+            return redirect($this->redirectTo);
+        }
+
+        return $this->sendFailedLoginResponse($request);
     }
 }
