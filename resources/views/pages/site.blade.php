@@ -79,7 +79,7 @@
                 @foreach($pages as $page)
                     <tr>
                         <td>
-                            <a href="{{route('scan.page', ['id' => $page->id])}}">{{beautyUrl($page->url)}}</a>
+                            <a href="{{route('scan.page', ['id' => $page->id])}}">{{beautyUrl(trimStrLen($page->url, 80))}}</a>
                         </td>
                         <td class="projects__status">
                             @if ($page->collected == 1)

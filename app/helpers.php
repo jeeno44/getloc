@@ -160,6 +160,9 @@ function ruDate($date){
  */
 function beautyUrl($url)
 {
+    if (strpos('_'.$url, 'https:') > 0) {
+        return trim(str_replace('https://', '', $url), '/');
+    }
     return trim(str_replace('http://', '', $url), '/');
 }
 
@@ -473,4 +476,12 @@ function messageAboutTariff()
         return view('partials.tariff-message', compact('project'));
     }
     return '';
+}
+
+function trimStrLen($str, $len = 100)
+{
+    if (mb_strlen($str, 'utf-8') > $len) {
+        return mb_substr($str, 0, $len, 'utf-8').'...';
+    }
+    return $str;
 }

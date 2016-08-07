@@ -126,7 +126,7 @@
                 @foreach($sites as $site)
                     <tr>
                         @if ($site->pages()->count() == 0)
-                            <td>{{beautyUrl($site->url)}}</td>
+                            <td>{{beautyUrl($site->url)}} @if (strpos('_'.$site->url, 'https:') > 0) (https) @endif</td>
                             <td class="projects__status">
                                 <span class="projects__picking">
                                     {{trans('phrases.building_structure')}}
@@ -162,7 +162,10 @@
                         <td class="text_right">{{number_format($site->count_symbols, 0, '.', ' ')}}</td>
                         <td>
                             @if($site->count_words) <a href="/export/{{$site->id}}">TMX</a>&nbsp;&nbsp;&nbsp;@endif
-                            @if($site->count_words)<a href="/delete/{{$site->id}}">Удалить</a>@endif
+                            @if($site->count_words)
+                                <!--<a class="project-list__control-delet popup__open" href="#" data-popup="del{{$site->id}}">{{trans('account.t_sproject_remove')}}</a> -->
+                                <a class="project-list__control-delet" href="/delete/{{$site->id}}">{{trans('account.t_sproject_remove')}}</a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
@@ -184,6 +187,19 @@
 
         </div>
         <!-- /site__wrap -->
+        <div class="popup">
+            <div class="popup__wrap">
+                @foreach($sites as $site)
+                    <div class="popup__content popup__unavailable popup__del{{$site->id}}">
+                        <a href="#" class="popup__close">close</a>
+                        <h2 class="site__title site__title_center">{{trans('account.t_sproject_remove_project')}} {{$site->name}}</h2>
+                        <div style="text-align:center">
+                            <a class="btn btn_8 btn_blue" href="/delete/{{$site->id}}">{{trans('account.t_sproject_remove')}}</a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
 
     </div>
 

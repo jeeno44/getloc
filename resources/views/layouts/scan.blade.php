@@ -28,7 +28,7 @@
 <body>
 <!-- site -->
 <div class="site" id="up">
-
+12
     @include('partials.header')
 
     @yield('content')

@@ -1,4 +1,4 @@
-@extends('layouts.scan')
+@extends('layouts.index')
 @section('title') {{trans('account.t_billing_title_buy')}} @stop
 @section('content')
     <div class="site__content site_inner">

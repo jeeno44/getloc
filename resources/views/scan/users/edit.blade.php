@@ -85,6 +85,9 @@
                 <label for="name-project">{{trans('account.t_billing_rs')}}</label>
                 {!! Form::text('company_bank_account', $detail->company_bank_account, ['class' => 'form-control']) !!}
 
+                <label class="site__label" for="name-project">Корреспондентский счет</label>
+                {!! Form::text('company_bank_account_ks', $detail->company_bank_account_ks, ['class' => 'form-control','required']) !!}
+
                 <label for="name-project">{{trans('account.t_billing_bik')}}</label>
                 {!! Form::text('company_bank_bik', $detail->company_bank_bik, ['class' => 'form-control']) !!}
 

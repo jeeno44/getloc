@@ -61,7 +61,7 @@
 
             <div class="breadcrumbs">
                 <a href="{{route('scan.site', ['id' => $page->site_id])}}">{{trans('phrases.all_project_pages')}}</a>
-                <span>{{trans('phrases.list_of_texts')}} {{beautyUrl($page->url)}}</span>
+                <span>{{trans('phrases.list_of_texts')}} {{beautyUrl(trimStrLen($page->url, 80))}}</span>
             </div>
 
             <table class="projects">

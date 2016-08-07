@@ -35,7 +35,7 @@ class ScanController extends Controller
             $sites = Site::latest()->where('user_id', \Auth::user()->id)->where('enabled', 1)->paginate(20);
             $siteIds = Site::latest()->where('user_id', \Auth::user()->id)->where('enabled', 1)->lists('id')->toArray();
         }
-        $countSites = Site::where('user_id', \Auth::user()->id)->count();
+        $countSites = count($sites);
         $countPages = Page::whereIn('site_id', $siteIds)->count();
         $countBlocks = Block::whereIn('site_id', $siteIds)->count();
         \Session::remove('site');
@@ -146,6 +146,7 @@ class ScanController extends Controller
     public function delete($id)
     {
         $site = Site::find($id);
+        dd($site);
         if (empty($site) || $site->user_id != $this->user->id) {
             abort(404);
         }
