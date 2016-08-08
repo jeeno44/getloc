@@ -1,1 +1,1 @@
-Данные контрагента с ID {{$detail->user->id}} изменены.
+Данные контрагента с ID {{$detail->user->id}} (email: {{$detail->user->email}}) изменены.
