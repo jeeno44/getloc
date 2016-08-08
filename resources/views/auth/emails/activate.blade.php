@@ -1,5 +1,5 @@
 Добрый день, вы зарегистрировались в системе расчета статистики сайтов scan.getloc.ru.<br>
-Ваше имя: {{$user->first_name}}<br>
+Ваше имя: {{$user->name}}<br>
 Контактный email: {{$user->email}}<br>
 <br>
 Для подтверждение регистрации и защиты от злоумышленников. Необходимо активировать ваш профиль. Для этого перейдите по ссылке: <a href="http://scan.{{env('APP_DOMAIN')}}/activated?code={{$user->activation_code}}">http://scan.{{env('APP_DOMAIN')}}/activated?code={{$user->activation_code}}</a><br>
