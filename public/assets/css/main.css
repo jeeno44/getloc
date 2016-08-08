@@ -2622,7 +2622,7 @@ input[type=search].site__input.search-phrase{
 	background-position: 10px center !important;
 	padding: 0px 15px 0px 35px;
 	line-height: 32px;
-	right: 50px !important;
+	/*right: 50px !important;*/
 	width: auto !important;
 	color: #ffffff;
 }

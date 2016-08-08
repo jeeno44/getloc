@@ -176,7 +176,7 @@
 }
 .site__header-inner > *:first-child {
     margin-left: 0;
-    margin-right: 11px;
+    /*margin-right: 11px;*/
 }
 .site__aside > .site__aside-menu > a.active {
     font-weight: normal;

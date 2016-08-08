@@ -234,7 +234,7 @@ input[type="search"]::-webkit-search-cancel-button {
 .site__header-inner {
     position: absolute;
     top: 1px;
-    right: 20px;
+    /*right: 20px;*/
     text-align: right;
 }
 .site__header-inner > * {
@@ -1253,6 +1253,11 @@ input[type=search].site__input.search-phrase{
     font-family: 'fira_sansregular', sans-serif !important;
     color: #666666;
     background-color: #f9f9f9;
+}
+.inside-content__title b {
+	font-weight: bold !important;
+    font-family: 'fira_sansmedium', sans-serif !important;
+
 }
 .inside-content__title_2 {
     padding: 14px 16px;

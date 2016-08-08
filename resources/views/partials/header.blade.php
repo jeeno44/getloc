@@ -60,23 +60,26 @@
             @endif
 
             <div class="site__header-inner">
-                <nav class="header__menu">
-                    @if(strpos(url('/'), 'scan'))
-                    @else
+	            @if(!strpos(url('/'), 'scan'))
+                	<nav class="header__menu">
+                    
                         <a href="{{route('main.feature')}}">{{trans('phrases.capabilities')}}</a>
                         @if (\Auth::check() && \App\User::find(\Auth::user()->id)->hasRole('show_stat') )
                             <a href="{{route('scan.main')}}">{{trans('phrases.analytics')}}</a>
                         @endif
-                    @endif
-                </nav>
+                   
+                	</nav>
+                @endif
                 @include('partials.login')
-                <div class="language">
-                    <button class="language__btn">{{strtoupper($locale)}}</button>
-                    <ul class="language__list">
-                        <li><a href="/ru">Русский</a></li>
-                        <li><a href="/en">English</a></li>
-                    </ul>
-                </div>
+                @if(!strpos(url('/'), 'scan'))
+	                <div class="language">
+	                    <button class="language__btn">{{strtoupper($locale)}}</button>
+	                    <ul class="language__list">
+	                        <li><a href="/ru">Русский</a></li>
+	                        <li><a href="/en">English</a></li>
+	                    </ul>
+	                </div>
+	            @endif
             </div>
         </div>
     </header>
