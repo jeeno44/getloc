@@ -22,8 +22,11 @@ class Scan
                 return response('Unauthorized.', 401);
             } else {
                 if ( !($request->route()->getAction()['as'] == 'scan.login.form' ||
-                    $request->route()->getAction()['as'] == 'scan.register.form'))
+                    $request->route()->getAction()['as'] == 'scan.register.form' ||
+                    $request->route()->getAction()['as'] == 'scan.registered' ||
+                    $request->route()->getAction()['as'] == 'scan.activated') ) {
                     return redirect()->guest('login');
+                }
             }
         }
         

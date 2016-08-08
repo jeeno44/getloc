@@ -13,9 +13,11 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::post('/site', ['as' => 'scan.site.post', 'uses' => 'ScanController@postSite']);
         Route::any('/sites', ['as' => 'scan.sites', 'uses' => 'ScanController@anySites']);
         Route::get('login', ['as' => 'scan.login.form', 'uses' => 'Auth\AuthController@showLoginForm']);
+        Route::get('activated', ['as' => 'scan.activated', 'uses' => 'Auth\AuthController@activate']);
 //        Route::post('login', ['as' => 'scan.login.post', 'uses' => 'Auth\AuthController@login']);
         Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@logout']);
         Route::get('register', ['as' => 'scan.register.form', 'uses' => 'Auth\AuthController@showRegistrationForm']);
+        Route::get('registered', ['as' => 'scan.registered', 'uses' => 'Auth\AuthController@registered']);
         Route::post('register', ['as' => 'scan.register.post', 'uses' => 'Auth\AuthController@register']);
         Route::any('/get-demo', ['as' => 'scan.get-demo', 'uses' => 'ScanController@getDemo']);
         Route::get('contragent', 'ScanController@contragent');

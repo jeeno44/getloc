@@ -5,12 +5,12 @@
     <form action="{{route('login.post')}}" class="site__form" novalidate method="post" style="margin: 60px auto; width: 400px;">
         {!! csrf_field() !!}
         <span class="site__form-title">{{trans('account.t_login_title')}}</span>
+        @if ($errors->has('email'))
+            <span class="help-block" style="color: red"><strong>{{ $errors->first('email') }}</strong></span><br><br>
+        @endif
         <fieldset>
             <label for="email">{{trans('account.t_login_email')}}</label>
             <input type="email" id="email" required name="email">
-            @if ($errors->has('email'))
-                <span class="help-block"><strong>{{ $errors->first('email') }}</strong></span>
-            @endif
         </fieldset>
         <fieldset>
             <label>{{trans('account.t_login_pass')}}</label>

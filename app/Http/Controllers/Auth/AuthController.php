@@ -44,6 +44,13 @@ class AuthController extends Controller
 
     protected function sendFailedLoginResponse(Request $request)
     {
+        if (strpos(\URL::previous(), 'scan')) {
+            return redirect()->route('scan.login.form')
+                ->withInput($request->only($this->loginUsername(), 'remember'))
+                ->withErrors([
+                    $this->loginUsername() => $this->getFailedLoginMessage(),
+                ]);
+        }
         return redirect()->route('login.form')
             ->withInput($request->only($this->loginUsername(), 'remember'))
             ->withErrors([
@@ -86,6 +93,45 @@ class AuthController extends Controller
         ]);
     }
 
+    public function register(Request $request)
+    {
+        $validator = $this->validator($request->all());
+
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
+        $user = $this->create($request->all());
+        if (strpos(\URL::previous(), 'scan')) {
+            \Mail::send('auth.emails.activate', compact('user', 'password'), function($message) use ($user) {
+                $message->to($user->email)->subject('Благодарим вас за регистрацию в системе scan.getloc.ru');
+            });
+            return redirect()->route('scan.registered');
+        }
+        \Auth::guard($this->getGuard())->login($user);
+        return redirect($this->redirectPath());
+    }
+
+    public function activate(Request $request)
+    {
+        if (strpos(\URL::previous(), 'scan')) {
+            $user = User::where('activation_code', $request->get('code'))->first();
+            if ($user) {
+                $user->activated = 1;
+                $user->save();
+                \Auth::login($user);
+                return redirect()->route('scan.main');
+            }
+            return view('auth.activated');
+        }
+    }
+
+    public function registered()
+    {
+        return view('auth.registered');
+    }
+
     /**
      * Create a new user instance after a valid registration.
      *
@@ -98,6 +144,7 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'activation_code'   => str_random(32),
         ]);
         if(!empty($data['role'])) {
             $role = \App\Role::find($data['role']);
@@ -166,7 +213,7 @@ class AuthController extends Controller
         }
 
         $credentials = $this->getCredentials($request);
-
+        $credentials['activated'] = 1;
         if (\Auth::guard($this->getGuard())->attempt($credentials, $request->has('remember'))) {
             return redirect($this->redirectTo);
         }
