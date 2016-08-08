@@ -2630,6 +2630,7 @@ input[type=search].site__input.search-phrase{
 	float: left;
 	height: 32px;
 	line-height: 32px;
+	white-space: nowrap;
 }
 .account-data__save {
     margin-top: 29px;
