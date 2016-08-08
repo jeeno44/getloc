@@ -121,7 +121,6 @@ for item in ps.listen():
     if (item['type'] == "message"):
         try:
             data = json.loads(item['data'].decode("utf-8"))
-            print('start')
             site = data['site']
             api  = 'http://' + data['api'] + '/python/map-done/' + str(site)
             try:
@@ -133,27 +132,26 @@ for item in ps.listen():
                     charset     = mysql_credentials['charset']
                 )
             except Exception as e:
-                bot_error("!!! ПАУК !!! - Error %d: %s" % (e.args[0], e.args[1]))
-                sys.stderr.write("!!! ПАУК !!! - Error %d: %s" % (e.args[0], e.args[1]))
+                bot_error("!!! ПАУК !!! - Error %s" % (str(e)))
+                print("!!! ПАУК !!! - Error %s" % (str(e)))
             else:
                 try:
                     with connection.cursor() as cursor:
-                        sql = "SELECT `url`, `secret` FROM `sites` WHERE `id` = %s"
-                        cursor.execute(sql, site)
+                        cursor.execute("SELECT `url`, `secret` FROM `sites` WHERE `id` = {}".format(site))
                         url = cursor.fetchone()
                         pprint(url)
                         if url[0]:
                             urls = scan(url[0])
                             for page in urls:
-                                sql = "SELECT `url` FROM `pages` WHERE `url` = %s"
-                                res = cursor.execute(sql, page)
+                                sql = "SELECT `url` FROM `pages` WHERE `url` = '{}'".format(page)
+                                res = cursor.execute(sql)
                                 if not res:
-                                    sql = "INSERT INTO `pages` (`site_id`, `url`, `code`, `visited`, `level`, `collected`) VALUES (%s, %s, 200 ,1, 1, 0)"
-                                    cursor.execute(sql, (site, page))
+                                    sql = "INSERT INTO `pages` (`site_id`, `url`, `code`, `visited`, `level`, `collected`) VALUES ({}, '{}', 200 ,1, 1, 0)".format(site, page)
+                                    cursor.execute(sql)
                                     connection.commit()
                 except Exception as e:
-                    bot_error("!!! ПАУК !!! - Error %d: %s" % (e.args[0], e.args[1]))
-                    sys.stderr.write("!!! ПАУК !!! - Error %d: %s" % (e.args[0], e.args[1]))
+                    bot_error("!!! ПАУК !!! - Error %s" % (str(e)))
+                    print("!!! ПАУК !!! - Error %s" % (str(e)))
                     pass
 
                 finally:
@@ -161,7 +159,7 @@ for item in ps.listen():
                     urllib.request.urlopen(api)
 
         except Exception as e:
-            bot_error("!!! ПАУК !!! - Error %d: %s" % (e.args[0], e.args[1]))
-            sys.stderr.write("!!! ПАУК !!! - Error %d: %s" % (e.args[0], e.args[1]))
+            bot_error("!!! ПАУК !!! - Error %s" % (str(e)))
+            print("!!! ПАУК !!! - Error %s" % (str(e)))
             pass
             
