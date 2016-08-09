@@ -353,7 +353,7 @@ return [
     't_email_get_demo_text20'            => 'На White Label это активируется автоматически. Это всплывающее',
     't_email_get_demo_text21'            => 'окно не влияет на конверсию и позиции в поисковиках. Мы и сами',
     't_email_get_demo_text22'            => 'используем его на главных страницах Aviasales и hotellook.',
-    't_email_get_demo_copyright'         => '2016 GetLoc. Все права защищены.',
+    't_email_get_demo_copyright'         => '2016 getLoc. Все права защищены.',
     't_email_get_demo_update_profile'    => 'Обновить профиль подписчика',
     't_email_partner_login'              => 'Ваш пароль для входа в кабинет партнера:',
     't_email_partner_link'               => 'Ваша ссылка для привлечения клиентов:',

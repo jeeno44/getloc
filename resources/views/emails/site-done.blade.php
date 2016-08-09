@@ -50,13 +50,15 @@
                                 <td style="width: 560px;" width="560">
                                     <h2 style="text-align: center; font-size: 24px; color: #333; margin-bottom: 12px;">{{trans('account.t_email_call_me_hello')}}</h2>
                                     <p style="text-align: left; font-size: 14px; line-height: 22px; color: #333;">
-                                        {{trans('account.t_email_site_done_text1')}}
-                                        {{trans('account.t_email_site_done_text2')}} {{$site->pages()->count()}} {{trans('account.t_email_site_done_text3')}}, {{$site->count_blocks}} {{trans('account.t_email_site_done_text4')}}, {{$site->count_words}} {{trans('account.t_email_site_done_text5')}}, {{$site->count_symbols}} {{trans('account.t_email_site_done_text6')}}.
+                                        {{trans('account.t_email_site_done_text1')}}<br />
+                                        {{trans('account.t_email_site_done_text2')}} {{$site->pages()->count()}} {{trans('account.t_email_site_done_text3')}}, {{$site->count_blocks}} {{trans('account.t_email_site_done_text4')}}, {{$site->count_words}} {{trans('account.t_email_site_done_text5')}}, {{$site->count_symbols}} {{trans('account.t_email_site_done_text6')}}.<br />
                                         {{trans('account.t_email_site_done_text7')}}
                                         {{trans('account.t_email_site_done_text8')}} <a href="{{route('scan.site', ['id' => $site->id])}}">{{trans('account.t_email_site_done_text9')}}</a>.
+                                        {{--
                                         {{trans('account.t_email_site_done_text10')}} <a href="{{route('scan.main')}}">{{trans('account.t_email_call_me_analy')}}</a>.
-                                        -
-                                        {{trans('account.t_email_site_done_text11')}}
+                                        --}}
+                                        <br />
+                                        {{trans('account.t_email_site_done_text11')}}.
                                     </p>
                                 </td>
                                 <td style="width: 20px;" width="20"></td>
@@ -67,6 +69,7 @@
                 <tr>
                     <td height="74px" style="height: 74px;"></td>
                 </tr>
+                {{--
                 <tr>
                     <td>
                         <table cellpadding="0" cellspacing="0" width="100%">
@@ -157,7 +160,7 @@
                     </td>
                 </tr>
                 <!--/content-->
-
+                --}}
                 <!--footer-->
                 <tr>
                     <td>

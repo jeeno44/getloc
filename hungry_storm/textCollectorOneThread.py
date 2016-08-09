@@ -1,4 +1,4 @@
-# -*- coding: utf-8
+# -*- coding: utf-8 -*-
 #!/usr/bin/python
 
 from bs4 import BeautifulSoup
@@ -424,7 +424,8 @@ for item in ps.listen():
             langTo  = lang[3]
             langID  = lang[0]
             pool    = ThreadPool(2)
-            results = pool.map(translateBlock, blocks)
+#            results = pool.map(translateBlock, blocks)
+            results = pool.map(createEmptyTranslate, blocks)
             pool.close()
             pool.join()
 
