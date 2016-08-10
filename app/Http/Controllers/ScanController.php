@@ -29,8 +29,8 @@ class ScanController extends Controller
     {
         $newSite = \Session::get('site');
         if (!empty($request->get('search'))) {
-            $siteIds = Site::latest()->where('user_id', \Auth::user()->id)->where('name', 'like', '%'.$request->get('search').'%')->where('enabled', 1)->lists('id')->toArray();
-            $sites = Site::latest()->where('user_id', \Auth::user()->id)->where('name', 'like', '%'.$request->get('search').'%')->where('enabled', 1)->paginate(20);
+            $siteIds = Site::latest()->where('user_id', \Auth::user()->id)->where('name', 'like', '%'.$request->get('search').'%')->lists('id')->toArray();
+            $sites = Site::latest()->where('user_id', \Auth::user()->id)->where('name', 'like', '%'.$request->get('search').'%')->paginate(20);
         } else {
             $sites = Site::latest()->where('user_id', \Auth::user()->id)->where('enabled', 1)->paginate(20);
             $siteIds = Site::latest()->where('user_id', \Auth::user()->id)->where('enabled', 1)->lists('id')->toArray();

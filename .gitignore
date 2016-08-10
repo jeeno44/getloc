@@ -8,3 +8,4 @@ Homestead.json
 nbproject/*
 /env/
 /hungry_storm/db_access.py
+.idea
