@@ -163,7 +163,7 @@ class ScanController extends Controller
         }
         if (!empty($pageID)) {
             $page = Page::find($pageID);
-            $exp = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<xliff>\n\t<file original=\"\" source-language=\"en-US\" target-language=\"ru\">\n\t\t<header></header>\n\t\t\t<body>";
+            $exp = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<xliff>\n\t<file original=\"\" source-language=\"ru-RU\" target-language=\"en\">\n\t\t<header></header>\n\t\t\t<body>";
             foreach ($page->blocks as $block) {
                 $exp .= "\n\t\t\t\t<trans-unit id=\"{$block->id}\">\n\t\t\t\t\t<source>".htmlspecialchars(trim($block->text))."</source>\n\t\t\t\t</trans-unit>";
             }
@@ -171,7 +171,7 @@ class ScanController extends Controller
             header("Content-type: text/xml");
             header("Content-Disposition: attachment; filename={$site->name}-{$page->url}-export.xlf");
         } else {
-            $exp = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<xliff>\n\t<file original=\"\" source-language=\"en-US\" target-language=\"ru\">\n\t\t<header></header>\n\t\t<body>";
+            $exp = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<xliff>\n\t<file original=\"\" source-language=\"ru-RU\" target-language=\"en\" target-language=\"ru\">\n\t\t<header></header>\n\t\t<body>";
             foreach ($site->blocks as $block) {
                 $exp .= "\n\t\t\t<trans-unit id=\"{$block->id}\">\n\t\t\t\t<source>".htmlspecialchars(trim($block->text))."</source>\n\t\t\t</trans-unit>";
             }
