@@ -73,6 +73,7 @@
                     <td>{{ucfirst(trans('phrases.blocks'))}}</td>
                     <td>{{ucfirst(trans('phrases.words'))}}</td>
                     <td>{{ucfirst(trans('phrases.symbols'))}}</td>
+                    <td>Экспорт</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -99,6 +100,15 @@
                         </td>
                         <td class="text_right">
                             {{number_format($page->count_symbs, 0, '.', ' ')}}
+                        </td>
+                        <td class="text-right">
+                            @if($page->count_words)
+                                <a class="btn btn-actions"><i class="fa fa-ellipsis-v"></i> </a>
+                                <div class="dropdown">
+                                    <a href="/export/{{$page->site_id}}/{{$page->id}}" class="overlay-link">TMX</a>
+                                    <a href="/xliff/{{$page->site_id}}/{{$page->id}}" class="overlay-link">XLIFF</a>
+                                </div>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

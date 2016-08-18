@@ -22,7 +22,8 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::any('/get-demo', ['as' => 'scan.get-demo', 'uses' => 'ScanController@getDemo']);
         Route::get('contragent', 'ScanController@contragent');
         Route::post('/details-form', ['as' => 'scan.billing.details-store', 'uses' => 'ScanController@detailsStore']);
-        Route::get('/export/{id}', 'ScanController@export');
+        Route::get('/export/{id}/{pageID?}', 'ScanController@export');
+        Route::get('/xliff/{id}/{pageID?}', 'ScanController@xliff');
         Route::group(['middleware' => ['admin']], function () {
             Route::resource('users', 'ScanUsersController');
         });

@@ -119,7 +119,7 @@
                     <td>{{ucfirst(trans('phrases.blocks'))}}</td>
                     <td>{{ucfirst(trans('phrases.words'))}}</td>
                     <td>{{ucfirst(trans('phrases.symbols'))}}</td>
-                    <td>Экспорт</td>
+                    <td></td>
                 </tr>
                 </thead>
                 <tbody>
@@ -161,9 +161,13 @@
                         <td class="text_right">{{number_format($site->count_words, 0, '.', ' ')}}</td>
                         <td class="text_right">{{number_format($site->count_symbols, 0, '.', ' ')}}</td>
                         <td>
-                            @if($site->count_words) <a href="/export/{{$site->id}}">TMX</a>&nbsp;&nbsp;&nbsp;@endif
                             @if($site->count_words)
-                                <a class="project-list__control-delet popup__open" href="#" data-popup="del{{$site->id}}">{{trans('account.t_sproject_remove')}}
+                            <a class="btn btn-actions"><i class="fa fa-ellipsis-v"></i> </a>
+                            <div class="dropdown">
+                                <a href="/export/{{$site->id}}" class="overlay-link">TMX</a>
+                                <a href="/xliff/{{$site->id}}" class="overlay-link">XLIFF</a>
+                                <a class="project-list__control-delet popup__open overlay-link" href="#" data-popup="del{{$site->id}}">{{trans('account.t_sproject_remove')}}</a>
+                            </div>
                             @endif
                         </td>
                     </tr>

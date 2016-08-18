@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="/assets/css/select.css" />
     <link rel="stylesheet" href="/assets/css/main.css" />
     <link rel="stylesheet" href="/assets/css/custom.css" />
+    <link rel="stylesheet" href="/assets/css/font-awesome.min.css" />
 </head>
 <body>
 <!-- site -->

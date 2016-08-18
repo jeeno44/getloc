@@ -2,6 +2,24 @@ var popups;
 
 $(function(){
 
+    $('.btn-actions').click(function (e) {
+        $('.dropdown').hide();
+        if ($(this).hasClass('opened')) {
+            $(this).next().hide();
+            $(this).removeClass('opened');
+        } else {
+            $(this).next().show();
+            $(this).addClass('opened');
+        }
+        e.preventDefault();
+    });
+    $('body').click(function (e) {
+        console.log(e.target.className.indexOf('btn-actions'))
+        if (e.target.className != 'overlay-link' && e.target.className.indexOf('btn-actions') == -1) {
+            //$('.dropdown').hide();
+        }
+    })
+
     $.each( $('.discount__form'), function(){
         new FormValidation ( $(this) );
     } );
