@@ -9,7 +9,12 @@
         <div class="project-list__item">
             <div class="project-list__title">
                 @if($site->count_words == 0)
-                    {{$site->url}} {{trans('account.t_sproject_status_in_work')}}
+                    {{$site->url}}
+                    @if($site->pages()->count() == 0)
+                        {{trans('account.t_sproject_status_spider')}}
+                    @else
+                        {{trans('account.t_sproject_status_collect')}}
+                    @endif
                     <div class="project-list__control">
                         <!--<a href="#">Настроить</a>-->
                         <a href="{{route('main.account.project-created', ['id' => $site->id])}}" class="project-list">{{trans('account.t_sproject_code_insert')}}</a>

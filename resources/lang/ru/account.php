@@ -146,6 +146,8 @@ return [
     't_sproject_my_projects'             => 'Мои проекты',
     't_sproject_add_new'                 => 'Добавить новый проект',
     't_sproject_status_in_work'          => '(сайт в обработке)',
+    't_sproject_status_spider'           => '(обработка структуры сайта)',
+    't_sproject_status_collect'          => '(сбор текстов сайта)',
     't_sproject_code_insert'             => 'Код для вставки',
     't_sproject_remove'                  => 'Удалить',
     't_sproject_pages'                   => 'страниц',
