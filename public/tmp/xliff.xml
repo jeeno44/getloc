@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff>
+    <file original="c:\example.xliff" source-language="en-US" target-language="en">
+        <header></header>
+        <body>
+            <trans-unit id="213721" comment="Erp.Contracts.BO.APInvoice.dll;">
+                <source>Rent Type</source><target>Тип аренды</target>
+            </trans-unit>
+            <trans-unit id="213722" comment="Erp.Contracts.BO.APInvoice.dll;">
+                <source>International Tax Agreement</source><target>Международное налоговое соглашение</target>
+            </trans-unit>
+            <trans-unit id="213723" comment="Erp.Contracts.BO.Plant.dll;Erp.Contracts.BO.PlantFromSearch.dll;">
+                <source>Backward Scheduling Start Time</source><target>Обратное планирование время начала</target>
+            </trans-unit>
+            <trans-unit id="213724" comment="Erp.Contracts.BO.PkgControlID.dll;Erp.Contracts.BO.PkgControlVoidPCID.dll;Erp.Contracts.BO.PkgCtrlOverlayPCIDValidate.dll;Erp.Contracts.BO.ReceiptsFromMfg.dll;">
+                <source>INVOICED or POSTED</source><target>ВОЗВРАТЫ или ОПУБЛИКОВАНО</target>
+            </trans-unit>
+            <trans-unit id="213725" comment="Erp.Contracts.BO.PkgControlID.dll;Erp.Contracts.BO.PkgControlIDMaint.dll;Erp.Contracts.BO.PkgControlVoidPCID.dll;Erp.Contracts.BO.PkgCtrlOverlayPCIDValidate.dll;Erp.Contracts.BO.ReceiptsFromMfg.dll;">
+                <source>Packed from Source</source><target>От источника</target>
+            </trans-unit>
+            <trans-unit id="213726" comment="Erp.Contracts.Proc.UploadTranGLCData.dll;ZDataField.UploadTranGLCDataParam;">
+                <source>DB Type</source><target>Тип базы данных</target>
+            </trans-unit>
+            <trans-unit id="213727" comment="Report.EUSalesRpt;">
+                <source>Sales List Report - SKV574008</source><target>Список продаж доклад - SKV574008</target>
+            </trans-unit>
+            <trans-unit id="213728" comment="Erp.Internal.Conversion.cvpe0001.dll;">
+                <source>Company <ph id="1">{0}</ph>, Book <ph id="2">{1}</ph> . Action changed for Validation rule: ' <ph id="3">{2}</ph> ', New value '<ph id="4">{3}</ph>'.</source><target>Компания<ph id="1">{0}</ph>, книги<ph id="2">{1}</ph>. Изменено действие для правила проверки: '<ph id="3">{2}</ph> ', новое значение <ph id="4">{3}</ph>''.</target>
+            </trans-unit>
+            <trans-unit id="213729" comment="Erp.Internal.CM.ReportingCurrencyProcess.dll;">
+                <source>Reporting currency <ph id="1">{0}</ph> creation errors found for run on <ph id="2">{1}</ph></source><target>Отчетности ошибки при создании валюты<ph id="1">{0}</ph> найдено для запуска на<ph id="2">{1}</ph> </target>
+            </trans-unit>
+            <trans-unit id="213730" comment="Erp.Internal.CM.ReportingCurrencyProcess.dll;">
+                <source><ph id="1">{0}</ph> error(s) were found adding Reporting Currency <ph id="2">{1}</ph>.<ph id="3">\r\n</ph>The detailed log is stored in <ph id="4">{2}</ph>.<ph id="5">\r\n</ph>Reporting currency amounts were not updated for the items in the log file.<ph id="6">\r\n</ph>If they are not acceptable, please remove Reporting Currency <ph id="7">{1}</ph>, make corrections to source data, and add it again.</source><target><ph id="1">{0}</ph> ошибки были обнаружены Добавление валюты отчетности<ph id="2">{1}</ph>.<ph id="3">\r\n</ph> Подробный журнал хранится в<ph id="4">{2}</ph>.<ph id="5">\r\n</ph> Суммы в валюте отчетности не были обновлены для элементов в файле журнала.<ph id="6">\r\n</ph> Если они не являются приемлемыми, удалите валюты отчетности<ph id="7">{1}</ph>, внести исправления в исходные данные и добавить его снова.</target>
+            </trans-unit>
+            <trans-unit id="213731" comment="ReportStyle.EUSalesRpt;">
+                <source>Standard SE - SSRS</source><target>Стандартный SE - SSRS</target>
+            </trans-unit>
+            <trans-unit id="213732" comment="CodeDescriptionList.GTIInvcHead;CodeDescriptionList.GTIInvcHeadList;CodeDescriptionList.InvcHead;">
+                <source><ph id="1">0`</ph>VAT Invoice<ph id="2">~2`</ph>Common Invoice</source><target>Счет <ph id="1">0`</ph>НДС InvoiceCommon<ph id="2">~2`</ph></target>
+            </trans-unit>
+            <trans-unit id="213733" comment="CodeDescriptionList.BankAcct;">
+                <source><ph id="1">DR`</ph>Use original payment/receipt exchange rate<ph id="2">~BR`</ph>Use clear date bank currency exchange rate</source><target><ph id="1">DR`</ph>Использование оригинальной квитанции/обмен rateUse<ph id="2">~BR`</ph> ясно Дата банка курс валюты</target>
+            </trans-unit>
+            <trans-unit id="213734" comment="Erp.Internal.SI.Mlib.FldTrans.dll;">
+                <source>Cannot update field <ph id="1">{0}</ph></source><target>Не удается обновить поля<ph id="1">{0}</ph> </target>
+            </trans-unit>
+            <trans-unit id="213735" comment="Erp.Internal.PE.ValidationRule.dll;">
+                <source>Autocorrection logic for validation rule '<ph id="1">{0}</ph>'  assigned 0 for closing period number.</source><target>Автозамена логику для проверки правила <ph id="1">{0}</ph>'' назначен 0 для закрытия периода число.</target>
+            </trans-unit>
+            <trans-unit id="213736" comment="Erp.Internal.PE.ValidationRule.dll;">
+                <source>Invalid validation rules data. Please run conversionID cvpe0001. 'Check Validation Rules for GL Books'</source><target>Недопустимый проверки правила данных. Пожалуйста, запустите conversionID cvpe0001. «Проверка правил проверки для книг GL»</target>
+            </trans-unit>
+            <trans-unit id="213737" comment="Erp.Internal.PE.ValidationRule.dll;">
+                <source>Autocorrection logic for validation rule '<ph id="1">{0}</ph>'  failed. Unable to find ordinary period for JEDate <ph id="2">{1}</ph>.</source><target>Автозамена логику для проверки правила <ph id="1">{0}</ph>'' не удалось. Не удается найти очередной период для JEDate<ph id="2">{1}</ph>.</target>
+            </trans-unit>
+            <trans-unit id="213738" comment="Erp.Internal.PC.Configuration.dll;">
+                <source>Set Resource Group ID Default Executed</source><target>Набор ресурсов группы ID по умолчанию выполняется</target>
+            </trans-unit>
+            <trans-unit id="213739" comment="Erp.Internal.PC.Configuration.dll;">
+                <source>Retain Existing Methods Executed</source><target>Сохранить существующие методы выполняются</target>
+            </trans-unit>
+            <trans-unit id="213740" comment="Erp.Internal.PC.Configuration.dll;">
+                <source>Exclude From Pricing Executed</source><target>Исключить из цены выполнен</target>
+            </trans-unit>
+            <trans-unit id="213741" comment="Erp.Internal.PC.Configuration.dll;">
+                <source>Set Operation Master Defaults Executed</source><target>Набор мастер операция по умолчанию выполняется</target>
+            </trans-unit>
+            <trans-unit id="213742" comment="Erp.Internal.PC.Configuration.dll;">
+                <source>Set Resource ID Defaults Executed</source><target>Набор ресурсов группы ID по умолчанию выполняется</target>
+            </trans-unit>
+            <trans-unit id="213743" comment="Erp.Internal.PC.Configuration.dll;">
+                <source>Set Current Revision Executed</source><target>Установка текущего пересмотра выполнен</target>
+            </trans-unit>
+            <trans-unit id="213744" comment="Erp.Internal.PC.Configuration.dll;">
+                <source>Set Part Defaults Executed</source><target>Часть набора по умолчанию выполняется</target>
+            </trans-unit>
+            <trans-unit id="213745" comment="Erp.Internal.PC.Configuration.dll;">
+                <source>Set Operation Standard Defaults Executed</source><target />
+            </trans-unit>
+            <trans-unit id="213746" comment="Erp.Internal.PC.Configuration.dll;">
+                <source>Set Capability ID Defaults Executed</source><target />
+            </trans-unit>
+            <trans-unit id="213747" comment="Erp.Internal.MS.ConsolidToParentPostProc.dll;">
+                <source>Consolidation Log was stored as '<ph id="1">{0}</ph>'</source><target />
+            </trans-unit>
+            <trans-unit id="213748" comment="Erp.Internal.Lib.Shared.dll;">
+                <source>Currency Rule not found for Rate Type: <ph id="1">{0}</ph> From Currency: <ph id="2">{1}</ph> To Currency: <ph id="3">{2}</ph></source><target />
+            </trans-unit>
+            <trans-unit id="213749" comment="Erp.Internal.Lib.Shared.dll;">
+                <source><ph id="1">{0}</ph> <ph id="2">{1}</ph> was not found.</source><target />
+            </trans-unit>
+            <trans-unit id="213750" comment="Erp.Internal.Lib.PackageControl.dll;">
+                <source>The pack has a qty mismatch, Order: <ph id="1">{0}</ph>, Line <ph id="2">{1}</ph>, Rel <ph id="3">{2}</ph>.</source><target />
+            </trans-unit>
+            <trans-unit id="213751" comment="Erp.Internal.GL.UploadTranGLCData.dll;">
+                <source>Specified Source Database is not Epicor 9.04 Database.</source><target />
+            </trans-unit>
+            <trans-unit id="213752" comment="Erp.Internal.GL.UploadTranGLCData.dll;">
+                <source>Version 2.71</source><target />
+            </trans-unit>
+            <trans-unit id="213753" comment="Erp.Internal.GL.GLAcctLib.dll;">
+                <source>COA Segment Value <ph id="1">{0}</ph> is not found for Segment <ph id="2">{1}</ph>.</source><target />
+            </trans-unit>
+            <trans-unit id="213754" comment="Erp.Services.BO.COA.dll;">
+                <source>Error occured while renumbering Segment <ph id="1">{0}</ph>: <ph id="2">{1}</ph></source><target />
+            </trans-unit>
+            <trans-unit id="213755" comment="Erp.Services.BO.COA.dll;">
+                <source>Segment <ph id="1">{0}</ph> has values. Do you want to delete the segment?</source><target />
+            </trans-unit>
+            <trans-unit id="213756" comment="Erp.Services.BO.ARPIStatusChg.dll;">
+                <source>On-Account Payment Instrument <ph id="1">{0}</ph> cannot be moved to unapproved status. Consider cancelling the Payment Instrument instead.</source><target />
+            </trans-unit>
+            <trans-unit id="213757" comment="Erp.Services.BO.ARInvoice.dll;">
+                <source>Invoice Reference must be specified in case of Credit Memo with partial payment.</source><target />
+            </trans-unit>
+            <trans-unit id="213758" comment="Erp.Services.BO.ARInvoice.dll;">
+                <source>Due Date can't be before Invoice Date.</source><target />
+            </trans-unit>
+            <trans-unit id="213759" comment="Erp.Services.BO.ARInvoice.dll;">
+                <source>Payment Method is required.</source><target />
+            </trans-unit>
+            <trans-unit id="213760" comment="Erp.Services.BO.APInvoice.dll;">
+                <source><ph id="1">{0}</ph> cannot be earlier than invoice date.</source><target />
+            </trans-unit>
+            <trans-unit id="213761" comment="Erp.Services.BO.APInvoice.dll;">
+                <source><ph id="1">{0}</ph> cannot be blank. Please enter a valid date.</source><target />
+            </trans-unit>
+            <trans-unit id="213762" comment="Erp.Services.BO.Labor.dll;">
+                <source>Incorrect Call From parameter.</source><target />
+            </trans-unit>
+            <trans-unit id="213763" comment="Erp.Services.BO.Labor.dll;">
+                <source>Unable to Delete HCM Record, Review Status.</source><target />
+            </trans-unit>
+            <trans-unit id="213764" comment="Erp.Services.BO.Labor.dll;">
+                <source>HCM record not found.</source><target />
+            </trans-unit>
+            <trans-unit id="213765" comment="Erp.Services.BO.JobEntry.dll;">
+                <source>Job cannot be Engineered if it has at least one circular reference. Assembly: <ph id="1">{0}</ph>, Part: <ph id="2">{1}</ph>, Material Sequence: <ph id="3">{2}</ph>. It is allowed for Serial Tracker parts only with flag Reassign Serial Number to Assembly.</source><target />
+            </trans-unit>
+            <trans-unit id="213766" comment="Erp.Services.BO.JobEntry.dll;">
+                <source>Circular Reference of Part <ph id="1">{0}</ph> from Assembly <ph id="2">{1}</ph> to Assembly <ph id="3">{2}</ph> is not allowed in the Engineered Job.</source><target />
+            </trans-unit>
+            <trans-unit id="213767" comment="Erp.Services.BO.JobEntry.dll;">
+                <source>Job is set unengineered.</source><target />
+            </trans-unit>
+            <trans-unit id="213768" comment="Erp.Services.BO.JobEntry.dll;">
+                <source>Circular Reference of Part <ph id="1">{0}</ph> from Assembly <ph id="2">{1}</ph> to Assembly <ph id="3">{2}</ph>, Material Sequence: <ph id="4">{3}</ph>  is not allowed in the Engineered Job. It is allowed for Serial Tracker parts only with flag Reassign Serial Number to Assembly.</source><target />
+            </trans-unit>
+            <trans-unit id="213769" comment="Erp.Services.BO.JobClosing.dll;">
+                <source>Backflush cannot be done to a material with an inactive bin.</source><target />
+            </trans-unit>
+            <trans-unit id="213770" comment="Erp.Services.BO.IssueReturn.dll;">
+                <source>You cannot issue parts of UOM Class <ph id="1">{0}</ph> that require UOM Class <ph id="2">{1}</ph></source><target />
+            </trans-unit>
+            <trans-unit id="213771" comment="Erp.Services.BO.GLBook.dll;">
+                <source>GL Account <ph id="1">{0}</ph> is not found.</source><target />
+            </trans-unit>
+            <trans-unit id="213772" comment="Erp.Services.BO.ECSalesReport.dll;">
+                <source>Please specify phone number as [area code]-[phone number] or [+International code]-[area_code]-[Phone number], with max 17 characters.</source><target />
+            </trans-unit>
+            <trans-unit id="213773" comment="Erp.Services.BO.ECSalesReport.dll;">
+                <source>Please specify a valid email address.</source><target />
+            </trans-unit>
+            <trans-unit id="213774" comment="Erp.Services.BO.CustShip.dll;">
+                <source>The PCID must be Dynamic and Label Print Controlled.</source><target />
+            </trans-unit>
+            <trans-unit id="213775" comment="Erp.Services.BO.CustShip.dll;">
+                <source>This PCID is empty and cannot be packed.</source><target />
+            </trans-unit>
+            <trans-unit id="213776" comment="Erp.Services.BO.ResourceGroup.dll;">
+                <source>The resource <ph id="1">{0}</ph> cannot be moved to resource group <ph id="2">{1}</ph> due to at least an existent operation / job operation with this resource or the calendars between each group are different.</source><target />
+            </trans-unit>
+            <trans-unit id="213777" comment="Erp.Services.BO.ReceiptsFromMfg.dll;">
+                <source>Job has not been released</source><target />
+            </trans-unit>
+            <trans-unit id="213778" comment="Erp.Services.BO.Quote.dll;Erp.Services.BO.QuoteAsm.dll;">
+                <source>Circular Reference of Part: <ph id="1">{0}</ph> from Assembly:<ph id="2">{1}</ph> to Assembly:<ph id="3">{2}</ph> is not allowed.</source><target />
+            </trans-unit>
+            <trans-unit id="213779" comment="Erp.Services.BO.Quote.dll;Erp.Services.BO.QuoteAsm.dll;">
+                <source>Circular Reference of Part: <ph id="1">{0}</ph> from Assembly:<ph id="2">{1}</ph> to Assembly:<ph id="3">{2}</ph>, Material Sequence:<ph id="4">{3}</ph>  is not allowed.</source><target />
+            </trans-unit>
+            <trans-unit id="213780" comment="Erp.Services.BO.Project.dll;Erp.Services.BO.Quote.dll;">
+                <source>Customer of Quote is not the same as Contract Customer.</source><target />
+            </trans-unit>
+            <trans-unit id="213781" comment="Erp.Services.BO.Project.dll;">
+                <source>Cannot import Job <ph id="1">{0}</ph> because it is complete.</source><target />
+            </trans-unit>
+            <trans-unit id="213782" comment="Erp.Services.BO.Project.dll;">
+                <source>Cannot import Job <ph id="1">{0}</ph> because it is not released.</source><target />
+            </trans-unit>
+            <trans-unit id="213783" comment="Erp.Services.BO.Project.dll;">
+                <source>This order line is part of project <ph id="1">{0}</ph>.</source><target />
+            </trans-unit>
+            <trans-unit id="213784" comment="Erp.Services.BO.PlantConfCtrl.dll;">
+                <source>Resource Group <ph id="1">{0}</ph> or one of its resources are assigned to an Operation / Job Operation</source><target />
+            </trans-unit>
+            <trans-unit id="213785" comment="Erp.Services.BO.PkgControlRepackReclassPCID.dll;">
+                <source>Source PCID LabelType is not Internal or Individual, Label Status is not STOCK.</source><target />
+            </trans-unit>
+            <trans-unit id="213786" comment="Erp.Services.BO.PkgControlJobOutputByPCID.dll;">
+                <source>Customer Part Cross Reference does not exist for part <ph id="1">{0}</ph> and JobNum <ph id="2">{1}</ph></source><target />
+            </trans-unit>
+            <trans-unit id="213787" comment="Erp.UI.APInvoiceEntry.dll;">
+                <source>No GRNI Document Clearing will be created for those. Do you want to continue?</source><target />
+            </trans-unit>
+            <trans-unit id="213788" comment="Erp.UI.ACTTypeEntry.dll;">
+                <source>- Company: '<ph id="1">{0}</ph>', GL Transaction: '<ph id="2">{1}</ph>', Installed package: '<ph id="3">{2}</ph>', Imported package: '<ph id="4">{3}</ph>'</source><target />
+            </trans-unit>
+            <trans-unit id="213789" comment="Erp.UI.ACTTypeEntry.dll;">
+                <source>Posting rules package in the import file is different from the currently installed package in the following instances:<ph id="1">\r\n\r\n{0}\r\n</ph>Existing posting rules would be completely replaced. It is recommended to make a backup copy of the existing posting rules <ph id="2">\r\n</ph>first using the 'Export GL Transaction Type' option.<ph id="3">\r\n</ph>Proceed with import?</source><target />
+            </trans-unit>
+            <trans-unit id="213790" comment="Erp.UI.ACTTypeEntry.dll;">
+                <source>GL Transaction '<ph id="1">{0}</ph>': The import file contains posting rules from the '<ph id="2">{1}</ph>' package, which is different from the currently installed '<ph id="3">{2}</ph>' package. Existing posting rules would be completely replaced. It is recommended to make a backup copy of the existing posting rules first using the 'Export GL Transaction Type' option.<ph id="4">\r\n</ph>Proceed with import?</source><target />
+            </trans-unit>
+            <trans-unit id="213791" comment="Erp.UI.BankAcctEntry.dll;">
+                <source>Bank Exchange Rate When Clearing</source><target />
+            </trans-unit>
+            <trans-unit id="213792" comment="Erp.UI.ARPromissoryNoteEntry.dll;">
+                <source>Unapproved Payment Instrument with ID <ph id="1">{0}</ph> does not exist, or is not posted.</source><target />
+            </trans-unit>
+            <trans-unit id="213793" comment="Erp.UI.ARInvoiceTracker.dll;">
+                <source>PI Unapplied Receipt</source><target />
+            </trans-unit>
+            <trans-unit id="213794" comment="Erp.UI.CompanyEntry.dll;">
+                <source>Intrastat is activated, but Intrastat code is not defined for your company country <ph id="1">{0}</ph>.</source><target />
+            </trans-unit>
+            <trans-unit id="213795" comment="Erp.UI.COAEntry.dll;">
+                <source>Deleting and Renumbering...</source><target />
+            </trans-unit>
+            <trans-unit id="213796" comment="Erp.UI.CustShipEntry.dll;">
+                <source>Changing the release will refresh the kit components.  Continue?</source><target />
+            </trans-unit>
+            <trans-unit id="213797" comment="Erp.UI.CustShipEntry.dll;">
+                <source>Changing the line will refresh the kit components.  Continue?</source><target />
+            </trans-unit>
+            <trans-unit id="213798" comment="Erp.UI.ECSalesReportEntry.dll;">
+                <source>Column Separator</source><target />
+            </trans-unit>
+            <trans-unit id="213799" comment="Erp.UI.ECSalesReportEntry.dll;">
+                <source>Contact Phone Number</source><target />
+            </trans-unit>
+            <trans-unit id="213800" comment="Erp.UI.HHMaterialQueue.dll;Erp.UI.MaterialQueueEntry.dll;">
+                <source>This transaction has already been processed by another user and is no longer available.</source><target />
+            </trans-unit>
+            <trans-unit id="213801" comment="Erp.UI.HHMaterialQueue.dll;Erp.UI.MaterialQueueEntry.dll;">
+                <source>Process Material Queue</source><target />
+            </trans-unit>
+            <trans-unit id="213802" comment="Erp.UI.GLBookEntry.dll;">
+                <source>Book <ph id="1">{0}</ph> has already been defined as the Main Book. Selecting this book will unselect <ph id="2">{0}</ph>. Continue?</source><target />
+            </trans-unit>
+            <trans-unit id="213803" comment="Erp.UI.PkgControlPackVerify.dll;">
+                <source>Contact supervisor. PCID is packed, shipped or invoiced.</source><target />
+            </trans-unit>
+            <trans-unit id="213804" comment="Erp.UI.PkgControlJobOutputByPCIDEntry.dll;">
+                <source>Job Output By PCID Partials</source><target />
+            </trans-unit>
+            <trans-unit id="213805" comment="Erp.UI.PkgControlJobOutputByPCIDEntry.dll;">
+                <source>Job Output By PCID Jobs</source><target />
+            </trans-unit>
+            <trans-unit id="213806" comment="Erp.UI.PlantEntry.dll;">
+                <source>Backward Scheduling Start</source><target />
+            </trans-unit>
+            <trans-unit id="213807" comment="Erp.UI.ReceiptEntry.dll;">
+                <source>Create Lot</source><target />
+            </trans-unit>
+            <trans-unit id="213808" comment="Erp.UI.ReceiptEntry.dll;">
+                <source>Are you sure you wish to create new lots?</source><target />
+            </trans-unit>
+            <trans-unit id="213809" comment="Erp.UI.ReceiptEntry.dll;">
+                <source>Are you sure you wish to create a new lot?</source><target />
+            </trans-unit>
+            <trans-unit id="213810" comment="Erp.UIProc.ConsPost.dll;">
+                <source>File name contains illegal characters.</source><target />
+            </trans-unit>
+            <trans-unit id="213811" comment="Erp.UIProc.ConsPost.dll;">
+                <source>File already exists, and will be replaced. Are you sure?</source><target />
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

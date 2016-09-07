@@ -21,7 +21,7 @@
         </fieldset>
         <button type="submit" class="btn btn_enroll">{{trans('account.t_login_enter')}}</button>
         <a href="{{route('password.reset.form')}}" class="site__form-forgot">{{trans('account.t_login_forget_pass')}}</a>
-        <br><br>{{trans('account.t_index_no_user')}} <a href="{{route('scan.register.form')}}">{{trans('account.t_index_reg')}}</a>
+        <br><br>{{trans('account.t_index_no_user')}} <a href="/register">{{trans('account.t_index_reg')}}</a>
 
     </form>
     @if(!strpos(url('/'), 'scan'))

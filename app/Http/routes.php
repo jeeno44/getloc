@@ -110,6 +110,9 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/personal', ['as' => 'main.account.personal', 'uses' => 'PersonalController@index']);
             Route::post('/personal', ['as' => 'main.account.personal-store', 'uses' => 'PersonalController@store']);
         });
+        Route::group(['middleware' => 'auth'], function() {
+            Route::get('/xml/read/{id}', 'XmlController@read');
+        });
 
     });
 
