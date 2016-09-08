@@ -21,7 +21,7 @@ class BugFixesController extends Controller
                     Translate::create([
                         'block_id'  => $block->id,
                         'language_id'   => 1,
-                        'text'      => $block->text,
+                        'text'      => '',
                         'count_words'   => $block->count_words,
                         'type_translate_id' => null,
                         'site_id'   => $site->id,
