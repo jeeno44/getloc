@@ -145,7 +145,7 @@
                         </div>
                         --}}
                         <div class="discount__form-2 popup_form">
-                            {!! Form::open(['route' => 'scan.get-demo', 'novalidate']) !!}
+                            {!! Form::open(['route' => 'scan.get-demo']) !!}
                                 <fieldset>
                                     <label for="popup__address">{{trans('phrases.site_address')}}</label>
                                     <input type="url" id="discount__address" name="url" placeholder="http://yoursite.com" required/>

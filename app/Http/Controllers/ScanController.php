@@ -92,6 +92,7 @@ class ScanController extends Controller
                 'demo'          => 1,
             ]);
             $site->save();
+            $site->languages()->attach(1);
             \DB::table('sites_settings')->insert([
                 'site_id'           => $site->id,
                 'auto_publishing'   => false,

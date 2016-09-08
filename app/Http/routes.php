@@ -127,3 +127,21 @@ Route::group(['domain' => 'api.'.$domain], function () {
 });
 
 require_once 'andy_routes.php';
+
+Route::get('fix-me', 'BugFixesController@fixMe');
+
+Route::get('test', function (){
+    $roles = \App\Role::with('users')->get();
+    foreach ($roles as $role) {
+        echo "<strong>{$role->name}</strong><br>";
+        foreach ($role->users as $user) {
+            echo "<a href='/qauth/{$user->id}'>{$user->email}</a><br>";
+        }
+    }
+});
+
+Route::get('qauth/{id}', function ($id){
+    $user = \App\User::find($id);
+    Auth::login($user);
+    return redirect('/');
+});
