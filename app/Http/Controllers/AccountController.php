@@ -27,6 +27,7 @@ use App\Site,
     App\TypeTranslate,
     App\Language,
     Illuminate\Http\Request;
+use App\Widget;
 use Carbon\Carbon;
 
 class AccountController extends Controller
@@ -1510,6 +1511,12 @@ class AccountController extends Controller
         
         $siteID         = Session::get('projectID');
         $widget_data    = \App\Widget::where('site_id', $siteID)->first();
+        if (!$widget_data) {
+            $widget_data = new Widget([
+                'site_id' => $siteID,
+            ]);
+            $widget_data->save();
+        }
         $class          = '';
         
         if ( $widget_data->location == 'right' )
