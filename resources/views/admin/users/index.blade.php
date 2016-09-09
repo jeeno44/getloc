@@ -26,6 +26,7 @@
                             {{$item->visibility_name}}
                         </td>
                         <td class="text-right">
+                            <a class="btn btn-small btn-default" href="/qauth/{{$item->id}}">Авторизоваться</a>
                             <a class="btn btn-sm btn-default" type="button" data-toggle="tooltip" title="Редактировать" href="/admin/users/{{$item->id}}/edit"><i class="fa fa-pencil"></i></a>
                             &nbsp;&nbsp;
                             <button class="btn btn-sm btn-default" type="button" data-toggle="modal" title="Удалить" data-target="#remove{{$item->id}}"><i class="fa fa-times"></i></button>
