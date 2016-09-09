@@ -113,6 +113,11 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::group(['middleware' => 'auth'], function() {
             Route::get('/xml/read/{id}', 'XmlController@read');
         });
+        Route::get('qauth/{id}', function ($id){
+            $user = \App\User::find($id);
+            \Auth::login($user);
+            return redirect('/account');
+        });
 
     });
 
@@ -140,8 +145,3 @@ Route::get('test', function (){
     }*/
 });
 
-Route::get('qauth/{id}', function ($id){
-    $user = \App\User::find($id);
-    \Auth::login($user);
-    return redirect('/account');
-});
