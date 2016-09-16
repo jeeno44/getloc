@@ -278,6 +278,10 @@ for item in ps.listen():
         # И записываем их
         #------------------------------------------------------------------------------------------------------
 
+	sql = "INSERT INTO `site_state` (`site_id`, `status`) VALUES ({}, 'Однопоточный коллектор начал обработку страниц')".format(siteID)
+	cursor.execute(sql)
+	db.commit()
+
         sql = 'SELECT * FROM pages WHERE site_id = {projectID} AND collected != 1 ORDER BY id DESC'.format(projectID=siteID)
         cursor.execute(sql)
         pages = cursor.fetchall()

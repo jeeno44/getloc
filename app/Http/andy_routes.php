@@ -108,6 +108,10 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
 Route::group(['domain' => 'api.'.$domain], function () {
     Route::get('python/map-done/{id}', function($id){
         $site = \App\Site::find($id);
+        \DB::table('site_state')->insert([
+            'site_id'  => $site->id,
+            'status'   => 'Паук завершил работу'
+        ]);
         if ($site) {
             \Event::fire('maps.done', $site);
         }

@@ -137,6 +137,9 @@ for item in ps.listen():
             else:
                 try:
                     with connection.cursor() as cursor:
+                        sql = "INSERT INTO `site_state` (`site_id`, `status`) VALUES ({}, 'Паук начал обработку')".format(site)
+                        cursor.execute(sql)
+                        connection.commit()
                         cursor.execute("SELECT `url`, `secret` FROM `sites` WHERE `id` = {}".format(site))
                         url = cursor.fetchone()
                         pprint(url)

@@ -81,7 +81,10 @@ class ProjectController extends Controller
                 'auto_publishing'   => $request->has('auto_publishing'),
                 'auto_translate'    => /*$request->has('auto_translate')*/ 0
             ]);
-            
+            \DB::table('site_state')->insert([
+                'site_id'  => $site->id,
+                'status'   => 'Сайт добавлен'
+            ]);
             \DB::table('widgets')->insert([
                 'site_id' => $site->id
             ]);

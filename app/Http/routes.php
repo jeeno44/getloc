@@ -24,6 +24,10 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::post('/details-form', ['as' => 'scan.billing.details-store', 'uses' => 'ScanController@detailsStore']);
         Route::get('/export/{id}/{pageID?}', 'ScanController@export');
         Route::get('/xliff/{id}/{pageID?}', 'ScanController@xliff');
+
+        Route::post('/tmxexport/{id}/{pageID?}', ['as' => 'scan.tmxexport', 'uses' => 'ScanController@tmxexport']);
+        Route::post('/xlfexport/{id}/{pageID?}', ['as' => 'scan.xlfexport', 'uses' => 'ScanController@xlfexport']);
+
         Route::group(['middleware' => ['admin']], function () {
             Route::resource('users', 'ScanUsersController');
         });
@@ -135,13 +139,16 @@ require_once 'andy_routes.php';
 
 Route::get('fix-me', 'BugFixesController@fixMe');
 
-Route::get('test', function (){
-    /*$roles = \App\Role::with('users')->get();
-    foreach ($roles as $role) {
-        echo "<strong>{$role->name}</strong><br>";
-        foreach ($role->users as $user) {
-            echo "<a href='/qauth/{$user->id}'>{$user->email}</a><br>";
-        }
-    }*/
+Route::get('stat', function (){
+    $records = \DB::table('site_state')->join('sites', 'sites.id', '=', 'site_state.site_id')
+        ->select('sites.url', 'site_state.created_at', 'site_state.status')
+        ->orderBy('site_state.id', 'desc')
+        ->get();
+    echo "<table>";
+    echo "<tr><th>Дата и время</th><th>Сайт</th><th>Статус</th></tr>";
+    foreach ($records as $record) {
+        echo "<tr><td>{{$record->created_at}}</td><td>{{$record->url}}</td><td>{{$record->status}}</td></tr>";
+    }
+    echo "</table>";
 });
 

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# encoding: utf-8
 #!/usr/bin/python
 
 from bs4 import BeautifulSoup
@@ -287,14 +287,18 @@ for item in ps.listen():
         # И записываем их
         #------------------------------------------------------------------------------------------------------
 
+	sql = "INSERT INTO `site_state` (`site_id`, `status`) VALUES ({}, 'Коллектор начал обработку страниц')".format(siteID)
+	cursor.execute(sql)
+	db.commit()
+
         sql = 'SELECT * FROM pages WHERE site_id = {projectID} AND collected != 1'.format(projectID=siteID)
         cursor.execute(sql)
         pages = cursor.fetchall()
 
         for page in pages:
             pageID, siteID, url, code, level, visited, collected, enabled, created_at, updated_at = page
-            urls.append(str(url))
-            urlPageID[str(url)] = pageID
+            urls.append(url.encode('utf-8'))
+            urlPageID[url.encode('utf-8')] = pageID
 
         count = 0
 
@@ -437,8 +441,8 @@ for item in ps.listen():
             langTo  = lang[3]
             langID  = lang[0]
             pool    = ThreadPool(2)
-#            results = pool.map(translateBlock, blocks)
-            results = pool.map(createEmptyTranslate, blocks)
+            results = pool.map(translateBlock, blocks)
+#            results = pool.map(createEmptyTranslate, blocks)
             pool.close()
             pool.join()
 
@@ -468,10 +472,10 @@ for item in ps.listen():
         cursor.close()
         """
 
-        del soup
-        del issetBlocks
-        del urls
-        del db
+#        del soup
+#        del issetBlocks
+#        del urls
+#        del db
 
         site = data_['site']
         api  = 'http://' + data_['api'] + '/python/collector/' + str(site)

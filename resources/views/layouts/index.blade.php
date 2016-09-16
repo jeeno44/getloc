@@ -150,6 +150,19 @@
                                     <label for="popup__address">{{trans('phrases.site_address')}}</label>
                                     <input type="url" id="discount__address" name="url" placeholder="http://yoursite.com" required/>
                                 </fieldset>
+
+
+                            <fieldset class="discount__language">
+                                <label>Основной язык проекта *</label>
+                                <div class="discount__selects-language" data-language='{{getLanguagesJson()}}'>
+                                    <div class="discount__language-wrapper">
+                                        <select name="lang" id="lang" required>
+                                            <option value="0">{{trans('account.t_create_project_select_lang')}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+
                                 <input type="hidden" id="discount__uid" value="">
                                 <button class="btn btn_discount">
                                     <span>{{trans('phrases.add_your_site')}}</span>
