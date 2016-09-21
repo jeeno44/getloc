@@ -47,7 +47,7 @@ class ScanController extends Controller
             $sites = Site::latest()->where('user_id', \Auth::user()->id)->paginate(20);
             $siteIds = Site::latest()->where('user_id', \Auth::user()->id)->lists('id')->toArray();
         }
-        $countSites = count($sites);
+        $countSites = $sites->total();
         $countPages = Page::whereIn('site_id', $siteIds)->count();
         $countBlocks = Block::whereIn('site_id', $siteIds)->count();
         \Session::remove('site');

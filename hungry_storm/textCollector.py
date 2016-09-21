@@ -1,5 +1,5 @@
-# encoding: utf-8
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 from bs4 import BeautifulSoup
 from bs4 import Comment
@@ -180,26 +180,33 @@ def makeBlock(siteID, text, element, url):
     #block = cursor.execute('SELECT `text` FROM blocks WHERE `text` = "{text}"'.format(text=MySQLdb.escape_string(text.encode('utf8'))))
 
     if text not in issetBlocks:
-        ccword = len(text.split())
-        ccsymb = count_letters(text)
-        sql    = """INSERT INTO blocks SET site_id = {site_id}, `text` = "{text}", 
-                    `type` = "{type}", count_words = {ccword}, count_symbols = {ccsymb},
-                    created_at = NOW(), updated_at = NOW(), enabled = {enable}""".format(site_id=siteID, text=MySQLdb.escape_string(text.encode('utf8')), 
-                                                                                        type=MySQLdb.escape_string(element), ccword=ccword, ccsymb=ccsymb, enable=1)
-        cursor.execute(sql)
-
-        countWords      += ccword
-        countSymbols    += ccsymb
-        countBlocks     += 1
-
-        issetBlocks.append(text)
-
-        id = db.insert_id()
-        blocksID[text] = id
-        return id
+	try:
+    	    ccword = len(text.split())
+            ccsymb = count_letters(text)
+	    sql    = """INSERT INTO blocks SET site_id = {site_id}, `text` = "{text}", 
+    	                `type` = "{type}", count_words = {ccword}, count_symbols = {ccsymb},
+        	            created_at = NOW(), updated_at = NOW(), enabled = {enable}""".format(site_id=siteID, text=MySQLdb.escape_string(text.encode('utf8')), 
+                                                                                        type=MySQLdb.escape_string(element.encode('utf8')), ccword=ccword, ccsymb=ccsymb, enable=1)
+	    cursor.execute(sql)
+	
+    	    countWords      += ccword
+            countSymbols    += ccsymb
+	    countBlocks     += 1
+	
+    	    issetBlocks.append(text)
+	
+    	    id = db.insert_id()
+            blocksID[text] = id
+	    return id
+	except Exception as exc:
+	    print("EXCEPTION: %s" % str(exc))
     else:
-        makePageBlock(urlPageID[str(url)], blocksID[text])
-        return False
+	try:
+            makePageBlock(urlPageID[str(url)], blocksID[text])
+            return False
+        except Exception as exc:
+	    print("EXCEPTION: %s" % str(exc))
+           
 
 #------------------------------------------------------------------------------------------------------
 # Получаем айди страницы с нужного URL'а, TODO: тоже переделать на переменную
@@ -441,8 +448,8 @@ for item in ps.listen():
             langTo  = lang[3]
             langID  = lang[0]
             pool    = ThreadPool(2)
-            results = pool.map(translateBlock, blocks)
-#            results = pool.map(createEmptyTranslate, blocks)
+#            results = pool.map(translateBlock, blocks)
+            results = pool.map(createEmptyTranslate, blocks)
             pool.close()
             pool.join()
 
