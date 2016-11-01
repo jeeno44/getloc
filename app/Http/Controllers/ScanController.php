@@ -28,7 +28,7 @@ class ScanController extends Controller
 
     public function index(Request $request)
     {
-        $langs = Language::orderBy('name')->get();
+        $langs = Language::orderBy('sort')->get();
         $languages = [];
         foreach ($langs as $lang) {
             $languages[] = [

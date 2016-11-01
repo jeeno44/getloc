@@ -208,7 +208,7 @@ function rebuildAvailableBlocks(\App\Subscription $subscription)
 function getLanguagesJson()
 {
     $languages = [];
-    foreach (\App\Language::all() as $lang) {
+    foreach (\App\Language::orderBy('sort')->get() as $lang) {
         $languages[] = [
             'id' => $lang->id,
             'name'  => $lang->name,
