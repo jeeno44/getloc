@@ -52,7 +52,7 @@ class ApiController extends Controller
                 $response['error'] = ['msg' => 'This project is not active subscription', 'code' => 8];
                 return $this->makeResponse($response, $callback);
             }
-            $uri = prepareUri($uri);
+//            $uri = prepareUri($uri);
             $page = Page::where('url', $uri)->first();
             if (!$page) {
                 $page = new Page([
@@ -67,7 +67,7 @@ class ApiController extends Controller
                         'site' => $site->id,
                         'api' => 'api.'.env('APP_DOMAIN').'/python/new-page/'.$site->id,
                         'url' => $uri,
-                        'pageID' => $page->id
+                        'pageID' => $page->id,
                     ], JSON_UNESCAPED_UNICODE));
                 //\Event::fire('maps.done', $site);
                 $response['error'] = ['msg' => 'Page does not exists', 'code' => 5];

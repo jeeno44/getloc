@@ -306,6 +306,8 @@ for item in ps.listen():
             try:
                 print(url)
 
+                time.sleep(1)
+
                 html = load_url(url, siteID, cursor, 10)
                 soup = BeautifulSoup(html, 'html.parser')
 
@@ -437,10 +439,10 @@ for item in ps.listen():
             cursor.execute(sql)
         cursor.close()
 
-        del soup
-        del issetBlocks
-        del urls
-        del db
+        #del soup
+        #del issetBlocks
+        #del urls
+        #del db
 
         site = data_['site']
         api  = 'http://' + data_['api'] + '/python/collector/' + str(site)

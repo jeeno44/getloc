@@ -18,7 +18,7 @@
                 <!-- site__title -->
                 <h1 class="site__title">{{beautyUrl($site->url)}}</h1>
                 <!-- /site__title -->
-                <a href="#" class="btn btn_discount project-list__control-tmx popup__open overlay-link" data-popup="tmx{{$site->id}}"><i class="fa fa-download" aria-hidden="true"></i> TMX</a>
+                <!-- <a href="#" class="btn btn_discount project-list__control-tmx popup__open overlay-link" data-popup="tmx{{$site->id}}"><i class="fa fa-download" aria-hidden="true"></i> TMX</a> -->
                 <a href="#" class="btn btn_discount project-list__control-tmx popup__open overlay-link" data-popup="xliff{{$site->id}}"><i class="fa fa-download" aria-hidden="true"></i> XLIFF</a>
 
             </div>
@@ -106,7 +106,7 @@
                             @if($page->count_words)
                                 <a class="btn btn-actions"><i class="fa fa-ellipsis-v"></i> </a>
                                 <div class="dropdown">
-                                    <a href="/export/{{$page->site_id}}/{{$page->id}}" class="overlay-link">Скачать TMX</a>
+                                    <!-- <a href="/export/{{$page->site_id}}/{{$page->id}}" class="overlay-link">Скачать TMX</a> -->
                                     <a href="/xliff/{{$page->site_id}}/{{$page->id}}" class="overlay-link">Скачать XLIFF</a>
                                 </div>
                             @endif

@@ -58,15 +58,11 @@ def translateBlock(block):
     except Exception as exc:
         pass
 
-def createEmptyTranslate(block):
-    global iBlockInsert, insertSQLTrans, loadSQL, langTo, siteID
-    loadSQL.append("({id}, {language_id}, '', NOW(), NOW(), NULL, {siteID}, 0, {pub}, 0)".format(id=block[0], siteID=siteID, language_id=langID, pub=1))
-    iBlockInsert += 1
 
-    if len(loadSQL) >= maxBlockInsert:
-        iBlockInsert = 0
-        cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
-        loadSQL = []
+def createEmptyTranslate(block):
+    global iBlockInsert, insertSQLTrans, loadSQL, langTo, loadSQL
+    sql = "({id}, {language_id}, '', NOW(), NOW(), 1, {siteID}, 0, 1, 0, 0)".format(id=block[0], language_id=langID, siteID=siteID)
+    loadSQL.append(insertSQLTrans + sql + ";")
 
 #------------------------------------------------------------------------------------------------------
 # Получаем языки проекта
@@ -117,7 +113,8 @@ def iri2uri(uri):
 
 def load_url(url, siteID, cursor, timeout):
     headers = { 'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36' }
-    req = urllib2.Request(iri2uri(url), None, headers)
+    req = urllib2.Request(url, None, headers)
+    pprint(req)
     response = urllib2.urlopen(req, timeout=timeout)
     html = response.read()
     if html:
@@ -225,6 +222,9 @@ for item in ps.listen():
         urlPageID = {}
 
         data_           = json.loads(item['data'].decode("utf-8"))
+
+        pprint(data_)
+
         db              = MySQLdb.connect(host=mysql_credentials['host'], user=mysql_credentials['user'], passwd=mysql_credentials['password'], db=mysql_credentials['db'], charset=mysql_credentials['charset'], unix_socket=mysql_credentials['unix_socket'])
         trans_client    = 'blackgremlin2'
         trans_secret    = 'SMnjwvLx0bB2u9Cn05K2vkTE1bSkX0+fsLp/23gsytU='
@@ -262,6 +262,9 @@ for item in ps.listen():
         #------------------------------------------------------------------------------------------------------
         # Запускаем потоки и bs4
         #------------------------------------------------------------------------------------------------------
+        print(url)
+        parsed_uri = urlparse.urlparse(url)
+        domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
         
         html = load_url(url, siteID, cursor, 10)
         try:
@@ -401,6 +404,34 @@ for item in ps.listen():
             for sql in loadSQL:
                 cursor.execute(sql)
             cursor.close()
+        else:
+            if blocksID:
+                for phrase in blocksID:
+                    sql = 'SELECT * FROM blocks WHERE site_id = {projectID} AND id = {id}'.format(projectID=siteID, id=blocksID[phrase])
+                    cursor.execute(sql)
+                    block = cursor.fetchone()
+                    for lang in langs:
+                        langID  = lang[0] 
+                        loadSQL.append("({id}, {language_id}, '', NOW(), NOW(), 1, {siteID}, 0, 1, 0, 0)".format(id=id, language_id=langID, siteID=siteID))
+                        
+                        iBlockInsert += 1
+                        
+                        if len(loadSQL) >= maxBlockInsert:
+                            iBlockInsert = 0
+                            cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
+                            loadSQL = []
+
+                    if len(loadSQL) > 0 and len(loadSQL) <= maxBlockInsert:
+                        iBlockInsert = 0
+                        cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
+                        loadSQL = []
+                        db.close()
+                        cursor.close()
+                        
+            for sql in loadSQL:
+                cursor.execute(sql)
+            cursor.close()
+
         
         del soup
         del issetBlocks
