@@ -44,6 +44,8 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::get('/feature', ['as' => 'main.feature', 'uses' => 'HomeController@feature']);
         Route::any('/call-me', ['as' => 'main.call-me', 'uses' => 'HomeController@callMe']);
         Route::any('/get-demo', ['as' => 'main.get-demo', 'uses' => 'HomeController@getDemo']);
+        Route::any('/add-site-unreg', ['as' => 'main.add-site-unreg', 'uses' => 'HomeController@addSiteUnregistered']);
+        Route::any('/send-feedback', ['as' => 'main.send-feedback', 'uses' => 'HomeController@sendFeedback']);
 
         // Account
         Route::group(['middleware' => 'auth', 'prefix' => 'account'], function() {
@@ -132,6 +134,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
  */
 Route::group(['domain' => 'api.'.$domain], function () {
     Route::any('/add-site', ['as' => 'api.add-site', 'uses' => 'ApiController@createSite']);
+    Route::any('/add-unreg-site', ['as' => 'api.add-unreg-site', 'uses' => 'ApiController@createUnregSite']);
     Route::any('/translate', ['as' => 'api.translate', 'uses' => 'ApiController@anyTranslate']);
 });
 

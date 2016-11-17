@@ -67,4 +67,45 @@ class HomeController extends Controller
         sendApiQuery(route('api.add-site'), ['url' => $data['site'], 'user_id' => $data['uid'], 'languages' => '']);
         return route('scan.main');
     }
+    public function addSiteUnregistered(Request $request) {
+        header('Access-Control-Allow-Origin: *');
+        $data = $request->all();
+        $user = User::where('email', $data['email'])->first();
+        $tmppass = str_random(8);
+        $data['site'] = $data['url'];
+        $data['form_name'] = 'Демо доступ';
+        if (empty($user)) {
+            $user = new User([
+                'email'     => $data['email'],
+                'name'      => $data['name'],
+                'phone'     => $data['phone'],
+                'password'  => bcrypt($tmppass),
+                'activated' => 1
+            ]);
+            $user->save();
+            $data['uid'] = $user->id;
+            $data['user'] = $user;
+            $data['pass'] = $tmppass;
+            \Mail::queue('emails.new-user', $data, function($message) use ($data) {
+                $message->to($data['email'])->subject('Спасибо за регистрацию!');
+            });
+        } else {
+            $data['uid'] = $user->id;
+            \Mail::queue('emails.new-site', $data, function($message) use ($data) {
+                $message->to($data['email'])->subject('Сайт добавлен!');
+            });
+        }
+
+        sendApiQuery(route('api.add-unreg-site'), ['url' => $data['url'], 'user_id' => $data['uid'], 'languages' => 1]);
+        return route('scan.main');
+    }
+
+    public function sendFeedback(Request $request) {
+        $data = $request->all();
+//        dd($data);
+        \Mail::queue('emails.feedback', $data, function($message) use ($data) {
+            $message->to('a@get-loc.ru')->cc('v@get-loc.ru')->subject('Вопрос с сайта.');
+        });
+
+    }
 }

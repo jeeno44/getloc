@@ -294,4 +294,34 @@ class ApiController extends Controller
         \Event::fire('site.start', $site);
         //$this->dispatch(new \App\Jobs\Spider($site));
     }
+
+    public function createUnregSite(Request $request)
+    {
+        $url = $request->get('url');
+        $lang = $request->get('languages');
+        $url = prepareUri($url);
+        $site = Site::where('url', $url)->first();
+        if (empty($site)) {
+            $defaultLang = Language::where('short', 'ru')->first();
+            $site = new Site([
+                'url'           => $url,
+                'name'          => $url,
+                'user_id'       => $request->get('user_id'),
+                'secret'        => str_random(32),
+                'language_id'   => $defaultLang->id,
+                'demo'          => 1,
+            ]);
+            $site->save();
+            if (!empty($lang) && !$site->hasLanguage($lang)) {
+                $site->languages()->attach($lang);
+            }
+            \DB::table('sites_settings')->insert([
+                'site_id'           => $site->id,
+                'auto_publishing'   => $request->has('auto_publishing'),
+                'auto_translate'    => $request->has('auto_translate')
+            ]);
+        }
+        \Event::fire('site.start', $site);
+        //$this->dispatch(new \App\Jobs\Spider($site));
+    }
 }
