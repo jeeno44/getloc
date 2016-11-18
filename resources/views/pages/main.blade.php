@@ -117,7 +117,7 @@
             <!-- /capabilities__item -->
 
             <!-- btn -->
-            <a href="#" class="btn btn_3">Узнать все возможности</a>
+            <a href="{{route('main.feature')}}" class="btn btn_3">Узнать все возможности</a>
             <!-- /btn -->
 
         </div>
