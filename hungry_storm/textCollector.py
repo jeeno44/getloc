@@ -180,6 +180,7 @@ def makeBlock(siteID, text, element, url):
     #block = cursor.execute('SELECT `text` FROM blocks WHERE `text` = "{text}"'.format(text=MySQLdb.escape_string(text.encode('utf8'))))
 
     if text not in issetBlocks:
+        pprint("TEXT NOT IN issetBlock")
 	try:
     	    ccword = len(text.split())
             ccsymb = count_letters(text)
@@ -202,7 +203,10 @@ def makeBlock(siteID, text, element, url):
 	    print("EXCEPTION: %s" % str(exc))
     else:
 	try:
-            makePageBlock(urlPageID[str(url)], blocksID[text])
+            sql = 'SELECT id FROM blocks WHERE site_id={site_id} AND text="{text}"'.format(site_id=siteID, text=MySQLdb.escape_string(text.encode('utf8')))
+            cursor.execute(sql)
+            blockId = cursor.fetchone()[0]
+            makePageBlock(urlPageID[str(url)], blockId)
             return False
         except Exception as exc:
 	    print("EXCEPTION: %s" % str(exc))
@@ -266,7 +270,7 @@ for item in ps.listen():
         countBlocks     = 0
         tags            = ['meta', 'title', 'p', 'a', 'div', 'th',
                            'td', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'b', 'strong', 'li', 'pre', 'code', 'option',
-                           'label', 'span', 'button', 'input', 'button', 'img', 'textarea', 'font']
+                           'label', 'span', 'button', 'input', 'button', 'img', 'textarea', 'font', 'em']
         siteID          = data_['site']
         auto_publishing = None
         auto_translate  = None
@@ -353,6 +357,7 @@ for item in ps.listen():
                             if element.name == 'meta' and element.has_attr('name') and (element['name'].lower() == 'keywords' or element['name'].lower() == 'description'):
                                 if element['content']:
                                     block_id = makeBlock(siteID, element['content'], 'meta', url)
+                                    pprint(block_id)
                                     if block_id is not False:
                                         makePageBlock(getPageID(url, siteID), block_id)
                             elif element.name == 'title':
@@ -379,6 +384,7 @@ for item in ps.listen():
                                     continue                          
 
                                 for str_ in element.findAll(text=True, recursive=False):
+                                    pprint(str_)
                                     string = re.sub(' +',' ', str_)
                                     if string.isdigit() != True and string: #Цифры нам нинужныыыы!
                                         block_id = makeBlock(siteID, string, element.name, url)

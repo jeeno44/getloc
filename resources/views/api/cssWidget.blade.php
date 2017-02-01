@@ -1,7 +1,10 @@
 #getloc_widget {
     position: fixed;
-    bottom: 0;
     left: 27px;
+    right: auto;
+    top: 0;
+    bottom: auto;
+    z-index: 4000;
     width: {{$widget->titles == 1 ? '115px' : '40px'}};
     text-align: center;
     color: {{$widget->theme == 'custom' ? $widget->color_active : '#80868f'}};
@@ -16,10 +19,31 @@
     cursor: pointer;
 }
 
-#getloc_widget.right-pos {
+#getloc_widget.top-left-pos {
+    left: 27px;
+    right: auto;
+    top: 0;
+    bottom: auto;
+}
+#getloc_widget.top-right-pos {
     left: auto;
     right: 27px;
+    top: 0;
+    bottom: auto;
 }
+#getloc_widget.bot-left-pos {
+    left: 27px;
+    right: auto;
+    top: auto;
+    bottom: 0;
+}
+#getloc_widget.bot-right-pos {
+    left: auto;
+    right: 27px;
+    top: auto;
+    bottom: 0;
+}
+
 #getloc_widget.lightness {
     background: #fff;
     color: {{$widget->theme == 'custom' ? $widget->color_active : '#333333'}};
@@ -30,7 +54,7 @@
 
 .getloc_widget__menu {
     position: fixed;
-    bottom: 0;
+    top: 0;
     left: 27px;
     width: 115px;
     background: {{$widget->theme == 'custom' ? $widget->background : '#2f353f'}};
@@ -38,7 +62,35 @@
     color:  {{$widget->theme == 'custom' ? $widget->color : '#80868f'}};
     font-size: 10px;
     line-height: 12px;
+    z-index: 4040;
 }
+.getloc_widget__menu.top-left-pos {
+    left: 27px;
+    right: auto;
+    top: 0;
+    bottom: auto;
+}
+.getloc_widget__menu.top-right-pos {
+    left: auto;
+    right: 27px;
+    top: 0;
+    bottom: auto;
+}
+.getloc_widget__menu.bot-left-pos {
+    left: 27px;
+    right: auto;
+    top: auto;
+    bottom: 0;
+}
+.getloc_widget__menu.bot-right-pos {
+    left: auto;
+    right: 27px;
+    top: auto;
+    bottom: 0;
+}
+
+
+
 .getloc_widget__menu.right-pos {
     left: auto;
     right: 27px;

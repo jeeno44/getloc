@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 from bs4 import BeautifulSoup
 from bs4 import Comment
@@ -59,15 +59,10 @@ def translateBlock(block):
         pass
 
 def createEmptyTranslate(block):
-    global iBlockInsert, insertSQLTrans, loadSQL, langTo
-    loadSQL.append("({id}, {language_id}, '', NOW(), NOW(), 1, {siteID}, 0, 1, 0, 0)".format(id=block[0], language_id=langID, siteID=siteID))
-    iBlockInsert += 1
-
-    if len(loadSQL) >= maxBlockInsert:
-        iBlockInsert = 0
-        cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
-        loadSQL = []
-
+    global iBlockInsert, insertSQLTrans, loadSQL, langTo, loadSQL
+    sql = "({id}, {language_id}, '', NOW(), NOW(), 1, {siteID}, 0, 1, 0, 0)".format(id=block[0], language_id=langID, siteID=siteID)
+    loadSQL.append(insertSQLTrans + sql + ";")
+    
 
 #------------------------------------------------------------------------------------------------------
 # Получаем языки проекта
@@ -88,85 +83,6 @@ def getAllBlocks(projectID):
     cursor.execute(sql)
     for block in cursor.fetchall():
         issetBlocks.append(block[0])
-
-#------------------------------------------------------------------------------------------------------
-# Кол. слов в блоке
-#------------------------------------------------------------------------------------------------------
-
-def count_letters(word):
-    return len(word) - word.count(' ')
-
-#------------------------------------------------------------------------------------------------------
-# Работаем со всеми типами УРЛа
-#------------------------------------------------------------------------------------------------------
-
-def iri2uri(uri, encoding='utf-8'):
-    scheme, authority, path, query, frag = urlparse.urlsplit(uri)
-    scheme = scheme.encode(encoding)
-
-    if ":" in authority:
-        host, port = authority.split(":", 1)
-        authority = host.encode('idna') + ":%s" % port
-    
-    path = urllib.quote(
-      path.encode(encoding), 
-      safe="/;%[]=:$&()+,!?*@'~"
-    )
-    query = urllib.quote(
-      query.encode(encoding), 
-      safe="/;%[]=:$&()+,!?*@'~"
-    )
-    frag = urllib.quote(
-      frag.encode(encoding), 
-      safe="/;%[]=:$&()+,!?*@'~"
-    )
-
-    return urlparse.urlunsplit((scheme, authority, path, query, frag))
-
-#------------------------------------------------------------------------------------------------------
-# Загружаем страницу
-#------------------------------------------------------------------------------------------------------
-
-def load_url(url, siteID, cursor, timeout):
-    headers = { 'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36' }
-    req = urllib2.Request(iri2uri(url), None, headers)
-    response = urllib2.urlopen(req, timeout=timeout)
-    html = response.read()
-    if html:
-        return html
-
-#------------------------------------------------------------------------------------------------------
-# Создаем блок и возвращаем insert_id
-#------------------------------------------------------------------------------------------------------
-
-def makeBlock(siteID, text, element, url):
-    global countWords, countSymbols, countBlocks
-
-    #block = cursor.execute('SELECT `text` FROM blocks WHERE `text` = "{text}"'.format(text=MySQLdb.escape_string(text.encode('utf8'))))
-
-    text  = text.strip()
-    
-    if text not in issetBlocks:
-        ccword = len(text.split())
-        ccsymb = count_letters(text)
-        sql    = """INSERT INTO blocks SET site_id = {site_id}, `text` = "{text}", 
-                    `type` = "{type}", count_words = {ccword}, count_symbols = {ccsymb},
-                    created_at = NOW(), updated_at = NOW(), enabled = {enable}""".format(site_id=siteID, text=MySQLdb.escape_string(text.encode('utf8')), 
-                                                                                        type=MySQLdb.escape_string(element), ccword=ccword, ccsymb=ccsymb, enable=1)
-        cursor.execute(sql)
-
-        countWords      += ccword
-        countSymbols    += ccsymb
-        countBlocks     += 1
-
-        issetBlocks.append(text)
-
-        id = db.insert_id()
-        blocksID[text] = id
-        return id
-    else:
-        makePageBlock(urlPageID[str(url)], blocksID[text])
-        return False
 
 #------------------------------------------------------------------------------------------------------
 # Парсим документы и картинки сайта, затем записываем их в отдельную таблицу
@@ -192,6 +108,109 @@ def parseDocInSite(url, element):
 
     if docs:
         docSQL.append(docs)
+
+#------------------------------------------------------------------------------------------------------
+# Стресс тест для проекта
+#------------------------------------------------------------------------------------------------------
+
+def stressTest(urls, rpb, message):
+    urls_for_test = urls[0:50] #Берем только 50 первых урлов
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+            future_to_url = {executor.submit(load_url2, url, siteID, cursor, 60): url for url in urls_for_test }
+            for future in concurrent.futures.as_completed(future_to_url):
+                url = future_to_url[future]
+                try:
+                    req      = future.result()
+                    response = urllib2.urlopen(req, timeout=10)
+                except urllib2.HTTPError as e:
+                    if e.code == 503 or e.code == 403 or e.code == 500:
+                        rpb.publish('textCollectorOneThread', message)
+                        print "Отправлено в один поток"
+                        return True
+                except Exception as exc:
+                    print '%r generated an exception: %s, %s' % (url, exc, sys.exc_info()[-1].tb_lineno)
+                    pass
+
+#------------------------------------------------------------------------------------------------------
+# Кол. слов в блоке
+#------------------------------------------------------------------------------------------------------
+
+def count_letters(word):
+    return len(word) - word.count(' ')
+
+#------------------------------------------------------------------------------------------------------
+# Работаем со всеми типами УРЛа
+#------------------------------------------------------------------------------------------------------
+
+def iri2uri(uri):
+    (scheme, authority, path, query, fragment) = urlparse.urlsplit(uri)
+    if fragment == '' and query == '' and path == '/':
+        path = ''
+    authority = authority.encode('idna').encode('utf8')
+    path = urllib.quote(urllib.unquote(path.encode('utf8')), safe="%/:=&?~#+!$,;'@()*[]")
+    query = urllib.quote(query.encode('utf8'), safe="%/:=&?~#+!$,;'@()*[]")
+    fragment = urllib.quote(fragment.encode('utf8'), safe="%/:=&?~#+!$,;'@()*[]")
+    uri = urlparse.urlunsplit((scheme, authority, path, query, fragment))
+    uri = uri.encode('utf8')
+    return uri
+
+#------------------------------------------------------------------------------------------------------
+# Загружаем страницу
+#------------------------------------------------------------------------------------------------------
+
+def load_url(url, siteID, cursor, timeout):
+    headers = { 'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36' }
+    req = urllib2.Request(iri2uri(url), None, headers)
+    response = urllib2.urlopen(req, timeout=timeout)
+    html = response.read()
+    if html:
+        return html
+
+def load_url2(url, siteID, cursor, timeout):
+    headers = { 'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36' }
+    return urllib2.Request(iri2uri(url), None, headers)
+
+#------------------------------------------------------------------------------------------------------
+# Создаем блок и возвращаем insert_id
+#------------------------------------------------------------------------------------------------------
+
+def makeBlock(siteID, text, element, url):
+    global countWords, countSymbols, countBlocks
+
+    #block = cursor.execute('SELECT `text` FROM blocks WHERE `text` = "{text}"'.format(text=MySQLdb.escape_string(text.encode('utf8'))))
+
+    if text not in issetBlocks:
+        pprint("TEXT NOT IN issetBlock")
+	try:
+    	    ccword = len(text.split())
+            ccsymb = count_letters(text)
+	    sql    = """INSERT INTO blocks SET site_id = {site_id}, `text` = "{text}", 
+    	                `type` = "{type}", count_words = {ccword}, count_symbols = {ccsymb},
+        	            created_at = NOW(), updated_at = NOW(), enabled = {enable}""".format(site_id=siteID, text=MySQLdb.escape_string(text.encode('utf8')), 
+                                                                                        type=MySQLdb.escape_string(element.encode('utf8')), ccword=ccword, ccsymb=ccsymb, enable=1)
+	    cursor.execute(sql)
+	
+    	    countWords      += ccword
+            countSymbols    += ccsymb
+	    countBlocks     += 1
+	
+    	    issetBlocks.append(text)
+	
+    	    id = db.insert_id()
+            blocksID[text] = id
+	    return id
+	except Exception as exc:
+	    print("EXCEPTION: %s" % str(exc))
+    else:
+	try:
+            sql = 'SELECT id FROM blocks WHERE site_id={site_id} AND text="{text}"'.format(site_id=siteID, text=MySQLdb.escape_string(text.encode('utf8')))
+            cursor.execute(sql)
+            blockId = cursor.fetchone()[0]
+            makePageBlock(urlPageID[str(url)], blockId)
+            return False
+        except Exception as exc:
+	    print("EXCEPTION: %s" % str(exc))
+           
 
 #------------------------------------------------------------------------------------------------------
 # Получаем айди страницы с нужного URL'а, TODO: тоже переделать на переменную
@@ -228,7 +247,7 @@ def makePageBlock(pageID, blockID):
 #------------------------------------------------------------------------------------------------------
 
 ps = r.pubsub()
-ps.subscribe('textCollectorOneThread')
+ps.subscribe('rescan')
 for item in ps.listen():
    if ( item['type'] == "message" ):
         start = time.time()
@@ -251,7 +270,7 @@ for item in ps.listen():
         countBlocks     = 0
         tags            = ['meta', 'title', 'p', 'a', 'div', 'th',
                            'td', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'b', 'strong', 'li', 'pre', 'code', 'option',
-                           'label', 'span', 'button', 'input', 'button', 'img', 'textarea', 'font', 'section', 'em']
+                           'label', 'span', 'button', 'input', 'button', 'img', 'textarea', 'font', 'em']
         siteID          = data_['site']
         auto_publishing = None
         auto_translate  = None
@@ -259,13 +278,14 @@ for item in ps.listen():
         issetBlocks     = []
         blocksID        = {}
 
-        maxBlockInsert  = 50
+        maxBlockInsert  = 100
         iBlockInsert    = 0
         insertSQLTrans  = 'INSERT INTO translates (block_id, language_id, `text`, created_at, updated_at, type_translate_id, site_id, count_words, `enabled`, is_ordered, archive) VALUES '
         loadSQL         = []
         langTo          = ''
         langID          = 0
         translator      = None
+
         docSQL          = []
 
         db.autocommit(True)
@@ -278,119 +298,122 @@ for item in ps.listen():
         # И записываем их
         #------------------------------------------------------------------------------------------------------
 
-	sql = "INSERT INTO `site_state` (`site_id`, `status`) VALUES ({}, 'Однопоточный коллектор начал обработку страниц')".format(siteID)
+	sql = "INSERT INTO `site_state` (`site_id`, `status`) VALUES ({}, 'Коллектор начал обработку страниц')".format(siteID)
 	cursor.execute(sql)
 	db.commit()
 
-        sql = 'SELECT * FROM pages WHERE site_id = {projectID} AND collected != 1 ORDER BY id DESC'.format(projectID=siteID)
+        sql = 'SELECT * FROM pages WHERE site_id = {projectID} AND collected != 1'.format(projectID=siteID)
         cursor.execute(sql)
         pages = cursor.fetchall()
 
         for page in pages:
             pageID, siteID, url, code, level, visited, collected, enabled, created_at, updated_at = page
-            urls.append(str(url.encode('utf8')))
-            urlPageID[str(url.encode('utf8'))] = pageID
+            urls.append(url.encode('utf-8'))
+            urlPageID[url.encode('utf-8')] = pageID
 
         count = 0
 
         parsed_uri = urlparse.urlparse(urls[0])
         domain     = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
 
-        print('В один поток принял, работаю!')
+        #------------------------------------------------------------------------------------------------------
+        # Проводим стресс тест для сайта, проактивная защита BITRIX
+        #------------------------------------------------------------------------------------------------------
+
+        if stressTest(urls, r, json.dumps(data_)):
+            continue
 
         #------------------------------------------------------------------------------------------------------
         # Запускаем потоки и bs4
         #------------------------------------------------------------------------------------------------------
 
-        for url in urls:
-            try:
-                print(url)
+        with concurrent.futures.ThreadPoolExecutor(max_workers=countPools) as executor:
+            future_to_url = {executor.submit(load_url, url, siteID, cursor, 60): url for url in urls }
+            for future in concurrent.futures.as_completed(future_to_url):
+                url = future_to_url[future]
+                try:
+                    cursor.execute('UPDATE pages SET collected = 1 WHERE url = "{url}" AND site_id = {siteid}'.format(url=MySQLdb.escape_string(url), siteid=siteID))
 
-                time.sleep(1)
+                    html = future.result()
+                    soup = BeautifulSoup(html, 'html.parser')
 
-                html = load_url(url, siteID, cursor, 10)
-                soup = BeautifulSoup(html, 'html.parser')
+                    #-------------------------------------------
+                    # Вырезаем скрипты, ксс и комменты
+                    #-------------------------------------------
 
-                cursor.execute('UPDATE pages SET collected = 1 WHERE url = "{url}" AND site_id = {siteid}'.format(url=MySQLdb.escape_string(url), siteid=siteID))
+                    for script in soup(["script", "style"]):
+                        script.extract()
+                    
+                    comments = soup.findAll(text=lambda text:isinstance(text, Comment))
+                    [comment.extract() for comment in comments]    
 
-                #-------------------------------------------
-                # Вырезаем скрипты, ксс и комменты
-                #-------------------------------------------
+                    #-------------------------------------------
+                    # Начинаем парсить и создавать теги
+                    #-------------------------------------------
 
-                for script in soup(["script", "style"]):
-                    script.extract()
-                
-                comments = soup.findAll(text=lambda text:isinstance(text, Comment))
-                [comment.extract() for comment in comments]    
-
-                #-------------------------------------------
-                # Начинаем парсить и создавать теги
-                #-------------------------------------------
-
-                for tag in tags:
-                    for element in soup.find_all(tag):
-                        string = ''
-                        if element.name == 'meta' and element.has_attr('name') and (element['name'].lower() == 'keywords' or element['name'].lower() == 'description'):
-                            if element['content']:
-                                block_id = makeBlock(siteID, element['content'], 'meta', url)
-                                if block_id is not False:
-                                    makePageBlock(getPageID(url, siteID), block_id)
-                        elif element.name == 'title':
-                            if element.string:
-                                block_id = makeBlock(siteID, element.string, element.name, url)
-                                if block_id:
-                                    makePageBlock(getPageID(url, siteID), block_id)
-                        elif element.name == 'img' and element.has_attr('alt'):
-                            if element['alt'].isdigit() != True and element['alt']: 
-                                block_id = makeBlock(siteID, element['alt'], element.name, url)
-                                if block_id is not False:
-                                    makePageBlock(getPageID(url, siteID), block_id)
-                        elif element.name == 'input':
-                            if element.has_attr('placeholder') and element['placeholder'].isdigit() != True and element['placeholder'] and element['type'] != 'hidden':
-                                block_id = makeBlock(siteID, element['placeholder'], element.name, url)
-                                if block_id is not False:
-                                    makePageBlock(getPageID(url, siteID), block_id)
-                            if element.has_attr('value') and element['value'].isdigit() != True and element['value'] and element['type'] != 'hidden':
-                                block_id = makeBlock(siteID, element['value'], element.name, url)
-                                if block_id is not False:
-                                    makePageBlock(getPageID(url, siteID), block_id)
-                        else:
-                            if element.name == 'meta':
-                                    continue                          
-
-                            for str_ in element.findAll(text=True, recursive=True):
-                                string = re.sub(' +',' ', str_)
-                                if string.isdigit() != True and string: #Цифры нам нинужныыыы!
-                                    pprint(string)
-                                    block_id = makeBlock(siteID, string, element.name, url)
+                    for tag in tags:
+                        for element in soup.find_all(tag):
+                            string = ''
+                            if element.name == 'meta' and element.has_attr('name') and (element['name'].lower() == 'keywords' or element['name'].lower() == 'description'):
+                                if element['content']:
+                                    block_id = makeBlock(siteID, element['content'], 'meta', url)
+                                    pprint(block_id)
                                     if block_id is not False:
                                         makePageBlock(getPageID(url, siteID), block_id)
+                            elif element.name == 'title':
+                                if element.string:
+                                    block_id = makeBlock(siteID, element.string, element.name, url)
+                                    if block_id:
+                                        makePageBlock(getPageID(url, siteID), block_id)
+                            elif element.name == 'img' and element.has_attr('alt'):
+                                if element['alt'].isdigit() != True and element['alt']: 
+                                    block_id = makeBlock(siteID, element['alt'], element.name, url)
+                                    if block_id is not False:
+                                        makePageBlock(getPageID(url, siteID), block_id)
+                            elif element.name == 'input':
+                                if element.has_attr('placeholder') and element['placeholder'].isdigit() != True and element['placeholder'] and element['type'] != 'hidden':
+                                    block_id = makeBlock(siteID, element['placeholder'], element.name, url)
+                                    if block_id is not False:
+                                        makePageBlock(getPageID(url, siteID), block_id)
+                                if element.has_attr('value') and element['value'].isdigit() != True and element['value'] and element['type'] != 'hidden':
+                                    block_id = makeBlock(siteID, element['value'], element.name, url)
+                                    if block_id is not False:
+                                        makePageBlock(getPageID(url, siteID), block_id)
+                            else:
+                                if element.name == 'meta':
+                                    continue                          
+
+                                for str_ in element.findAll(text=True, recursive=False):
+                                    pprint(str_)
+                                    string = re.sub(' +',' ', str_)
+                                    if string.isdigit() != True and string: #Цифры нам нинужныыыы!
+                                        block_id = makeBlock(siteID, string, element.name, url)
+                                        if block_id is not False:
+                                            makePageBlock(getPageID(url, siteID), block_id)
 
 
-                        # Сначала чекаем на файлы и картинки
-                        if element.name == 'img' or element.name == 'IMG' or element.name == 'a':
-                            parseDocInSite(url, element)
+                            # Сначала чекаем на файлы и картинки
+                            if element.name == 'img' or element.name == 'IMG' or element.name == 'a':
+                                parseDocInSite(url, element)
 
-                count += 1
-                time.sleep(0.7)
+                    count += 1
+                    del html
+
+                except Exception as exc:
+                    print '%r generated an exception: %s, %s' % (url, exc, sys.exc_info()[-1].tb_lineno)
+                    pass
+                except urllib2.HTTPError as e:
+                    print(e.code)
+                    print(url)
+                except urllib2.URLError as e:
+                    print 'We failed to reach a server.'
+                    print 'Reason: ', e.reason
+                else:
+                    #print '"%s" fetched in %ss' % (url,(time.time() - start))
+                    pass
                 
-                del html
-
-            except Exception as exc:
-                print '%r generated an exception: %s, %s' % (url, exc, sys.exc_info()[-1].tb_lineno)
-                pass
-            except urllib2.HTTPError as e:
-                print(e.code)
-                print(url)
-            except urllib2.URLError as e:
-                print 'We failed to reach a server.'
-                print 'Reason: ', e.reason
-            else:
-                #print '"%s" fetched in %ss' % (url,(time.time() - start))
-                pass
-                
-        if count > 0:    
-            finishStats(siteID, countWords, countSymbols, countBlocks)
+            if count > 0:    
+                finishStats(siteID, countWords, countSymbols, countBlocks)
 
         #------------------------------------------------------------------------------------------------------
         # Сохраняем все картинки, файлы, документы
@@ -427,27 +450,49 @@ for item in ps.listen():
 
         cursor.execute(sql)
         blocks = cursor.fetchall()
-        for lang in langs:
-            langTo  = lang[3]
-            langID  = lang[0]
-            pool    = ThreadPool(2)
+#        for lang in langs:
+#            langTo  = lang[3]
+#            langID  = lang[0]
+#            pool    = ThreadPool(2)
 #            results = pool.map(translateBlock, blocks)
-            results = pool.map(createEmptyTranslate, blocks)
-            pool.close()
-            pool.join()
+#            results = pool.map(createEmptyTranslate, blocks)
+#            pool.close()
+#            pool.join()
 
         for sql in loadSQL:
             cursor.execute(sql)
-        cursor.close()
+        
 
-        #del soup
-        #del issetBlocks
-        #del urls
-        #del db
+        """
+        langs      = getLangsProject(siteID) 
+        sql        = 'SELECT * FROM blocks WHERE site_id = {projectID}'.format(projectID=siteID)
+        cursor.execute(sql)
+        blocks = cursor.fetchall()
+
+        for lang in langs:
+            langTo  = lang[3]
+            langID  = lang[0]
+            pool    = ThreadPool(1)
+            results = pool.map(createEmptyTranslate, blocks)
+            pool.close()
+            pool.join()              
+        
+        if len(loadSQL) > 0 and len(loadSQL) <= maxBlockInsert:
+            iBlockInsert = 0
+            cursor.execute(insertSQLTrans + ','.join(loadSQL) + ";")
+            loadSQL = []
+        db.close()
+        cursor.close()
+        """
+
+#        del soup
+#        del issetBlocks
+#        del urls
+#        del db
 
         site = data_['site']
-        api  = 'http://' + data_['api'] + '/python/collector/' + str(site)
-        urllib2.urlopen(api, timeout=10)
+#        api  = 'http://' + data_['api'] + '/python/collector/' + str(site)
+#        urllib2.urlopen(api, timeout=10)
 
         print "Страниц %s" % count
         print "Отработал за: %ss" % (time.time() - start)

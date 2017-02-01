@@ -91,7 +91,7 @@ class ApiController extends Controller
                             $blocks = $page->blocks()->join('translates', 'blocks.id', '=', 'translates.block_id')
                                 ->where('translates.language_id', $lang->id)
                                 ->where('blocks.enabled', 1)
-                                ->where('blocks.id', '<=', $subscription->last_id)
+#                                ->where('blocks.id', '<=', $subscription->last_id)
                                 ->where('translates.enabled', 1)
                                 ->where('translates.archive', 0)
                                 ->select('blocks.text', 'translates.id as tid', 'translates.text as ttext')
@@ -114,8 +114,8 @@ class ApiController extends Controller
                             $widget = \App\Widget::where('site_id', $site->id)->first();
                             $class          = '';
         
-                            if ( $widget->location == 'right' )
-                                $class .= 'right-pos';
+                            if ( !empty($widget->location) )
+                                $class .= $widget->location . '-pos';
 
                             if ( $widget->titles == 0 )
                                 $class .= ' abbreviations';

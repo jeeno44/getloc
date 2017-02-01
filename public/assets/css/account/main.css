@@ -4321,8 +4321,10 @@ a.project-list__control-delete{
 }
 .widget__menu {
     position: absolute;
-    bottom: 3px;
     left: 27px;
+    right: auto;
+    top: 24px;
+    bottom: auto;
     width: 115px;
     background: #2f353f;
     text-align: center;
@@ -4330,9 +4332,29 @@ a.project-list__control-delete{
     font-size: 10px;
     line-height: 12px;
 }
-.widget__menu.right-pos {
+.widget__menu.top-left-pos {
+    left: 27px;
+    right: auto;
+    top: 24px;
+    bottom: auto;
+}
+.widget__menu.top-right-pos {
     left: auto;
     right: 27px;
+    top: 24px;
+    bottom: auto;
+}
+.widget__menu.bot-left-pos {
+    left: 27px;
+    right: auto;
+    top: auto;
+    bottom: 3px;
+}
+.widget__menu.bot-right-pos {
+    left: auto;
+    right: 27px;
+    top: auto;
+    bottom: 3px;
 }
 .widget__menu.lightness {
     background: #fff;

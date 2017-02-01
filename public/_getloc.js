@@ -183,13 +183,8 @@ function getloc(settings)
                 if ( node.nodeName == 'SCRIPT' || node.nodeName == 'STYLE' )
                     continue;
                 
-                else if ( node.nodeName == 'INPUT' || node.nodeName == 'META'  ) {
-                    this.translateAttribute(node);
-                }
-                else if ( node.nodeName == 'IMG' ) {
-//                    console.log(node);
-                    this.translateAttribute(node);
-                }
+                else if ( node.nodeName == 'INPUT' || node.nodeName == 'IMG' || node.nodeName == 'META'  )
+                    this.translateAttribute(node);  
                                
                 else if ( node.nodeName == 'A' && node.getAttribute('title') && this.issetString(node.getAttribute('title')) )
                     node.setAttribute('title', this.issetString(node.getAttribute('title')))
@@ -309,15 +304,9 @@ function getloc(settings)
             if ( node.getAttribute('placeholder') && this.issetString(node.getAttribute('placeholder')) )
                 node.setAttribute('placeholder', this.issetString(node.getAttribute('placeholder')))
           }
-//        else if ( node.nodeName == 'IMG' && node.getAttribute('alt') && this.issetString(node.getAttribute('alt')) )  
-//          {
-//            node.setAttribute('alt', this.issetString(node.getAttribute('alt')))
-//            console.log(this.issetString(node.getAttribute('alt')))
-//          }
-        else if ( node.nodeName == 'IMG' && node.getAttribute('src') && this.issetString(node.getAttribute('src')) )  
+        else if ( node.nodeName == 'IMG' && node.getAttribute('alt') && this.issetString(node.getAttribute('alt')) )  
           {
-            node.setAttribute('src', this.issetString(node.getAttribute('src')))
-            //console.log(this.issetString(node.getAttribute('src')))
+            node.setAttribute('alt', this.issetString(node.getAttribute('alt')))
           }
           
         else if ( node.nodeName == 'META' )

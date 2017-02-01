@@ -1519,8 +1519,8 @@ class AccountController extends Controller
         }
         $class          = '';
         
-        if ( $widget_data->location == 'right' )
-            $class .= 'right-pos';
+        if ( !empty($widget_data->location) )
+            $class .= $widget_data->location . '-pos';
         
         if ( $widget_data->titles == 0 )
             $class .= ' abbreviations';
@@ -1555,10 +1555,16 @@ class AccountController extends Controller
         $settings = explode(' ', $request->get('settings'));
         $widget   = \App\Widget::where('site_id', $siteID)->first();
         
-        if ( in_array('right-pos', $settings) )
-            $widget->location = 'right';
+        if ( in_array('top-left-pos', $settings) )
+            $widget->location = 'top-left';
+        else if ( in_array('top-right-pos', $settings) )
+            $widget->location = 'top-right';
+        else if ( in_array('bot-left-pos', $settings) )
+            $widget->location = 'bot-left';
+        else if ( in_array('bot-right-pos', $settings) )
+            $widget->location = 'bot-right';
         else
-            $widget->location = 'left';
+            $widget->location = 'bot-left';
         
         if ( in_array('abbreviations', $settings) )
             $widget->titles = 0;

@@ -13,8 +13,12 @@
                 <div class="widget-settings__controls-item">
                     <span>{{trans('account.t_widget_position')}}:</span>
                     <div class="widget-settings__controls-btns">
-                        <a href="#" class="btn btn_12 widget-settings__controls-btn">{{trans('account.t_widget_position_left')}}</a>
-                        <a href="#" class="btn btn_12 widget-settings__controls-btn" data-class="right-pos">{{trans('account.t_widget_position_right')}}</a>
+                        <a href="#" class="btn btn_12 widget-settings__controls-btn" data-class="top-left-pos">{{trans('account.t_widget_position_top_left')}}</a>
+                        <a href="#" class="btn btn_12 widget-settings__controls-btn" data-class="top-right-pos">{{trans('account.t_widget_position_top_right')}}</a>
+<br/>
+<br/>
+                        <a href="#" class="btn btn_12 widget-settings__controls-btn" data-class="bot-left-pos">{{trans('account.t_widget_position_bot_left')}}</a>
+                        <a href="#" class="btn btn_12 widget-settings__controls-btn" data-class="bot-right-pos">{{trans('account.t_widget_position_bot_right')}}</a>
                     </div>
                 </div>
                 <div class="widget-settings__controls-item">

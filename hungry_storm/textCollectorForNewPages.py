@@ -114,11 +114,27 @@ def iri2uri(uri):
 def load_url(url, siteID, cursor, timeout):
     headers = { 'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36' }
     req = urllib2.Request(url, None, headers)
-    pprint(req)
-    response = urllib2.urlopen(req, timeout=timeout)
-    html = response.read()
-    if html:
-        return html
+    # pprint(req)
+    try:
+        response = urllib2.urlopen(req, timeout=timeout)
+        # pprint(response.getcode())
+        html = response.read()
+        if html:
+            return html
+    except urllib2.HTTPError as e:
+        db              = MySQLdb.connect(host=mysql_credentials['host'], user=mysql_credentials['user'], passwd=mysql_credentials['password'], db=mysql_credentials['db'], charset=mysql_credentials['charset'], unix_socket=mysql_credentials['unix_socket'])
+        cursor          = db.cursor()
+        pprint(db)
+        pprint(cursor)
+        pprint(url)
+        pprint(siteID)
+        print(e.code)
+        cursor.execute('DELETE FROM pages WHERE url = "{url}" AND site_id = {siteid} AND collected=0'.format(url=MySQLdb.escape_string(url), siteid=siteID))
+        db.commit()
+        cursor.close()
+
+        raise e
+    
 
 #------------------------------------------------------------------------------------------------------
 # Создаем блок и возвращаем insert_id
