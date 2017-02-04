@@ -218,7 +218,10 @@ a.btn-actions:active{
 .dropdown > a {
     display: block;
     border-bottom: 1px solid #ddd;
-    padding: 6px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 .dropdown > a:hover{
 

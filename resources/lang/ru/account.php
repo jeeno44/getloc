@@ -158,7 +158,7 @@ return [
     't_sproject_time_die'                => 'Осталось',
     't_sproject_days'                    => 'дней',
     't_sproject_tarif_not_select'        => 'не выбран.',
-    't_sproject_remove_project'          => 'Удаления проекта',
+    't_sproject_remove_project'          => 'Вы действительно хотите удалить проект',
     't_settings_title'                   => 'Настройки проекта',
     't_settings_integration_in_site'     => 'Интеграция в сайт',
     't_settings_before'                  => 'В конце тега head необходимо добавить:',

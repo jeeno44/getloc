@@ -59,7 +59,7 @@ class ScanController extends Controller
     public function site($id)
     {
         $site = Site::find($id);
-        $pages = $site->pages()->paginate(20);
+        $pages = $site->pages()->where('url', 'LIKE', $site->url.'%')->paginate(20);
         foreach ($pages as $key => $page) {
             $pages[$key] = \Cache::remember('page_'.$page->id, 60 * 24 * 30, function() use ($page) {
                 $page->count_blocks = $page->blocks()->count();

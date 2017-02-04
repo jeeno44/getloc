@@ -115,17 +115,17 @@
                     <td class="projects__status">
                         <span>{{trans('phrases.status')}}</span>
                     </td>
-                    <td>{{ucfirst(trans('phrases.pages'))}}</td>
-                    <td>{{ucfirst(trans('phrases.blocks'))}}</td>
-                    <td>{{ucfirst(trans('phrases.words'))}}</td>
-                    <td>{{ucfirst(trans('phrases.symbols'))}}</td>
+                    <td class="text_right">{{ucfirst(trans('phrases.pages'))}}</td>
+                    <td class="text_right">{{ucfirst(trans('phrases.blocks'))}}</td>
+                    <td class="text_right">{{ucfirst(trans('phrases.words'))}}</td>
+                    <td class="text_right">{{ucfirst(trans('phrases.symbols'))}}</td>
                     <td></td>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($sites as $site)
                     <tr>
-                        @if ($site->pages()->count() == 0)
+                        @if ($site->pages()->where('url', 'LIKE', $site->url.'%')->count() == 0)
                             <td>{{beautyUrl($site->url)}} @if (strpos('_'.$site->url, 'https:') > 0) (https) @endif</td>
                             <td class="projects__status">
                                 <span class="projects__picking">
@@ -133,21 +133,21 @@
                                 </span>
 
                             </td>
-                        @elseif ($site->pages()->where('visited', 0)->count() > 0)
+                        @elseif ($site->pages()->where('url', 'LIKE', $site->url.'%')->where('visited', 0)->count() > 0)
                             <td>{{beautyUrl($site->url)}}</td>
                             <td class="projects__status">
                                 <span class="projects__picking">
                                     {{trans('phrases.building_structure')}}
-                                    ({{number_format($site->pages()->where('visited', 1)->count(), 0, '.', ' ')}} / {{number_format($site->pages()->count(), 0, '.', ' ')}})
+                                    ({{number_format($site->pages()->where('url', 'LIKE', $site->url.'%')->where('visited', 1)->count(), 0, '.', ' ')}} / {{number_format($site->pages()->where('url', 'LIKE', $site->url.'%')->count(), 0, '.', ' ')}})
                                 </span>
 
                             </td>
-                        @elseif ($site->pages()->where('collected', 0)->where('code', '<', 400)->count() > 0)
+                        @elseif ($site->pages()->where('url', 'LIKE', $site->url.'%')->where('collected', 0)->where('code', '<', 400)->count() > 0)
                             <td>{{beautyUrl($site->url)}}</td>
                             <td class="projects__status">
                                 <span class="projects__picking">
                                     {{trans('phrases.collect_text')}}
-                                    ({{number_format($site->pages()->where('collected', 1)->count(), 0, '.', ' ')}} / {{number_format($site->pages()->count(), 0, '.', ' ')}})
+                                    ({{number_format($site->pages()->where('url', 'LIKE', $site->url.'%')->where('collected', 1)->count(), 0, '.', ' ')}} / {{number_format($site->pages()->where('url', 'LIKE', $site->url.'%')->count(), 0, '.', ' ')}})
                                 </span>
                             </td>
                         @else
@@ -156,7 +156,7 @@
                                 <span class="projects__done">{{trans('phrases.site_done')}}</span>
                             </td>
                         @endif
-                        <td class="text_right">{{number_format($site->pages()->count(), 0, '.', ' ')}}</td>
+                        <td class="text_right">{{number_format($site->pages()->where('url', 'LIKE', $site->url.'%')->count(), 0, '.', ' ')}}</td>
                         <td class="text_right">{{number_format($site->count_blocks, 0, '.', ' ')}}</td>
                         <td class="text_right">{{number_format($site->count_words, 0, '.', ' ')}}</td>
                         <td class="text_right">{{number_format($site->count_symbols, 0, '.', ' ')}}</td>
@@ -167,6 +167,7 @@
 <!--                                <a href="/export/{{$site->id}}" class="overlay-link">Скачать TMX</a>
                                 <a href="/xliff/{{$site->id}}" class="overlay-link">Скачать XLIFF</a>-->
                                 <!-- <a class="project-list__control-tmx popup__open overlay-link" href="#" data-popup="tmx{{$site->id}}">Скачать TMX</a> -->
+                                {{--<a class="project-list__control-smcat popup__open overlay-link" href="#" data-popup="smcat{{$site->id}}">Экспорт в SmartCat</a>--}}
                                 <a class="project-list__control-xliff popup__open overlay-link" href="#" data-popup="xliff{{$site->id}}">Скачать XLIFF</a>
                                 <a class="project-list__control-delet popup__open overlay-link" href="#" data-popup="del{{$site->id}}">{{trans('account.t_sproject_remove')}}</a>
                             </div>

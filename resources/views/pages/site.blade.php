@@ -16,7 +16,8 @@
                 <!-- /site__back -->
 
                 <!-- site__title -->
-                <h1 class="site__title">{{beautyUrl($site->url)}}</h1>
+                {{--<h1 class="site__title">{{beautyUrl($site->url)}}</h1>--}}
+                <h1 class="site__title">{{$site->url}}</h1>
                 <!-- /site__title -->
                 <!-- <a href="#" class="btn btn_discount project-list__control-tmx popup__open overlay-link" data-popup="tmx{{$site->id}}"><i class="fa fa-download" aria-hidden="true"></i> TMX</a> -->
                 <a href="#" class="btn btn_discount project-list__control-tmx popup__open overlay-link" data-popup="xliff{{$site->id}}"><i class="fa fa-download" aria-hidden="true"></i> XLIFF</a>
@@ -28,7 +29,7 @@
             <ul class="statistic statistic_col-4">
                 <li>
                     <!-- statistic__num -->
-                    <span class="statistic__num">{{number_format($site->pages()->count(), 0, '.', ' ')}}</span>
+                    <span class="statistic__num">{{number_format($site->pages()->where('url', 'LIKE', $site->url.'%')->count(), 0, '.', ' ')}}</span>
                     <!-- /statistic__num -->
                     <span>{{trans('phrases.pages')}}</span>
                 </li>
@@ -81,7 +82,8 @@
                 @foreach($pages as $page)
                     <tr>
                         <td>
-                            <a href="{{route('scan.page', ['id' => $page->id])}}">{{beautyUrl(trimStrLen($page->url, 80))}}</a>
+                            {{--<a href="{{route('scan.page', ['id' => $page->id])}}">{{beautyUrl(trimStrLen($page->url, 80))}}</a>--}}
+                            <a href="{{route('scan.page', ['id' => $page->id])}}">{{trimStrLen($page->url, 80)}}</a>
                         </td>
                         <td class="projects__status">
                             @if ($page->collected == 1)

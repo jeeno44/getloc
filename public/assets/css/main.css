@@ -159,6 +159,14 @@ input[type="search"]::-webkit-search-cancel-button {
     font-family: 'fira_sansbold', sans-serif !important;
     color: #ffd400;
 }
+
+.proj_delete {
+    margin-bottom: 14px;
+    font-size: 18px;
+    font-family: 'fira_sansregular', sans-serif !important;
+    text-align: center;
+    font-weight: normal;
+}
 .site__header {
     position: absolute;
     left: 0;

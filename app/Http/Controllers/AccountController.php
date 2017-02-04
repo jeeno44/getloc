@@ -114,6 +114,9 @@ class AccountController extends Controller
     {
         $siteID     = Session::get('projectID');
         $site       = Site::find($siteID);
+        if (!empty($site)) {
+            $startURL   = $site->url;
+        }
         $ccBlocks   = Block::where('site_id', $siteID)->count();
 
         if (!$siteID || !$site || $ccBlocks == 0) {
@@ -124,7 +127,7 @@ class AccountController extends Controller
         if (Translate::where('site_id', $siteID)->count() > 0) {
             $stats = array(
                 'ccBlocks'  => Block::where('site_id', $siteID)->count(),
-                'ccPages'   => Page::where('site_id', $siteID)->count(),
+                'ccPages'   => Page::where('site_id', $siteID)->where('url', 'LIKE', $startURL.'%')->count(),
                 'listLangs' => $site->languages()->where('enabled', 1)->orderBy('name')->get(),
                 'lineGraph' => $this->lineStatistics($siteID, $ccBlocks),
                 'langStats' => $this->getStatusLangs($siteID, $ccBlocks)
@@ -1383,13 +1386,14 @@ class AccountController extends Controller
     public function pagesView(Request $request)
     {
         $site = Site::find(Session::get('projectID'));
+        $startURL = $site->url;
         
         if ( !$site ) {
             Session::remove('projectID');
             return redirect(URL::route('main.account.selectProject'));
         }
           
-        $pages = $site->pages()->paginate(25);
+        $pages = $site->pages()->where('url', 'LIKE', $startURL.'%')->paginate(25);
         return view('account/pages', compact('pages'));
     }
     
