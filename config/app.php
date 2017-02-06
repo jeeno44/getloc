@@ -166,7 +166,7 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Yangqi\Htmldom\HtmldomServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-        //Barryvdh\Debugbar\ServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Blackgremlin\Yandexkassa\YandexKassaServiceProvider::class,
     ],
@@ -219,7 +219,7 @@ return [
         'Html'      => Collective\Html\HtmlFacade::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
-	//'Debugbar' => Barryvdh\Debugbar\Facade::class,
+	    'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];

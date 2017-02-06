@@ -28,7 +28,9 @@ class FilesController extends Controller
             Session::remove('projectID');
             return redirect()->route('main.account.selectProject');
         }
-        $files = SiteFile::where('site_id', $siteID)->where('ftype', 'image')->paginate(25);
+        $startUrl = $site->url;
+        $files = SiteFile::where('site_id', $siteID)->where('full_url', 'LIKE', $startUrl.'%')->where('ftype', 'image')->paginate(25);
+//        dd($files);
         return view('files.images', compact('files'));
     }
 
@@ -40,7 +42,8 @@ class FilesController extends Controller
             Session::remove('projectID');
             return redirect()->route('main.account.selectProject');
         }
-        $files = SiteFile::where('site_id', $siteID)->where('ftype', 'doc')->paginate(25);
+        $startUrl = $site->url;
+        $files = SiteFile::where('site_id', $siteID)->where('full_url', 'LIKE', $startUrl.'%')->where('ftype', 'doc')->paginate(25);
         return view('files.docs', compact('files'));
     }
 }
