@@ -1,6 +1,6 @@
 <?php
 
-$domain = env('APP_DOMAIN', 'get-loc.ru');
+$domain = env('APP_DOMAIN', 'getloc.dev');
 
 Route::group(['middleware' => ['web']], function ()  use ($domain){
     /**
@@ -27,6 +27,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
 
         Route::post('/tmxexport/{id}/{pageID?}', ['as' => 'scan.tmxexport', 'uses' => 'ScanController@tmxexport']);
         Route::post('/xlfexport/{id}/{pageID?}', ['as' => 'scan.xlfexport', 'uses' => 'ScanController@xlfexport']);
+        Route::post('/smartcat/{id}', ['as' => 'smartcat.export', 'uses' => 'SmartCatController@exportSite']);
 
         Route::group(['middleware' => ['admin']], function () {
             Route::resource('users', 'ScanUsersController');
