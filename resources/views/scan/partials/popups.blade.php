@@ -10,18 +10,18 @@
 
 
 
-        <div class="popup__content popup__tmx{{$site->id}}">
+        <div class="popup__content popup__smcat{{$site->id}}">
             <div class="order-popup">
                 <div class="order-popup__content">
                     <div class="discount__layout">
-                        <h2 class="site__title">Скачать TMX {{$site->name}}</h2>
+                        <h2 class="site__title">Экспортировать проект {{$site->name}} в SmartCat</h2>
                         <div class="discount__form-2 popup_form">
-                            {!! Form::open(['url' => 'tmxexport/'.$site->id.'/0']) !!}
+                            {!! Form::open(['url' => 'smartcat/'.$site->id]) !!}
                             <fieldset class="discount__language">
-                                <label>Язык оригинала *</label>
+                                <label>Язык перевода *</label>
                                 <div class="discount__selects-language" data-language='{{getLanguagesJson()}}'>
                                     <div class="discount__language-wrapper">
-                                        <select name="lang1" id="lang1" required>
+                                        <select name="lang2" id="lang2" required>
                                             <option value="0">{{trans('account.t_create_project_select_lang')}}</option>
                                         </select>
                                     </div>
@@ -29,7 +29,7 @@
                             </fieldset>
                             <input type="hidden" id="siteid" value="">
                             <button class="btn btn_discount">
-                                <span>Скачать TMX</span>
+                                <span>Экспортировать</span>
                             </button>
                             {!! Form::close() !!}
                         </div>
