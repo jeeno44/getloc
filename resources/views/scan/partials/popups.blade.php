@@ -47,7 +47,7 @@
             <div class="order-popup">
                 <div class="order-popup__content">
                     <div class="discount__layout">
-                        <h2 class="site__title">Скачать XLIFF {{$site->name}}</h2>
+                        <h2 class="site__title">Скачать XLIFF {{beautyUrl($site->url)}}</h2>
                         <div class="discount__form-2 popup_form">
                             {!! Form::open(['route' => ['scan.xlfexport', $site->id, 0]]) !!}
                             <fieldset class="discount__language">
