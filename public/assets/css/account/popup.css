@@ -90,3 +90,93 @@
   width: 752px;
   padding: 33px 20px 102px;
 }
+.popup__content > .order-popup {
+  position: relative;
+  width: 560px;
+  margin: 0 auto;
+  padding: 46px 40px 42px;
+  border-radius: 10px;
+  text-align: left;
+  transition: opacity .3s ease;
+  -webkit-transition: opacity .3s ease;
+  background-color: #3e4f59;
+  color: #fff;
+}
+.popup__xliff6{
+  display: none;
+  width: 100%;
+  padding: 20px 0 0;
+  text-align: center;
+  background: transparent;
+}
+.discount__form-2 {
+  width: 480px;
+  margin: 0 auto;
+  text-align: justify;
+}
+.discount__layout .discount__form-2 fieldset {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 14px;
+  text-align: center;
+}
+.btn_discount {
+  display: block;
+  margin: 0 auto;
+  padding: 14px 53px 14px 48px;
+  color: #465863;
+  font-family: 'fira_sansmedium', sans-serif !important;
+  background-color: #ffd400;
+  transition: background-color .3s ease;
+  -webkit-transition: background-color .3s ease;
+}
+.discount__layout .discount__form-2 label {
+  display: block;
+  width: 100%;
+  margin-bottom: 2px;
+  color: #65828f;
+  transition: color .3s ease;
+  -wbkit-transition: color .3s ease;
+  text-align: center;
+}
+popuo__close.popup__close_2 {
+  z-index: 2;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  height: 24px;
+  width: 24px;
+  border: none;
+  background: none;
+  color: #c3161c;
+  letter-spacing: .5px;
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+popuo__close.popup__close_2:before {
+  top: 0;
+  left: 11px;
+  width: 2px;
+  height: 24px;
+}
+popuo__close.popup__close_2:before, popuo__close.popup__close_2:after {
+  content: '';
+  display: block;
+  position: absolute;
+  background-color: #6f7c83;
+  transition: background-color .3s ease-in-out;
+  -webkit-transition: background-color .3s ease-in-out;
+}
+popuo__close.popup__close_2:after {
+  top: 11px;
+  right: 0;
+  width: 24px;
+  height: 2px;
+}
+.proj_delete {
+  margin-bottom: 14px;
+  font-size: 18px;
+  font-family: 'fira_sansregular', sans-serif !important;
+  text-align: center;
+  font-weight: normal;
+}

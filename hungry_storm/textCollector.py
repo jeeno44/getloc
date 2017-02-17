@@ -443,7 +443,7 @@ for item in ps.listen():
         #------------------------------------------------------------------------------------------------------
 
         
-        translator = Translator(trans_client, trans_secret)
+        #translator = Translator(trans_client, trans_secret)
         langs      = getLangsProject(siteID)
         
         sql        = 'SELECT * FROM blocks WHERE site_id = {projectID}'.format(projectID=siteID)

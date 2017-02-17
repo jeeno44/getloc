@@ -73,12 +73,12 @@ h1{
 }
 
 .preloader {
-	position: fixed;
-	width: 80px;
-	height: 80px;
-	left: 50%;
-	top: 40%;
-	margin: 0px 0px 0px 90px;
+    position: fixed;
+    width: 80px;
+    height: 80px;
+    left: 50%;
+    top: 40%;
+    margin: 0px 0px 0px 90px;
 }
 
 .phrases__item-btn-translate1 {
@@ -105,3 +105,207 @@ h1{
 .find-phrase__clean {z-index: 10000;}
 .item-btn-phrase {float: left;}
 .phrases__item-btn-translate {cursor: pointer; display: block; float: right; margin-top: 7px;}
+.account-menu-children{
+    padding: 0 0 0 10px;
+    display: none;
+}
+.account-menu-children a {
+    display: block;
+    padding: 5px 0px;
+    font-size: 14px;
+    color: #000;
+}
+a.disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.5;
+}
+/*-------------warn_panel------------*/
+.warn_panel {
+    border: 1px solid #e6e6e6;
+    padding: 21px 20px 24px 121px;
+    margin: 0 0;
+    background: url("../../img/account/important.png") no-repeat 26px center #f7f7f7;
+    background-size: 64px 58px;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 15px;
+}
+.warn_panel p {
+    margin: 0 0 6px;
+}
+.warn_panel__title {
+    font-size: 14px;
+    line-height: 18px;
+    margin: 0 0 5px;
+    font-family: 'fira_sansmedium', sans-serif !important;
+}
+.warn_panel__change {
+    color: #18b9e9;
+    text-decoration: underline;
+}
+.warn_panel__change:hover {
+    text-decoration: none;
+}
+.site__title {
+    margin-bottom: 14px;
+    font-size: 30px;
+    font-family: 'fira_sansregular', sans-serif !important;
+    text-align: center;
+    font-weight: normal;
+}
+/* --------------- statistic --------------- */
+.statistic{
+    margin-bottom: 26px;
+}
+.statistic:after{
+    content: '';
+    display: inline-block;
+    width: 100%;
+}
+.statistic li.stat{
+    display: inline-block;
+    width: 30%;
+    padding: 3px 40px 9px;
+    border-left: 1px solid #e3e6e8;
+    font-size: 20px;
+    line-height: 24px;
+    vertical-align: top;
+    text-align: center;
+}
+.statistic li:first-child {
+    border: none;
+}
+.statistic li span{
+    display: block;
+}
+.statistic__num{
+    font-size: 60px;
+    font-family: 'fira_sanslight', sans-serif !important;
+    line-height: 65px;
+}
+.statistic__title{
+    font-size: 14px;
+    color: #bfbfbf;
+}
+.statistic_col-4 li{
+    width: 24.5%;
+}
+.statistic_col-4 .statistic__num{
+    font-size: 35px;
+    line-height: 38px;
+    margin-bottom: 10px;
+}
+/* --------------- /statistic --------------- */
+.btn_add {
+    height: 46px;
+    line-height: 46px;
+    padding: 0 43px 0 39px;
+    color: #465863;
+    font-family: 'fira_sansmedium', sans-serif !important;
+    background-color: #fed400;
+    vertical-align: top;
+    transition: background-color .3s ease;
+    -webkit-transition: background-color .3s ease;
+}
+.search {
+    display: inline-block;
+    position: relative;
+}
+.search input {
+    width: 240px;
+    height: 46px;
+    padding: 0 35px 0 17px;
+    border: 1px solid #e3e6e8;
+    border-radius: 5px;
+    font: 14px 'fira_sansregular', sans-serif;
+}
+.search button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 46px;
+    border: none;
+    background: url(../../img/iocns-search.png) 4px 50% no-repeat;
+}
+/* --------------- projects --------------- */
+.projects{
+    width: 100%;
+    margin-bottom: 30px;
+    color: #323232;
+    border-bottom: 2px solid #e3e6e8;
+}
+.projects td{
+    padding: 17px 20px 18px 30px;
+    border-bottom: 1px solid #e3e6e8;
+    vertical-align: middle;
+}
+.projects td:first-child{
+    padding-left: 0;
+}
+.projects_list td{
+    padding: 17px 15px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.projects_list td:first-child{
+    padding-left: 15px;
+}
+.projects thead td{
+    height: 46px;
+    border-bottom-width: 2px;
+    font-family: 'fira_sansbold', sans-serif !important;
+}
+.projects a{
+    color: #18baea;
+    border-bottom: 1px solid transparent;
+    transition: border-bottom-color .3s ease;
+    -webkit-transition: border-bottom-color .3s ease;
+}
+.projects a:hover{
+    border-bottom-color: #18baea;
+}
+.projects__status span{
+    padding-left: 22px;
+}
+.projects__picking{
+    padding-left: 22px;
+    color: #ccc;
+    background: url("../img/icons-cogwheel.png") no-repeat 0 50%;
+}
+.projects__done{
+    padding-left: 22px;
+    background: url("../img/icons-btn-green.png") no-repeat 0 50%;
+}
+/* --------------- /projects --------------- */
+a.btn-actions{
+    display: inline-block;
+    padding: 4px 12px;
+    border: 1px solid #ddd;
+    color: grey;
+}
+a.btn-actions:hover{
+    border: 1px solid #ddd;
+}
+a.btn-actions:active{
+    border: 1px solid #ddd;
+}
+.dropdown{
+    display: none;
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ddd;
+}
+.dropdown > a {
+    display: block;
+    border-bottom: 1px solid #ddd;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.dropdown > a:hover{
+
+}

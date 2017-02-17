@@ -426,5 +426,25 @@ return [
     'errorOutputPhrase_0'                => 'Phrase Output Disabling Failed!',
     'images'                             => 'Images',
     'docs'                               => 'Documents',
-    'languages_count'                    => 'language|language|languages'
+    'languages_count'                    => 'language|language|languages',
+
+    /* account menu */
+    'menu_analytics'                     => 'Анализ сайта',
+    'menu_site_create'                   => 'Добавить сайт',
+    'menu_text_collect'                  => 'Сбор текста',
+    'menu_docs_images'                   => 'Документы и изображения',
+    'menu_project_review'                => 'Обзор проекта',
+    'menu_site_translate'                => 'Перевод сайта',
+    'menu_site_langs'                    => 'Языки перевода',
+    'menu_project_pages'                 => 'Страницы проекта',
+    'menu_manage_trans'                  => 'Управление переводом',
+    'menu_import'                        => 'Импорт перевода',
+    'menu_integration'                   => 'Интеграция перевода',
+    'menu_widget'                        => 'Виджет',
+    'menu_code'                          => 'Код вставки',
+    'menu_account'                       => 'Аккаунт',
+    'menu_payment'                       => 'Оплата',
+    'menu_my_profile'                    => 'Мой профиль',
+    'menu_my_payments'                   => 'Мои платежи',
+
 ];

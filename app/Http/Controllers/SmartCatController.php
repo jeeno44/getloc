@@ -77,14 +77,11 @@ class SmartCatController extends Controller
         $scprj->attacheFile($file, $file_name);
 
         $sc = new SmartCAT('getLoc', 'ZAttGznm');
-        //$sc = new SmartCAT('getLoc', 'ZAttGznm111');
 
         $res = $sc->getProjectManager()->projectCreateProjectWithFiles($scprj);
 
-        unlink($file);
         if ($res->getStatus() == 'created') {
-
-            return redirect("https://smartcat.ai/workspace");
+            return redirect()->back()->with('msg', ['class' => 'info-massages__item_deleted', 'text' => 'Проект успешно экспортирован']);
         } else {
             abort(404);
         }

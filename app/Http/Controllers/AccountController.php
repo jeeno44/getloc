@@ -65,15 +65,32 @@ class AccountController extends Controller
     public function selectProject()
     {
         $mySites = $this->sites;
+        $pagesCount = 0;
         foreach ($mySites as $key => $site) {
             if (!empty($site->subscription)) {
                 $mySites[$key]->planID = $site->subscription->plan_id;
             } else {
                 $mySites[$key]->planID = 0;
             }
+            $pagesCount += $site->pages->count();
         }
         Session::remove('projectID');
-        return view('account.selectProject', compact('mySites'));
+        $details = false;
+        $fields = DB::getSchemaBuilder()->getColumnListing('user_details');
+        if ($this->user->detail) {
+            $empty = 0;
+            foreach ($fields as $field) {
+                if (empty($this->user->detail->$field)) {
+                    $empty++;
+                }
+            }
+            if ($empty < 5) {
+                $details = true;
+            }
+        }
+
+        //return view('account.selectProject', compact('mySites'));
+        return view('account.main-page', compact('mySites', 'pagesCount', 'details'));
     }
 
     /**

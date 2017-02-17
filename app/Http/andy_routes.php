@@ -98,6 +98,10 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
                 Route::get('/{id?}', ['as' => 'main.billing.order', 'uses' => 'OrdersController@index']);
             });
         });
+
+        /* analytics routes */
+        Route::get('/account/contragent', 'AnalyticsController@contragent');
+        Route::post('/account/contragent', 'AnalyticsController@detailsStore');
     });
 
 });

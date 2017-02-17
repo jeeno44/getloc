@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Subscription');
     }
+
+    public function detail()
+    {
+        return $this->hasOne(UserDetail::class);
+    }
 }
