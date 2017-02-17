@@ -167,7 +167,7 @@
 <!--                                <a href="/export/{{$site->id}}" class="overlay-link">Скачать TMX</a>
                                 <a href="/xliff/{{$site->id}}" class="overlay-link">Скачать XLIFF</a>-->
                                 <!-- <a class="project-list__control-tmx popup__open overlay-link" href="#" data-popup="tmx{{$site->id}}">Скачать TMX</a> -->
-                                <a class="project-list__control-smcat popup__open overlay-link" href="#" data-popup="smcat{{$site->id}}">Экспорт в SmartCat</a>
+                                <a class="project-list__control-smcat popup__open overlay-link" href="#" data-popup="smcat{{$site->id}}">Экспорт в SmartCAT</a>
                                 <a class="project-list__control-xliff popup__open overlay-link" href="#" data-popup="xliff{{$site->id}}">Скачать XLIFF</a>
                                 <a class="project-list__control-delet popup__open overlay-link" href="#" data-popup="del{{$site->id}}">{{trans('account.t_sproject_remove')}}</a>
                             </div>
