@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/assets/css/account/account.css" />
     <link rel="stylesheet" href="/assets/css/account/jquery-ui.min.css" />
     <link rel="stylesheet" href="/assets/css/account/bootstrap-colorpicker.css" />
+    <link rel="stylesheet" href="/assets/css/font-awesome.css" />
     <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 </head>
 <body>
