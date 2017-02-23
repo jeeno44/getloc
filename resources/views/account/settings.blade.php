@@ -6,7 +6,6 @@
     </aside>
     <div class="inside-content">
         <div class="account-data">
-            <h1 class="site__title">{{trans('account.t_settings_title')}}</h1>
             <form action="#" class="account-data__form">
                 <h2 class="site__title site__title_4">{{trans('account.t_settings_integration_in_site')}}</h2>
                 <div class="add-code__project">

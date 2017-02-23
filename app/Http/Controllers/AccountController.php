@@ -153,8 +153,8 @@ class AccountController extends Controller
             return view('account.overview', compact('sites', 'stats', 'site', 'site_settings'));
         }
           
-        $pages = $site->pages()->paginate(20);
-        return view('account.waiting', compact('sites', 'site', 'pages'));
+
+        return redirect()->route('main.account.collect');
     }
 
     /**

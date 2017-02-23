@@ -41,6 +41,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
      * Base site routes
      */
     Route::group(['domain' => $domain], function () {
+        Route::get('/xliff/{id}/{pageID?}', 'ScanController@xliff');
         Route::get('/', ['as' => 'main', 'uses' => 'HomeController@index']);
         Route::get('/feature', ['as' => 'main.feature', 'uses' => 'HomeController@feature']);
         Route::any('/call-me', ['as' => 'main.call-me', 'uses' => 'HomeController@callMe']);
@@ -62,7 +63,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
 
 
             Route::get('/widget/', ['as' => 'main.account.widget', 'uses' => 'AccountController@widget']);
-            Route::get('/settings', ['as' => 'main.account.settings', 'uses' => 'AccountController@settings']);
+            Route::get('/code', ['as' => 'main.account.settings', 'uses' => 'AccountController@settings']);
             //Route::get('/addProject/', ['as' => 'main.account.addproject', 'uses' => 'AccountController@addProject']);
 
             Route::get('/phrase/not_translated', ['as' => 'main.account.phrase1', 'uses' => 'AccountController@phraseNotTranslatesTab']);
@@ -116,6 +117,10 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
 
             Route::get('/personal', ['as' => 'main.account.personal', 'uses' => 'PersonalController@index']);
             Route::post('/personal', ['as' => 'main.account.personal-store', 'uses' => 'PersonalController@store']);
+            Route::get('/collect', ['as' => 'main.account.collect', 'uses' => 'ProjectController@collect']);
+            Route::get('/collect/{id}', ['as' => 'main.account.collect_page', 'uses' => 'ProjectController@collectPage']);
+            Route::get('/build', ['as' => 'main.account.build', 'uses' => 'ProjectController@build']);
+            Route::post('/build', ['as' => 'main.account.build', 'uses' => 'ProjectController@buildStore']);
         });
         Route::group(['middleware' => 'auth'], function() {
             Route::get('/xml/read/{id}', 'XmlController@read');

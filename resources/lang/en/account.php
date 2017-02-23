@@ -446,5 +446,6 @@ return [
     'menu_payment'                       => 'Оплата',
     'menu_my_profile'                    => 'Мой профиль',
     'menu_my_payments'                   => 'Мои платежи',
+    'menu_site_new_project'              => 'Добавить проект на локализацию',
 
 ];

@@ -122,6 +122,8 @@ Route::group(['domain' => 'api.'.$domain], function () {
     });
     Route::get('python/collector/{id}', function($id){
         $site = \App\Site::find($id);
+        $site->user->max_sites = $site->user->max_sites - 1;
+        $site->user->save();
         if ($site) {
             \DB::table('site_tate_collector')->where('siteID', $site->id)->delete(); 
             if ( $state = \DB::table('site_tate_collector')->first() )

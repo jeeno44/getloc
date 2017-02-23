@@ -46,7 +46,7 @@ class ProjectController extends Controller
     {
         $langs = $request->get('language');
         $sourceLang = array_shift($langs);
-        $targetLang = array_shift($langs);
+        $targetLang =  /* array_shift($langs); */ true;
         $this->validate($request, [
             'url' => 'required|url',
             'name' => 'required',
@@ -65,10 +65,11 @@ class ProjectController extends Controller
                 'secret'            => str_random(32),
                 'language_id'       => $sourceLang,
                 'enabled'           => 0,
-                'protected'         => $request->has('protected')
+                'protected'         => $request->has('protected'),
+                'demo'              => 1
             ]);
             $site->save();
-            $site->languages()->attach($targetLang);
+            //$site->languages()->attach($targetLang);
             if (!empty($langs)) {
                 foreach ($langs as $lang) {
                     if (!$site->hasLanguage($lang) && !empty($lang)) {
@@ -92,9 +93,11 @@ class ProjectController extends Controller
         } else {
             return redirect()->back()->withErrors('Сайт с таким адресом уже существует в системе')->withInput();
         }
+        \Event::fire('site.start', $site);
         // TODO change this in ajax
         //return $site->id;
-        return redirect()->route('main.account.project-created', ['id' => $site->id]);
+        //return redirect()->route('main.account.project-created', ['id' => $site->id]);
+        return redirect()->route('main.account.selectProject');
     }
 
     /**
@@ -207,6 +210,75 @@ class ProjectController extends Controller
         \DB::table('site_language')->where('site_id', $siteID)->where('language_id', $languageID)->delete();
         \DB::table('translates')->where('site_id', $siteID)->where('language_id', $languageID)->delete();
         return redirect()->back()->with('msg', ['class' => 'info-massages__item_deleted', 'text' => 'Язык и все переведенные фразы удалены']);
+    }
+
+    public function collect()
+    {
+        $siteID     = \Session::get('projectID');
+        $site       = Site::find($siteID);
+        if (empty($site)) {
+            Session::remove('projectID');
+            return redirect(URL::route('main.account.selectProject'));
+        }
+        $pages = $site->pages()->paginate(20);
+        foreach ($pages as $key => $page) {
+            $pages[$key] = \Cache::remember('page_'.$page->id, 60 * 24 * 30, function() use ($page) {
+                $page->count_blocks = $page->blocks()->count();
+                $page->count_words = $page->blocks()->sum('count_words');
+                $page->count_symbs = $page->blocks()->sum('count_symbols');
+                return $page;
+            });
+        }
+        return view('account.demo_pages', compact('sites', 'site', 'pages'));
+    }
+
+    public function collectPage($id)
+    {
+        $siteID     = \Session::get('projectID');
+        $site       = Site::find($siteID);
+        if (empty($site)) {
+            Session::remove('projectID');
+            return redirect(URL::route('main.account.selectProject'));
+        }
+        $page = Page::find($id);
+        $blocks = $page->blocks;
+        return view('account.demo_page', compact('page', 'blocks'));
+    }
+
+    public function build()
+    {
+        $sites = Site::where('user_id', \Auth::user()->id)->where('demo', 1)->get();
+        return view('account.build', compact('sites'));
+    }
+
+    public function buildStore(Request $request)
+    {
+        if ($request->has('sites')) {
+            //TODO переделать! сделать очередями, а то при большом колличестве сайтов упадет ошибка
+            foreach ($request->get('sites') as $id) {
+                $site  = Site::find($id);
+                $blocks = $site->blocks;
+                $langId = 1; // english
+                $site->languages()->attach($langId);
+                foreach ($blocks as $block) {
+                    Translate::create([
+                        'block_id'      => $block->id,
+                        'language_id'   => $langId,
+                        'text'          => '',
+                        'count_words'   => $block->count_words,
+                        'site_id'       => $site->id
+                    ]);
+                }
+                $site->demo = 0;
+                $site->save();
+            }
+            return redirect()->route('main.account.selectProject')
+                ->with('msg',
+                    ['class' => 'info-massages__item_detected', 'text' => 'Сайты добавлены в очередь на создание локализации']
+                );
+        } else {
+            return redirect()->back()->withErrors('Не выбрано ни одного проекта');
+        }
     }
 
 }

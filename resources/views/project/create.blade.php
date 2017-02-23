@@ -70,9 +70,9 @@
                         <span></span>
                         <!-- new-project__question-text -->
                         <div class="new-project__question-text">
-                            {{trans('account.t_create_project_but1')}} 
+                            {{trans('account.t_create_project_but1')}}
                             <!-- new-project__question-link -->
-                            <a class="new-project__question-link" href="#">{{trans('account.t_create_project_but2')}}</a> 
+                            <a class="new-project__question-link" href="#">{{trans('account.t_create_project_but2')}}</a>
                             <!-- /new-project__question-link -->
                             {{trans('account.t_create_project_but3')}}
                         </div>
@@ -95,40 +95,8 @@
                 <!-- /discount__selects-language -->
             </fieldset>
 
-            <fieldset class="discount__language">
-                <!-- site__data-field -->
-                <div class="site__data-field">
-                    <label class="site__label">{{trans('account.t_create_project_translate_in_lang')}}</label>
-                    <!-- new-project__question -->
-                    <div class="new-project__question">
-                        <span></span>
-                        <!-- new-project__question-text -->
-                        <div class="new-project__question-text">
-                            {{trans('account.t_create_project_but1')}}
-                            <!-- new-project__question-link -->
-                            <a class="new-project__question-link" href="#">{{trans('account.t_create_project_but2')}}</a>
-                            <!-- /new-project__question-link -->
-                            {{trans('account.t_create_project_but3')}}
-                        </div>
-                        <!-- /new-project__question-text -->
-                    </div>
-                    <!-- /new-project__question -->
-                    <!-- options__selects-wrap -->
-                    <div class="discount__selects-language discount__selects-language_2" data-language='{{getLanguagesJson()}}'>
-                        <!-- discount__language-wrapper -->
-                        <div class="discount__language-wrapper">
-                            <select name="language[]" id="lang_3">
-                                <option value="0">{{trans('account.t_create_project_select_lang')}}</option>
-                            </select>
-                        </div>
-                        <!-- /discount__language-wrapper -->
-                        <a href="#" class="discount__languadge-add">{{trans('account.t_create_project_add_lang_trans')}}</a>
-                    </div>
-                    <!-- /discount__selects-language -->
-                </div>
-                <!-- /site__data-field -->
-            </fieldset>
-            <!-- nice-check 
+
+            <!-- nice-check
             <fieldset class="nice-check new-project__form-check">
                 <input type="checkbox" value="1" name="project__check" id="new-project1">
                 <label for="new-project1">

@@ -5,7 +5,7 @@
         {!! accountMenu() !!}
     </aside>
     <div class="inside-content">
-        <div class="site__content">
+        <div class="site__content_2">
             <!-- site__wrap -->
             <div class="site__wrap_2">
                 @if(!$details || Auth::user()->max_sites)

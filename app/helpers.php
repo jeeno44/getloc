@@ -501,28 +501,60 @@ function accountMenu()
 {
     $path = \Request::path();
     $disable = \Session::has('projectID') ? '' : 'disabled';
-    $items = [
-        trans('account.menu_analytics')         => [
-            trans('account.menu_site_create')       => ['account/add-project', ''],
-            trans('account.menu_text_collect')      => ['analytics/collect', $disable],
-            trans('account.menu_docs_images')       => ['analytics/docs', $disable],
-            trans('account.menu_project_review')    => ['account/overview', $disable],
-        ],
-        trans('account.menu_site_translate')    => [
-            trans('account.menu_site_langs')        => ['account/languages', $disable],
-            trans('account.menu_project_pages')     => ['account/pages', $disable],
-            trans('account.menu_manage_trans')      => ['account/phrase', $disable],
-            trans('account.menu_import')            => ['account/import', $disable],
-        ],
-        trans('account.menu_integration')       => [
-            trans('account.menu_widget')            => ['account/widget', $disable],
-            trans('account.menu_code')              => ['account/code', $disable],
-            trans('account.menu_payment')           => ['account/payment', $disable],
-        ],
-        trans('account.menu_account')           => [
-            trans('account.menu_my_profile')        => ['account/personal', ''],
-            trans('account.menu_my_payments')       => ['account/payments', ''],
-        ],
-    ];
+    $siteID     = \Session::get('projectID');
+    if ($siteID) {
+        $site       = \App\Site::find($siteID);
+    }
+    if (!empty($site) && $site->demo == 1) {
+        $items = [
+            trans('account.menu_analytics')         => [
+                trans('account.menu_site_create')       => ['account/add-project', ''],
+                trans('account.menu_text_collect')      => ['account/collect', $disable],
+                trans('account.menu_docs_images')       => ['account/docs', $disable],
+                'Добавить проект на локализацию'  => ['account/build', ''],
+            ],
+            trans('account.menu_site_translate')    => [
+
+                trans('account.menu_site_langs')        => ['account/languages', 'disabled'],
+                trans('account.menu_project_pages')     => ['account/pages', 'disabled'],
+                trans('account.menu_manage_trans')      => ['account/phrase', 'disabled'],
+                trans('account.menu_import')            => ['account/import', 'disabled'],
+            ],
+            trans('account.menu_integration')       => [
+                trans('account.menu_widget')            => ['account/widget', 'disabled'],
+                trans('account.menu_code')              => ['account/code', 'disabled'],
+                trans('account.menu_payment')           => ['account/payment', 'disabled'],
+            ],
+            trans('account.menu_account')           => [
+                trans('account.menu_my_profile')        => ['account/personal', ''],
+                trans('account.menu_my_payments')       => ['account/payments', ''],
+            ],
+        ];
+    } else {
+        $items = [
+            trans('account.menu_analytics')         => [
+                trans('account.menu_site_create')       => ['account/add-project', ''],
+                trans('account.menu_text_collect')      => ['account/collect', $disable],
+                trans('account.menu_docs_images')       => ['account/docs', $disable],
+                trans('account.menu_project_review')    => ['account/overview', $disable],
+            ],
+            trans('account.menu_site_translate')    => [
+                trans('account.menu_site_langs')        => ['account/languages', $disable],
+                trans('account.menu_project_pages')     => ['account/pages', $disable],
+                trans('account.menu_manage_trans')      => ['account/phrase', $disable],
+                trans('account.menu_import')            => ['account/import', $disable],
+            ],
+            trans('account.menu_integration')       => [
+                trans('account.menu_widget')            => ['account/widget', $disable],
+                trans('account.menu_code')              => ['account/code', $disable],
+                trans('account.menu_payment')           => ['account/payment', $disable],
+            ],
+            trans('account.menu_account')           => [
+                trans('account.menu_my_profile')        => ['account/personal', ''],
+                trans('account.menu_my_payments')       => ['account/payments', ''],
+            ],
+        ];
+    }
+
     return view('partials.new-account-menu', compact('items', 'path'));
 }

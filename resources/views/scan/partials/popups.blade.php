@@ -40,7 +40,7 @@
         </div>
 
 
-        <div class="popup__content popup__xliff{{$site->id}}">
+        <div class="popup__content popup__xliff{{$site->id}}" style="background: none;">
             <div class="order-popup">
                 <div class="order-popup__content">
                     <div class="discount__layout">
@@ -74,7 +74,7 @@
                             {!! Form::close() !!}
                         </div>
                     </div>
-                    <button class="popup__close_2 popup__close"><span></span></button>
+                    <button class="popup__close" style="background: transparent; border:none;"><span></span></button>
                 </div>
             </div>
         </div>

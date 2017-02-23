@@ -7,14 +7,14 @@
     <div class="inside-content">
         <div class="block block-bordered">
             <div class="block-content">
-                <table class="table">
+                <table class="projects">
                     <thead>
                     <tr>
-                        <th>{{trans('account.t_history_pay_naznachenie')}}</th>
-                        <th>{{trans('account.t_history_pay_summa')}}</th>
-                        <th>{{trans('account.t_history_pay_date')}}</th>
-                        <th>{{trans('account.t_history_pay_type')}}</th>
-                        <th>{{trans('account.t_history_pay_status')}}</th>
+                        <td>{{trans('account.t_history_pay_naznachenie')}}</td>
+                        <td>{{trans('account.t_history_pay_summa')}}</td>
+                        <td>{{trans('account.t_history_pay_date')}}</td>
+                        <td>{{trans('account.t_history_pay_type')}}</td>
+                        <td>{{trans('account.t_history_pay_status')}}</td>
                     </tr>
                     </thead>
                     <tbody>
