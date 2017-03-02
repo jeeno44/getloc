@@ -547,7 +547,7 @@ function accountMenu()
             trans('account.menu_integration')       => [
                 trans('account.menu_widget')            => ['account/widget', $disable],
                 trans('account.menu_code')              => ['account/code', $disable],
-                trans('account.menu_payment')           => ['account/payment', $disable],
+                //trans('account.menu_payment')           => ['account/payment', $disable],
             ],
             trans('account.menu_account')           => [
                 trans('account.menu_my_profile')        => ['account/personal', ''],

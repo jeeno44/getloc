@@ -92,8 +92,13 @@
                 @endif
             </div>
             @else
-                <div class="tariff__info">
-                    {{trans('account.t_not_select_tarif')}}
+                <div class="tariff__info" style="width: 100%">
+                    @if($site->demo_ends_at > date('Y-m-d H:i:s'))
+                        Демо режим закончится {{ruDate($site->demo_ends_at)}}
+                    @else
+                        {{trans('account.t_not_select_tarif')}}
+                    @endif
+
                 </div>
             @endif
         </div>

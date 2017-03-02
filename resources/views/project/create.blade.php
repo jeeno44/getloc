@@ -61,38 +61,24 @@
 
                 </div>
             </fieldset>
-            <fieldset class="discount__language">
+            <fieldset>
                 <!-- site__data-field -->
                 <div class="site__data-field">
                     <label class="site__label">{{trans('account.t_create_project_general_lang')}}</label>
-                    <!-- new-project__question -->
+                    <select class="select2" name="language[]">
+                        @foreach($languages as $lang)
+                            <option value="{{$lang['id']}}">{{$lang['name']}}</option>
+                        @endforeach
+                    </select>
                     <div class="new-project__question">
                         <span></span>
-                        <!-- new-project__question-text -->
                         <div class="new-project__question-text">
                             {{trans('account.t_create_project_but1')}}
-                            <!-- new-project__question-link -->
                             <a class="new-project__question-link" href="#">{{trans('account.t_create_project_but2')}}</a>
-                            <!-- /new-project__question-link -->
                             {{trans('account.t_create_project_but3')}}
                         </div>
-                        <!-- /new-project__question-text -->
                     </div>
-                    <!-- /new-project__question -->
-
-                    <!-- options__selects-wrap -->
-                    <div class="discount__selects-language " data-language='{{getLanguagesJson()}}'>
-                        <!-- discount__language-wrapper -->
-                        <div class="discount__language-wrapper">
-                            <select name="language[]" id="lang_1">
-                                <option value="0">{{trans('account.t_create_project_select_lang')}}</option>
-                            </select>
-                        </div>
-                        <!-- /discount__language-wrapper -->
-                    </div>
-                    <!-- /site__data-field -->
                 </div>
-                <!-- /discount__selects-language -->
             </fieldset>
 
 

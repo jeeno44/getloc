@@ -48,7 +48,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
         Route::any('/get-demo', ['as' => 'main.get-demo', 'uses' => 'HomeController@getDemo']);
         Route::any('/add-site-unreg', ['as' => 'main.add-site-unreg', 'uses' => 'HomeController@addSiteUnregistered']);
         Route::any('/send-feedback', ['as' => 'main.send-feedback', 'uses' => 'HomeController@sendFeedback']);
-
+        Route::post('/xlfexport/{id}/{pageID?}', ['as' => 'main.xlfexport', 'uses' => 'ScanController@xlfexport']);
         // Account
         Route::group(['middleware' => 'auth', 'prefix' => 'account'], function() {
             Route::get('/', ['as' => 'main.account', 'uses' => 'AccountController@projectOverview']);
@@ -121,6 +121,8 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/collect/{id}', ['as' => 'main.account.collect_page', 'uses' => 'ProjectController@collectPage']);
             Route::get('/build', ['as' => 'main.account.build', 'uses' => 'ProjectController@build']);
             Route::post('/build', ['as' => 'main.account.build', 'uses' => 'ProjectController@buildStore']);
+            Route::get('import', 'ProjectController@import');
+            Route::post('import', 'ProjectController@storeImport');
         });
         Route::group(['middleware' => 'auth'], function() {
             Route::get('/xml/read/{id}', 'XmlController@read');

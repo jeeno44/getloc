@@ -9,6 +9,7 @@
     <title>@yield('title')</title>
     {{-- <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,300,500,700&subset=cyrillic' rel='stylesheet' type='text/css'> --}}
     <link rel="stylesheet" href="/assets/css/account/select.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" />
     <link rel="stylesheet" href="/assets/css/account/main.css" />
     <link rel="stylesheet" href="/assets/css/account/custom.css" />
     <link rel="stylesheet" href="/assets/css/account/popup.css" />
@@ -45,6 +46,7 @@
     <script src="/assets/js/account/jquery.widget.js"></script>
     <script src="/assets/js/account/jquery.main.js"></script>
     <script src="/assets/js/account/bootstrap-colorpicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
     <script src="/assets/js/account/custom.js"></script>
     <script src="/assets/js/account/billing.js"></script>
 </body>

@@ -9,6 +9,7 @@ use App\Page;
 use App\Site;
 use App\SiteSettings;
 use App\SocialAccount;
+use App\Subscription;
 use App\Translate;
 use Illuminate\Http\Request;
 
@@ -49,8 +50,13 @@ class ApiController extends Controller
         } else {
             $subscription = \App\Subscription::where('site_id', $site->id)->first();
             if (!$subscription || $subscription->deposit <= 0.00 || !$subscription->last_id) {
-                $response['error'] = ['msg' => 'This project is not active subscription', 'code' => 8];
-                return $this->makeResponse($response, $callback);
+                if (empty($site->demo_ends_at) || $site->demo_ends_at < date('Y-m-d H:i:s')) {
+                    $response['error'] = ['msg' => 'This project is not active subscription', 'code' => 8];
+                    return $this->makeResponse($response, $callback);
+                } else {
+                    $subscription = new Subscription();
+                    $subscription->last_id = 999999999; // demo mode
+                }
             }
 //            $uri = prepareUri($uri);
             $page = Page::where('url', $uri)->first();
@@ -91,7 +97,7 @@ class ApiController extends Controller
                             $blocks = $page->blocks()->join('translates', 'blocks.id', '=', 'translates.block_id')
                                 ->where('translates.language_id', $lang->id)
                                 ->where('blocks.enabled', 1)
-#                                ->where('blocks.id', '<=', $subscription->last_id)
+//                                ->where('blocks.id', '<=', $subscription->last_id)
                                 ->where('translates.enabled', 1)
                                 ->where('translates.archive', 0)
                                 ->select('blocks.text', 'translates.id as tid', 'translates.text as ttext')

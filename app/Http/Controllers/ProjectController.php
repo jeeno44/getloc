@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\HistoryPhrase;
+use App\ImportHistory;
 use App\Language;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -24,7 +26,7 @@ class ProjectController extends Controller
      */
     public function addProject()
     {
-        $langs = Language::orderBy('name')->get();
+        $langs = Language::orderBy('sort')->get();
         $languages = [];
         foreach ($langs as $lang) {
             $languages[] = [
@@ -33,7 +35,7 @@ class ProjectController extends Controller
                 'src' => '/icons/'.$lang->icon_file,
             ];
         }
-        $languages = json_encode($languages);
+        //$languages = json_encode($languages);
         return view('project.create', compact('languages'));
     }
 
@@ -261,14 +263,18 @@ class ProjectController extends Controller
                 $langId = 1; // english
                 $site->languages()->attach($langId);
                 foreach ($blocks as $block) {
-                    Translate::create([
-                        'block_id'      => $block->id,
-                        'language_id'   => $langId,
-                        'text'          => '',
-                        'count_words'   => $block->count_words,
-                        'site_id'       => $site->id
-                    ]);
+                    $trans = Translate::where('block_id', $block->id)->where('language_id', $langId)->first();
+                    if (!$trans) {
+                        Translate::create([
+                            'block_id'      => $block->id,
+                            'language_id'   => $langId,
+                            'text'          => '',
+                            'count_words'   => $block->count_words,
+                            'site_id'       => $site->id
+                        ]);
+                    }
                 }
+                $site->demo_ends_at = date('Y-m-d H:i:s', strtotime('+ 2 weeks'));
                 $site->demo = 0;
                 $site->save();
             }
@@ -279,6 +285,95 @@ class ProjectController extends Controller
         } else {
             return redirect()->back()->withErrors('Не выбрано ни одного проекта');
         }
+    }
+
+    public function import()
+    {
+        $siteID     = \Session::get('projectID');
+        $site       = Site::find($siteID);
+        if (empty($site)) {
+            Session::remove('projectID');
+            return redirect(URL::route('main.account.selectProject'));
+        }
+        $imports = ImportHistory::where('site_id', $siteID)->latest()->get();
+        return view('account.import', compact('imports', 'siteID'));
+    }
+
+    public function storeImport(Request $request)
+    {
+        $siteID     = \Session::get('projectID');
+        $site       = Site::find($siteID);
+        if (empty($site)) {
+            Session::remove('projectID');
+            return redirect(URL::route('main.account.selectProject'));
+        }
+        $this->validate($request, [
+            'xliff' => 'required|file',
+        ]);
+        $file = $request->file('xliff');
+        try {
+            $countBlocks = 0;
+            $xml = simplexml_load_file($file);
+            $globalProps = [];
+            foreach($xml->file->attributes() as $name => $value) {
+                $globalProps[$name] = strval($value);
+            }
+            if (empty($globalProps['source-language'])) {
+                return redirect()->back()->withErrors('Не указан язык-источник');
+            }
+            if (empty($globalProps['target-language'])) {
+                return redirect()->back()->withErrors('Не указан язык перевода');
+            }
+            $sourceLang = Language::where('export', $globalProps['source-language'])
+                ->orWhere('short', $globalProps['source-language'])->first();
+            if (!$sourceLang) {
+                return redirect()->back()->withErrors('Язык-источник не найден в базе');
+            }
+            $targetLang = Language::where('export', $globalProps['target-language'])
+                ->orWhere('short', $globalProps['target-language'])->first();
+            if (!$targetLang) {
+                return redirect()->back()->withErrors('Язык перевода не найден в базе');
+            }
+            if (!$site->hasLanguage($targetLang->id)) {
+                return redirect()->back()->withErrors('Язык перевода не связан с сайтом. Добавьте выбранный язык к сайту в личном кабинете');
+            }
+            foreach($xml->file->body->children() as $unit) {
+                $blockId = intval($unit->attributes()['id']);
+                if (!empty($unit->target)) {
+                    $translate = Translate::where('block_id', $blockId)->where('language_id', $targetLang->id)->first();
+                    if ($translate) {
+                        if (!empty($translate->text) && $translate->text != strval($unit->target)) {
+                            HistoryPhrase::create([
+                                'translate_id' => $translate->id,
+                                'text'         => $translate->text,
+                            ]);
+                        }
+                        $translate->update(['text' => strval($unit->target), 'type_translate_id' => 3]);
+                        $countBlocks++;
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Неверное содержимое файла');
+        }
+        $targetPath = public_path('uploads/'.$siteID);
+        if (!file_exists($targetPath)) {
+            \File::makeDirectory($targetPath);
+        }
+        $fileName = str_random().'.'.$file->getClientOriginalExtension();
+        $file->move($targetPath, $fileName);
+        ImportHistory::create([
+            'site_id' => $siteID,
+            'from_language_id' => $sourceLang->id,
+            'to_language_id' => $targetLang->id,
+            'file_name' => $file->getClientOriginalName(),
+            'file_path' => $fileName,
+            'count_blocks' => $countBlocks,
+        ]);
+        return redirect()->back()
+            ->with('msg',
+                ['class' => 'info-massages__item_detected', 'text' => 'Импорт перевода успешно завершен']
+            );
     }
 
 }

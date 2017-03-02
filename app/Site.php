@@ -9,9 +9,10 @@ class Site extends Model
 {
     use SoftDeletes;
 
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at', 'demo_ends_at'];
 
-    protected $fillable = ['name', 'url', 'count_words', 'count_symbols', 'count_blocks', 'user_id', 'secret', 'language_id', 'enabled', 'demo', 'protected'];
+    protected $fillable = ['name', 'url', 'count_words', 'count_symbols', 'count_blocks', 'user_id', 'secret',
+        'language_id', 'enabled', 'demo', 'protected', 'demo_ends_at'];
 
     public function pages()
     {

@@ -16,6 +16,12 @@ $(function(){
     $('.popup').each(function(){
         popups = new Popup($(this));
     });
+    $('.select2').select2({
+        width: '100%',
+        lang: 'ru',
+        language: 'ru',
+        locale: 'ru'
+    });
 
     preloadLoader('/assets/img/account/loader.gif');
     $('.phrases__item-controls-menu').each(function() {

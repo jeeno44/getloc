@@ -46,7 +46,7 @@
                     <div class="discount__layout">
                         <h2 class="site__title">Скачать XLIFF {{$site->name}}</h2>
                         <div class="discount__form-2 popup_form">
-                            {!! Form::open(['route' => ['scan.xlfexport', $site->id, 0]]) !!}
+                            {!! Form::open(['route' => ['main.xlfexport', $site->id, 0]]) !!}
                             <fieldset class="discount__language">
                                 <label>Язык оригинала *</label>
                                 <div class="discount__selects-language" data-language='{{getLanguagesJson()}}'>

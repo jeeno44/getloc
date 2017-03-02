@@ -2,12 +2,14 @@ var selects2 = [];
 $(function(){
 
     $( 'select' ).each( function(i){
-        selects2[i] = new AresSelect2( {
-            obj: $( this ),
-            optionType: 1,
-            showType: 2,
-            selects: selects2
-        } );
+        if (!$(this).hasClass('select2')) {
+            selects2[i] = new AresSelect2( {
+                obj: $( this ),
+                optionType: 1,
+                showType: 2,
+                selects: selects2
+            } );
+        }
     } );
 
     $.each( $('.discount__language'), function(){

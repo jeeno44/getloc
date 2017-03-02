@@ -141,7 +141,7 @@ class AccountController extends Controller
             return redirect(URL::route('main.account.selectProject'));
         }
           
-        if (Translate::where('site_id', $siteID)->count() > 0) {
+        if (Translate::where('site_id', $siteID)->count() > 0 && $site->demo == 0) {
             $stats = array(
                 'ccBlocks'  => Block::where('site_id', $siteID)->count(),
                 'ccPages'   => Page::where('site_id', $siteID)->where('url', 'LIKE', $startURL.'%')->count(),
