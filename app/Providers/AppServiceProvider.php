@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
                 \Redis::publish('telebot', json_encode(['msg' => $site->url.': запустился медленный коля'], JSON_UNESCAPED_UNICODE));
             } else {
                 if ( \DB::table('site_tate_collector')->count() == 0 ) {
-                    \Redis::publish('collector', json_encode(['site' => $site->id, 'api' => 'api.'.$domain], JSON_UNESCAPED_UNICODE));
+                    \Redis::publish('collectortest2', json_encode(['site' => $site->id, 'api' => 'api.'.$domain], JSON_UNESCAPED_UNICODE));
                     \Redis::publish('telebot', json_encode(['msg' => $site->url.': запустился шустрый коля'], JSON_UNESCAPED_UNICODE));
                 }
                 \DB::table('site_tate_collector')->insert(['siteID' => $site->id]);
@@ -39,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
         });
         \Event::listen('site.start', function($site){
             $domain = env('APP_DOMAIN');
-            \Redis::publish('spider', json_encode(['site' => $site->id, 'api' => 'api.'.$domain], JSON_UNESCAPED_UNICODE));
+            \Redis::publish('spidertest2', json_encode(['site' => $site->id, 'api' => 'api.'.$domain], JSON_UNESCAPED_UNICODE));
             \Redis::publish('telebot', json_encode(['msg' => $site->url.': запустился паук'], JSON_UNESCAPED_UNICODE));
         });
         \Event::listen('order.payed', function ($order) {

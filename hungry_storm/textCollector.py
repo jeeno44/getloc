@@ -247,7 +247,7 @@ def makePageBlock(pageID, blockID):
 #------------------------------------------------------------------------------------------------------
 
 ps = r.pubsub()
-ps.subscribe('collector')
+ps.subscribe('collectortest2')
 for item in ps.listen():
    if ( item['type'] == "message" ):
         start = time.time()
