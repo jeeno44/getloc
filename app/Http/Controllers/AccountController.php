@@ -490,7 +490,7 @@ class AccountController extends Controller
      * @access public
      */
 
-    public function settings()
+    public function settings(Request $request)
     {
         $siteID = Session::get('projectID');
         $site   = Site::find($siteID);
@@ -498,6 +498,12 @@ class AccountController extends Controller
         if ( !$siteID || !$site ) {
             Session::remove('projectID');
             return redirect(URL::route('main.account.selectProject'));
+        }
+
+        if ($request->has('activate')) {
+            $site->demo_ends_at = date('Y-m-d H:i:s', strtotime('+ 2 weeks'));
+            $site->save();
+            return redirect()->route('main.account.settings');
         }
           
         return view('account.settings', compact('site'));
@@ -778,7 +784,10 @@ class AccountController extends Controller
             $languageID = Session::get('filter')['languageID'];
 	    
         if ( !$languageID ) 
-            $languageID = Site::find($siteID)->languages()->where('enabled', true)->orderBy('id')->first()->id;
+            $lang = Site::find($siteID)->languages()->where('enabled', true)->orderBy('id')->first();
+            if (!empty($lang)) {
+                $languageID = $lang->id;
+            }
             $filterDef = 1;
 
         $arrData = compact('siteID', 'languageID');
@@ -1606,5 +1615,18 @@ class AccountController extends Controller
         
         $widget->update();
         return redirect()->back();
+    }
+
+    public function accountPayment(Request $request)
+    {
+        $siteID = Session::get('projectID');
+        $site   = Site::find($siteID);
+
+        if ( !$siteID || !$site ) {
+            Session::remove('projectID');
+            return redirect(URL::route('main.account.selectProject'));
+        }
+
+        return view('account.payment', compact('site'));
     }
 }

@@ -50,13 +50,13 @@ class ProjectController extends Controller
         $sourceLang = array_shift($langs);
         $targetLang =  /* array_shift($langs); */ true;
         $this->validate($request, [
-            'url' => 'required|url',
+            'url' => 'required',
             'name' => 'required',
         ]);
         if(empty($targetLang) || empty($sourceLang)) {
             return redirect()->back()->withErrors('Выберите языки перевода')->withInput();
         }
-        $url = $request->get('url');
+        $url = $request->get('protocol').$request->get('url');
         $url = prepareUri($url);
         $site = Site::where('url', $url)->whereNull('deleted_at')->first();
         if (empty($site)) {
@@ -249,38 +249,47 @@ class ProjectController extends Controller
 
     public function build()
     {
+        $siteID     = \Session::get('projectID');
+        $site       = Site::find($siteID);
+        if (empty($site)) {
+            Session::remove('projectID');
+            return redirect(URL::route('main.account.selectProject'));
+        }
         $sites = Site::where('user_id', \Auth::user()->id)->where('demo', 1)->get();
-        return view('account.build', compact('sites'));
+        return view('account.build', compact('sites', 'site'));
     }
 
     public function buildStore(Request $request)
     {
         if ($request->has('sites')) {
             //TODO переделать! сделать очередями, а то при большом колличестве сайтов упадет ошибка
-            foreach ($request->get('sites') as $id) {
-                $site  = Site::find($id);
-                $blocks = $site->blocks;
-                $langId = 1; // english
-                $site->languages()->attach($langId);
-                foreach ($blocks as $block) {
-                    $trans = Translate::where('block_id', $block->id)->where('language_id', $langId)->first();
-                    if (!$trans) {
-                        Translate::create([
-                            'block_id'      => $block->id,
-                            'language_id'   => $langId,
-                            'text'          => '',
-                            'count_words'   => $block->count_words,
-                            'site_id'       => $site->id
-                        ]);
-                    }
-                }
-                $site->demo_ends_at = date('Y-m-d H:i:s', strtotime('+ 2 weeks'));
-                $site->demo = 0;
-                $site->save();
+            $siteID     = \Session::get('projectID');
+            $site       = Site::find($siteID);
+            if (empty($site)) {
+                Session::remove('projectID');
+                return redirect(URL::route('main.account.selectProject'));
             }
-            return redirect()->route('main.account.selectProject')
+            $blocks = $site->blocks;
+            $langId = 1; // english
+            $site->languages()->attach($langId);
+            foreach ($blocks as $block) {
+                $trans = Translate::where('block_id', $block->id)->where('language_id', $langId)->first();
+                if (!$trans) {
+                    Translate::create([
+                        'block_id'      => $block->id,
+                        'language_id'   => $langId,
+                        'text'          => '',
+                        'count_words'   => $block->count_words,
+                        'site_id'       => $site->id
+                    ]);
+                }
+            }
+            $site->demo_ends_at = null;
+            $site->demo = 0;
+            $site->save();
+            return redirect()->route('main.account.overview')
                 ->with('msg',
-                    ['class' => 'info-massages__item_detected', 'text' => 'Сайты добавлены в очередь на создание локализации']
+                    ['class' => 'info-massages__item_detected', 'text' => 'Сайт добавлен в очередь на создание локализации']
                 );
         } else {
             return redirect()->back()->withErrors('Не выбрано ни одного проекта');

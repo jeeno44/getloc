@@ -1,6 +1,6 @@
 @extends('layouts.account')
 
-@section('title') Добавить проекты на локализацию @stop
+@section('title') Добавить проект на локализацию @stop
 
 @section('content')
     <aside class="site__aside">
@@ -11,27 +11,13 @@
         <form class="site__wrap_2" method="post">
             {!! csrf_field() !!}
             <div class="site__panel">
-                <h2 class="site__title">Выбрать проекты для локализации</h2>
+                <h2 class="site__title">Добавить проект на локализацию</h2>
             </div>
-            <table class="projects">
-                <thead>
-                <tr>
-                    <td></td>
-                    <td>Проект</td>
-                </tr>
-                </thead>
-                @foreach($sites as $site)
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="sites[]" value="{{$site->id}}">
-                        </td>
-                        <td>
-                            {!! $site->name !!}
-                        </td>
-                    </tr>
-                @endforeach
-            </table>
-            <button type="submit" class="btn btn_7 btn_blue account-data__save">Добавить проекты</button>
+            <div class="warn_panel" style="margin-top: -40px">
+                <p>Ваш проект будет добавлен в локализацию, после этого вы сможете управлять переводом сегментов и разместить виджет перевода на вашем сайте</p>
+            </div>
+            <input type="hidden" name="sites[]" value="{{$site->id}}">
+            <button type="submit" class="btn btn_7 btn_blue account-data__save">Добавить</button>
         </form>
 
     </div>

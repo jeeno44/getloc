@@ -17,6 +17,10 @@ class AdminLeftMenu
     function build()
     {
         $items = [
+            'Просчеты' => [
+                'icon'  => 'fa fa-list-ol',
+                'uri'   => 'admin/counters',
+            ],
             'Пользователи' => [
                 'icon'  => 'si si-users',
                 'uri'   => 'admin/users',

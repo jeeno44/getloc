@@ -113,6 +113,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/language/delete/{siteID}/{languageID}', ['as' => 'main.lang.del', 'uses' => 'ProjectController@deleteLanguages']);
             Route::get('/images', ['as' => 'main.account.images', 'uses' => 'FilesController@images']);
             Route::get('/docs', ['as' => 'main.account.docs', 'uses' => 'FilesController@docs']);
+            Route::get('/docs', ['as' => 'main.account.images', 'uses' => 'FilesController@images']);
             Route::any('/pages/autocomplete/{id}', 'AccountController@pagesAutoComplete');
 
             Route::get('/personal', ['as' => 'main.account.personal', 'uses' => 'PersonalController@index']);
@@ -123,6 +124,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::post('/build', ['as' => 'main.account.build', 'uses' => 'ProjectController@buildStore']);
             Route::get('import', 'ProjectController@import');
             Route::post('import', 'ProjectController@storeImport');
+            Route::get('/payment', ['as' => 'main.account.payment', 'uses' => 'AccountController@accountPayment']);
         });
         Route::group(['middleware' => 'auth'], function() {
             Route::get('/xml/read/{id}', 'XmlController@read');

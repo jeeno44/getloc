@@ -7,7 +7,8 @@ $(function(){
                 obj: $( this ),
                 optionType: 1,
                 showType: 2,
-                selects: selects2
+                selects: selects2,
+                width: $( this ).attr('data-width'),
             } );
         }
     } );
@@ -24,8 +25,8 @@ var AresSelect2 = function( params ){
     this.optionType = params.optionType || 0;
     this.showType = params.showType || 1;
     this.visible = params.visible || 8;
-
-    this.init();
+    this.init(this.optionType);
+    this.width = params.width;
 };
     AresSelect2.prototype = {
         init: function(){
@@ -45,7 +46,12 @@ var AresSelect2 = function( params ){
                 start: function(){
                     self.device = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
                     self.text = $( '<span class="ares-select__item"></span>' );
-                    self.wrap = $( '<div class="ares-select"></div>' );
+                    if (self.obj.attr('data-width') != undefined) {
+                        self.wrap = $( '<div class="ares-select" style="width: ' + self.obj.attr('data-width') + '"></div>' );
+                        console.log(1)
+                    } else {
+                        self.wrap = $( '<div class="ares-select"></div>' );
+                    }
                     self.cover = $( '.discount__language' );
                     self.window = $( window );
                     self.opened = false;

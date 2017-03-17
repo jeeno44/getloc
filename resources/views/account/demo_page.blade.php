@@ -41,7 +41,7 @@
             <table class="projects">
                 <thead>
                 <tr>
-                    <th>{{trans('phrases.text')}}</th>
+                    <td>{{trans('phrases.text')}}</td>
                     <td>{{ucfirst(trans('phrases.words'))}}</td>
                     <td>{{ucfirst(trans('phrases.symbols'))}}</td>
                 </tr>

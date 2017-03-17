@@ -511,16 +511,17 @@ function accountMenu()
                 trans('account.menu_site_create')       => ['account/add-project', ''],
                 trans('account.menu_text_collect')      => ['account/collect', $disable],
                 trans('account.menu_docs_images')       => ['account/docs', $disable],
-                'Добавить проект на локализацию'  => ['account/build', ''],
+                'Изображения'                           => ['account/images', $disable],
+                'Добавить проект на локализацию'        => ['account/build', ''],
             ],
-            trans('account.menu_site_translate')    => [
+            trans('account.menu_site_translate').' <sup>&beta;</sup>'    => [
 
                 trans('account.menu_site_langs')        => ['account/languages', 'disabled'],
                 trans('account.menu_project_pages')     => ['account/pages', 'disabled'],
                 trans('account.menu_manage_trans')      => ['account/phrase', 'disabled'],
                 trans('account.menu_import')            => ['account/import', 'disabled'],
             ],
-            trans('account.menu_integration')       => [
+            trans('account.menu_integration').' <sup>&beta;</sup>'       => [
                 trans('account.menu_widget')            => ['account/widget', 'disabled'],
                 trans('account.menu_code')              => ['account/code', 'disabled'],
                 trans('account.menu_payment')           => ['account/payment', 'disabled'],
@@ -536,18 +537,19 @@ function accountMenu()
                 trans('account.menu_site_create')       => ['account/add-project', ''],
                 trans('account.menu_text_collect')      => ['account/collect', $disable],
                 trans('account.menu_docs_images')       => ['account/docs', $disable],
+                'Изображения'                           => ['account/images', $disable],
                 trans('account.menu_project_review')    => ['account/overview', $disable],
             ],
-            trans('account.menu_site_translate')    => [
+            trans('account.menu_site_translate').' <sup>&beta;</sup>'    => [
                 trans('account.menu_site_langs')        => ['account/languages', $disable],
                 trans('account.menu_project_pages')     => ['account/pages', $disable],
                 trans('account.menu_manage_trans')      => ['account/phrase', $disable],
                 trans('account.menu_import')            => ['account/import', $disable],
             ],
-            trans('account.menu_integration')       => [
+            trans('account.menu_integration').' <sup>&beta;</sup>'      => [
                 trans('account.menu_widget')            => ['account/widget', $disable],
                 trans('account.menu_code')              => ['account/code', $disable],
-                //trans('account.menu_payment')           => ['account/payment', $disable],
+                trans('account.menu_payment')           => ['account/payment', $disable],
             ],
             trans('account.menu_account')           => [
                 trans('account.menu_my_profile')        => ['account/personal', ''],

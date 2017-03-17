@@ -62,6 +62,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::resource('billing/coupons', 'Admin\CouponsController');
             Route::resource('billing/orders', 'Admin\OrdersController');
             Route::any('get-plan-data/{id}', 'Admin\SubscriptionsController@planData');
+            Route::resource('counters', 'Admin\CountersController');
 
         });
 
