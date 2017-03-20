@@ -5,14 +5,14 @@
         @include('partials.account-menu')
     </aside>
     <div class="inside-content">
-        <div class="account-data">
-            <form action="#" class="account-data__form">
+        <div class="account-data" style="width: 100%">
+            <form action="#" class="account-data__form"  style="width: 100%">
                 <h2 class="site__title site__title_4">{{trans('account.t_settings_integration_in_site')}}</h2>
                 @if($site->demo_ends_at == null && empty($site->subscription))
-                    <div class="warn_panel">
+                    <div class="warn_panel" style="width: 100%; margin-bottom: 20px;">
                         <p>C момента генерации кода для вставки вам будет предоставлен демо режим сроком 14 дней </p>
-                        <a class="" href="?activate=true">Сгенерировать код</a>
                     </div>
+                    <a class="btn btn_7 btn_blue" href="?activate=true" style="padding-top: 12px">Сгенерировать код</a>
                 @else
                     <div class="add-code__project">
                         <ul>

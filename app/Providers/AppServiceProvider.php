@@ -36,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
             if ($subscription) {
                 \Event::fire('blocks.changed', $subscription);
             }
+            \Redis::publish('notifications', json_encode(['type' => 'done', 'site_id' => $site->id, 'count' => 0], JSON_HEX_QUOT));
         });
         \Event::listen('site.start', function($site){
             $domain = env('APP_DOMAIN');

@@ -77,7 +77,7 @@
                     @foreach($mySites as $site)
                         <tr>
                             @if ($site->pages()->where('url', 'LIKE', $site->url.'%')->count() == 0)
-                                <td>{{beautyUrl($site->url)}} @if (strpos('_'.$site->url, 'https:') > 0) (https) @endif</td>
+                                <td id="site-name-{{$site->id}}">{{beautyUrl($site->url)}} @if (strpos('_'.$site->url, 'https:') > 0) (https) @endif</td>
                                 <td class="projects__status">
                                 <span class="projects__picking">
                                     {{trans('phrases.building_structure')}}
@@ -107,8 +107,8 @@
                                     <span class="projects__done">{{trans('phrases.site_done')}}</span>
                                 </td>
                             @endif
-                            <td class="text_right">{{number_format($site->pages()->where('url', 'LIKE', $site->url.'%')->count(), 0, '.', ' ')}}</td>
-                            <td class="text_right">{{number_format($site->count_blocks, 0, '.', ' ')}}</td>
+                            <td class="text_right" id="pages-count-{{$site->id}}">{{number_format($site->pages()->where('url', 'LIKE', $site->url.'%')->count(), 0, '.', ' ')}}</td>
+                            <td class="text_right" id="blocks-count-{{$site->id}}">{{number_format($site->count_blocks, 0, '.', ' ')}}</td>
                             <td>
                                 @if($site->count_words)
                                     <a class="btn btn-actions"><i class="fa fa-ellipsis-v"></i> </a>

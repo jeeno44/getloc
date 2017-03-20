@@ -62,8 +62,14 @@ class AccountController extends Controller
      * @access public
      */
 
-    public function selectProject()
+    public function selectProject(Request $request)
     {
+        if ($request->has('msg')) {
+            return redirect()->route('main.account.selectProject')
+                ->with('msg',
+                    ['class' => 'info-massages__item_detected', 'text' => $request->get('msg')]
+                );
+        }
         $mySites = $this->sites;
         $pagesCount = 0;
         foreach ($mySites as $key => $site) {

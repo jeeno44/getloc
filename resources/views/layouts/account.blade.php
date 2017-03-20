@@ -49,5 +49,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
     <script src="/assets/js/account/custom.js"></script>
     <script src="/assets/js/account/billing.js"></script>
+    @if(Route::getCurrentRoute()->getName() == 'main.account.selectProject')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+        <script>
+            var socket = io('http://127.0.0.1:3002');
+            socket.on('notifications', function(type, site, count){
+                switch (type) {
+                    case 'page': $('#pages-count-' + site).text(count); break;
+                    case 'block': $('#blocks-count-' + site).text(count); break;
+                    case 'done':
+                        if ($('#site-name-' + site).length > 0) {
+                            window.location.href = '?msg=Обработка сайта ' + $('#site-name-' + site).text() + ' завершена';
+                        }
+                        break;
+                }
+            });
+        </script>
+    @endif
 </body>
 </html>

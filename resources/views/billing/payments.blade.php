@@ -7,6 +7,7 @@
     <div class="inside-content">
         <div class="block block-bordered">
             <div class="block-content">
+                @if($payments->count())
                 <table class="projects">
                     <thead>
                     <tr>
@@ -48,6 +49,11 @@
                     @endforeach
                     </tbody>
                 </table>
+                @else
+                    <div class="warn_panel" style="width: 100%; margin-bottom: 20px;">
+                        <p>Вы не совершали ни одного платежа</p>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

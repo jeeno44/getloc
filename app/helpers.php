@@ -538,9 +538,9 @@ function accountMenu()
                 trans('account.menu_text_collect')      => ['account/collect', $disable],
                 trans('account.menu_docs_images')       => ['account/docs', $disable],
                 'Изображения'                           => ['account/images', $disable],
-                trans('account.menu_project_review')    => ['account/overview', $disable],
             ],
             trans('account.menu_site_translate').' <sup>&beta;</sup>'    => [
+                trans('account.menu_project_review')    => ['account/overview', $disable],
                 trans('account.menu_site_langs')        => ['account/languages', $disable],
                 trans('account.menu_project_pages')     => ['account/pages', $disable],
                 trans('account.menu_manage_trans')      => ['account/phrase', $disable],
