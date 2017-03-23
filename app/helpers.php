@@ -513,6 +513,7 @@ function accountMenu()
                 trans('account.menu_docs_images')       => ['account/docs', $disable],
                 'Изображения'                           => ['account/images', $disable],
                 'Добавить проект на локализацию'        => ['account/build', ''],
+                'История просчетов'                     => ['account/history-collect', ''],
             ],
             trans('account.menu_site_translate').' <sup>&beta;</sup>'    => [
 
@@ -538,6 +539,7 @@ function accountMenu()
                 trans('account.menu_text_collect')      => ['account/collect', $disable],
                 trans('account.menu_docs_images')       => ['account/docs', $disable],
                 'Изображения'                           => ['account/images', $disable],
+                'История просчетов'                     => ['account/history-collect', ''],
             ],
             trans('account.menu_site_translate').' <sup>&beta;</sup>'    => [
                 trans('account.menu_project_review')    => ['account/overview', $disable],

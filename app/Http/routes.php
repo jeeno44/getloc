@@ -125,6 +125,7 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('import', 'ProjectController@import');
             Route::post('import', 'ProjectController@storeImport');
             Route::get('/payment', ['as' => 'main.account.payment', 'uses' => 'AccountController@accountPayment']);
+            Route::get('/history-collect', 'ProjectController@historyCollect');
         });
         Route::group(['middleware' => 'auth'], function() {
             Route::get('/xml/read/{id}', 'XmlController@read');
