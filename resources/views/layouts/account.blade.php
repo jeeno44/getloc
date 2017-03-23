@@ -52,11 +52,18 @@
     @if(Route::getCurrentRoute()->getName() == 'main.account.selectProject')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
         <script>
-            var socket = io('http://127.0.0.1:3002');
-            socket.on('notifications', function(type, site, count){
+            var socket = io('http://62.138.7.69:3002');
+            socket.on('notifications', function(type, site, countP, countB){
                 switch (type) {
-                    case 'page': $('#pages-count-' + site).text(count); break;
-                    case 'block': $('#blocks-count-' + site).text(count); break;
+                    case 'spider':
+                        $('#pages-count-' + site).text(countP);
+                        $('#site-status-' + site).text('Построение структуры (' + countP + '/' + countP +')');
+                        break;
+                    case 'collector':
+                        $('#blocks-count-' + site).text(countB);
+                        var allPagesCount = $('#pages-count-' + site).text();
+                        $('#site-status-' + site).text('Сбор текста (' + countP + '/' + allPagesCount +')');
+                        break;
                     case 'done':
                         if ($('#site-name-' + site).length > 0) {
                             window.location.href = '?msg=Обработка сайта ' + $('#site-name-' + site).text() + ' завершена';

@@ -7,7 +7,7 @@ redis.subscribe('notifications', function(err, count) {});
 redis.on('message', function(channel, message) {
     message = JSON.parse(message);
     console.log(message);
-    io.emit('notifications', message.type, message.site_id, message.count);
+    io.emit('notifications', message.type, message.site_id, message.pages_count, message.blocks_count);
 });
 http.listen(3002, function(){
     console.log('Listening on Port 3002');

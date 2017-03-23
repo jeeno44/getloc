@@ -79,7 +79,7 @@
                             @if ($site->pages()->where('url', 'LIKE', $site->url.'%')->count() == 0)
                                 <td id="site-name-{{$site->id}}">{{beautyUrl($site->url)}} @if (strpos('_'.$site->url, 'https:') > 0) (https) @endif</td>
                                 <td class="projects__status">
-                                <span class="projects__picking">
+                                <span class="projects__picking" id="site-status-{{$site->id}}">
                                     {{trans('phrases.building_structure')}}
                                 </span>
 
@@ -87,7 +87,7 @@
                             @elseif ($site->pages()->where('url', 'LIKE', $site->url.'%')->where('visited', 0)->count() > 0)
                                 <td>{{beautyUrl($site->url)}}</td>
                                 <td class="projects__status">
-                                <span class="projects__picking">
+                                <span class="projects__picking" id="site-status-{{$site->id}}">
                                     {{trans('phrases.building_structure')}}
                                     ({{number_format($site->pages()->where('url', 'LIKE', $site->url.'%')->where('visited', 1)->count(), 0, '.', ' ')}} / {{number_format($site->pages()->where('url', 'LIKE', $site->url.'%')->count(), 0, '.', ' ')}})
                                 </span>
@@ -96,7 +96,7 @@
                             @elseif ($site->pages()->where('url', 'LIKE', $site->url.'%')->where('collected', 0)->where('code', '<', 400)->count() > 0)
                                 <td>{{beautyUrl($site->url)}}</td>
                                 <td class="projects__status">
-                                <span class="projects__picking">
+                                <span class="projects__picking" id="site-status-{{$site->id}}">
                                     {{trans('phrases.collect_text')}}
                                     ({{number_format($site->pages()->where('url', 'LIKE', $site->url.'%')->where('collected', 1)->count(), 0, '.', ' ')}} / {{number_format($site->pages()->where('url', 'LIKE', $site->url.'%')->count(), 0, '.', ' ')}})
                                 </span>
