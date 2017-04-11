@@ -173,13 +173,16 @@ class FilesController extends Controller
         $buildQuery->select('doc_translates.id as id',  'docs_sites.full_url as original_url',
             'doc_translates.full_url as trans_url', 'doc_translates.doc_id as doc_id', 'docs_sites.deleted_at as deleted_at');
         $files = $buildQuery->paginate(20);
-        $arch = \DB::table('docs_sites')->whereNotNull('deleted_at')->where('ftype', 'doc')->count();
+        $arch = \DB::table('docs_sites')->whereNotNull('deleted_at')->where('ftype', 'image')->count();
         $langs = [];
         foreach ($site->languages as $lang) {
             $langs[$lang->id] = [
                 'id'   => $lang->id,
-                'count_trans' => DocTranslate::where('site_id', $site->id)->where('language_id', $lang->id)
-                    ->where('ftype', 'image')->where('full_url', '!=', '')->count(),
+                'count_trans' => DocTranslate::where('doc_translates.site_id', $site->id)->where('language_id', $lang->id)
+                    ->where('doc_translates.ftype', 'image')->where('doc_translates.full_url', '!=', '')
+                    ->join('docs_sites', 'docs_sites.id', '=', 'doc_translates.doc_id')
+                    ->whereNull('docs_sites.deleted_at')
+                    ->count(),
                 'count_docs' => SiteFile::where('site_id', $site->id)->whereNull('deleted_at')->where('ftype', 'image')->count(),
             ];
         }
@@ -226,8 +229,11 @@ class FilesController extends Controller
         foreach ($site->languages as $lang) {
             $langs[$lang->id] = [
                 'id'   => $lang->id,
-                'count_trans' => DocTranslate::where('site_id', $site->id)->where('language_id', $lang->id)
-                    ->where('ftype', 'doc')->where('full_url', '!=', '')->count(),
+                'count_trans' => DocTranslate::where('doc_translates.site_id', $site->id)->where('language_id', $lang->id)
+                    ->where('doc_translates.ftype', 'doc')->where('doc_translates.full_url', '!=', '')
+                    ->join('docs_sites', 'docs_sites.id', '=', 'doc_translates.doc_id')
+                    ->whereNull('docs_sites.deleted_at')
+                    ->count(),
                 'count_docs' => SiteFile::where('site_id', $site->id)->whereNull('deleted_at')->where('ftype', 'doc')->count(),
             ];
         }
