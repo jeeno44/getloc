@@ -113,7 +113,12 @@ Route::group(['middleware' => ['web']], function ()  use ($domain){
             Route::get('/language/delete/{siteID}/{languageID}', ['as' => 'main.lang.del', 'uses' => 'ProjectController@deleteLanguages']);
             Route::get('/images', ['as' => 'main.account.images', 'uses' => 'FilesController@images']);
             Route::get('/docs', ['as' => 'main.account.docs', 'uses' => 'FilesController@docs']);
-            Route::get('/docs', ['as' => 'main.account.images', 'uses' => 'FilesController@images']);
+            Route::post('/filter/images', ['as' => 'main.account.filter.images', 'uses' => 'FilesController@filterImages']);
+            Route::post('/filter/docs', ['as' => 'main.account.filter.docs', 'uses' => 'FilesController@filterDocs']);
+            Route::post('/filter/archive/{id}', ['as' => 'main.account.filter.archive', 'uses' => 'FilesController@archive']);
+            Route::post('/filter/save/{id}', ['as' => 'main.account.filter.archive', 'uses' => 'FilesController@save']);
+            Route::post('/filter/upload/{id}', ['as' => 'main.account.filter.archive', 'uses' => 'FilesController@upload']);
+
             Route::any('/pages/autocomplete/{id}', 'AccountController@pagesAutoComplete');
 
             Route::get('/personal', ['as' => 'main.account.personal', 'uses' => 'PersonalController@index']);

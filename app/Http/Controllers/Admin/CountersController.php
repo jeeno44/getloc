@@ -17,15 +17,15 @@ class CountersController extends Controller
         $startCurrentMonth->toDateTimeString();
         $startPrevMonth = new Carbon('first day of previous month');
         $startPrevMonth->toDateTimeString();
-        $currentMonths = Site::where('count_words', '>', 0)->where('created_at', '>', $startCurrentMonth)->count();
+        $currentMonths = Site::where('count_words', '>', 0)->where('created_at', '>', $startCurrentMonth)->withTrashed()->count();
         $prevMonths = Site::where('count_words', '>', 0)->where('created_at', '>', $startPrevMonth)
-            ->where('created_at', '<', $startCurrentMonth)->count();
+            ->where('created_at', '<', $startCurrentMonth)->withTrashed()->count();
         if ($request->has('to') && $request->has('from')) {
             $items = Site::where('count_words', '>', 0)
                 ->where('created_at', '>', $request->get('from'))
-                ->where('created_at', '<', $request->get('to'))->latest()->paginate(20);
+                ->where('created_at', '<', $request->get('to'))->latest()->withTrashed()->paginate(20);
         } else {
-            $items = Site::where('count_words', '>', 0)->latest()->paginate(20);
+            $items = Site::where('count_words', '>', 0)->latest()->withTrashed()->paginate(20);
         }
         return view('admin.counters.index', compact('items', 'startCurrentMonth', 'startPrevMonth', 'prevMonths', 'currentMonths'));
     }

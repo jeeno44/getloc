@@ -392,15 +392,15 @@ class ProjectController extends Controller
         $startCurrentMonth->toDateTimeString();
         $startPrevMonth = new Carbon('first day of previous month');
         $startPrevMonth->toDateTimeString();
-        $currentMonths = Site::where('count_words', '>', 0)->where('user_id', \Auth::user()->id)->where('created_at', '>', $startCurrentMonth)->count();
-        $prevMonths = Site::where('count_words', '>', 0)->where('user_id', \Auth::user()->id)->count();
+        $currentMonths = \DB::table('sites')->where('count_words', '>', 0)->where('user_id', \Auth::user()->id)->where('created_at', '>', $startCurrentMonth)->count();
+        $prevMonths = \DB::table('sites')->where('count_words', '>', 0)->where('user_id', \Auth::user()->id)->count();
         if ($request->has('to') && $request->has('from')) {
-            $items = Site::where('count_words', '>', 0)
+            $items = \DB::table('sites')->where('count_words', '>', 0)
                 ->where('created_at', '>', $request->get('from'))
                 ->where('user_id', \Auth::user()->id)
                 ->where('created_at', '<', $request->get('to'))->latest()->get();
         } else {
-            $items = Site::where('count_words', '>', 0)->where('user_id', \Auth::user()->id)->latest()->get();
+            $items = \DB::table('sites')->where('count_words', '>', 0)->where('user_id', \Auth::user()->id)->latest()->get();
         }
         return view('account.history-collect', compact('items', 'startCurrentMonth', 'startPrevMonth', 'prevMonths', 'currentMonths'));
     }

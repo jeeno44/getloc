@@ -103,7 +103,16 @@
                         _suggestSelected = 0;
                         _addChosenItems( curText );
                         $('.search-pages__input').val('');
-                        loadPhrases();
+                        //loadPhrases();
+                        if (typeof loadPhrases !== "undefined") {
+                            loadPhrases();
+                        }
+                        if (typeof loadImages !== "undefined") {
+                            loadImages();
+                        }
+                        if (typeof loadDocs !== "undefined") {
+                            loadDocs();
+                        }
                     }
                 );
                 _body.on(

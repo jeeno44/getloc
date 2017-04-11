@@ -49,6 +49,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
     <script src="/assets/js/account/custom.js"></script>
     <script src="/assets/js/account/billing.js"></script>
+    @foreach($scripts as $script)
+        <script src="{{$script}}"></script>
+    @endforeach
     @if(Route::getCurrentRoute()->getName() == 'main.account.selectProject')
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
         <script>

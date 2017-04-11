@@ -13,6 +13,9 @@
                 <tr>
                     <th>Почта</th>
                     <th>Имя</th>
+                    <th>Просчетов текущий месяц</th>
+                    <th>Просчетов прошлый месяц</th>
+                    <th>Контрагент</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -20,10 +23,19 @@
                 @foreach($items as $item)
                     <tr>
                         <td>
-                            {{$item->email}}
+                            <a href="/admin/users/{{$item->id}}">{{$item->email}}</a>
                         </td>
                         <td>
                             {{$item->visibility_name}}
+                        </td>
+                        <td>
+                            {{$item->currentMonths}}
+                        </td>
+                        <td>
+                            {{$item->prevMonths}}
+                        </td>
+                        <td>
+                            {{($item->prevMonths) ? 'Да' : 'Нет'}}
                         </td>
                         <td class="text-right">
                             <a class="btn btn-small btn-default" href="/qauth/{{$item->id}}">Авторизоваться</a>

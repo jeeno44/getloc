@@ -22,4 +22,9 @@ class Page extends Model
     {
         return in_array($id, $this->blocks()->lists('id')->toArray());
     }
+
+    public function docs()
+    {
+        return $this->belongsToMany('App\SiteFIle', 'page_doc', 'page_id', 'doc_id');
+    }
 }

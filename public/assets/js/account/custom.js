@@ -443,6 +443,10 @@ setArchive = function(id)
 loadPhrases = function(page)
 {
     var pageUrls = [];
+    var pathname = window.location.pathname;
+    if (pathname.indexOf('account/phrase') == -1) {
+        return;
+    }
     if ($('.search-pages__chosen-item').length > 0) {
         $('.search-pages__chosen-item').each(function () {
             var pageUrl = $(this).find('div').text();

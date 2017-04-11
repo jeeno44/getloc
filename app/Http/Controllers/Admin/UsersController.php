@@ -7,6 +7,7 @@ use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use Carbon\Carbon;
 
 
 class UsersController extends AdminController
@@ -20,6 +21,10 @@ class UsersController extends AdminController
     public function index()
     {
         \Session::set('usersPrevUrl', \URL::full());
+        $startCurrentMonth = new Carbon('first day of this month');
+        $startCurrentMonth->toDateTimeString();
+        $startPrevMonth = new Carbon('first day of previous month');
+        $startPrevMonth->toDateTimeString();
         $partnerRole = Role::where('name', 'partner')->first();
         if (!empty($partnerRole)) {
             $userWithRoles = \DB::table('role_user')->where('role_id', $partnerRole->id)->pluck('user_id', 'user_id');
@@ -27,6 +32,12 @@ class UsersController extends AdminController
             $userWithRoles = \DB::table('role_user')->pluck('user_id', 'user_id');
         }
         $items = User::latest()->whereNotIn('id', $userWithRoles)->paginate(20);
+        foreach ($items as $item) {
+            $currentMonths = \DB::table('sites')->where('count_words', '>', 0)->where('user_id', $item->id)->where('created_at', '>', $startCurrentMonth)->count();
+            $prevMonths = \DB::table('sites')->where('count_words', '>', 0)->where('user_id', $item->id)->count();
+            $item->prevMonths = $prevMonths;
+            $item->currentMonths = $currentMonths;
+        }
         return view('admin.users.index', compact('items'));
     }
 
@@ -107,5 +118,11 @@ class UsersController extends AdminController
         $i = User::find($id);
         $i->delete();
         return redirect()->back()->with('messages', ['Удалено']);
+    }
+
+    public function show($id)
+    {
+        $user = User::findOrfail($id);
+        return view('admin.users.show', compact('user'));
     }
 }

@@ -13,6 +13,7 @@ class Controller extends BaseController
 
     public $options;
     protected $user;
+    protected $scripts = [];
 
     public function __construct()
     {
@@ -28,5 +29,6 @@ class Controller extends BaseController
             }
         }
         $this->user  = \Auth::user();
+        \View::share('scripts', $this->scripts);
     }
 }

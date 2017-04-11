@@ -674,7 +674,15 @@ var DeleteSearchChosenElements = function( obj )  {
                         parent = curItem.parent('.search-pages__chosen-item');
 
                     parent.remove();
-                    loadPhrases();
+                    if (typeof loadPhrases !== "undefined") {
+                        loadPhrases();
+                    }
+                    if (typeof loadImages !== "undefined") {
+                        loadImages();
+                    }
+                    if (typeof loadDocs !== "undefined") {
+                        loadDocs();
+                    }
                     return false;
                 }
             } );
