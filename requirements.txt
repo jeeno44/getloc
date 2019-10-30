@@ -9,7 +9,7 @@ pycurl==7.43.0
 PyMySQL==0.7.2
 pytils==0.3
 redis==2.10.5
-requests==2.9.1
+requests==2.20.0
 selection==0.0.11
 six==1.10.0
 user-agent==0.1.1
