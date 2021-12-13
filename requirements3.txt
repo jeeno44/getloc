@@ -1,5 +1,5 @@
 grab==0.6.30
-lxml==3.6.0
+lxml==4.6.5
 pycurl==7.43.0
 PyMySQL==0.7.2
 pytils==0.3
